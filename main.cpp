@@ -1,5 +1,8 @@
 #include "controller/detector.h"
-int main(){
-    Detector runner(0);
-    runner.executar();
+
+int main() {
+    Detector teste;
+    teste.run();
+
+    return 0;
 }
