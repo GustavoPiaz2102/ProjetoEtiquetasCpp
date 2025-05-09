@@ -2,6 +2,7 @@
 #define CONTROLLER_H
 
 #include "detector.h"
+#include "interface.h"
 #include <memory>
 
 class Controller {
@@ -11,6 +12,7 @@ public:
     void run();
 
 private:
+    Interface interface;
     Detector detector;
 };
 

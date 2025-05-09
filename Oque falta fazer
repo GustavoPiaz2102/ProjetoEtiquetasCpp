@@ -1,0 +1,5 @@
+-Verificar viabilidade do Nana,Fazer um qt.
+-Reinstalar o sistema operacional para usar o qt e refazer a interface grafica.
+-Alterar a .h da interface para ficar coerente com a .cpp e tentar compilar (instalar o Nana).
+-fazer um validation e implementar na detector.
+-O validation deve receber std::map<std::string, std::string> data e std::string como parametro e retornar apenas um boolean.
