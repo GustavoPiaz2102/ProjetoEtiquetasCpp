@@ -1,0 +1,3 @@
+/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/build/CMakeFiles/imgui_example.dir
+/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/build/CMakeFiles/edit_cache.dir
+/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/build/CMakeFiles/rebuild_cache.dir

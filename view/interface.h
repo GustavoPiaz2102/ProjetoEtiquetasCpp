@@ -1,36 +1,58 @@
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
-#include <map>
-#include <string>
-#include <vector>
-#include <nana/gui.hpp>
-#include <nana/gui/widgets/button.hpp>
-#include <nana/gui/widgets/label.hpp>
-#include <nana/gui/widgets/combobox.hpp>
-#include <nana/gui/widgets/date_chooser.hpp>
-#include <nana/gui/place.hpp>
-#include <sstream>
+#include <GLFW/glfw3.h>
+#include "imgui.h"
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
+#include <iostream> 
 
+/**
+ * @class Interface
+ * @brief Classe responsável por criar e gerenciar a interface gráfica com GLFW e ImGui.
+ */
 class Interface {
-public:
-    /**
-     * @brief Menu deve dar ao usuário um menu de escolha e retornar um inteiro para que a controller defina a ação seguinte.
-     * @return 1 para iniciar sistema de detecção
-     * @return 2 para mudar data
-     * @return 3 para sair do programa
-     */
-    int menu();
+    public:
+        /**
+         * @brief Construtor padrão da classe Interface.
+         */
+        Interface();
 
-    /**
-     * @brief mudar_data deve abrir um calendário para mudança de data e um menu de seleção de lote que vai de 1 a 100.
-     * @param data Mapa com dados atuais (pode ser ignorado ou usado para preencher valores iniciais).
-     * @return Mapa com as chaves "fab", "val" e "lt" nos formatos:
-     *         fab = DD/MES/AAAA (ex: 02/MAI/2025)
-     *         val = DD/MES/AAAA
-     *         lt  = NNN/AA (ex: 006/24)
-     */
-    std::map<std::string, std::string> mudar_data(std::map<std::string, std::string> data);
+        /**
+         * @brief Destrutor da classe Interface.
+         */
+        ~Interface();
+
+        /**
+         * @brief Inicializa a janela GLFW e o contexto do ImGui.
+         * 
+         * Cria a janela principal, inicializa o contexto OpenGL e ImGui,
+         * e configura os backends necessários.
+         */
+        void iniciar_janela();
+
+        /**
+         * @brief Finaliza e limpa os recursos utilizados pela janela e pelo ImGui.
+         * 
+         * Encerra o contexto ImGui, fecha a janela GLFW e termina o uso da biblioteca.
+         */
+        void finalizar_janela();
+
+        /**
+         * @brief Exibe o menu principal com opções de interação do usuário.
+         * 
+         * Cria um loop de renderização onde os botões são exibidos,
+         * retornando um valor baseado na escolha do usuário.
+         * 
+         * @return int Código da ação selecionada:
+         *         0 - Rodar Sistema
+         *         1 - Atualizar Data
+         *         2 - Sair
+         */
+        int menu();
+
+    private:
+        GLFWwindow* window; ///< Ponteiro para a janela GLFW.
 };
 
 #endif // INTERFACE_H

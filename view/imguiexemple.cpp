@@ -30,7 +30,7 @@ public:
             return false;
         }
         
-        window = glfwCreateWindow(1280, 640, "Menu", NULL, NULL);
+        window = glfwCreateWindow(1920, 1080, "Menu", NULL, NULL);
         if (!window) {
             glfwTerminate();
             std::cerr << "Falha ao criar janela GLFW\n";
@@ -85,7 +85,7 @@ public:
         glfwSwapBuffers(window);
     }
 
-    void show_main_menu(int& selected_option) {
+    void menu(int& selected_option) {
         ImGui::SetNextWindowPos(ImVec2(0, 0));
         ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
         ImGui::Begin("Main", nullptr,
@@ -99,20 +99,25 @@ public:
 
         ImGui::Text("Escolha um botão:");
         
-        if (ImGui::Button("Rodar Sistema", ImVec2(400, 200))) {
+        if (ImGui::Button("Rodar Sistema", ImVec2(800, 400))) {
             selected_option = 0;
         }
-        if (ImGui::Button("Atualizar Data", ImVec2(400, 200))) {
+        /*
+        O valor dentro do same line e do Dummy é o espaçamento entre os widgets!!
+        */
+        ImGui::SameLine(0,10.0f);
+        if (ImGui::Button("Atualizar Data", ImVec2(800, 400))) {
             selected_option = 1;
         }
-        if (ImGui::Button("Sair", ImVec2(400, 200))) {
+        ImGui::Dummy(ImVec2(0,10.0f));
+        if (ImGui::Button("Sair", ImVec2(800, 400))) {
             selected_option = 2;
         }
 
         ImGui::End();
     }
 
-    bool show_camera_view(const cv::Mat& frame) {
+    bool atulizar_frame(const cv::Mat& frame) {
         if (frame.empty()) {
             std::cerr << "Frame vazio recebido!" << std::endl;
             return false;
@@ -159,10 +164,13 @@ public:
             ImGuiWindowFlags_NoBringToFrontOnFocus |
             ImGuiWindowFlags_NoNavFocus);
 
-        ImGui::SetCursorPosX((ImGui::GetWindowWidth() - display_width) * 0.5f);
-        ImGui::SetCursorPosY((ImGui::GetWindowHeight() - display_height) * 0.5f);
+        //Posição da imagem
+        
+        ImGui::SetCursorPosX((ImGui::GetWindowWidth() - 1.1*display_width) * 0.5f);
+        ImGui::SetCursorPosY((ImGui::GetWindowHeight() - 1.1*display_height) * 0.5f);
         ImGui::Image((ImTextureID)(intptr_t)texture_id, ImVec2(display_width, display_height));
-
+        ImGui::SameLine();
+        ImGui::Text("Texto Dectado Vai Aqui!!!!");
         bool return_to_menu = false;
         if (ImGui::Button("Voltar ao Menu", ImVec2(200, 50))) {
             return_to_menu = true;
@@ -173,3 +181,36 @@ public:
         return return_to_menu;
     }
 };
+
+int main() {
+    Interface interface;
+    if (!interface.iniciar_janela()) {
+        return -1;
+    }
+
+    int selected_option = -1;
+    Capture camera(0);
+    while (!interface.shouldClose()) {
+        interface.process_events();
+        interface.begin_frame();
+
+        if (selected_option == -1 || selected_option == 1) {
+            interface.menu(selected_option);
+        } 
+        else if (selected_option == 2) { // Sair
+            break;
+        }
+        else if (selected_option == 0) { // Rodar Sistema
+            cv::Mat frame = camera.captureImage();
+            if (!frame.empty()) {
+                if (interface.atulizar_frame(frame)) {
+                    selected_option = -1; // Voltar ao menu
+                }
+            }
+        }
+
+        interface.end_frame();
+    }
+
+    return 0;
+}
