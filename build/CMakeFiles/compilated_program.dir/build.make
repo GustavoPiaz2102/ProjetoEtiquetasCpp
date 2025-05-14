@@ -111,10 +111,108 @@ CMakeFiles/compilated_program.dir/controller/detector.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/controller/detector.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/detector.cpp -o CMakeFiles/compilated_program.dir/controller/detector.cpp.s
 
+CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o: CMakeFiles/compilated_program.dir/flags.make
+CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o: ../libs/imgui/backends/imgui_impl_glfw.cpp
+CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o -MF CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o.d -o CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_glfw.cpp
+
+CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_glfw.cpp > CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.i
+
+CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_glfw.cpp -o CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.s
+
+CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o: CMakeFiles/compilated_program.dir/flags.make
+CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o: ../libs/imgui/backends/imgui_impl_opengl3.cpp
+CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o -MF CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o.d -o CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_opengl3.cpp
+
+CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_opengl3.cpp > CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.i
+
+CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_opengl3.cpp -o CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.s
+
+CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.o: CMakeFiles/compilated_program.dir/flags.make
+CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.o: ../libs/imgui/imgui.cpp
+CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.o -MF CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.o.d -o CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui.cpp
+
+CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui.cpp > CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.i
+
+CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui.cpp -o CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.s
+
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.o: CMakeFiles/compilated_program.dir/flags.make
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.o: ../libs/imgui/imgui_demo.cpp
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.o -MF CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.o.d -o CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui_demo.cpp
+
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui_demo.cpp > CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.i
+
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui_demo.cpp -o CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.s
+
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.o: CMakeFiles/compilated_program.dir/flags.make
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.o: ../libs/imgui/imgui_draw.cpp
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.o -MF CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.o.d -o CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui_draw.cpp
+
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui_draw.cpp > CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.i
+
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui_draw.cpp -o CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.s
+
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.o: CMakeFiles/compilated_program.dir/flags.make
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.o: ../libs/imgui/imgui_tables.cpp
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.o -MF CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.o.d -o CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui_tables.cpp
+
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui_tables.cpp > CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.i
+
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui_tables.cpp -o CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.s
+
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.o: CMakeFiles/compilated_program.dir/flags.make
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.o: ../libs/imgui/imgui_widgets.cpp
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.o -MF CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.o.d -o CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui_widgets.cpp
+
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui_widgets.cpp > CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.i
+
+CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui_widgets.cpp -o CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.s
+
 CMakeFiles/compilated_program.dir/model/OCR.cpp.o: CMakeFiles/compilated_program.dir/flags.make
 CMakeFiles/compilated_program.dir/model/OCR.cpp.o: ../model/OCR.cpp
 CMakeFiles/compilated_program.dir/model/OCR.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/compilated_program.dir/model/OCR.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/compilated_program.dir/model/OCR.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/model/OCR.cpp.o -MF CMakeFiles/compilated_program.dir/model/OCR.cpp.o.d -o CMakeFiles/compilated_program.dir/model/OCR.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/OCR.cpp
 
 CMakeFiles/compilated_program.dir/model/OCR.cpp.i: cmake_force
@@ -128,7 +226,7 @@ CMakeFiles/compilated_program.dir/model/OCR.cpp.s: cmake_force
 CMakeFiles/compilated_program.dir/model/capture.cpp.o: CMakeFiles/compilated_program.dir/flags.make
 CMakeFiles/compilated_program.dir/model/capture.cpp.o: ../model/capture.cpp
 CMakeFiles/compilated_program.dir/model/capture.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/compilated_program.dir/model/capture.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/compilated_program.dir/model/capture.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/model/capture.cpp.o -MF CMakeFiles/compilated_program.dir/model/capture.cpp.o.d -o CMakeFiles/compilated_program.dir/model/capture.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/capture.cpp
 
 CMakeFiles/compilated_program.dir/model/capture.cpp.i: cmake_force
@@ -142,7 +240,7 @@ CMakeFiles/compilated_program.dir/model/capture.cpp.s: cmake_force
 CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o: CMakeFiles/compilated_program.dir/flags.make
 CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o: ../model/preprocessor.cpp
 CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o -MF CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o.d -o CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/preprocessor.cpp
 
 CMakeFiles/compilated_program.dir/model/preprocessor.cpp.i: cmake_force
@@ -153,122 +251,10 @@ CMakeFiles/compilated_program.dir/model/preprocessor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/model/preprocessor.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/preprocessor.cpp -o CMakeFiles/compilated_program.dir/model/preprocessor.cpp.s
 
-CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.o: CMakeFiles/compilated_program.dir/flags.make
-CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.o: ../view/imgui/backends/imgui_impl_glfw.cpp
-CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.o -MF CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.o.d -o CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/backends/imgui_impl_glfw.cpp
-
-CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/backends/imgui_impl_glfw.cpp > CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.i
-
-CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/backends/imgui_impl_glfw.cpp -o CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.s
-
-CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.o: CMakeFiles/compilated_program.dir/flags.make
-CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.o: ../view/imgui/backends/imgui_impl_opengl3.cpp
-CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.o -MF CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.o.d -o CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/backends/imgui_impl_opengl3.cpp
-
-CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/backends/imgui_impl_opengl3.cpp > CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.i
-
-CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/backends/imgui_impl_opengl3.cpp -o CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.s
-
-CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.o: CMakeFiles/compilated_program.dir/flags.make
-CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.o: ../view/imgui/imgui.cpp
-CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.o -MF CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.o.d -o CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imgui.cpp
-
-CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imgui.cpp > CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.i
-
-CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imgui.cpp -o CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.s
-
-CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.o: CMakeFiles/compilated_program.dir/flags.make
-CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.o: ../view/imgui/imgui_demo.cpp
-CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.o -MF CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.o.d -o CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imgui_demo.cpp
-
-CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imgui_demo.cpp > CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.i
-
-CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imgui_demo.cpp -o CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.s
-
-CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.o: CMakeFiles/compilated_program.dir/flags.make
-CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.o: ../view/imgui/imgui_draw.cpp
-CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.o -MF CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.o.d -o CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imgui_draw.cpp
-
-CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imgui_draw.cpp > CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.i
-
-CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imgui_draw.cpp -o CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.s
-
-CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.o: CMakeFiles/compilated_program.dir/flags.make
-CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.o: ../view/imgui/imgui_tables.cpp
-CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.o -MF CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.o.d -o CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imgui_tables.cpp
-
-CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imgui_tables.cpp > CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.i
-
-CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imgui_tables.cpp -o CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.s
-
-CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.o: CMakeFiles/compilated_program.dir/flags.make
-CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.o: ../view/imgui/imgui_widgets.cpp
-CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.o -MF CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.o.d -o CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imgui_widgets.cpp
-
-CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imgui_widgets.cpp > CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.i
-
-CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imgui_widgets.cpp -o CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.s
-
-CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.o: CMakeFiles/compilated_program.dir/flags.make
-CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.o: ../view/imguiexemple.cpp
-CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.o -MF CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.o.d -o CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imguiexemple.cpp
-
-CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imguiexemple.cpp > CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.i
-
-CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imguiexemple.cpp -o CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.s
-
 CMakeFiles/compilated_program.dir/view/interface.cpp.o: CMakeFiles/compilated_program.dir/flags.make
 CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp
 CMakeFiles/compilated_program.dir/view/interface.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/compilated_program.dir/view/interface.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/compilated_program.dir/view/interface.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/view/interface.cpp.o -MF CMakeFiles/compilated_program.dir/view/interface.cpp.o.d -o CMakeFiles/compilated_program.dir/view/interface.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/interface.cpp
 
 CMakeFiles/compilated_program.dir/view/interface.cpp.i: cmake_force
@@ -284,17 +270,16 @@ compilated_program_OBJECTS = \
 "CMakeFiles/compilated_program.dir/main.cpp.o" \
 "CMakeFiles/compilated_program.dir/controller/controller.cpp.o" \
 "CMakeFiles/compilated_program.dir/controller/detector.cpp.o" \
+"CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o" \
+"CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o" \
+"CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.o" \
+"CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.o" \
+"CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.o" \
+"CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.o" \
+"CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.o" \
 "CMakeFiles/compilated_program.dir/model/OCR.cpp.o" \
 "CMakeFiles/compilated_program.dir/model/capture.cpp.o" \
 "CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o" \
-"CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.o" \
-"CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.o" \
-"CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.o" \
-"CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.o" \
-"CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.o" \
-"CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.o" \
-"CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.o" \
-"CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.o" \
 "CMakeFiles/compilated_program.dir/view/interface.cpp.o"
 
 # External object files for target compilated_program
@@ -303,17 +288,16 @@ compilated_program_EXTERNAL_OBJECTS =
 compilated_program: CMakeFiles/compilated_program.dir/main.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/controller/controller.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/controller/detector.cpp.o
+compilated_program: CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o
+compilated_program: CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o
+compilated_program: CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.o
+compilated_program: CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.o
+compilated_program: CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.o
+compilated_program: CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.o
+compilated_program: CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/model/OCR.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/model/capture.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o
-compilated_program: CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.o
-compilated_program: CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.o
-compilated_program: CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.o
-compilated_program: CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.o
-compilated_program: CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.o
-compilated_program: CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.o
-compilated_program: CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.o
-compilated_program: CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/view/interface.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/build.make
 compilated_program: /usr/local/lib/libglfw3.a
@@ -375,7 +359,7 @@ compilated_program: /usr/lib/x86_64-linux-gnu/libopencv_photo.so.4.5.4d
 compilated_program: /usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.4.5.4d
 compilated_program: /usr/lib/x86_64-linux-gnu/libopencv_core.so.4.5.4d
 compilated_program: CMakeFiles/compilated_program.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking CXX executable compilated_program"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX executable compilated_program"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/compilated_program.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

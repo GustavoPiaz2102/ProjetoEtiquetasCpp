@@ -1,4 +1,5 @@
 --Fazer um validator e applicar logica
---Fazer o recebimento de data
---Corrigir o seg fault do retorno ao main menu
---Corrigir saida de texto do OCR na tela de detecção
+--Corrigir o seg fault do retorno ao main menu (solved: o frame não estava sendo destruído
+--Corrigir saida de texto do OCR na tela de detecção(opcional)
+--Ainda Falta fazer as outras partes do calendario, depois que ele executar uma executar a outra, tem que fazer validação pra isso na controller.
+--fazer um recebimento de lote, não fiz validação pra dias invalidos no calendario, tem que fazer isso também.

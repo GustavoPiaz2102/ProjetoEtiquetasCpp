@@ -177,6 +177,174 @@ controller/detector.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/controller/detector.cpp.s
 .PHONY : controller/detector.cpp.s
 
+libs/imgui/backends/imgui_impl_glfw.o: libs/imgui/backends/imgui_impl_glfw.cpp.o
+.PHONY : libs/imgui/backends/imgui_impl_glfw.o
+
+# target to build an object file
+libs/imgui/backends/imgui_impl_glfw.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o
+.PHONY : libs/imgui/backends/imgui_impl_glfw.cpp.o
+
+libs/imgui/backends/imgui_impl_glfw.i: libs/imgui/backends/imgui_impl_glfw.cpp.i
+.PHONY : libs/imgui/backends/imgui_impl_glfw.i
+
+# target to preprocess a source file
+libs/imgui/backends/imgui_impl_glfw.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.i
+.PHONY : libs/imgui/backends/imgui_impl_glfw.cpp.i
+
+libs/imgui/backends/imgui_impl_glfw.s: libs/imgui/backends/imgui_impl_glfw.cpp.s
+.PHONY : libs/imgui/backends/imgui_impl_glfw.s
+
+# target to generate assembly for a file
+libs/imgui/backends/imgui_impl_glfw.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.s
+.PHONY : libs/imgui/backends/imgui_impl_glfw.cpp.s
+
+libs/imgui/backends/imgui_impl_opengl3.o: libs/imgui/backends/imgui_impl_opengl3.cpp.o
+.PHONY : libs/imgui/backends/imgui_impl_opengl3.o
+
+# target to build an object file
+libs/imgui/backends/imgui_impl_opengl3.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o
+.PHONY : libs/imgui/backends/imgui_impl_opengl3.cpp.o
+
+libs/imgui/backends/imgui_impl_opengl3.i: libs/imgui/backends/imgui_impl_opengl3.cpp.i
+.PHONY : libs/imgui/backends/imgui_impl_opengl3.i
+
+# target to preprocess a source file
+libs/imgui/backends/imgui_impl_opengl3.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.i
+.PHONY : libs/imgui/backends/imgui_impl_opengl3.cpp.i
+
+libs/imgui/backends/imgui_impl_opengl3.s: libs/imgui/backends/imgui_impl_opengl3.cpp.s
+.PHONY : libs/imgui/backends/imgui_impl_opengl3.s
+
+# target to generate assembly for a file
+libs/imgui/backends/imgui_impl_opengl3.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.s
+.PHONY : libs/imgui/backends/imgui_impl_opengl3.cpp.s
+
+libs/imgui/imgui.o: libs/imgui/imgui.cpp.o
+.PHONY : libs/imgui/imgui.o
+
+# target to build an object file
+libs/imgui/imgui.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.o
+.PHONY : libs/imgui/imgui.cpp.o
+
+libs/imgui/imgui.i: libs/imgui/imgui.cpp.i
+.PHONY : libs/imgui/imgui.i
+
+# target to preprocess a source file
+libs/imgui/imgui.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.i
+.PHONY : libs/imgui/imgui.cpp.i
+
+libs/imgui/imgui.s: libs/imgui/imgui.cpp.s
+.PHONY : libs/imgui/imgui.s
+
+# target to generate assembly for a file
+libs/imgui/imgui.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/imgui.cpp.s
+.PHONY : libs/imgui/imgui.cpp.s
+
+libs/imgui/imgui_demo.o: libs/imgui/imgui_demo.cpp.o
+.PHONY : libs/imgui/imgui_demo.o
+
+# target to build an object file
+libs/imgui/imgui_demo.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.o
+.PHONY : libs/imgui/imgui_demo.cpp.o
+
+libs/imgui/imgui_demo.i: libs/imgui/imgui_demo.cpp.i
+.PHONY : libs/imgui/imgui_demo.i
+
+# target to preprocess a source file
+libs/imgui/imgui_demo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.i
+.PHONY : libs/imgui/imgui_demo.cpp.i
+
+libs/imgui/imgui_demo.s: libs/imgui/imgui_demo.cpp.s
+.PHONY : libs/imgui/imgui_demo.s
+
+# target to generate assembly for a file
+libs/imgui/imgui_demo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/imgui_demo.cpp.s
+.PHONY : libs/imgui/imgui_demo.cpp.s
+
+libs/imgui/imgui_draw.o: libs/imgui/imgui_draw.cpp.o
+.PHONY : libs/imgui/imgui_draw.o
+
+# target to build an object file
+libs/imgui/imgui_draw.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.o
+.PHONY : libs/imgui/imgui_draw.cpp.o
+
+libs/imgui/imgui_draw.i: libs/imgui/imgui_draw.cpp.i
+.PHONY : libs/imgui/imgui_draw.i
+
+# target to preprocess a source file
+libs/imgui/imgui_draw.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.i
+.PHONY : libs/imgui/imgui_draw.cpp.i
+
+libs/imgui/imgui_draw.s: libs/imgui/imgui_draw.cpp.s
+.PHONY : libs/imgui/imgui_draw.s
+
+# target to generate assembly for a file
+libs/imgui/imgui_draw.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.s
+.PHONY : libs/imgui/imgui_draw.cpp.s
+
+libs/imgui/imgui_tables.o: libs/imgui/imgui_tables.cpp.o
+.PHONY : libs/imgui/imgui_tables.o
+
+# target to build an object file
+libs/imgui/imgui_tables.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.o
+.PHONY : libs/imgui/imgui_tables.cpp.o
+
+libs/imgui/imgui_tables.i: libs/imgui/imgui_tables.cpp.i
+.PHONY : libs/imgui/imgui_tables.i
+
+# target to preprocess a source file
+libs/imgui/imgui_tables.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.i
+.PHONY : libs/imgui/imgui_tables.cpp.i
+
+libs/imgui/imgui_tables.s: libs/imgui/imgui_tables.cpp.s
+.PHONY : libs/imgui/imgui_tables.s
+
+# target to generate assembly for a file
+libs/imgui/imgui_tables.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.s
+.PHONY : libs/imgui/imgui_tables.cpp.s
+
+libs/imgui/imgui_widgets.o: libs/imgui/imgui_widgets.cpp.o
+.PHONY : libs/imgui/imgui_widgets.o
+
+# target to build an object file
+libs/imgui/imgui_widgets.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.o
+.PHONY : libs/imgui/imgui_widgets.cpp.o
+
+libs/imgui/imgui_widgets.i: libs/imgui/imgui_widgets.cpp.i
+.PHONY : libs/imgui/imgui_widgets.i
+
+# target to preprocess a source file
+libs/imgui/imgui_widgets.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.i
+.PHONY : libs/imgui/imgui_widgets.cpp.i
+
+libs/imgui/imgui_widgets.s: libs/imgui/imgui_widgets.cpp.s
+.PHONY : libs/imgui/imgui_widgets.s
+
+# target to generate assembly for a file
+libs/imgui/imgui_widgets.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.s
+.PHONY : libs/imgui/imgui_widgets.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -273,198 +441,6 @@ model/preprocessor.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/preprocessor.cpp.s
 .PHONY : model/preprocessor.cpp.s
 
-view/imgui/backends/imgui_impl_glfw.o: view/imgui/backends/imgui_impl_glfw.cpp.o
-.PHONY : view/imgui/backends/imgui_impl_glfw.o
-
-# target to build an object file
-view/imgui/backends/imgui_impl_glfw.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.o
-.PHONY : view/imgui/backends/imgui_impl_glfw.cpp.o
-
-view/imgui/backends/imgui_impl_glfw.i: view/imgui/backends/imgui_impl_glfw.cpp.i
-.PHONY : view/imgui/backends/imgui_impl_glfw.i
-
-# target to preprocess a source file
-view/imgui/backends/imgui_impl_glfw.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.i
-.PHONY : view/imgui/backends/imgui_impl_glfw.cpp.i
-
-view/imgui/backends/imgui_impl_glfw.s: view/imgui/backends/imgui_impl_glfw.cpp.s
-.PHONY : view/imgui/backends/imgui_impl_glfw.s
-
-# target to generate assembly for a file
-view/imgui/backends/imgui_impl_glfw.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_glfw.cpp.s
-.PHONY : view/imgui/backends/imgui_impl_glfw.cpp.s
-
-view/imgui/backends/imgui_impl_opengl3.o: view/imgui/backends/imgui_impl_opengl3.cpp.o
-.PHONY : view/imgui/backends/imgui_impl_opengl3.o
-
-# target to build an object file
-view/imgui/backends/imgui_impl_opengl3.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.o
-.PHONY : view/imgui/backends/imgui_impl_opengl3.cpp.o
-
-view/imgui/backends/imgui_impl_opengl3.i: view/imgui/backends/imgui_impl_opengl3.cpp.i
-.PHONY : view/imgui/backends/imgui_impl_opengl3.i
-
-# target to preprocess a source file
-view/imgui/backends/imgui_impl_opengl3.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.i
-.PHONY : view/imgui/backends/imgui_impl_opengl3.cpp.i
-
-view/imgui/backends/imgui_impl_opengl3.s: view/imgui/backends/imgui_impl_opengl3.cpp.s
-.PHONY : view/imgui/backends/imgui_impl_opengl3.s
-
-# target to generate assembly for a file
-view/imgui/backends/imgui_impl_opengl3.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/backends/imgui_impl_opengl3.cpp.s
-.PHONY : view/imgui/backends/imgui_impl_opengl3.cpp.s
-
-view/imgui/imgui.o: view/imgui/imgui.cpp.o
-.PHONY : view/imgui/imgui.o
-
-# target to build an object file
-view/imgui/imgui.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.o
-.PHONY : view/imgui/imgui.cpp.o
-
-view/imgui/imgui.i: view/imgui/imgui.cpp.i
-.PHONY : view/imgui/imgui.i
-
-# target to preprocess a source file
-view/imgui/imgui.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.i
-.PHONY : view/imgui/imgui.cpp.i
-
-view/imgui/imgui.s: view/imgui/imgui.cpp.s
-.PHONY : view/imgui/imgui.s
-
-# target to generate assembly for a file
-view/imgui/imgui.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/imgui.cpp.s
-.PHONY : view/imgui/imgui.cpp.s
-
-view/imgui/imgui_demo.o: view/imgui/imgui_demo.cpp.o
-.PHONY : view/imgui/imgui_demo.o
-
-# target to build an object file
-view/imgui/imgui_demo.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.o
-.PHONY : view/imgui/imgui_demo.cpp.o
-
-view/imgui/imgui_demo.i: view/imgui/imgui_demo.cpp.i
-.PHONY : view/imgui/imgui_demo.i
-
-# target to preprocess a source file
-view/imgui/imgui_demo.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.i
-.PHONY : view/imgui/imgui_demo.cpp.i
-
-view/imgui/imgui_demo.s: view/imgui/imgui_demo.cpp.s
-.PHONY : view/imgui/imgui_demo.s
-
-# target to generate assembly for a file
-view/imgui/imgui_demo.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/imgui_demo.cpp.s
-.PHONY : view/imgui/imgui_demo.cpp.s
-
-view/imgui/imgui_draw.o: view/imgui/imgui_draw.cpp.o
-.PHONY : view/imgui/imgui_draw.o
-
-# target to build an object file
-view/imgui/imgui_draw.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.o
-.PHONY : view/imgui/imgui_draw.cpp.o
-
-view/imgui/imgui_draw.i: view/imgui/imgui_draw.cpp.i
-.PHONY : view/imgui/imgui_draw.i
-
-# target to preprocess a source file
-view/imgui/imgui_draw.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.i
-.PHONY : view/imgui/imgui_draw.cpp.i
-
-view/imgui/imgui_draw.s: view/imgui/imgui_draw.cpp.s
-.PHONY : view/imgui/imgui_draw.s
-
-# target to generate assembly for a file
-view/imgui/imgui_draw.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/imgui_draw.cpp.s
-.PHONY : view/imgui/imgui_draw.cpp.s
-
-view/imgui/imgui_tables.o: view/imgui/imgui_tables.cpp.o
-.PHONY : view/imgui/imgui_tables.o
-
-# target to build an object file
-view/imgui/imgui_tables.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.o
-.PHONY : view/imgui/imgui_tables.cpp.o
-
-view/imgui/imgui_tables.i: view/imgui/imgui_tables.cpp.i
-.PHONY : view/imgui/imgui_tables.i
-
-# target to preprocess a source file
-view/imgui/imgui_tables.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.i
-.PHONY : view/imgui/imgui_tables.cpp.i
-
-view/imgui/imgui_tables.s: view/imgui/imgui_tables.cpp.s
-.PHONY : view/imgui/imgui_tables.s
-
-# target to generate assembly for a file
-view/imgui/imgui_tables.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/imgui_tables.cpp.s
-.PHONY : view/imgui/imgui_tables.cpp.s
-
-view/imgui/imgui_widgets.o: view/imgui/imgui_widgets.cpp.o
-.PHONY : view/imgui/imgui_widgets.o
-
-# target to build an object file
-view/imgui/imgui_widgets.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.o
-.PHONY : view/imgui/imgui_widgets.cpp.o
-
-view/imgui/imgui_widgets.i: view/imgui/imgui_widgets.cpp.i
-.PHONY : view/imgui/imgui_widgets.i
-
-# target to preprocess a source file
-view/imgui/imgui_widgets.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.i
-.PHONY : view/imgui/imgui_widgets.cpp.i
-
-view/imgui/imgui_widgets.s: view/imgui/imgui_widgets.cpp.s
-.PHONY : view/imgui/imgui_widgets.s
-
-# target to generate assembly for a file
-view/imgui/imgui_widgets.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imgui/imgui_widgets.cpp.s
-.PHONY : view/imgui/imgui_widgets.cpp.s
-
-view/imguiexemple.o: view/imguiexemple.cpp.o
-.PHONY : view/imguiexemple.o
-
-# target to build an object file
-view/imguiexemple.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.o
-.PHONY : view/imguiexemple.cpp.o
-
-view/imguiexemple.i: view/imguiexemple.cpp.i
-.PHONY : view/imguiexemple.i
-
-# target to preprocess a source file
-view/imguiexemple.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.i
-.PHONY : view/imguiexemple.cpp.i
-
-view/imguiexemple.s: view/imguiexemple.cpp.s
-.PHONY : view/imguiexemple.s
-
-# target to generate assembly for a file
-view/imguiexemple.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/view/imguiexemple.cpp.s
-.PHONY : view/imguiexemple.cpp.s
-
 view/interface.o: view/interface.cpp.o
 .PHONY : view/interface.o
 
@@ -504,6 +480,27 @@ help:
 	@echo "... controller/detector.o"
 	@echo "... controller/detector.i"
 	@echo "... controller/detector.s"
+	@echo "... libs/imgui/backends/imgui_impl_glfw.o"
+	@echo "... libs/imgui/backends/imgui_impl_glfw.i"
+	@echo "... libs/imgui/backends/imgui_impl_glfw.s"
+	@echo "... libs/imgui/backends/imgui_impl_opengl3.o"
+	@echo "... libs/imgui/backends/imgui_impl_opengl3.i"
+	@echo "... libs/imgui/backends/imgui_impl_opengl3.s"
+	@echo "... libs/imgui/imgui.o"
+	@echo "... libs/imgui/imgui.i"
+	@echo "... libs/imgui/imgui.s"
+	@echo "... libs/imgui/imgui_demo.o"
+	@echo "... libs/imgui/imgui_demo.i"
+	@echo "... libs/imgui/imgui_demo.s"
+	@echo "... libs/imgui/imgui_draw.o"
+	@echo "... libs/imgui/imgui_draw.i"
+	@echo "... libs/imgui/imgui_draw.s"
+	@echo "... libs/imgui/imgui_tables.o"
+	@echo "... libs/imgui/imgui_tables.i"
+	@echo "... libs/imgui/imgui_tables.s"
+	@echo "... libs/imgui/imgui_widgets.o"
+	@echo "... libs/imgui/imgui_widgets.i"
+	@echo "... libs/imgui/imgui_widgets.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
@@ -516,30 +513,6 @@ help:
 	@echo "... model/preprocessor.o"
 	@echo "... model/preprocessor.i"
 	@echo "... model/preprocessor.s"
-	@echo "... view/imgui/backends/imgui_impl_glfw.o"
-	@echo "... view/imgui/backends/imgui_impl_glfw.i"
-	@echo "... view/imgui/backends/imgui_impl_glfw.s"
-	@echo "... view/imgui/backends/imgui_impl_opengl3.o"
-	@echo "... view/imgui/backends/imgui_impl_opengl3.i"
-	@echo "... view/imgui/backends/imgui_impl_opengl3.s"
-	@echo "... view/imgui/imgui.o"
-	@echo "... view/imgui/imgui.i"
-	@echo "... view/imgui/imgui.s"
-	@echo "... view/imgui/imgui_demo.o"
-	@echo "... view/imgui/imgui_demo.i"
-	@echo "... view/imgui/imgui_demo.s"
-	@echo "... view/imgui/imgui_draw.o"
-	@echo "... view/imgui/imgui_draw.i"
-	@echo "... view/imgui/imgui_draw.s"
-	@echo "... view/imgui/imgui_tables.o"
-	@echo "... view/imgui/imgui_tables.i"
-	@echo "... view/imgui/imgui_tables.s"
-	@echo "... view/imgui/imgui_widgets.o"
-	@echo "... view/imgui/imgui_widgets.i"
-	@echo "... view/imgui/imgui_widgets.s"
-	@echo "... view/imguiexemple.o"
-	@echo "... view/imguiexemple.i"
-	@echo "... view/imguiexemple.s"
 	@echo "... view/interface.o"
 	@echo "... view/interface.i"
 	@echo "... view/interface.s"

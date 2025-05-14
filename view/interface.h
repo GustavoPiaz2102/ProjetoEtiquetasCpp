@@ -4,12 +4,14 @@
 Includes:
 */
 #include <GLFW/glfw3.h>
-#include "imgui.h"
+#include "../libs/imgui/imgui.h"
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 #include <iostream>
 #include <string>
 #include <opencv2/opencv.hpp>
+#include <ctime> // pra pegar ano atual
+#include <sstream>
 #include "../model/capture.h"
 
 // Classe que define a interface gráfica com o usuário (GUI) utilizando GLFW, OpenGL e ImGui.
@@ -93,7 +95,7 @@ public:
      * @param[in] frame Imagem capturada pela câmera (utilizando OpenCV).
      * @returns `true` se a operação foi bem-sucedida e o menu foi atualizado, `false` em caso de erro.
      */
-    bool atulizar_frame(const cv::Mat& frame);
+    bool atualizar_frame(const cv::Mat& frame);
     /**
      * @brief Atualiza o texto exibido na interface.
      * @details Este método atualiza o texto detectado na interface gráfica.
@@ -101,6 +103,9 @@ public:
      * @returns `true` se a operação foi bem-sucedida, `false` em caso de erro.
      */
     bool atualizar_texto(std::string text) ;
+
+    bool requisitar_data(std::string& selected_date);
+    std::string FormatDate(int day, int month, int year);
     };
 
 #endif // INTERFACE_H

@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui -I/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/backends -I/usr/include/leptonica -isystem /usr/include/opencv4
+CXX_INCLUDES = -I/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui -I/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends -I/usr/include/leptonica -isystem /usr/include/opencv4
 
 CXX_FLAGS = 
 

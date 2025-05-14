@@ -20,15 +20,15 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h /usr/include/GL/gl.h \
  /usr/include/GL/glext.h /usr/include/KHR/khrplatform.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imgui.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imconfig.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/../libs/imgui/imgui.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/../libs/imgui/imconfig.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/float.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
  /usr/include/strings.h /usr/include/assert.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/backends/imgui_impl_glfw.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/backends/imgui_impl_opengl3.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_glfw.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_opengl3.h \
  /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

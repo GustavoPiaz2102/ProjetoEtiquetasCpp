@@ -20,9 +20,9 @@ file(GLOB IMGUI_SOURCES
     "model/*.cpp"
     "controller/*.cpp"
     "view/*.cpp"
-    "view/imgui/*.cpp"
-    "view/imgui/backends/imgui_impl_glfw.cpp"
-    "view/imgui/backends/imgui_impl_opengl3.cpp"
+    "/imgui/*.cpp"
+    "libs/imgui/backends/imgui_impl_glfw.cpp"
+    "libs/imgui/backends/imgui_impl_opengl3.cpp"
 )
 
 # Executável
@@ -30,8 +30,8 @@ add_executable(compilated_program ${SOURCES} ${IMGUI_SOURCES})
 
 # Includes
 target_include_directories(compilated_program PRIVATE
-    view/imgui
-    view/imgui/backends
+    libs/imgui/
+    libs/imgui/backends/
     ${GLFW_INCLUDE_DIRS}
     ${OPENGL_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}

@@ -363,8 +363,8 @@ CMakeFiles/compilated_program.dir/controller/detector.cpp.o: \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/interface.h \
  /usr/local/include/GLFW/glfw3.h /usr/include/GL/gl.h \
  /usr/include/GL/glext.h /usr/include/KHR/khrplatform.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imgui.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/imconfig.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/backends/imgui_impl_glfw.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/imgui/backends/imgui_impl_opengl3.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../libs/imgui/imgui.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../libs/imgui/imconfig.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_glfw.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_opengl3.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/capture.h

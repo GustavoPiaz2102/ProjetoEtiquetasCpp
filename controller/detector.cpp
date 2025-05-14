@@ -19,6 +19,6 @@ std::string Detector::run() {
         cv::Mat processedFrame = preprocessor.preprocess(frame);
         std::string text = ocr.extractText(processedFrame);
         interface.atualizar_texto(text);
-        if(interface.atulizar_frame(frame)) text = "return";
+        if(interface.atualizar_frame(frame)) text = "return";
         return text;
     }
