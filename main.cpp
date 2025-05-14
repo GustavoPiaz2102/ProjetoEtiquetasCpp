@@ -1,8 +1,8 @@
-#include "controller/detector.h"
+#include "controller/controller.h"
 
 int main() {
-    Detector teste;
-    teste.run();
+    Controller controller;
+    controller.run();
 
     return 0;
 }

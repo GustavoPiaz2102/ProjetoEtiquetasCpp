@@ -4,15 +4,20 @@
 #include "../model/capture.h"
 #include "../model/preprocessor.h"
 #include "../model/OCR.h"
+#include <opencv2/opencv.hpp>
+#include <iostream>
+#include "../view/interface.h"
+#include <string>
 
 class Detector{
     private:
         Capture camera;
         Preprocessor preprocessor;
         OCR ocr;
+        Interface interface;
     public:
-        Detector();
+        Detector(Interface inter);
         ~Detector();
-        void run();
+        std::string run();
 };
 #endif

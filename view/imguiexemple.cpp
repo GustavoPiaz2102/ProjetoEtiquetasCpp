@@ -1,4 +1,4 @@
-#include <GLFW/glfw3.h>
+/*#include <GLFW/glfw3.h>
 #include "imgui.h"
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
@@ -102,9 +102,9 @@ public:
         if (ImGui::Button("Rodar Sistema", ImVec2(800, 400))) {
             selected_option = 0;
         }
-        /*
+
         O valor dentro do same line e do Dummy é o espaçamento entre os widgets!!
-        */
+        
         ImGui::SameLine(0,10.0f);
         if (ImGui::Button("Atualizar Data", ImVec2(800, 400))) {
             selected_option = 1;
@@ -213,4 +213,4 @@ int main() {
     }
 
     return 0;
-}
+}*/

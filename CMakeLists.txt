@@ -1,14 +1,21 @@
 cmake_minimum_required(VERSION 3.10)
-project(ImGui_Example)
+project(compilated_program)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# Encontra pacotes necessários
+# Pacotes necessários
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(OpenCV REQUIRED)
 
+# Usa pkg-config para encontrar o Tesseract
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(TESSERACT REQUIRED tesseract)
 
+# Arquivos fontes
 file(GLOB SOURCES "*.cpp")
+list(REMOVE_ITEM SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/imguiexemple.cpp") # remove exemplo se necessário
+
 file(GLOB IMGUI_SOURCES 
     "model/*.cpp"
     "controller/*.cpp"
@@ -18,19 +25,26 @@ file(GLOB IMGUI_SOURCES
     "view/imgui/backends/imgui_impl_opengl3.cpp"
 )
 
-add_executable(imgui_example ${SOURCES} ${IMGUI_SOURCES})
+# Executável
+add_executable(compilated_program ${SOURCES} ${IMGUI_SOURCES})
 
-# Configura includes
-target_include_directories(imgui_example PRIVATE
+# Includes
+target_include_directories(compilated_program PRIVATE
     view/imgui
     view/imgui/backends
     ${GLFW_INCLUDE_DIRS}
+    ${OPENGL_INCLUDE_DIRS}
+    ${OpenCV_INCLUDE_DIRS}
+    ${TESSERACT_INCLUDE_DIRS}
 )
 
-# Linka bibliotecas
-target_link_libraries(imgui_example
+# Bibliotecas
+target_link_libraries(compilated_program
     glfw
-    ${GLFW_LIBRARIES}
-    ${OPENGL_LIBRARIES}
-    # Adicionais para Linux
-    X11 pthread dl
+    OpenGL::GL
+    X11
+    pthread
+    dl
+    ${OpenCV_LIBS}
+    ${TESSERACT_LIBRARIES}
+)

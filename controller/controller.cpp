@@ -1,26 +1,31 @@
 #include "controller.h"
-#include <opencv2/opencv.hpp>
-#include <iostream>
 
-Controller::Controller() {}
+Controller::Controller() 
+    : interface(), detector(interface),selected_option(-1) // inicializa interface e passa para o detector
+{}
 
 Controller::~Controller() {}
 
 void Controller::run() {
-    switch (interface.menu())
-    {
-    case 1:
-        detector.run()
-        break;
+    interface.iniciar_janela();
+    while (!interface.shouldClose()) {
+        interface.process_events();
+        interface.begin_frame();
 
-    case 2:
-        std::map<std::string, std::string data;
-        data = interface.mudar_data(data);
+        if (selected_option == -1 || selected_option == 1) {
+            interface.menu(selected_option);
+        } 
+        else if (selected_option == 2) { // Sair
+            break;
+        }
+        else if (selected_option == 0) { // Rodar Sistema
+                if(detector.run() == "return"){
+                    selected_option = -1;
+                    continue;
+                }
+            
+            }
+        interface.end_frame();
 
-    case 3:
-        exit;
-        
-    default:
-        break;
-    }
+}
 }
