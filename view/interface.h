@@ -14,6 +14,42 @@ Includes:
 #include <sstream>
 #include "../model/capture.h"
 
+
+// ===================== CONFIGURAÇÕES DE INTERFACE =====================
+
+// Janela
+#define JANELA_LARGURA         1920
+#define JANELA_ALTURA          1080
+#define JANELA_TITULO          "Menu"
+
+// Botões principais
+#define TAMANHO_BOTAO_LARG     950
+#define TAMANHO_BOTAO_ALT      450
+#define ESPACO_ENTRE_BOTOES    30.0f
+
+// Botão menor (ex: "Voltar")
+#define TAMANHO_BOTAO_PEQUENO_LARG  200
+#define TAMANHO_BOTAO_PEQUENO_ALT   50
+
+// Estilo
+#define TAMANHO_BORDA_JANELA   0.0f
+#define ESCALA_FONTE_MENU      3.0f
+#define ESCALA_FONTE_DATA      1.5f
+
+// Estilo dos combos
+#define COMBO_LARGURA          200.0f
+#define PADDING_FRAME          ImVec2(15, 25)
+#define SPACING_ITEM           ImVec2(15, 15)
+#define SPACING_INTERNO        ImVec2(15, 15)
+
+// Cor de fundo (RGBA)
+#define FUNDO_R 0.2f
+#define FUNDO_G 0.2f
+#define FUNDO_B 0.2f
+#define FUNDO_A 1.0f
+
+
+
 // Classe que define a interface gráfica com o usuário (GUI) utilizando GLFW, OpenGL e ImGui.
 class Interface {
 private:
@@ -102,7 +138,6 @@ public:
      * @param[in] text Texto a ser exibido.
      * @returns `true` se a operação foi bem-sucedida, `false` em caso de erro.
      */
-    bool atualizar_texto(std::string text) ;
 
     bool requisitar_data(std::string& selected_date);
     std::string FormatDate(int day, int month, int year);

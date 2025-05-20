@@ -17,42 +17,42 @@ bool Interface::iniciar_janela() {
         return false;
     }
     else{
-    if (!glfwInit()) {
-        std::cerr << "Falha ao inicializar GLFW\n";
-        return false;
-    }
+        if (!glfwInit()) {
+            std::cerr << "Falha ao inicializar GLFW\n";
+            return false;
+        }
 
-    window = glfwCreateWindow(1920, 1080, "Menu", NULL, NULL);
-    if (!window) {
-        glfwTerminate();
-        std::cerr << "Falha ao criar janela GLFW\n";
-        return false;
+        window = glfwCreateWindow(JANELA_LARGURA, JANELA_ALTURA, JANELA_TITULO, NULL, NULL);
+        if (!window) {
+            glfwTerminate();
+            std::cerr << "Falha ao criar janela GLFW\n";
+            return false;
+        }
+        glfwMakeContextCurrent(window);
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGui_ImplGlfw_InitForOpenGL(window, true);
+        ImGui_ImplOpenGL3_Init("#version 130");
+        janela_iniciada = true;
+        return true;
     }
-    glfwMakeContextCurrent(window);
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 130");
-    janela_iniciada = true;
-    return true;
-}
 }
 
 bool Interface::finalizar_janela() {
     if(janela_iniciada == true) {
 
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
+        ImGui_ImplOpenGL3_Shutdown();
+        ImGui_ImplGlfw_Shutdown();
+        ImGui::DestroyContext();
 
-    if (window) {
-        glfwDestroyWindow(window);
-        glfwTerminate();
-        window = NULL;
+        if (window) {
+            glfwDestroyWindow(window);
+            glfwTerminate();
+            window = NULL;
+        }
+        janela_iniciada = false;
+        return true;
     }
-    janela_iniciada = false;
-    return true;
-}
     else {
         std::cerr << "Janela não foi iniciada!\n";
         return false;
@@ -60,72 +60,63 @@ bool Interface::finalizar_janela() {
 }
 
 void Interface::process_events() {
-
-    
     glfwPollEvents();
     should_close = glfwWindowShouldClose(window);
 }
 
 bool Interface::shouldClose() const {
-
     return should_close;
 }
 
 void Interface::begin_frame() {
-
-    
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 }
 
 void Interface::end_frame() {
-
-    
     ImGui::Render();
     int display_w, display_h;
-    
     glfwGetFramebufferSize(window, &display_w, &display_h);
     glViewport(0, 0, display_w, display_h);
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClearColor(FUNDO_R, FUNDO_G, FUNDO_B, FUNDO_A);
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     glfwSwapBuffers(window);
 }
 
 void Interface::menu(int& selected_option) {
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));  // Remove padding interno
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, TAMANHO_BORDA_JANELA);  // tamanho das bordas
     ImGui::Begin("Main", nullptr,
         ImGuiWindowFlags_NoTitleBar |
         ImGuiWindowFlags_NoResize |
         ImGuiWindowFlags_NoMove |
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoBringToFrontOnFocus |
-        ImGuiWindowFlags_NoNavFocus |
-        ImGuiWindowFlags_NoBackground);
+        ImGuiWindowFlags_NoNavFocus);
+    ImGui::SetWindowFontScale(ESCALA_FONTE_MENU);
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
-    ImGui::Text("Escolha um botão:");
-
-    if (ImGui::Button("Rodar Sistema", ImVec2(800, 400))) {
+    ImGui::Text(" Escolha um botão:");
+    if (ImGui::Button("Rodar Sistema", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
         selected_option = 0;
     }
-    
-    ImGui::SameLine(0, 10.0f);
-    if (ImGui::Button("Atualizar Data", ImVec2(800, 400))) {
+    ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
+    if (ImGui::Button("Atualizar Data", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
         selected_option = 1;
     }
 
-    ImGui::Dummy(ImVec2(0, 10.0f));
-    if (ImGui::Button("Sair", ImVec2(800, 400))) {
+    ImGui::Dummy(ImVec2(0, ESPACO_ENTRE_BOTOES));
+    if (ImGui::Button("Sair", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
         selected_option = 2;
     }
 
     ImGui::End();
+    ImGui::PopStyleVar(2); // Restaura os estilos
 }
 
-
 bool Interface::atualizar_frame(const cv::Mat& frame) {
-
     if (frame.empty()) {
         std::cerr << "Frame vazio recebido!" << std::endl;
         return false;
@@ -155,8 +146,8 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height, 
-                0, GL_RGBA, GL_UNSIGNED_BYTE, image_rgba.data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height,
+                 0, GL_RGBA, GL_UNSIGNED_BYTE, image_rgba.data);
 
     float aspect_ratio = (float)image_width / (float)image_height;
     float display_width = ImGui::GetIO().DisplaySize.x * 0.8f;
@@ -173,12 +164,12 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
         ImGuiWindowFlags_NoNavFocus);
 
     // Posição da imagem
-    ImGui::SetCursorPosX((ImGui::GetWindowWidth() - 1.1 * display_width) * 0.5f);
-    ImGui::SetCursorPosY((ImGui::GetWindowHeight() - 1.1 * display_height) * 0.5f);
+    ImGui::SetCursorPosX((ImGui::GetWindowWidth() - 1.1f * display_width) * 0.5f);
+    ImGui::SetCursorPosY((ImGui::GetWindowHeight() - 1.1f * display_height) * 0.5f);
     ImGui::Image((ImTextureID)(intptr_t)texture_id, ImVec2(display_width, display_height));
 
     bool return_to_menu = false;
-    if (ImGui::Button("Voltar ao Menu", ImVec2(200, 50))) {
+    if (ImGui::Button("Voltar ao Menu", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT))) {
         return_to_menu = true;
     }
 
@@ -186,38 +177,6 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
 
     return return_to_menu;
 }
-
-bool Interface::atualizar_texto(std::string text){ /*
-    // Define tamanho da janela (por exemplo, 800x300)
-    ImVec2 window_size(800, 300);
-    ImVec2 screen_size = ImGui::GetIO().DisplaySize;
-
-    // Centraliza a janela na tela
-    ImVec2 window_pos((screen_size.x - window_size.x) * 0.5f,
-                      (screen_size.y - window_size.y) * 0.5f);
-
-    ImGui::SetNextWindowPos(window_pos);
-    ImGui::SetNextWindowSize(window_size);
-
-    ImGui::Begin("Texto", nullptr,
-        ImGuiWindowFlags_NoTitleBar |
-        ImGuiWindowFlags_NoResize |
-        ImGuiWindowFlags_NoMove |
-        ImGuiWindowFlags_NoCollapse |
-        ImGuiWindowFlags_NoBringToFrontOnFocus |
-        ImGuiWindowFlags_NoNavFocus);
-
-    ImGui::TextWrapped("%s", text.c_str());
-
-    ImGui::End();
-    return true;
-    */
-   return true;
-}
-
-
-
-
 
 // Função auxiliar para exibir a data formatada
 std::string Interface::FormatDate(int day, int month, int year) {
@@ -269,17 +228,17 @@ bool Interface::requisitar_data(std::string& selected_date) {
     }
 
     // Aumenta o tamanho dos widgets e espaçamentos
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(15, 25)); // Mais preenchimento
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(15, 15));
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(15, 15));
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, PADDING_FRAME); // Mais preenchimento
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, SPACING_ITEM);
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, SPACING_INTERNO);
 
     // Aumentar fonte
     ImGuiIO& io = ImGui::GetIO();
     float originalFontSize = io.FontDefault ? io.FontDefault->FontSize : 20.0f;
-    ImGui::SetWindowFontScale(1.5f);  // Escala geral da fonte
+    ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);  // Escala geral da fonte
 
     // Dia
-    ImGui::SetNextItemWidth(200.0f);
+    ImGui::SetNextItemWidth(COMBO_LARGURA);
     if (ImGui::BeginCombo("Dia", std::to_string(days[selected_day]).c_str())) {
         for (int i = 0; i < 31; ++i) {
             bool is_selected = (selected_day == i);
@@ -290,10 +249,10 @@ bool Interface::requisitar_data(std::string& selected_date) {
         }
         ImGui::EndCombo();
     }
-    ImGui::SameLine(0, 20.0f);
+    ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
 
     // Mês
-    ImGui::SetNextItemWidth(200.0f);
+    ImGui::SetNextItemWidth(COMBO_LARGURA);
     if (ImGui::BeginCombo("Mês", month_names[selected_month])) {
         for (int i = 0; i < 12; ++i) {
             bool is_selected = (selected_month == i);
@@ -304,10 +263,10 @@ bool Interface::requisitar_data(std::string& selected_date) {
         }
         ImGui::EndCombo();
     }
-    ImGui::SameLine(0, 20.0f);
+    ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
 
     // Ano
-    ImGui::SetNextItemWidth(200.0f);
+    ImGui::SetNextItemWidth(COMBO_LARGURA);
     if (ImGui::BeginCombo("Ano", std::to_string(years[selected_year]).c_str())) {
         for (int i = 0; i < 100; ++i) {
             bool is_selected = (selected_year == i);
@@ -323,7 +282,7 @@ bool Interface::requisitar_data(std::string& selected_date) {
     ImGui::Spacing();
 
     bool clicked = false;
-    if (ImGui::Button("OK", ImVec2(200, 100))) {
+    if (ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2))) {
         selected_date = FormatDate(days[selected_day], selected_month, years[selected_year]);
         clicked = true; 
     }

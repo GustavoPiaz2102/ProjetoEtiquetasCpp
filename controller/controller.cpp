@@ -18,8 +18,15 @@ void Controller::run() {
         else if(selected_option == 1) { //Selecionar data
             std::string selected_date;
             if(interface.requisitar_data(selected_date)) {
-                selected_option = -1; // Retorna para o menu principal
+                selected_option = 3; //Recebe o Valor de Fab
                 std::cout<<"Data selecionada: " << selected_date << std::endl;
+            }
+        }
+        else if (selected_option == 3) { // Recebe os valores de val
+            std::string selected_date2;
+            if(interface.requisitar_data(selected_date2)) {
+                selected_option = -1; //Recebe o Valor de Fab
+                std::cout<<"Data selecionada: " << selected_date2 << std::endl;
             }
         }
         else if (selected_option == 2) { // Sair
