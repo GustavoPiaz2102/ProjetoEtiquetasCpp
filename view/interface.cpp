@@ -169,6 +169,7 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
     ImGui::Image((ImTextureID)(intptr_t)texture_id, ImVec2(display_width, display_height));
 
     bool return_to_menu = false;
+    ImGui::SetWindowFontScale(ESCALA_FONTE_MENU);
     if (ImGui::Button("Voltar ao Menu", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT))) {
         return_to_menu = true;
     }

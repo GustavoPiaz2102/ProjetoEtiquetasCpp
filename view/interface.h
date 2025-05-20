@@ -28,19 +28,19 @@ Includes:
 #define ESPACO_ENTRE_BOTOES    30.0f
 
 // Botão menor (ex: "Voltar")
-#define TAMANHO_BOTAO_PEQUENO_LARG  200
-#define TAMANHO_BOTAO_PEQUENO_ALT   50
+#define TAMANHO_BOTAO_PEQUENO_LARG  400
+#define TAMANHO_BOTAO_PEQUENO_ALT   100
 
 // Estilo
 #define TAMANHO_BORDA_JANELA   0.0f
 #define ESCALA_FONTE_MENU      3.0f
-#define ESCALA_FONTE_DATA      1.5f
+#define ESCALA_FONTE_DATA      3.0f
 
 // Estilo dos combos
-#define COMBO_LARGURA          200.0f
-#define PADDING_FRAME          ImVec2(15, 25)
-#define SPACING_ITEM           ImVec2(15, 15)
-#define SPACING_INTERNO        ImVec2(15, 15)
+#define COMBO_LARGURA          550.0f
+#define PADDING_FRAME          ImVec2(45, 80)
+#define SPACING_ITEM           ImVec2(70, 70)
+#define SPACING_INTERNO        ImVec2(25, 45)
 
 // Cor de fundo (RGBA)
 #define FUNDO_R 0.2f
