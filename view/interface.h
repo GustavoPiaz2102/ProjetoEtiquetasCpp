@@ -133,13 +133,18 @@ public:
      */
     bool atualizar_frame(const cv::Mat& frame);
     /**
-     * @brief Atualiza o texto exibido na interface.
-     * @details Este método atualiza o texto detectado na interface gráfica.
-     * @param[in] text Texto a ser exibido.
-     * @returns `true` se a operação foi bem-sucedida, `false` em caso de erro.
+     * @brief Cria os frames da Interface grafica e combos para a seleção de data do usuario.
+     * @details Este método fica em constante chamada até que tenha um true como retorno.
+     * @param[in] selected_date Passado por referencia e alterado dentro da função para a data selecionada.
+     * @returns `true` se a operação foi bem-sucedida, `false` em caso a operaçção não tenha sido concluida.
      */
-
     bool requisitar_data(std::string& selected_date);
+    /**
+     * @brief Formata a data para que fique em um padrão especifico.
+     * @details Este método concatena strings e altera a entrada de mouth para uma sigla representante.
+     * @param[in] day,mouth,year Passado para que seja formatado.
+     * @returns `std::string` com a data formatada.
+     */
     std::string FormatDate(int day, int month, int year);
     };
 
