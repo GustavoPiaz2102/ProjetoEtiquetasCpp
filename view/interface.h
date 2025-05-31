@@ -138,7 +138,14 @@ public:
      * @param[in] selected_date Passado por referencia e alterado dentro da função para a data selecionada.
      * @returns `true` se a operação foi bem-sucedida, `false` em caso a operaçção não tenha sido concluida.
      */
-    bool requisitar_data(std::string& selected_date);
+    bool requisitar_data(std::string& selected_date, int tipo);
+    /**
+     * @brief Cria os frames da Interface grafica e combos para a seleção de lote do usuario.
+     * @details Este método fica em constante chamada até que tenha um true como retorno.
+     * @param[in] selected_lt Passado por referencia e alterado dentro da função para o lote selecionado.
+     * @returns `true` se a operação foi bem-sucedida, `false` em caso a operaçção não tenha sido concluida.
+     */
+    bool requisitar_lt(std::string& selected_lt);
     /**
      * @brief Formata a data para que fique em um padrão especifico.
      * @details Este método concatena strings e altera a entrada de mouth para uma sigla representante.

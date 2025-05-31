@@ -195,8 +195,106 @@ std::string Interface::FormatDate(int day, int month, int year) {
 
     return oss.str();
 }
+bool Interface::requisitar_lt(std::string& selected_lt) {
+    // Criar a janela principal onde os combos vão aparecer
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
+    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+    ImGui::Begin("LotePage", nullptr,
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoScrollbar |
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoBringToFrontOnFocus |
+        ImGuiWindowFlags_NoNavFocus);
 
-bool Interface::requisitar_data(std::string& selected_date) {
+    static int selected_lote = 0;
+    static int selected_ano = 0;
+
+    static int lotes[101];
+    static int anos[100];
+
+    static bool initialized = false;
+    if (!initialized) {
+        for (int i = 0; i <= 100; ++i) lotes[i] = i;
+        for (int i = 0; i < 100; ++i) anos[i] = i;
+        initialized = true;
+    }
+
+    // Aumenta o tamanho dos widgets e espaçamentos
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, PADDING_FRAME);
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, SPACING_ITEM);
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, SPACING_INTERNO);
+
+    // Aumentar fonte
+    ImGuiIO& io = ImGui::GetIO();
+    float originalFontSize = io.FontDefault ? io.FontDefault->FontSize : 20.0f;
+    ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);
+
+    // Lote
+    char lote_label[4]; // 3 dígitos + \0
+    snprintf(lote_label, sizeof(lote_label), "%03d", lotes[selected_lote]);
+    ImGui::Text(" Insira o valor do lote: ");
+    ImGui::Text(" L. ");
+    ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
+    ImGui::SetNextItemWidth(COMBO_LARGURA);
+    if (ImGui::BeginCombo("/", lote_label)) {
+        for (int i = 0; i <= 100; ++i) {
+            char lote_item[4];
+            snprintf(lote_item, sizeof(lote_item), "%03d", lotes[i]);
+            bool is_selected = (selected_lote == i);
+            if (ImGui::Selectable(lote_item, is_selected))
+                selected_lote = i;
+            if (is_selected)
+                ImGui::SetItemDefaultFocus();
+        }
+        ImGui::EndCombo();
+    }
+    ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
+
+    // Ano
+    ImGui::SetNextItemWidth(COMBO_LARGURA);
+    char ano_label[3]; // 2 dígitos + \0
+    snprintf(ano_label, sizeof(ano_label), "%02d", anos[selected_ano]);
+    if (ImGui::BeginCombo(" ", ano_label)) {
+        for (int i = 0; i < 100; ++i) {
+            char ano_item[3];
+            snprintf(ano_item, sizeof(ano_item), "%02d", anos[i]);
+            bool is_selected = (selected_ano == i);
+            if (ImGui::Selectable(ano_item, is_selected))
+                selected_ano = i;
+            if (is_selected)
+                ImGui::SetItemDefaultFocus();
+        }
+        ImGui::EndCombo();
+    }
+
+    ImGui::Spacing();
+    ImGui::Spacing();
+
+    bool clicked = false;
+    if (ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2))) {
+        char result[7]; // 3 + 1 + 2 + \0 -> "006/25"
+        snprintf(result, sizeof(result), "%03d/%02d", lotes[selected_lote], anos[selected_ano]);
+        selected_lt = result;
+        clicked = true;
+    }
+
+    // Volta ao normal
+    ImGui::SetWindowFontScale(1.0f);
+    ImGui::PopStyleVar(3);
+
+    if (!selected_lt.empty()) {
+        ImGui::Spacing();
+        ImGui::Text("Lote selecionado: %s", selected_lt.c_str());
+    }
+
+    ImGui::End();
+
+    return clicked;
+}
+
+bool Interface::requisitar_data(std::string& selected_date,int tipo) {
     // Criar a janela principal onde os combos vão aparecer
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
@@ -237,6 +335,12 @@ bool Interface::requisitar_data(std::string& selected_date) {
     ImGuiIO& io = ImGui::GetIO();
     float originalFontSize = io.FontDefault ? io.FontDefault->FontSize : 20.0f;
     ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);  // Escala geral da fonte
+    if (tipo == 0){
+        ImGui::Text(" Escolha uma data de Fabricação:");
+    }
+    else if (tipo == 1){
+        ImGui::Text(" Escolha uma data de Validade:");
+    }
 
     // Dia
     ImGui::SetNextItemWidth(COMBO_LARGURA);
