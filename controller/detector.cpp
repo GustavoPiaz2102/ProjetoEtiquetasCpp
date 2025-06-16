@@ -1,10 +1,8 @@
 #include "detector.h"
 
-Detector::Detector(Interface inter)
-    : camera(0), ocr("eng") {
+Detector::Detector(Interface &inter)
+    : camera(0), ocr("eng"),interface(inter){}
     // Inicializa a câmera (ID 0) e OCR em inglês
-    interface = inter;
-}
 
 Detector::~Detector() {
     // Nada específico pra destruir manualmente, pois as classes internas já se cuidam

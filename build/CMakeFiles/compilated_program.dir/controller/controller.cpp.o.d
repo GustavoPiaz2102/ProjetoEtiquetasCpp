@@ -379,4 +379,11 @@ CMakeFiles/compilated_program.dir/controller/controller.cpp.o: \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../libs/imgui/imconfig.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_glfw.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_opengl3.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/capture.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/capture.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/validator.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/validator.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/arquiver.h \
+ /usr/include/c++/11/fstream \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
+ /usr/include/c++/11/bits/fstream.tcc

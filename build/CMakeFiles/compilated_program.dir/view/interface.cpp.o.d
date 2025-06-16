@@ -367,4 +367,5 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: \
  /usr/local/include/opencv4/opencv2/video.hpp \
  /usr/local/include/opencv4/opencv2/video/tracking.hpp \
  /usr/local/include/opencv4/opencv2/video/background_segm.hpp \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/../model/capture.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/../model/capture.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/../model/validator.h

@@ -393,6 +393,30 @@ model/OCR.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/OCR.cpp.s
 .PHONY : model/OCR.cpp.s
 
+model/arquiver.o: model/arquiver.cpp.o
+.PHONY : model/arquiver.o
+
+# target to build an object file
+model/arquiver.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/arquiver.cpp.o
+.PHONY : model/arquiver.cpp.o
+
+model/arquiver.i: model/arquiver.cpp.i
+.PHONY : model/arquiver.i
+
+# target to preprocess a source file
+model/arquiver.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/arquiver.cpp.i
+.PHONY : model/arquiver.cpp.i
+
+model/arquiver.s: model/arquiver.cpp.s
+.PHONY : model/arquiver.s
+
+# target to generate assembly for a file
+model/arquiver.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/arquiver.cpp.s
+.PHONY : model/arquiver.cpp.s
+
 model/capture.o: model/capture.cpp.o
 .PHONY : model/capture.o
 
@@ -440,6 +464,30 @@ model/preprocessor.s: model/preprocessor.cpp.s
 model/preprocessor.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/preprocessor.cpp.s
 .PHONY : model/preprocessor.cpp.s
+
+model/validator.o: model/validator.cpp.o
+.PHONY : model/validator.o
+
+# target to build an object file
+model/validator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/validator.cpp.o
+.PHONY : model/validator.cpp.o
+
+model/validator.i: model/validator.cpp.i
+.PHONY : model/validator.i
+
+# target to preprocess a source file
+model/validator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/validator.cpp.i
+.PHONY : model/validator.cpp.i
+
+model/validator.s: model/validator.cpp.s
+.PHONY : model/validator.s
+
+# target to generate assembly for a file
+model/validator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/validator.cpp.s
+.PHONY : model/validator.cpp.s
 
 view/interface.o: view/interface.cpp.o
 .PHONY : view/interface.o
@@ -507,12 +555,18 @@ help:
 	@echo "... model/OCR.o"
 	@echo "... model/OCR.i"
 	@echo "... model/OCR.s"
+	@echo "... model/arquiver.o"
+	@echo "... model/arquiver.i"
+	@echo "... model/arquiver.s"
 	@echo "... model/capture.o"
 	@echo "... model/capture.i"
 	@echo "... model/capture.s"
 	@echo "... model/preprocessor.o"
 	@echo "... model/preprocessor.i"
 	@echo "... model/preprocessor.s"
+	@echo "... model/validator.o"
+	@echo "... model/validator.i"
+	@echo "... model/validator.s"
 	@echo "... view/interface.o"
 	@echo "... view/interface.i"
 	@echo "... view/interface.s"

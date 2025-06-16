@@ -223,10 +223,24 @@ CMakeFiles/compilated_program.dir/model/OCR.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/model/OCR.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/OCR.cpp -o CMakeFiles/compilated_program.dir/model/OCR.cpp.s
 
+CMakeFiles/compilated_program.dir/model/arquiver.cpp.o: CMakeFiles/compilated_program.dir/flags.make
+CMakeFiles/compilated_program.dir/model/arquiver.cpp.o: ../model/arquiver.cpp
+CMakeFiles/compilated_program.dir/model/arquiver.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/compilated_program.dir/model/arquiver.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/model/arquiver.cpp.o -MF CMakeFiles/compilated_program.dir/model/arquiver.cpp.o.d -o CMakeFiles/compilated_program.dir/model/arquiver.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/arquiver.cpp
+
+CMakeFiles/compilated_program.dir/model/arquiver.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/model/arquiver.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/arquiver.cpp > CMakeFiles/compilated_program.dir/model/arquiver.cpp.i
+
+CMakeFiles/compilated_program.dir/model/arquiver.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/model/arquiver.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/arquiver.cpp -o CMakeFiles/compilated_program.dir/model/arquiver.cpp.s
+
 CMakeFiles/compilated_program.dir/model/capture.cpp.o: CMakeFiles/compilated_program.dir/flags.make
 CMakeFiles/compilated_program.dir/model/capture.cpp.o: ../model/capture.cpp
 CMakeFiles/compilated_program.dir/model/capture.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/compilated_program.dir/model/capture.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/compilated_program.dir/model/capture.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/model/capture.cpp.o -MF CMakeFiles/compilated_program.dir/model/capture.cpp.o.d -o CMakeFiles/compilated_program.dir/model/capture.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/capture.cpp
 
 CMakeFiles/compilated_program.dir/model/capture.cpp.i: cmake_force
@@ -240,7 +254,7 @@ CMakeFiles/compilated_program.dir/model/capture.cpp.s: cmake_force
 CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o: CMakeFiles/compilated_program.dir/flags.make
 CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o: ../model/preprocessor.cpp
 CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o -MF CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o.d -o CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/preprocessor.cpp
 
 CMakeFiles/compilated_program.dir/model/preprocessor.cpp.i: cmake_force
@@ -251,10 +265,24 @@ CMakeFiles/compilated_program.dir/model/preprocessor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/model/preprocessor.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/preprocessor.cpp -o CMakeFiles/compilated_program.dir/model/preprocessor.cpp.s
 
+CMakeFiles/compilated_program.dir/model/validator.cpp.o: CMakeFiles/compilated_program.dir/flags.make
+CMakeFiles/compilated_program.dir/model/validator.cpp.o: ../model/validator.cpp
+CMakeFiles/compilated_program.dir/model/validator.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/compilated_program.dir/model/validator.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/model/validator.cpp.o -MF CMakeFiles/compilated_program.dir/model/validator.cpp.o.d -o CMakeFiles/compilated_program.dir/model/validator.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/validator.cpp
+
+CMakeFiles/compilated_program.dir/model/validator.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/model/validator.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/validator.cpp > CMakeFiles/compilated_program.dir/model/validator.cpp.i
+
+CMakeFiles/compilated_program.dir/model/validator.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/model/validator.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/validator.cpp -o CMakeFiles/compilated_program.dir/model/validator.cpp.s
+
 CMakeFiles/compilated_program.dir/view/interface.cpp.o: CMakeFiles/compilated_program.dir/flags.make
 CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp
 CMakeFiles/compilated_program.dir/view/interface.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/compilated_program.dir/view/interface.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/compilated_program.dir/view/interface.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/view/interface.cpp.o -MF CMakeFiles/compilated_program.dir/view/interface.cpp.o.d -o CMakeFiles/compilated_program.dir/view/interface.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/interface.cpp
 
 CMakeFiles/compilated_program.dir/view/interface.cpp.i: cmake_force
@@ -278,8 +306,10 @@ compilated_program_OBJECTS = \
 "CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.o" \
 "CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.o" \
 "CMakeFiles/compilated_program.dir/model/OCR.cpp.o" \
+"CMakeFiles/compilated_program.dir/model/arquiver.cpp.o" \
 "CMakeFiles/compilated_program.dir/model/capture.cpp.o" \
 "CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o" \
+"CMakeFiles/compilated_program.dir/model/validator.cpp.o" \
 "CMakeFiles/compilated_program.dir/view/interface.cpp.o"
 
 # External object files for target compilated_program
@@ -296,8 +326,10 @@ compilated_program: CMakeFiles/compilated_program.dir/libs/imgui/imgui_draw.cpp.
 compilated_program: CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/model/OCR.cpp.o
+compilated_program: CMakeFiles/compilated_program.dir/model/arquiver.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/model/capture.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o
+compilated_program: CMakeFiles/compilated_program.dir/model/validator.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/view/interface.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/build.make
 compilated_program: /usr/local/lib/libglfw3.a
@@ -320,7 +352,7 @@ compilated_program: /usr/local/lib/libopencv_flann.so.4.9.0
 compilated_program: /usr/local/lib/libopencv_imgproc.so.4.9.0
 compilated_program: /usr/local/lib/libopencv_core.so.4.9.0
 compilated_program: CMakeFiles/compilated_program.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX executable compilated_program"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX executable compilated_program"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/compilated_program.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

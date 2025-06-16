@@ -13,7 +13,7 @@ Includes:
 #include <ctime> // pra pegar ano atual
 #include <sstream>
 #include "../model/capture.h"
-
+#include "../model/validator.h"
 
 // ===================== CONFIGURAÇÕES DE INTERFACE =====================
 
@@ -59,6 +59,8 @@ private:
     int image_height = 0;          /**< Altura da imagem exibida. */
     bool should_close = false;     /**< Flag para indicar se a janela deve ser fechada. */
     bool janela_iniciada = false; /**< Flag para indicar se a janela foi iniciada. */
+    Validator& validator; /**< Validador de dados para verificar a validade dos lotes, fabricação e validade. */
+
 
 public:
     /**
@@ -66,7 +68,7 @@ public:
      * @details Inicializa a interface gráfica, mas a janela não está criada até que `iniciar_janela` seja chamada.
      * @returns Não há retorno.
      */
-    Interface();
+    Interface(Validator& val);
 
     /**
      * @brief Destruidor da classe Interface.

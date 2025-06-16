@@ -16,7 +16,7 @@ class Detector{
         OCR ocr;
         Interface interface;
     public:
-        Detector(Interface inter);
+        Detector(Interface &inter);
         ~Detector();
         std::string run();
 };

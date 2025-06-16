@@ -378,4 +378,5 @@ CMakeFiles/compilated_program.dir/controller/detector.cpp.o: \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../libs/imgui/imconfig.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_glfw.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_opengl3.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/capture.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/capture.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/validator.h

@@ -1,15 +1,26 @@
 #include "interface.h"
 
-Interface::Interface() {
-    // Construtor da classe. Nenhuma inicialização extra é necessária.
+Interface::Interface(Validator& val) : validator(val) {
+    if (!iniciar_janela()) {
+        std::cerr << "Falha ao iniciar a janela!\n";
+    }
+    // Inicializa a textura com ID 0
+    texture_id = 0;
+    should_close = false;
 }
 
 Interface::~Interface() {
     if (texture_id != 0) {
-        glDeleteTextures(1, &texture_id);  // Libera a textura se existir
+        glDeleteTextures(1, &texture_id);
     }
-    finalizar_janela();  // Finaliza a janela GLFW
+    // Shutdown da ImGui só aqui
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    finalizar_janela();
 }
+
 
 bool Interface::iniciar_janela() {
     if(janela_iniciada == true) {
@@ -39,12 +50,7 @@ bool Interface::iniciar_janela() {
 }
 
 bool Interface::finalizar_janela() {
-    if(janela_iniciada == true) {
-
-        ImGui_ImplOpenGL3_Shutdown();
-        ImGui_ImplGlfw_Shutdown();
-        ImGui::DestroyContext();
-
+    if (janela_iniciada == true) {
         if (window) {
             glfwDestroyWindow(window);
             glfwTerminate();
@@ -52,12 +58,12 @@ bool Interface::finalizar_janela() {
         }
         janela_iniciada = false;
         return true;
-    }
-    else {
+    } else {
         std::cerr << "Janela não foi iniciada!\n";
         return false;
     }
 }
+
 
 void Interface::process_events() {
     glfwPollEvents();
@@ -103,11 +109,14 @@ void Interface::menu(int& selected_option) {
         selected_option = 0;
     }
     ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
+    std::string info = "L. "+validator.GetLT() + "\n" + "FAB.: "+validator.GetFAB() + "\n" + "VAL.: "+validator.GetVAL();
+    ImGui::Text("%s", info.c_str());
+    ImGui::Dummy(ImVec2(0, ESPACO_ENTRE_BOTOES)); // Espaço entre os botões e a data
     if (ImGui::Button("Atualizar Data", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
         selected_option = 1;
     }
 
-    ImGui::Dummy(ImVec2(0, ESPACO_ENTRE_BOTOES));
+    ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
     if (ImGui::Button("Sair", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
         selected_option = 2;
     }
@@ -212,12 +221,12 @@ bool Interface::requisitar_lt(std::string& selected_lt) {
     static int selected_ano = 0;
 
     static int lotes[101];
-    static int anos[100];
+    static int anos[50];
 
     static bool initialized = false;
     if (!initialized) {
         for (int i = 0; i <= 100; ++i) lotes[i] = i;
-        for (int i = 0; i < 100; ++i) anos[i] = i;
+        for (int i = 0; i < 50; ++i) anos[i] = 23 + i;
         initialized = true;
     }
 
@@ -257,7 +266,7 @@ bool Interface::requisitar_lt(std::string& selected_lt) {
     char ano_label[3]; // 2 dígitos + \0
     snprintf(ano_label, sizeof(ano_label), "%02d", anos[selected_ano]);
     if (ImGui::BeginCombo(" ", ano_label)) {
-        for (int i = 0; i < 100; ++i) {
+        for (int i = 0; i < 50; ++i) {
             char ano_item[3];
             snprintf(ano_item, sizeof(ano_item), "%02d", anos[i]);
             bool is_selected = (selected_ano == i);
