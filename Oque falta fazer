@@ -1,5 +1,11 @@
---Fazer um validator e aplicar logica
+--Fazer um validator e aplicar logica(aplicado)
 --Corrigir o seg fault do retorno ao main menu (solved: o frame não estava sendo destruído)
---Corrigir saida de texto do OCR na tela de detecção(opcional)
+--Corrigir saida de texto do OCR na tela de detecção(opcional)(não necessario)
 --Ainda Falta fazer as outras partes do calendario, depois que ele executar uma executar a outra, tem que fazer validação pra isso na controller.(Feito parcialmente)
---fazer um recebimento de lote, não fiz validação pra dias invalidos no calendario, tem que fazer isso também.(parcialmente feito)(lote implementado,fazer validator)
+--fazer um recebimento de lote, não fiz validação pra dias invalidos no calendario, tem que fazer isso também.(parcialmente feito)(lote implementado,fazer validator)(validator implementado)
+--fazer um arquiver (implementado)
+
+--Descobrir oque esta ocasionando o erro de saida
+--implementar sensors
+--implementar out strobo
+--Atualizar diagrama (fazer um de sequencia)
