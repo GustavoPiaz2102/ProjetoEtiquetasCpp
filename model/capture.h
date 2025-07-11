@@ -3,6 +3,9 @@
 
 #include <opencv2/opencv.hpp>
 
+#define IMG_SZE 1280
+#define IMG_SZE2 720
+
 class Capture {
 public:
     Capture(int cameraIndex = 0);

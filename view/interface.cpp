@@ -124,44 +124,64 @@ void Interface::menu(int& selected_option) {
     ImGui::End();
     ImGui::PopStyleVar(2); // Restaura os estilos
 }
-
 bool Interface::atualizar_frame(const cv::Mat& frame) {
+    static int last_width = 0;
+    static int last_height = 0;
+
     if (frame.empty()) {
         std::cerr << "Frame vazio recebido!" << std::endl;
         return false;
     }
 
     cv::Mat image_rgba;
-    if (frame.channels() == 1) {
-        cv::cvtColor(frame, image_rgba, cv::COLOR_GRAY2RGBA);
-    } else if (frame.channels() == 3) {
-        cv::cvtColor(frame, image_rgba, cv::COLOR_BGR2RGBA);
-    } else if (frame.channels() == 4) {
-        image_rgba = frame.clone();
-    } else {
-        ImGui::Text("Formato de imagem não suportado!");
-        return false;
+    switch (frame.channels()) {
+        case 1:
+            cv::cvtColor(frame, image_rgba, cv::COLOR_GRAY2RGBA);
+            break;
+        case 3:
+            cv::cvtColor(frame, image_rgba, cv::COLOR_BGR2RGBA);
+            break;
+        case 4:
+            image_rgba = frame;
+            break;
+        default:
+            std::cerr << "Formato de imagem não suportado!" << std::endl;
+            return false;
     }
 
     image_width = image_rgba.cols;
     image_height = image_rgba.rows;
 
-    if (texture_id == 0) {
+    // (Re)cria a textura só se resolução mudar ou textura ainda não foi criada
+    if (texture_id == 0 || image_width != last_width || image_height != last_height) {
+        if (texture_id != 0) {
+            glDeleteTextures(1, &texture_id);
+        }
+
         glGenTextures(1, &texture_id);
+        glBindTexture(GL_TEXTURE_2D, texture_id);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height,
+                     0, GL_RGBA, GL_UNSIGNED_BYTE, image_rgba.data);
+
+        last_width = image_width;
+        last_height = image_height;
+    } else {
+        // Atualiza só o conteúdo da textura (muito mais leve)
+        glBindTexture(GL_TEXTURE_2D, texture_id);
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image_width, image_height,
+                        GL_RGBA, GL_UNSIGNED_BYTE, image_rgba.data);
     }
 
-    glBindTexture(GL_TEXTURE_2D, texture_id);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height,
-                 0, GL_RGBA, GL_UNSIGNED_BYTE, image_rgba.data);
-
-    float aspect_ratio = (float)image_width / (float)image_height;
+    // Calcula proporção da imagem e redimensionamento
+    float aspect_ratio = static_cast<float>(image_width) / static_cast<float>(image_height);
     float display_width = ImGui::GetIO().DisplaySize.x * 0.8f;
     float display_height = display_width / aspect_ratio;
 
+    // Desenha a interface da câmera
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
     ImGui::Begin("Camera View", nullptr,
@@ -172,9 +192,8 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
         ImGuiWindowFlags_NoBringToFrontOnFocus |
         ImGuiWindowFlags_NoNavFocus);
 
-    // Posição da imagem
-    ImGui::SetCursorPosX((ImGui::GetWindowWidth() - 1.1f * display_width) * 0.5f);
-    ImGui::SetCursorPosY((ImGui::GetWindowHeight() - 1.1f * display_height) * 0.5f);
+    ImGui::SetCursorPosX((ImGui::GetWindowWidth() - display_width) * 0.5f);
+    ImGui::SetCursorPosY((ImGui::GetWindowHeight() - display_height) * 0.5f);
     ImGui::Image((ImTextureID)(intptr_t)texture_id, ImVec2(display_width, display_height));
 
     bool return_to_menu = false;
@@ -184,7 +203,6 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
     }
 
     ImGui::End();
-
     return return_to_menu;
 }
 

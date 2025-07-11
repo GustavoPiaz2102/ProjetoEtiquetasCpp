@@ -5,6 +5,9 @@ Capture::Capture(int cameraIndex) {
     cap.open(cameraIndex);
     if (!cap.isOpened()) {
         std::cerr << "Erro: Não foi possível abrir a câmera!" << std::endl;
+    } else {
+        cap.set(cv::CAP_PROP_FRAME_WIDTH, IMG_SZE);
+        cap.set(cv::CAP_PROP_FRAME_HEIGHT, IMG_SZE2);
     }
 }
 
