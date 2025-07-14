@@ -1,9 +1,9 @@
 #ifndef DETECTOR_H
 #define DETECTOR_H
 
-#include "../model/capture.h"
-#include "../model/preprocessor.h"
-#include "../model/OCR.h"
+#include "../model/heaters/capture.h"
+#include "../model/heaters/preprocessor.h"
+#include "../model/heaters/OCR.h"
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include "../view/interface.h"

@@ -1,4 +1,4 @@
-#include "OCR.h"
+#include "../heaters/OCR.h"
 #include <iostream>
 
 OCR::OCR(const std::string& language) {

@@ -6,7 +6,7 @@ CMakeFiles/compilated_program.dir/controller/controller.cpp.o
  /usr/include/stdc-predef.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/controller.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/detector.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/capture.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/capture.h
  /usr/local/include/opencv4/opencv2/opencv.hpp
  /usr/local/include/opencv4/opencv2/opencv_modules.hpp
  /usr/local/include/opencv4/opencv2/core.hpp
@@ -423,8 +423,8 @@ CMakeFiles/compilated_program.dir/controller/controller.cpp.o
  /usr/local/include/opencv4/opencv2/video.hpp
  /usr/local/include/opencv4/opencv2/video/tracking.hpp
  /usr/local/include/opencv4/opencv2/video/background_segm.hpp
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/preprocessor.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/OCR.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/preprocessor.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/OCR.h
  /usr/include/tesseract/baseapi.h
  /usr/include/tesseract/apitypes.h
  /usr/include/tesseract/publictypes.h
@@ -447,10 +447,10 @@ CMakeFiles/compilated_program.dir/controller/controller.cpp.o
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imconfig.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_glfw.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_opengl3.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/capture.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/validator.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/validator.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/arquiver.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/capture.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/validator.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/validator.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/arquiver.h
  /usr/include/c++/11/fstream
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h
@@ -460,7 +460,7 @@ CMakeFiles/compilated_program.dir/controller/detector.cpp.o
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/detector.cpp
  /usr/include/stdc-predef.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/detector.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/capture.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/capture.h
  /usr/local/include/opencv4/opencv2/opencv.hpp
  /usr/local/include/opencv4/opencv2/opencv_modules.hpp
  /usr/local/include/opencv4/opencv2/core.hpp
@@ -877,8 +877,8 @@ CMakeFiles/compilated_program.dir/controller/detector.cpp.o
  /usr/local/include/opencv4/opencv2/video.hpp
  /usr/local/include/opencv4/opencv2/video/tracking.hpp
  /usr/local/include/opencv4/opencv2/video/background_segm.hpp
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/preprocessor.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/OCR.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/preprocessor.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/OCR.h
  /usr/include/tesseract/baseapi.h
  /usr/include/tesseract/apitypes.h
  /usr/include/tesseract/publictypes.h
@@ -901,8 +901,8 @@ CMakeFiles/compilated_program.dir/controller/detector.cpp.o
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imconfig.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_glfw.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_opengl3.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/capture.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/validator.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/capture.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/validator.h
 
 CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_glfw.cpp
@@ -2051,7 +2051,7 @@ CMakeFiles/compilated_program.dir/main.cpp.o
  /usr/include/stdc-predef.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/controller.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/detector.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/capture.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/capture.h
  /usr/local/include/opencv4/opencv2/opencv.hpp
  /usr/local/include/opencv4/opencv2/opencv_modules.hpp
  /usr/local/include/opencv4/opencv2/core.hpp
@@ -2468,8 +2468,8 @@ CMakeFiles/compilated_program.dir/main.cpp.o
  /usr/local/include/opencv4/opencv2/video.hpp
  /usr/local/include/opencv4/opencv2/video/tracking.hpp
  /usr/local/include/opencv4/opencv2/video/background_segm.hpp
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/preprocessor.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/OCR.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/preprocessor.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/OCR.h
  /usr/include/tesseract/baseapi.h
  /usr/include/tesseract/apitypes.h
  /usr/include/tesseract/publictypes.h
@@ -2492,19 +2492,19 @@ CMakeFiles/compilated_program.dir/main.cpp.o
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imconfig.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_glfw.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_opengl3.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/capture.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/validator.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/validator.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/arquiver.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/capture.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/validator.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/validator.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/arquiver.h
  /usr/include/c++/11/fstream
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h
  /usr/include/c++/11/bits/fstream.tcc
 
-CMakeFiles/compilated_program.dir/model/OCR.cpp.o
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/OCR.cpp
+CMakeFiles/compilated_program.dir/model/implement/OCR.cpp.o
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/OCR.cpp
  /usr/include/stdc-predef.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/OCR.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/OCR.h
  /usr/local/include/opencv4/opencv2/opencv.hpp
  /usr/local/include/opencv4/opencv2/opencv_modules.hpp
  /usr/local/include/opencv4/opencv2/core.hpp
@@ -2935,10 +2935,10 @@ CMakeFiles/compilated_program.dir/model/OCR.cpp.o
  /usr/include/tesseract/tesscallback.h
  /usr/include/tesseract/thresholder.h
 
-CMakeFiles/compilated_program.dir/model/arquiver.cpp.o
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/arquiver.cpp
+CMakeFiles/compilated_program.dir/model/implement/arquiver.cpp.o
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/arquiver.cpp
  /usr/include/stdc-predef.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/arquiver.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/arquiver.h
  /usr/include/c++/11/string
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h
@@ -3123,10 +3123,10 @@ CMakeFiles/compilated_program.dir/model/arquiver.cpp.o
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h
  /usr/include/c++/11/bits/fstream.tcc
 
-CMakeFiles/compilated_program.dir/model/capture.cpp.o
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/capture.cpp
+CMakeFiles/compilated_program.dir/model/implement/capture.cpp.o
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/capture.cpp
  /usr/include/stdc-predef.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/capture.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/capture.h
  /usr/local/include/opencv4/opencv2/opencv.hpp
  /usr/local/include/opencv4/opencv2/opencv_modules.hpp
  /usr/local/include/opencv4/opencv2/core.hpp
@@ -3544,10 +3544,10 @@ CMakeFiles/compilated_program.dir/model/capture.cpp.o
  /usr/local/include/opencv4/opencv2/video/tracking.hpp
  /usr/local/include/opencv4/opencv2/video/background_segm.hpp
 
-CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/preprocessor.cpp
+CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.o
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/preprocessor.cpp
  /usr/include/stdc-predef.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/preprocessor.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/preprocessor.h
  /usr/local/include/opencv4/opencv2/opencv.hpp
  /usr/local/include/opencv4/opencv2/opencv_modules.hpp
  /usr/local/include/opencv4/opencv2/core.hpp
@@ -3965,10 +3965,18 @@ CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o
  /usr/local/include/opencv4/opencv2/video/tracking.hpp
  /usr/local/include/opencv4/opencv2/video/background_segm.hpp
 
-CMakeFiles/compilated_program.dir/model/validator.cpp.o
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/validator.cpp
+CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/sensors.cpp
  /usr/include/stdc-predef.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/validator.h
+
+CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.o
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/strobo.cpp
+ /usr/include/stdc-predef.h
+
+CMakeFiles/compilated_program.dir/model/implement/validator.cpp.o
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/validator.cpp
+ /usr/include/stdc-predef.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/validator.h
  /usr/include/c++/11/string
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h
@@ -4576,6 +4584,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o
  /usr/local/include/opencv4/opencv2/video.hpp
  /usr/local/include/opencv4/opencv2/video/tracking.hpp
  /usr/local/include/opencv4/opencv2/video/background_segm.hpp
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/capture.h
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/validator.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/capture.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/validator.h
 

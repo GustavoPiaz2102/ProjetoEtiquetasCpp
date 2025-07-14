@@ -17,7 +17,7 @@ file(GLOB SOURCES "*.cpp")
 list(REMOVE_ITEM SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/imguiexemple.cpp") # remove exemplo se necessário
 
 file(GLOB IMGUI_SOURCES 
-    "model/*.cpp"
+    "model/implement/*.cpp"
     "controller/*.cpp"
     "view/*.cpp"
     "libs/imgui/*.cpp"

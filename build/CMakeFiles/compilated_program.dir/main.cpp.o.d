@@ -3,7 +3,7 @@ CMakeFiles/compilated_program.dir/main.cpp.o: \
  /usr/include/stdc-predef.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/controller.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/detector.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/capture.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/heaters/capture.h \
  /usr/local/include/opencv4/opencv2/opencv.hpp \
  /usr/local/include/opencv4/opencv2/opencv_modules.hpp \
  /usr/local/include/opencv4/opencv2/core.hpp \
@@ -361,8 +361,8 @@ CMakeFiles/compilated_program.dir/main.cpp.o: \
  /usr/local/include/opencv4/opencv2/video.hpp \
  /usr/local/include/opencv4/opencv2/video/tracking.hpp \
  /usr/local/include/opencv4/opencv2/video/background_segm.hpp \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/preprocessor.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/OCR.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/heaters/preprocessor.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/heaters/OCR.h \
  /usr/include/tesseract/baseapi.h /usr/include/tesseract/apitypes.h \
  /usr/include/tesseract/publictypes.h \
  /usr/include/tesseract/pageiterator.h /usr/include/tesseract/platform.h \
@@ -379,10 +379,10 @@ CMakeFiles/compilated_program.dir/main.cpp.o: \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../libs/imgui/imconfig.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_glfw.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_opengl3.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/capture.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/validator.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/validator.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/arquiver.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/heaters/capture.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/heaters/validator.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/heaters/validator.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/heaters/arquiver.h \
  /usr/include/c++/11/fstream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \

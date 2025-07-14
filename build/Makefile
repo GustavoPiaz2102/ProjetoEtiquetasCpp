@@ -369,125 +369,173 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-model/OCR.o: model/OCR.cpp.o
-.PHONY : model/OCR.o
+model/implement/OCR.o: model/implement/OCR.cpp.o
+.PHONY : model/implement/OCR.o
 
 # target to build an object file
-model/OCR.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/OCR.cpp.o
-.PHONY : model/OCR.cpp.o
+model/implement/OCR.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/OCR.cpp.o
+.PHONY : model/implement/OCR.cpp.o
 
-model/OCR.i: model/OCR.cpp.i
-.PHONY : model/OCR.i
+model/implement/OCR.i: model/implement/OCR.cpp.i
+.PHONY : model/implement/OCR.i
 
 # target to preprocess a source file
-model/OCR.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/OCR.cpp.i
-.PHONY : model/OCR.cpp.i
+model/implement/OCR.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/OCR.cpp.i
+.PHONY : model/implement/OCR.cpp.i
 
-model/OCR.s: model/OCR.cpp.s
-.PHONY : model/OCR.s
+model/implement/OCR.s: model/implement/OCR.cpp.s
+.PHONY : model/implement/OCR.s
 
 # target to generate assembly for a file
-model/OCR.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/OCR.cpp.s
-.PHONY : model/OCR.cpp.s
+model/implement/OCR.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/OCR.cpp.s
+.PHONY : model/implement/OCR.cpp.s
 
-model/arquiver.o: model/arquiver.cpp.o
-.PHONY : model/arquiver.o
+model/implement/arquiver.o: model/implement/arquiver.cpp.o
+.PHONY : model/implement/arquiver.o
 
 # target to build an object file
-model/arquiver.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/arquiver.cpp.o
-.PHONY : model/arquiver.cpp.o
+model/implement/arquiver.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/arquiver.cpp.o
+.PHONY : model/implement/arquiver.cpp.o
 
-model/arquiver.i: model/arquiver.cpp.i
-.PHONY : model/arquiver.i
+model/implement/arquiver.i: model/implement/arquiver.cpp.i
+.PHONY : model/implement/arquiver.i
 
 # target to preprocess a source file
-model/arquiver.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/arquiver.cpp.i
-.PHONY : model/arquiver.cpp.i
+model/implement/arquiver.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/arquiver.cpp.i
+.PHONY : model/implement/arquiver.cpp.i
 
-model/arquiver.s: model/arquiver.cpp.s
-.PHONY : model/arquiver.s
+model/implement/arquiver.s: model/implement/arquiver.cpp.s
+.PHONY : model/implement/arquiver.s
 
 # target to generate assembly for a file
-model/arquiver.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/arquiver.cpp.s
-.PHONY : model/arquiver.cpp.s
+model/implement/arquiver.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/arquiver.cpp.s
+.PHONY : model/implement/arquiver.cpp.s
 
-model/capture.o: model/capture.cpp.o
-.PHONY : model/capture.o
+model/implement/capture.o: model/implement/capture.cpp.o
+.PHONY : model/implement/capture.o
 
 # target to build an object file
-model/capture.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/capture.cpp.o
-.PHONY : model/capture.cpp.o
+model/implement/capture.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/capture.cpp.o
+.PHONY : model/implement/capture.cpp.o
 
-model/capture.i: model/capture.cpp.i
-.PHONY : model/capture.i
+model/implement/capture.i: model/implement/capture.cpp.i
+.PHONY : model/implement/capture.i
 
 # target to preprocess a source file
-model/capture.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/capture.cpp.i
-.PHONY : model/capture.cpp.i
+model/implement/capture.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/capture.cpp.i
+.PHONY : model/implement/capture.cpp.i
 
-model/capture.s: model/capture.cpp.s
-.PHONY : model/capture.s
+model/implement/capture.s: model/implement/capture.cpp.s
+.PHONY : model/implement/capture.s
 
 # target to generate assembly for a file
-model/capture.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/capture.cpp.s
-.PHONY : model/capture.cpp.s
+model/implement/capture.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/capture.cpp.s
+.PHONY : model/implement/capture.cpp.s
 
-model/preprocessor.o: model/preprocessor.cpp.o
-.PHONY : model/preprocessor.o
+model/implement/preprocessor.o: model/implement/preprocessor.cpp.o
+.PHONY : model/implement/preprocessor.o
 
 # target to build an object file
-model/preprocessor.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o
-.PHONY : model/preprocessor.cpp.o
+model/implement/preprocessor.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.o
+.PHONY : model/implement/preprocessor.cpp.o
 
-model/preprocessor.i: model/preprocessor.cpp.i
-.PHONY : model/preprocessor.i
+model/implement/preprocessor.i: model/implement/preprocessor.cpp.i
+.PHONY : model/implement/preprocessor.i
 
 # target to preprocess a source file
-model/preprocessor.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/preprocessor.cpp.i
-.PHONY : model/preprocessor.cpp.i
+model/implement/preprocessor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.i
+.PHONY : model/implement/preprocessor.cpp.i
 
-model/preprocessor.s: model/preprocessor.cpp.s
-.PHONY : model/preprocessor.s
+model/implement/preprocessor.s: model/implement/preprocessor.cpp.s
+.PHONY : model/implement/preprocessor.s
 
 # target to generate assembly for a file
-model/preprocessor.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/preprocessor.cpp.s
-.PHONY : model/preprocessor.cpp.s
+model/implement/preprocessor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.s
+.PHONY : model/implement/preprocessor.cpp.s
 
-model/validator.o: model/validator.cpp.o
-.PHONY : model/validator.o
+model/implement/sensors.o: model/implement/sensors.cpp.o
+.PHONY : model/implement/sensors.o
 
 # target to build an object file
-model/validator.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/validator.cpp.o
-.PHONY : model/validator.cpp.o
+model/implement/sensors.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o
+.PHONY : model/implement/sensors.cpp.o
 
-model/validator.i: model/validator.cpp.i
-.PHONY : model/validator.i
+model/implement/sensors.i: model/implement/sensors.cpp.i
+.PHONY : model/implement/sensors.i
 
 # target to preprocess a source file
-model/validator.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/validator.cpp.i
-.PHONY : model/validator.cpp.i
+model/implement/sensors.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.i
+.PHONY : model/implement/sensors.cpp.i
 
-model/validator.s: model/validator.cpp.s
-.PHONY : model/validator.s
+model/implement/sensors.s: model/implement/sensors.cpp.s
+.PHONY : model/implement/sensors.s
 
 # target to generate assembly for a file
-model/validator.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/validator.cpp.s
-.PHONY : model/validator.cpp.s
+model/implement/sensors.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.s
+.PHONY : model/implement/sensors.cpp.s
+
+model/implement/strobo.o: model/implement/strobo.cpp.o
+.PHONY : model/implement/strobo.o
+
+# target to build an object file
+model/implement/strobo.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.o
+.PHONY : model/implement/strobo.cpp.o
+
+model/implement/strobo.i: model/implement/strobo.cpp.i
+.PHONY : model/implement/strobo.i
+
+# target to preprocess a source file
+model/implement/strobo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.i
+.PHONY : model/implement/strobo.cpp.i
+
+model/implement/strobo.s: model/implement/strobo.cpp.s
+.PHONY : model/implement/strobo.s
+
+# target to generate assembly for a file
+model/implement/strobo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.s
+.PHONY : model/implement/strobo.cpp.s
+
+model/implement/validator.o: model/implement/validator.cpp.o
+.PHONY : model/implement/validator.o
+
+# target to build an object file
+model/implement/validator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/validator.cpp.o
+.PHONY : model/implement/validator.cpp.o
+
+model/implement/validator.i: model/implement/validator.cpp.i
+.PHONY : model/implement/validator.i
+
+# target to preprocess a source file
+model/implement/validator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/validator.cpp.i
+.PHONY : model/implement/validator.cpp.i
+
+model/implement/validator.s: model/implement/validator.cpp.s
+.PHONY : model/implement/validator.s
+
+# target to generate assembly for a file
+model/implement/validator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/validator.cpp.s
+.PHONY : model/implement/validator.cpp.s
 
 view/interface.o: view/interface.cpp.o
 .PHONY : view/interface.o
@@ -552,21 +600,27 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... model/OCR.o"
-	@echo "... model/OCR.i"
-	@echo "... model/OCR.s"
-	@echo "... model/arquiver.o"
-	@echo "... model/arquiver.i"
-	@echo "... model/arquiver.s"
-	@echo "... model/capture.o"
-	@echo "... model/capture.i"
-	@echo "... model/capture.s"
-	@echo "... model/preprocessor.o"
-	@echo "... model/preprocessor.i"
-	@echo "... model/preprocessor.s"
-	@echo "... model/validator.o"
-	@echo "... model/validator.i"
-	@echo "... model/validator.s"
+	@echo "... model/implement/OCR.o"
+	@echo "... model/implement/OCR.i"
+	@echo "... model/implement/OCR.s"
+	@echo "... model/implement/arquiver.o"
+	@echo "... model/implement/arquiver.i"
+	@echo "... model/implement/arquiver.s"
+	@echo "... model/implement/capture.o"
+	@echo "... model/implement/capture.i"
+	@echo "... model/implement/capture.s"
+	@echo "... model/implement/preprocessor.o"
+	@echo "... model/implement/preprocessor.i"
+	@echo "... model/implement/preprocessor.s"
+	@echo "... model/implement/sensors.o"
+	@echo "... model/implement/sensors.i"
+	@echo "... model/implement/sensors.s"
+	@echo "... model/implement/strobo.o"
+	@echo "... model/implement/strobo.i"
+	@echo "... model/implement/strobo.s"
+	@echo "... model/implement/validator.o"
+	@echo "... model/implement/validator.i"
+	@echo "... model/implement/validator.s"
 	@echo "... view/interface.o"
 	@echo "... view/interface.i"
 	@echo "... view/interface.s"

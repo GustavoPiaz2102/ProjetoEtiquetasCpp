@@ -1,5 +1,14 @@
 #include "interface.h"
 
+void Interface::beginFullscreenWindow(const char* name) {
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
+    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+    ImGui::Begin(name, nullptr,
+        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus);
+}
+
 Interface::Interface(Validator& val) : validator(val) {
     if (!iniciar_janela()) {
         std::cerr << "Falha ao iniciar a janela!\n";
@@ -23,7 +32,7 @@ Interface::~Interface() {
 
 
 bool Interface::iniciar_janela() {
-    if(janela_iniciada == true) {
+    if(janela_iniciada) {
         std::cerr << "Janela já foi iniciada!\n";
         return false;
     }
@@ -50,11 +59,12 @@ bool Interface::iniciar_janela() {
 }
 
 bool Interface::finalizar_janela() {
-    if (janela_iniciada == true) {
+    if (janela_iniciada) {
         if (window) {
             glfwDestroyWindow(window);
             glfwTerminate();
             window = NULL;
+
         }
         janela_iniciada = false;
         return true;
@@ -94,16 +104,8 @@ void Interface::end_frame() {
 void Interface::menu(int& selected_option) {
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));  // Remove padding interno
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, TAMANHO_BORDA_JANELA);  // tamanho das bordas
-    ImGui::Begin("Main", nullptr,
-        ImGuiWindowFlags_NoTitleBar |
-        ImGuiWindowFlags_NoResize |
-        ImGuiWindowFlags_NoMove |
-        ImGuiWindowFlags_NoCollapse |
-        ImGuiWindowFlags_NoBringToFrontOnFocus |
-        ImGuiWindowFlags_NoNavFocus);
-    ImGui::SetWindowFontScale(ESCALA_FONTE_MENU);
-    ImGui::SetNextWindowPos(ImVec2(0, 0));
-    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+    beginFullscreenWindow("Main");
+    ImGui::SetWindowFontScale(ESCALA_FONTE_MENU);  // Ajusta o tamanho da fonte
     ImGui::Text(" Escolha um botão:");
     if (ImGui::Button("Rodar Sistema", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
         selected_option = 0;
@@ -125,9 +127,6 @@ void Interface::menu(int& selected_option) {
     ImGui::PopStyleVar(2); // Restaura os estilos
 }
 bool Interface::atualizar_frame(const cv::Mat& frame) {
-    static int last_width = 0;
-    static int last_height = 0;
-
     if (frame.empty()) {
         std::cerr << "Frame vazio recebido!" << std::endl;
         return false;
@@ -149,10 +148,15 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
             return false;
     }
 
+    // Redimensiona a imagem para uma escala menor (ex: 50%)
+    cv::Mat resized_rgba;
+    cv::resize(image_rgba, resized_rgba, cv::Size(), 0.5, 0.5);  // 50% da largura e altura
+    image_rgba = resized_rgba;
+
     image_width = image_rgba.cols;
     image_height = image_rgba.rows;
 
-    // (Re)cria a textura só se resolução mudar ou textura ainda não foi criada
+    // (Re)cria a textura se necessário
     if (texture_id == 0 || image_width != last_width || image_height != last_height) {
         if (texture_id != 0) {
             glDeleteTextures(1, &texture_id);
@@ -170,13 +174,13 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
         last_width = image_width;
         last_height = image_height;
     } else {
-        // Atualiza só o conteúdo da textura (muito mais leve)
+        // Atualiza a textura existente
         glBindTexture(GL_TEXTURE_2D, texture_id);
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image_width, image_height,
                         GL_RGBA, GL_UNSIGNED_BYTE, image_rgba.data);
     }
 
-    // Calcula proporção da imagem e redimensionamento
+    // Calcula proporção da imagem para manter aspecto
     float aspect_ratio = static_cast<float>(image_width) / static_cast<float>(image_height);
     float display_width = ImGui::GetIO().DisplaySize.x * 0.8f;
     float display_height = display_width / aspect_ratio;
@@ -184,14 +188,7 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
     // Desenha a interface da câmera
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
-    ImGui::Begin("Camera View", nullptr,
-        ImGuiWindowFlags_NoTitleBar |
-        ImGuiWindowFlags_NoResize |
-        ImGuiWindowFlags_NoMove |
-        ImGuiWindowFlags_NoCollapse |
-        ImGuiWindowFlags_NoBringToFrontOnFocus |
-        ImGuiWindowFlags_NoNavFocus);
-
+    beginFullscreenWindow("Camera View");
     ImGui::SetCursorPosX((ImGui::GetWindowWidth() - display_width) * 0.5f);
     ImGui::SetCursorPosY((ImGui::GetWindowHeight() - display_height) * 0.5f);
     ImGui::Image((ImTextureID)(intptr_t)texture_id, ImVec2(display_width, display_height));
@@ -226,15 +223,7 @@ bool Interface::requisitar_lt(std::string& selected_lt) {
     // Criar a janela principal onde os combos vão aparecer
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
-    ImGui::Begin("LotePage", nullptr,
-        ImGuiWindowFlags_NoTitleBar |
-        ImGuiWindowFlags_NoResize |
-        ImGuiWindowFlags_NoMove |
-        ImGuiWindowFlags_NoScrollbar |
-        ImGuiWindowFlags_NoCollapse |
-        ImGuiWindowFlags_NoBringToFrontOnFocus |
-        ImGuiWindowFlags_NoNavFocus);
-
+    beginFullscreenWindow("LotePage");
     static int selected_lote = 0;
     static int selected_ano = 0;
 
@@ -325,14 +314,7 @@ bool Interface::requisitar_data(std::string& selected_date,int tipo) {
     // Criar a janela principal onde os combos vão aparecer
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
-    ImGui::Begin("MainPage", nullptr,
-        ImGuiWindowFlags_NoTitleBar |
-        ImGuiWindowFlags_NoResize |
-        ImGuiWindowFlags_NoMove |
-        ImGuiWindowFlags_NoScrollbar |
-        ImGuiWindowFlags_NoCollapse |
-        ImGuiWindowFlags_NoBringToFrontOnFocus |
-        ImGuiWindowFlags_NoNavFocus);
+    beginFullscreenWindow("MainPage");
 
     static int selected_day = 0;
     static int selected_month = 0;

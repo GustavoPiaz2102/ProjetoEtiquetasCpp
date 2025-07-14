@@ -18,11 +18,13 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui_tables.cpp" "CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.o" "gcc" "CMakeFiles/compilated_program.dir/libs/imgui/imgui_tables.cpp.o.d"
   "/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui_widgets.cpp" "CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.o" "gcc" "CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.o.d"
   "/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/main.cpp" "CMakeFiles/compilated_program.dir/main.cpp.o" "gcc" "CMakeFiles/compilated_program.dir/main.cpp.o.d"
-  "/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/OCR.cpp" "CMakeFiles/compilated_program.dir/model/OCR.cpp.o" "gcc" "CMakeFiles/compilated_program.dir/model/OCR.cpp.o.d"
-  "/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/arquiver.cpp" "CMakeFiles/compilated_program.dir/model/arquiver.cpp.o" "gcc" "CMakeFiles/compilated_program.dir/model/arquiver.cpp.o.d"
-  "/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/capture.cpp" "CMakeFiles/compilated_program.dir/model/capture.cpp.o" "gcc" "CMakeFiles/compilated_program.dir/model/capture.cpp.o.d"
-  "/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/preprocessor.cpp" "CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o" "gcc" "CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o.d"
-  "/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/validator.cpp" "CMakeFiles/compilated_program.dir/model/validator.cpp.o" "gcc" "CMakeFiles/compilated_program.dir/model/validator.cpp.o.d"
+  "/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/OCR.cpp" "CMakeFiles/compilated_program.dir/model/implement/OCR.cpp.o" "gcc" "CMakeFiles/compilated_program.dir/model/implement/OCR.cpp.o.d"
+  "/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/arquiver.cpp" "CMakeFiles/compilated_program.dir/model/implement/arquiver.cpp.o" "gcc" "CMakeFiles/compilated_program.dir/model/implement/arquiver.cpp.o.d"
+  "/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/capture.cpp" "CMakeFiles/compilated_program.dir/model/implement/capture.cpp.o" "gcc" "CMakeFiles/compilated_program.dir/model/implement/capture.cpp.o.d"
+  "/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/preprocessor.cpp" "CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.o" "gcc" "CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.o.d"
+  "/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/sensors.cpp" "CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o" "gcc" "CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o.d"
+  "/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/strobo.cpp" "CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.o" "gcc" "CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.o.d"
+  "/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/validator.cpp" "CMakeFiles/compilated_program.dir/model/implement/validator.cpp.o" "gcc" "CMakeFiles/compilated_program.dir/model/implement/validator.cpp.o.d"
   "/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/interface.cpp" "CMakeFiles/compilated_program.dir/view/interface.cpp.o" "gcc" "CMakeFiles/compilated_program.dir/view/interface.cpp.o.d"
   )
 

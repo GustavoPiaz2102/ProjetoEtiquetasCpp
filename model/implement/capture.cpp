@@ -1,4 +1,4 @@
-#include "capture.h"
+#include "../heaters/capture.h"
 #include <iostream>
 
 Capture::Capture(int cameraIndex) {

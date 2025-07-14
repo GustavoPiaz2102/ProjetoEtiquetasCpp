@@ -5,7 +5,7 @@ CMakeFiles/compilated_program.dir/controller/controller.cpp.o: ../controller/con
   /usr/include/stdc-predef.h \
   ../controller/controller.h \
   ../controller/detector.h \
-  ../model/capture.h \
+  ../model/heaters/capture.h \
   /usr/local/include/opencv4/opencv2/opencv.hpp \
   /usr/local/include/opencv4/opencv2/opencv_modules.hpp \
   /usr/local/include/opencv4/opencv2/core.hpp \
@@ -422,8 +422,8 @@ CMakeFiles/compilated_program.dir/controller/controller.cpp.o: ../controller/con
   /usr/local/include/opencv4/opencv2/video.hpp \
   /usr/local/include/opencv4/opencv2/video/tracking.hpp \
   /usr/local/include/opencv4/opencv2/video/background_segm.hpp \
-  ../model/preprocessor.h \
-  ../model/OCR.h \
+  ../model/heaters/preprocessor.h \
+  ../model/heaters/OCR.h \
   /usr/include/tesseract/baseapi.h \
   /usr/include/tesseract/apitypes.h \
   /usr/include/tesseract/publictypes.h \
@@ -446,10 +446,10 @@ CMakeFiles/compilated_program.dir/controller/controller.cpp.o: ../controller/con
   ../libs/imgui/imconfig.h \
   ../libs/imgui/backends/imgui_impl_glfw.h \
   ../libs/imgui/backends/imgui_impl_opengl3.h \
-  ../model/capture.h \
-  ../model/validator.h \
-  ../model/validator.h \
-  ../model/arquiver.h \
+  ../model/heaters/capture.h \
+  ../model/heaters/validator.h \
+  ../model/heaters/validator.h \
+  ../model/heaters/arquiver.h \
   /usr/include/c++/11/fstream \
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
@@ -458,7 +458,7 @@ CMakeFiles/compilated_program.dir/controller/controller.cpp.o: ../controller/con
 CMakeFiles/compilated_program.dir/controller/detector.cpp.o: ../controller/detector.cpp \
   /usr/include/stdc-predef.h \
   ../controller/detector.h \
-  ../model/capture.h \
+  ../model/heaters/capture.h \
   /usr/local/include/opencv4/opencv2/opencv.hpp \
   /usr/local/include/opencv4/opencv2/opencv_modules.hpp \
   /usr/local/include/opencv4/opencv2/core.hpp \
@@ -875,8 +875,8 @@ CMakeFiles/compilated_program.dir/controller/detector.cpp.o: ../controller/detec
   /usr/local/include/opencv4/opencv2/video.hpp \
   /usr/local/include/opencv4/opencv2/video/tracking.hpp \
   /usr/local/include/opencv4/opencv2/video/background_segm.hpp \
-  ../model/preprocessor.h \
-  ../model/OCR.h \
+  ../model/heaters/preprocessor.h \
+  ../model/heaters/OCR.h \
   /usr/include/tesseract/baseapi.h \
   /usr/include/tesseract/apitypes.h \
   /usr/include/tesseract/publictypes.h \
@@ -899,8 +899,8 @@ CMakeFiles/compilated_program.dir/controller/detector.cpp.o: ../controller/detec
   ../libs/imgui/imconfig.h \
   ../libs/imgui/backends/imgui_impl_glfw.h \
   ../libs/imgui/backends/imgui_impl_opengl3.h \
-  ../model/capture.h \
-  ../model/validator.h
+  ../model/heaters/capture.h \
+  ../model/heaters/validator.h
 
 CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o: ../libs/imgui/backends/imgui_impl_glfw.cpp \
   /usr/include/stdc-predef.h \
@@ -2041,7 +2041,7 @@ CMakeFiles/compilated_program.dir/main.cpp.o: ../main.cpp \
   /usr/include/stdc-predef.h \
   ../controller/controller.h \
   ../controller/detector.h \
-  ../model/capture.h \
+  ../model/heaters/capture.h \
   /usr/local/include/opencv4/opencv2/opencv.hpp \
   /usr/local/include/opencv4/opencv2/opencv_modules.hpp \
   /usr/local/include/opencv4/opencv2/core.hpp \
@@ -2458,8 +2458,8 @@ CMakeFiles/compilated_program.dir/main.cpp.o: ../main.cpp \
   /usr/local/include/opencv4/opencv2/video.hpp \
   /usr/local/include/opencv4/opencv2/video/tracking.hpp \
   /usr/local/include/opencv4/opencv2/video/background_segm.hpp \
-  ../model/preprocessor.h \
-  ../model/OCR.h \
+  ../model/heaters/preprocessor.h \
+  ../model/heaters/OCR.h \
   /usr/include/tesseract/baseapi.h \
   /usr/include/tesseract/apitypes.h \
   /usr/include/tesseract/publictypes.h \
@@ -2482,18 +2482,18 @@ CMakeFiles/compilated_program.dir/main.cpp.o: ../main.cpp \
   ../libs/imgui/imconfig.h \
   ../libs/imgui/backends/imgui_impl_glfw.h \
   ../libs/imgui/backends/imgui_impl_opengl3.h \
-  ../model/capture.h \
-  ../model/validator.h \
-  ../model/validator.h \
-  ../model/arquiver.h \
+  ../model/heaters/capture.h \
+  ../model/heaters/validator.h \
+  ../model/heaters/validator.h \
+  ../model/heaters/arquiver.h \
   /usr/include/c++/11/fstream \
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
   /usr/include/c++/11/bits/fstream.tcc
 
-CMakeFiles/compilated_program.dir/model/OCR.cpp.o: ../model/OCR.cpp \
+CMakeFiles/compilated_program.dir/model/implement/OCR.cpp.o: ../model/implement/OCR.cpp \
   /usr/include/stdc-predef.h \
-  ../model/OCR.h \
+  ../model/heaters/OCR.h \
   /usr/local/include/opencv4/opencv2/opencv.hpp \
   /usr/local/include/opencv4/opencv2/opencv_modules.hpp \
   /usr/local/include/opencv4/opencv2/core.hpp \
@@ -2924,9 +2924,9 @@ CMakeFiles/compilated_program.dir/model/OCR.cpp.o: ../model/OCR.cpp \
   /usr/include/tesseract/tesscallback.h \
   /usr/include/tesseract/thresholder.h
 
-CMakeFiles/compilated_program.dir/model/arquiver.cpp.o: ../model/arquiver.cpp \
+CMakeFiles/compilated_program.dir/model/implement/arquiver.cpp.o: ../model/implement/arquiver.cpp \
   /usr/include/stdc-predef.h \
-  ../model/arquiver.h \
+  ../model/heaters/arquiver.h \
   /usr/include/c++/11/string \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -3111,9 +3111,9 @@ CMakeFiles/compilated_program.dir/model/arquiver.cpp.o: ../model/arquiver.cpp \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
   /usr/include/c++/11/bits/fstream.tcc
 
-CMakeFiles/compilated_program.dir/model/capture.cpp.o: ../model/capture.cpp \
+CMakeFiles/compilated_program.dir/model/implement/capture.cpp.o: ../model/implement/capture.cpp \
   /usr/include/stdc-predef.h \
-  ../model/capture.h \
+  ../model/heaters/capture.h \
   /usr/local/include/opencv4/opencv2/opencv.hpp \
   /usr/local/include/opencv4/opencv2/opencv_modules.hpp \
   /usr/local/include/opencv4/opencv2/core.hpp \
@@ -3531,9 +3531,9 @@ CMakeFiles/compilated_program.dir/model/capture.cpp.o: ../model/capture.cpp \
   /usr/local/include/opencv4/opencv2/video/tracking.hpp \
   /usr/local/include/opencv4/opencv2/video/background_segm.hpp
 
-CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o: ../model/preprocessor.cpp \
+CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.o: ../model/implement/preprocessor.cpp \
   /usr/include/stdc-predef.h \
-  ../model/preprocessor.h \
+  ../model/heaters/preprocessor.h \
   /usr/local/include/opencv4/opencv2/opencv.hpp \
   /usr/local/include/opencv4/opencv2/opencv_modules.hpp \
   /usr/local/include/opencv4/opencv2/core.hpp \
@@ -3951,9 +3951,15 @@ CMakeFiles/compilated_program.dir/model/preprocessor.cpp.o: ../model/preprocesso
   /usr/local/include/opencv4/opencv2/video/tracking.hpp \
   /usr/local/include/opencv4/opencv2/video/background_segm.hpp
 
-CMakeFiles/compilated_program.dir/model/validator.cpp.o: ../model/validator.cpp \
+CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o: ../model/implement/sensors.cpp \
+  /usr/include/stdc-predef.h
+
+CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.o: ../model/implement/strobo.cpp \
+  /usr/include/stdc-predef.h
+
+CMakeFiles/compilated_program.dir/model/implement/validator.cpp.o: ../model/implement/validator.cpp \
   /usr/include/stdc-predef.h \
-  ../model/validator.h \
+  ../model/heaters/validator.h \
   /usr/include/c++/11/string \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -4560,15 +4566,13 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
   /usr/local/include/opencv4/opencv2/video.hpp \
   /usr/local/include/opencv4/opencv2/video/tracking.hpp \
   /usr/local/include/opencv4/opencv2/video/background_segm.hpp \
-  ../model/capture.h \
-  ../model/validator.h
+  ../model/heaters/capture.h \
+  ../model/heaters/validator.h
 
 
-../model/capture.cpp:
+../model/implement/strobo.cpp:
 
-../model/arquiver.cpp:
-
-../model/OCR.cpp:
+../model/implement/preprocessor.cpp:
 
 ../libs/imgui/imstb_truetype.h:
 
@@ -4664,6 +4668,8 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/include/c++/11/string_view:
 
+../model/implement/validator.cpp:
+
 /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
 
 /usr/include/c++/11/cstring:
@@ -4693,6 +4699,8 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 /usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h:
 
 /usr/include/c++/11/bits/stl_bvector.h:
+
+../model/implement/arquiver.cpp:
 
 /usr/include/x86_64-linux-gnu/bits/types/clockid_t.h:
 
@@ -4814,8 +4822,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/fxsrintrin.h:
 
-../model/preprocessor.cpp:
-
 /usr/include/c++/11/bits/locale_facets.tcc:
 
 /usr/include/c++/11/bits/memoryfwd.h:
@@ -4882,8 +4888,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/atomic_word.h:
 
-../model/arquiver.h:
-
 /usr/lib/gcc/x86_64-linux-gnu/11/include/emmintrin.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/error_t.h:
@@ -4923,8 +4927,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 /usr/include/c++/11/bits/cxxabi_init_exception.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/avx512bwintrin.h:
-
-../model/validator.cpp:
 
 /usr/include/c++/11/bits/uniform_int_dist.h:
 
@@ -4972,10 +4974,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/include/c++/11/bits/std_abs.h:
 
-../model/capture.h:
-
-/usr/include/limits.h:
-
 /usr/include/pthread.h:
 
 /usr/include/endian.h:
@@ -5009,8 +5007,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h:
 
 /usr/include/c++/11/bits/stl_construct.h:
-
-/usr/include/x86_64-linux-gnu/bits/byteswap.h:
 
 /usr/include/x86_64-linux-gnu/bits/long-double.h:
 
@@ -5098,6 +5094,8 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/local/include/opencv4/opencv2/flann/lsh_table.h:
 
+../model/implement/capture.cpp:
+
 /usr/include/x86_64-linux-gnu/bits/mathcalls.h:
 
 /usr/include/x86_64-linux-gnu/bits/endian.h:
@@ -5140,6 +5138,8 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
 
+/usr/include/limits.h:
+
 /usr/include/c++/11/bits/invoke.h:
 
 /usr/include/c++/11/ext/new_allocator.h:
@@ -5147,6 +5147,8 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 /usr/include/strings.h:
 
 /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
+
+../model/implement/OCR.cpp:
 
 /usr/include/alloca.h:
 
@@ -5207,6 +5209,8 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 /usr/lib/gcc/x86_64-linux-gnu/11/include/limits.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/xsaveoptintrin.h:
+
+../model/heaters/capture.h:
 
 /usr/local/include/opencv4/opencv2/core/matx.hpp:
 
@@ -5542,8 +5546,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/include/c++/11/bits/deque.tcc:
 
-/usr/local/include/opencv4/opencv2/stitching/detail/camera.hpp:
-
 /usr/local/include/opencv4/opencv2/stitching/detail/seam_finders.hpp:
 
 /usr/local/include/opencv4/opencv2/stitching/detail/blenders.hpp:
@@ -5554,9 +5556,11 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/pconfigintrin.h:
 
-../model/preprocessor.h:
+../model/heaters/preprocessor.h:
 
-../model/OCR.h:
+/usr/include/x86_64-linux-gnu/bits/byteswap.h:
+
+../model/heaters/OCR.h:
 
 /usr/include/tesseract/publictypes.h:
 
@@ -5602,11 +5606,13 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/xsaveintrin.h:
 
-../model/validator.h:
+/usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h:
+
+/usr/local/include/opencv4/opencv2/stitching/detail/camera.hpp:
+
+../model/heaters/arquiver.h:
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h:
-
-/usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h:
 
 /usr/include/c++/11/bits/fstream.tcc:
 
@@ -5646,6 +5652,8 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/bmi2intrin.h:
 
+../model/implement/sensors.cpp:
+
 /usr/lib/gcc/x86_64-linux-gnu/11/include/clzerointrin.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
@@ -5663,6 +5671,8 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 /usr/lib/gcc/x86_64-linux-gnu/11/include/rdseedintrin.h:
 
 /usr/local/include/opencv4/opencv2/video.hpp:
+
+../model/heaters/validator.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/rtmintrin.h:
 

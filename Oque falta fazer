@@ -4,8 +4,8 @@
 --Ainda Falta fazer as outras partes do calendario, depois que ele executar uma executar a outra, tem que fazer validação pra isso na controller.(Feito parcialmente)
 --fazer um recebimento de lote, não fiz validação pra dias invalidos no calendario, tem que fazer isso também.(parcialmente feito)(lote implementado,fazer validator)(validator implementado)
 --fazer um arquiver (implementado)
+--Descobrir oque esta ocasionando o erro de saida (Esta chamando o destrutor duas vezes, é bom manter mesmo  que dê um warning para que tudo seja finalizado caso ocorra algum problema)
 
---Descobrir oque esta ocasionando o erro de saida
 --Melhorar desempenho
 --implementar sensors
 --implementar out strobo

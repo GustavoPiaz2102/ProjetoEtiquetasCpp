@@ -2,12 +2,12 @@
 #define CONTROLLER_H
 
 #include "detector.h"
-#include "../model/validator.h"
+#include "../model/heaters/validator.h"
 #include "../view/interface.h"
 #include <memory>
 #include <opencv2/opencv.hpp>
 #include <iostream>
-#include "../model/arquiver.h" // Para carregar e salvar os dados do validador
+#include "../model/heaters/arquiver.h" // Para carregar e salvar os dados do validador
 
 class Controller {
 public:

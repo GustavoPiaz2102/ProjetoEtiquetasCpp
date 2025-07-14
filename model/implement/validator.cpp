@@ -1,4 +1,4 @@
-#include "validator.h"
+#include "../heaters/validator.h"
 Validator::Validator(std::string lt, std::string fab, std::string val)
     : LT(lt), FAB(fab), VAL(val) {}
 bool Validator::ValidateLT(std::string str) {
