@@ -126,38 +126,21 @@ void Interface::menu(int& selected_option) {
     ImGui::End();
     ImGui::PopStyleVar(2); // Restaura os estilos
 }
+
+
 bool Interface::atualizar_frame(const cv::Mat& frame) {
     if (frame.empty()) {
         std::cerr << "Frame vazio recebido!" << std::endl;
         return false;
     }
 
-    cv::Mat image_rgba;
-    switch (frame.channels()) {
-        case 1:
-            cv::cvtColor(frame, image_rgba, cv::COLOR_GRAY2RGBA);
-            break;
-        case 3:
-            cv::cvtColor(frame, image_rgba, cv::COLOR_BGR2RGBA);
-            break;
-        case 4:
-            image_rgba = frame;
-            break;
-        default:
-            std::cerr << "Formato de imagem não suportado!" << std::endl;
-            return false;
-    }
+    // Obtenha as dimensões do frame original
+    int frame_width = frame.cols;
+    int frame_height = frame.rows;
 
-    // Redimensiona a imagem para uma escala menor (ex: 50%)
-    cv::Mat resized_rgba;
-    cv::resize(image_rgba, resized_rgba, cv::Size(), 0.5, 0.5);  // 50% da largura e altura
-    image_rgba = resized_rgba;
-
-    image_width = image_rgba.cols;
-    image_height = image_rgba.rows;
-
-    // (Re)cria a textura se necessário
-    if (texture_id == 0 || image_width != last_width || image_height != last_height) {
+    // (Re)cria a textura APENAS se as dimensões do frame de entrada mudarem.
+    // Isso acontece raramente, geralmente apenas no primeiro frame.
+    if (texture_id == 0 || frame_width != last_width || frame_height != last_height) {
         if (texture_id != 0) {
             glDeleteTextures(1, &texture_id);
         }
@@ -168,31 +151,59 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height,
-                     0, GL_RGBA, GL_UNSIGNED_BYTE, image_rgba.data);
 
-        last_width = image_width;
-        last_height = image_height;
-    } else {
-        // Atualiza a textura existente
-        glBindTexture(GL_TEXTURE_2D, texture_id);
-        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image_width, image_height,
-                        GL_RGBA, GL_UNSIGNED_BYTE, image_rgba.data);
+        // Aloca o espaço na GPU para a textura com as dimensões do frame original.
+        // Os dados ainda não são enviados aqui (o último parâmetro é nullptr).
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, frame_width, frame_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+
+        last_width = frame_width;
+        last_height = frame_height;
     }
 
-    // Calcula proporção da imagem para manter aspecto
-    float aspect_ratio = static_cast<float>(image_width) / static_cast<float>(image_height);
-    float display_width = ImGui::GetIO().DisplaySize.x * 0.8f;
+    // --- Preparação dos dados para upload ---
+    cv::Mat image_rgba;
+    // Converte o formato de cor do frame para RGBA, que é o que o OpenGL espera.
+    // Esta operação é necessária.
+    switch (frame.channels()) {
+        case 1:
+            cv::cvtColor(frame, image_rgba, cv::COLOR_GRAY2RGBA);
+            break;
+        case 3:
+            cv::cvtColor(frame, image_rgba, cv::COLOR_BGR2RGBA);
+            break;
+        case 4:
+            // Se já for RGBA, apenas use uma referência para evitar cópia.
+            image_rgba = frame;
+            break;
+        default:
+            std::cerr << "Formato de imagem não suportado!" << std::endl;
+            return false;
+    }
+
+    // Atualiza a textura existente na GPU com os novos dados do frame.
+    // Esta é a operação mais rápida e será usada na maioria das vezes.
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, frame_width, frame_height, GL_RGBA, GL_UNSIGNED_BYTE, image_rgba.data);
+
+    // --- Desenho da Interface ---
+    
+    // Calcula a proporção da imagem para manter o aspecto na tela.
+    // Usa as dimensões originais do frame para o cálculo.
+    float aspect_ratio = static_cast<float>(frame_width) / static_cast<float>(frame_height);
+    float display_width = ImGui::GetIO().DisplaySize.x * 0.8f; // 80% da largura da janela
     float display_height = display_width / aspect_ratio;
 
-    // Desenha a interface da câmera
-    ImGui::SetNextWindowPos(ImVec2(0, 0));
-    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
     beginFullscreenWindow("Camera View");
+    
+    // Centraliza a imagem na janela
     ImGui::SetCursorPosX((ImGui::GetWindowWidth() - display_width) * 0.5f);
     ImGui::SetCursorPosY((ImGui::GetWindowHeight() - display_height) * 0.5f);
+
+    // Desenha a imagem. ImGui/GPU cuidará do escalonamento da textura
+    // para o tamanho (display_width, display_height).
     ImGui::Image((ImTextureID)(intptr_t)texture_id, ImVec2(display_width, display_height));
 
+    // Botão de retorno
     bool return_to_menu = false;
     ImGui::SetWindowFontScale(ESCALA_FONTE_MENU);
     if (ImGui::Button("Voltar ao Menu", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT))) {
@@ -202,6 +213,8 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
     ImGui::End();
     return return_to_menu;
 }
+
+// ... (o resto do seu código permanece igual)
 
 // Função auxiliar para exibir a data formatada
 std::string Interface::FormatDate(int day, int month, int year) {
@@ -224,12 +237,6 @@ bool Interface::requisitar_lt(std::string& selected_lt) {
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
     beginFullscreenWindow("LotePage");
-    static int selected_lote = 0;
-    static int selected_ano = 0;
-
-    static int lotes[101];
-    static int anos[50];
-
     static bool initialized = false;
     if (!initialized) {
         for (int i = 0; i <= 100; ++i) lotes[i] = i;

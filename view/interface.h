@@ -62,6 +62,10 @@ private:
     Validator& validator; /**< Validador de dados para verificar a validade dos lotes, fabricação e validade. */
     int last_width = 0;
     int last_height = 0;
+    int selected_lote = 0;
+    int selected_ano = 0;
+    int lotes[101];
+    int anos[50];
 
 
 public:

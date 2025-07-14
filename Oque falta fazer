@@ -6,7 +6,7 @@
 --fazer um arquiver (implementado)
 --Descobrir oque esta ocasionando o erro de saida (Esta chamando o destrutor duas vezes, é bom manter mesmo  que dê um warning para que tudo seja finalizado caso ocorra algum problema)
 
---Melhorar desempenho
+--Melhorar desempenho (EU começei a otimizar mas por conta do tamanho da imagem está ficando bem pesado, tentar otimizar principalmente a interface e a captura)
 --implementar sensors
 --implementar out strobo
 --Atualizar diagrama (fazer um de sequencia)
