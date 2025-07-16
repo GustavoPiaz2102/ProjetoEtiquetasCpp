@@ -10,3 +10,4 @@
 --implementar sensors
 --implementar out strobo
 --Atualizar diagrama (fazer um de sequencia)
+-Implementar GUI em thread separado 

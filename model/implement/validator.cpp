@@ -37,8 +37,12 @@ std::string Validator::GetLT(){ return LT; }
 std::string Validator::GetFAB(){ return FAB; }
 std::string Validator::GetVAL(){ return VAL; }
 void Validator::SetLT(std::string& lt) { LT = lt; }
-void Validator::SetFAB(std::string& fab) { FAB = fab; }
-void Validator::SetVAL(std::string& val) { VAL = val; }
+void Validator::SetFAB(const std::string& fab) {
+    FAB = fab;
+}
+void Validator::SetVAL(const std::string& val) {
+    VAL = val;
+}
 void Validator::printall(){
     std::cout<< std::endl << "LT: " << LT << std::endl
               << "FAB: " << FAB << std::endl

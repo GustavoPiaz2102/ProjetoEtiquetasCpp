@@ -52,7 +52,7 @@ bool Interface::iniciar_janela() {
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGui_ImplGlfw_InitForOpenGL(window, true);
-        ImGui_ImplOpenGL3_Init("#version 130");
+        ImGui_ImplOpenGL3_Init("#version 150");
         janela_iniciada = true;
         return true;
     }

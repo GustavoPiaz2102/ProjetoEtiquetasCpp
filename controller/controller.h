@@ -20,6 +20,8 @@ private:
     Detector detector;
     int selected_option;
     Validator validator;
+    bool requisitar_data_e_setar(int tipo, std::function<void(const std::string&)> setter);
+    void rodar_detector();
 
 };
 
