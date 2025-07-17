@@ -1,21 +1,52 @@
 #include "detector.h"
+#include <iostream>
 
 Detector::Detector(Interface &inter)
-    : camera(0), ocr("eng"),interface(inter){}
-    // Inicializa a câmera (ID 0) e OCR em inglês
+    : camera(0), ocr("eng"), interface(inter), running(false) {}
 
 Detector::~Detector() {
-    // Nada específico pra destruir manualmente, pois as classes internas já se cuidam
+    stop();
 }
 
-std::string Detector::run() {
+void Detector::start() {
+    if (running.load()) return;
+
+    running = true;
+    cameraThread = std::thread(&Detector::captureLoop, this);
+}
+
+void Detector::stop() {
+    running = false;
+    if (cameraThread.joinable()) {
+        cameraThread.join();
+    }
+}
+
+void Detector::captureLoop() {
+    while (running) {
         cv::Mat frame = camera.captureImage();
-        if (frame.empty()) {
+        if (!frame.empty()) {
+            std::lock_guard<std::mutex> lock(frameMutex);
+            latestFrame = frame.clone();  // Clona para evitar acesso a memória que pode ser alterada
+        } else {
             std::cerr << "Erro ao capturar frame." << std::endl;
         }
 
-        cv::Mat processedFrame = preprocessor.preprocess(frame);
-        std::string text = ocr.extractText(processedFrame);
-        if(interface.atualizar_frame(frame)) text = "return";
-        return text;
+        std::this_thread::sleep_for(std::chrono::milliseconds(30)); // 30~ fps
     }
+}
+
+std::string Detector::run() {
+    cv::Mat frameCopy;
+    {
+        std::lock_guard<std::mutex> lock(frameMutex);
+        if (latestFrame.empty()) return "";
+        frameCopy = latestFrame.clone();
+    }
+
+    if (interface.atualizar_frame(frameCopy)) return "return";
+
+    cv::Mat processedFrame = preprocessor.preprocess(frameCopy);
+    std::string text = ocr.extractText(processedFrame);
+    return text;
+}

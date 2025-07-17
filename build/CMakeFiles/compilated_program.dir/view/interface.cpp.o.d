@@ -2,10 +2,9 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/interface.cpp \
  /usr/include/stdc-predef.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/interface.h \
- /usr/local/include/GLFW/glfw3.h \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h /usr/include/stdint.h \
- /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
+ /usr/include/GL/glew.h /usr/include/c++/11/cstddef \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
  /usr/include/x86_64-linux-gnu/bits/timesize.h \
@@ -13,13 +12,19 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/long-double.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/cpu_defines.h \
+ /usr/include/c++/11/pstl/pstl_config.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h \
+ /usr/include/c++/11/cstdint \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h /usr/include/stdint.h \
+ /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/x86_64-linux-gnu/bits/types.h \
  /usr/include/x86_64-linux-gnu/bits/typesizes.h \
  /usr/include/x86_64-linux-gnu/bits/time64.h \
  /usr/include/x86_64-linux-gnu/bits/wchar.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
- /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h /usr/include/GL/gl.h \
- /usr/include/GL/glext.h /usr/include/KHR/khrplatform.h \
+ /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h /usr/include/GL/glu.h \
+ /usr/include/GL/gl.h /usr/local/include/GLFW/glfw3.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/../libs/imgui/imgui.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/../libs/imgui/imconfig.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/float.h \
@@ -29,11 +34,7 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: \
  /usr/include/strings.h /usr/include/assert.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_glfw.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_opengl3.h \
- /usr/include/c++/11/iostream \
- /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
- /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
- /usr/include/x86_64-linux-gnu/c++/11/bits/cpu_defines.h \
- /usr/include/c++/11/pstl/pstl_config.h /usr/include/c++/11/ostream \
+ /usr/include/c++/11/iostream /usr/include/c++/11/ostream \
  /usr/include/c++/11/ios /usr/include/c++/11/iosfwd \
  /usr/include/c++/11/bits/stringfwd.h \
  /usr/include/c++/11/bits/memoryfwd.h /usr/include/c++/11/bits/postypes.h \
@@ -66,7 +67,7 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: \
  /usr/include/c++/11/debug/assertions.h \
  /usr/include/c++/11/bits/stl_iterator.h \
  /usr/include/c++/11/bits/ptr_traits.h /usr/include/c++/11/debug/debug.h \
- /usr/include/c++/11/bits/predefined_ops.h /usr/include/c++/11/cstdint \
+ /usr/include/c++/11/bits/predefined_ops.h \
  /usr/include/c++/11/bits/localefwd.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++locale.h \
  /usr/include/c++/11/clocale /usr/include/locale.h \
@@ -163,7 +164,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: \
  /usr/local/include/opencv4/opencv2/core/version.hpp \
  /usr/include/c++/11/limits \
  /usr/local/include/opencv4/opencv2/core/hal/interface.h \
- /usr/include/c++/11/cstddef \
  /usr/local/include/opencv4/opencv2/core/cv_cpu_dispatch.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/emmintrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/xmmintrin.h \

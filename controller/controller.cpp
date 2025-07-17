@@ -9,6 +9,7 @@ Controller::Controller()
       selected_option(-1)
 {
     // Carrega os dados do arquivo para o validador
+    glewInit();
     std::string lt, fab, val;
     load_file(lt, fab, val);
     validator.SetLT(lt);
@@ -28,7 +29,7 @@ Controller::~Controller() {
 
 void Controller::run() {
     interface.iniciar_janela();
-
+    detector.start();
     while (!interface.shouldClose()) {
         interface.process_events();
         interface.begin_frame();
@@ -69,6 +70,7 @@ void Controller::run() {
 
         interface.end_frame();
     }
+    detector.stop();
 }
 
 bool Controller::requisitar_data_e_setar(int tipo, std::function<void(const std::string&)> setter) {
@@ -83,7 +85,7 @@ bool Controller::requisitar_data_e_setar(int tipo, std::function<void(const std:
 
 void Controller::rodar_detector() {
     std::string str = detector.run();
-
+    std::cout << "Resultado do detector: " << str << std::endl;
     if (str == "return") {
         selected_option = -1;
         return;

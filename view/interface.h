@@ -3,6 +3,7 @@
 /*
 Includes:
 */
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "../libs/imgui/imgui.h"
 #include "backends/imgui_impl_glfw.h"
@@ -66,7 +67,10 @@ private:
     int selected_ano = 0;
     int lotes[101];
     int anos[50];
-
+    cv::Mat temp;
+    GLuint pboIds[2] = {0, 0};
+    int pboIndex = 0;   
+    bool pboInitialized = false;
 
 public:
     /**

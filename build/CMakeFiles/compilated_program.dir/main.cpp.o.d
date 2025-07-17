@@ -373,14 +373,16 @@ CMakeFiles/compilated_program.dir/main.cpp.o: \
  /usr/include/tesseract/tesscallback.h \
  /usr/include/tesseract/thresholder.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/interface.h \
- /usr/local/include/GLFW/glfw3.h /usr/include/GL/gl.h \
- /usr/include/GL/glext.h /usr/include/KHR/khrplatform.h \
+ /usr/include/GL/glew.h /usr/include/GL/glu.h /usr/include/GL/gl.h \
+ /usr/local/include/GLFW/glfw3.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../libs/imgui/imgui.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../libs/imgui/imconfig.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_glfw.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_opengl3.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/heaters/capture.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/heaters/validator.h \
+ /usr/include/c++/11/thread /usr/include/c++/11/bits/std_thread.h \
+ /usr/include/c++/11/bits/this_thread_sleep.h /usr/include/c++/11/atomic \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/heaters/validator.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/heaters/arquiver.h \
  /usr/include/c++/11/fstream \

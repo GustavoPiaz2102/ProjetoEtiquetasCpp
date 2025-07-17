@@ -366,6 +366,7 @@ compilated_program: CMakeFiles/compilated_program.dir/view/interface.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/build.make
 compilated_program: /usr/local/lib/libglfw3.a
 compilated_program: /usr/lib/x86_64-linux-gnu/libGL.so
+compilated_program: /usr/lib/x86_64-linux-gnu/libGLEW.so
 compilated_program: /usr/local/lib/libopencv_gapi.so.4.9.0
 compilated_program: /usr/local/lib/libopencv_highgui.so.4.9.0
 compilated_program: /usr/local/lib/libopencv_ml.so.4.9.0

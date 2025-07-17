@@ -438,16 +438,20 @@ CMakeFiles/compilated_program.dir/controller/controller.cpp.o: ../controller/con
   /usr/include/tesseract/tesscallback.h \
   /usr/include/tesseract/thresholder.h \
   ../view/interface.h \
-  /usr/local/include/GLFW/glfw3.h \
+  /usr/include/GL/glew.h \
+  /usr/include/GL/glu.h \
   /usr/include/GL/gl.h \
-  /usr/include/GL/glext.h \
-  /usr/include/KHR/khrplatform.h \
+  /usr/local/include/GLFW/glfw3.h \
   ../libs/imgui/imgui.h \
   ../libs/imgui/imconfig.h \
   ../libs/imgui/backends/imgui_impl_glfw.h \
   ../libs/imgui/backends/imgui_impl_opengl3.h \
   ../model/heaters/capture.h \
   ../model/heaters/validator.h \
+  /usr/include/c++/11/thread \
+  /usr/include/c++/11/bits/std_thread.h \
+  /usr/include/c++/11/bits/this_thread_sleep.h \
+  /usr/include/c++/11/atomic \
   ../model/heaters/validator.h \
   ../model/heaters/arquiver.h \
   /usr/include/c++/11/fstream \
@@ -891,16 +895,20 @@ CMakeFiles/compilated_program.dir/controller/detector.cpp.o: ../controller/detec
   /usr/include/tesseract/tesscallback.h \
   /usr/include/tesseract/thresholder.h \
   ../view/interface.h \
-  /usr/local/include/GLFW/glfw3.h \
+  /usr/include/GL/glew.h \
+  /usr/include/GL/glu.h \
   /usr/include/GL/gl.h \
-  /usr/include/GL/glext.h \
-  /usr/include/KHR/khrplatform.h \
+  /usr/local/include/GLFW/glfw3.h \
   ../libs/imgui/imgui.h \
   ../libs/imgui/imconfig.h \
   ../libs/imgui/backends/imgui_impl_glfw.h \
   ../libs/imgui/backends/imgui_impl_opengl3.h \
   ../model/heaters/capture.h \
-  ../model/heaters/validator.h
+  ../model/heaters/validator.h \
+  /usr/include/c++/11/thread \
+  /usr/include/c++/11/bits/std_thread.h \
+  /usr/include/c++/11/bits/this_thread_sleep.h \
+  /usr/include/c++/11/atomic
 
 CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o: ../libs/imgui/backends/imgui_impl_glfw.cpp \
   /usr/include/stdc-predef.h \
@@ -2474,16 +2482,20 @@ CMakeFiles/compilated_program.dir/main.cpp.o: ../main.cpp \
   /usr/include/tesseract/tesscallback.h \
   /usr/include/tesseract/thresholder.h \
   ../view/interface.h \
-  /usr/local/include/GLFW/glfw3.h \
+  /usr/include/GL/glew.h \
+  /usr/include/GL/glu.h \
   /usr/include/GL/gl.h \
-  /usr/include/GL/glext.h \
-  /usr/include/KHR/khrplatform.h \
+  /usr/local/include/GLFW/glfw3.h \
   ../libs/imgui/imgui.h \
   ../libs/imgui/imconfig.h \
   ../libs/imgui/backends/imgui_impl_glfw.h \
   ../libs/imgui/backends/imgui_impl_opengl3.h \
   ../model/heaters/capture.h \
   ../model/heaters/validator.h \
+  /usr/include/c++/11/thread \
+  /usr/include/c++/11/bits/std_thread.h \
+  /usr/include/c++/11/bits/this_thread_sleep.h \
+  /usr/include/c++/11/atomic \
   ../model/heaters/validator.h \
   ../model/heaters/arquiver.h \
   /usr/include/c++/11/fstream \
@@ -4142,11 +4154,10 @@ CMakeFiles/compilated_program.dir/model/implement/validator.cpp.o: ../model/impl
 CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
   /usr/include/stdc-predef.h \
   ../view/interface.h \
-  /usr/local/include/GLFW/glfw3.h \
-  /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h \
-  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h \
-  /usr/include/stdint.h \
-  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
+  /usr/include/GL/glew.h \
+  /usr/include/c++/11/cstddef \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
   /usr/include/features.h \
   /usr/include/features-time64.h \
   /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -4155,15 +4166,22 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
   /usr/include/x86_64-linux-gnu/bits/long-double.h \
   /usr/include/x86_64-linux-gnu/gnu/stubs.h \
   /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/cpu_defines.h \
+  /usr/include/c++/11/pstl/pstl_config.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h \
+  /usr/include/c++/11/cstdint \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h \
+  /usr/include/stdint.h \
+  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
   /usr/include/x86_64-linux-gnu/bits/types.h \
   /usr/include/x86_64-linux-gnu/bits/typesizes.h \
   /usr/include/x86_64-linux-gnu/bits/time64.h \
   /usr/include/x86_64-linux-gnu/bits/wchar.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
+  /usr/include/GL/glu.h \
   /usr/include/GL/gl.h \
-  /usr/include/GL/glext.h \
-  /usr/include/KHR/khrplatform.h \
+  /usr/local/include/GLFW/glfw3.h \
   ../libs/imgui/imgui.h \
   ../libs/imgui/imconfig.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/float.h \
@@ -4176,10 +4194,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
   ../libs/imgui/backends/imgui_impl_glfw.h \
   ../libs/imgui/backends/imgui_impl_opengl3.h \
   /usr/include/c++/11/iostream \
-  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
-  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
-  /usr/include/x86_64-linux-gnu/c++/11/bits/cpu_defines.h \
-  /usr/include/c++/11/pstl/pstl_config.h \
   /usr/include/c++/11/ostream \
   /usr/include/c++/11/ios \
   /usr/include/c++/11/iosfwd \
@@ -4221,7 +4235,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
   /usr/include/c++/11/bits/ptr_traits.h \
   /usr/include/c++/11/debug/debug.h \
   /usr/include/c++/11/bits/predefined_ops.h \
-  /usr/include/c++/11/cstdint \
   /usr/include/c++/11/bits/localefwd.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++locale.h \
   /usr/include/c++/11/clocale \
@@ -4339,7 +4352,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
   /usr/local/include/opencv4/opencv2/core/version.hpp \
   /usr/include/c++/11/limits \
   /usr/local/include/opencv4/opencv2/core/hal/interface.h \
-  /usr/include/c++/11/cstddef \
   /usr/local/include/opencv4/opencv2/core/cv_cpu_dispatch.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/emmintrin.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/xmmintrin.h \
@@ -4612,6 +4624,12 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/keylockerintrin.h:
 
+/usr/lib/gcc/x86_64-linux-gnu/11/include/prfchwintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512bf16intrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512bf16vlintrin.h:
+
 /usr/include/c++/11/bits/shared_ptr_atomic.h:
 
 /usr/include/c++/11/queue:
@@ -4746,6 +4764,10 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/local/include/opencv4/opencv2/core/traits.hpp:
 
+/usr/lib/gcc/x86_64-linux-gnu/11/include/amxbf16intrin.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
+
 /usr/include/x86_64-linux-gnu/bits/timex.h:
 
 /usr/local/include/opencv4/opencv2/dnn/version.hpp:
@@ -4777,8 +4799,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 /usr/include/c++/11/backward/auto_ptr.h:
 
 ../libs/imgui/backends/imgui_impl_opengl3_loader.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512bf16intrin.h:
 
 /usr/include/c++/11/bits/stl_uninitialized.h:
 
@@ -4824,9 +4844,9 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/include/c++/11/bits/locale_facets.tcc:
 
-/usr/include/c++/11/bits/memoryfwd.h:
+/usr/include/c++/11/bits/this_thread_sleep.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/11/include/prfchwintrin.h:
+/usr/include/c++/11/bits/memoryfwd.h:
 
 /usr/include/c++/11/cmath:
 
@@ -4873,6 +4893,10 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 /usr/include/x86_64-linux-gnu/bits/floatn.h:
 
 /usr/include/x86_64-linux-gnu/bits/waitflags.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/amxtileintrin.h:
+
+/usr/include/c++/11/bits/shared_ptr_base.h:
 
 /usr/include/linux/limits.h:
 
@@ -4984,6 +5008,8 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/include/c++/11/bits/stl_iterator_base_funcs.h:
 
+/usr/include/c++/11/bits/std_thread.h:
+
 /usr/local/include/opencv4/opencv2/opencv_modules.hpp:
 
 /usr/include/c++/11/tr1/legendre_function.tcc:
@@ -5017,8 +5043,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 /usr/include/x86_64-linux-gnu/bits/siginfo-consts-arch.h:
 
 ../libs/imgui/backends/imgui_impl_opengl3.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512bf16vlintrin.h:
 
 /usr/include/features.h:
 
@@ -5256,10 +5280,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/local/include/opencv4/opencv2/core/check.hpp:
 
-/usr/include/c++/11/bits/shared_ptr_base.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/amxtileintrin.h:
-
 /usr/local/include/opencv4/opencv2/core/types.hpp:
 
 /usr/include/x86_64-linux-gnu/sys/types.h:
@@ -5305,6 +5325,8 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 /usr/include/c++/11/mutex:
 
 /usr/include/c++/11/ratio:
+
+/usr/include/c++/11/thread:
 
 /usr/include/c++/11/ctime:
 
@@ -5353,8 +5375,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 /usr/local/include/opencv4/opencv2/dnn/dnn.inl.hpp:
 
 /usr/local/include/opencv4/opencv2/flann/result_set.h:
-
-/usr/local/include/opencv4/opencv2/dnn/utils/inference_engine.hpp:
 
 /usr/local/include/opencv4/opencv2/flann/random.h:
 
@@ -5500,10 +5520,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/local/include/opencv4/opencv2/objdetect/aruco_detector.hpp:
 
-/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/amxbf16intrin.h:
-
 /usr/local/include/opencv4/opencv2/objdetect/aruco_dictionary.hpp:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/avxintrin.h:
@@ -5588,9 +5604,13 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/cldemoteintrin.h:
 
-/usr/include/GL/glext.h:
+/usr/local/include/opencv4/opencv2/dnn/utils/inference_engine.hpp:
 
-/usr/include/KHR/khrplatform.h:
+/usr/include/GL/glew.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vnniintrin.h:
+
+/usr/include/GL/glu.h:
 
 ../libs/imgui/imgui.h:
 
@@ -5608,6 +5628,10 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h:
 
+/usr/include/c++/11/atomic:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/adxintrin.h:
+
 /usr/local/include/opencv4/opencv2/stitching/detail/camera.hpp:
 
 ../model/heaters/arquiver.h:
@@ -5619,6 +5643,10 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 /usr/include/c++/11/bits/localefwd.h:
 
 ../libs/imgui/backends/imgui_impl_glfw.cpp:
+
+/usr/include/GL/glext.h:
+
+/usr/include/KHR/khrplatform.h:
 
 /usr/include/x86_64-linux-gnu/bits/posix_opt.h:
 
@@ -5647,8 +5675,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 /usr/include/x86_64-linux-gnu/bits/dl_find_object.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/ia32intrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/adxintrin.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/bmi2intrin.h:
 
@@ -5719,8 +5745,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 /usr/lib/gcc/x86_64-linux-gnu/11/include/avx5124vnniwintrin.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vbmi2vlintrin.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vnniintrin.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/avx512bitalgintrin.h:
 

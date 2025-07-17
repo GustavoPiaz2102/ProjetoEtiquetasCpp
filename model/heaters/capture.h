@@ -15,6 +15,7 @@ public:
 
 private:
     cv::VideoCapture cap;
+    cv::Mat frame;
 };
 
 #endif

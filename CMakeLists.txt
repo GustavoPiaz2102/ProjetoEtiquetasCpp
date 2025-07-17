@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(GLEW REQUIRED)
 
 # Usa pkg-config para encontrar o Tesseract
 find_package(PkgConfig REQUIRED)
@@ -34,6 +35,7 @@ target_include_directories(compilated_program PRIVATE
     libs/imgui/backends/
     ${GLFW_INCLUDE_DIRS}
     ${OPENGL_INCLUDE_DIRS}
+    ${GLEW_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
     ${TESSERACT_INCLUDE_DIRS}
 )
@@ -42,6 +44,7 @@ target_include_directories(compilated_program PRIVATE
 target_link_libraries(compilated_program
     glfw
     OpenGL::GL
+    ${GLEW_LIBRARIES}
     X11
     pthread
     dl

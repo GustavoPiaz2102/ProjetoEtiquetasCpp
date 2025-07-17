@@ -1,7 +1,7 @@
 #include "../heaters/preprocessor.h"
 
 Preprocessor::Preprocessor() {
-    // Pode adicionar inicializações aqui no futuro, se quiser.
+    // Inicialização necessária, se houver.
 }
 
 Preprocessor::~Preprocessor() {

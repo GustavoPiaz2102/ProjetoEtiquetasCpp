@@ -18,7 +18,6 @@ Capture::~Capture() {
 }
 
 cv::Mat Capture::captureImage() {
-    cv::Mat frame;
     if (cap.isOpened()) {
         cap.read(frame);
         if (frame.empty()) {
