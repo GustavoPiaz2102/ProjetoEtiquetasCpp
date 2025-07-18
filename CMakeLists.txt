@@ -20,7 +20,7 @@ file(GLOB IMGUI_SOURCES
     "model/implement/*.cpp"
     "controller/*.cpp"
     "view/*.cpp"
-    "libs/imgui/*.cpp"
+    "libs/imgui/*c.cpp"
     "libs/imgui/backends/imgui_impl_glfw.cpp"
     "libs/imgui/backends/imgui_impl_opengl3.cpp"
 )
