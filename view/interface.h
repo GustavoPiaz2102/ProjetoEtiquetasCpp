@@ -19,7 +19,7 @@ Includes:
 // ===================== CONFIGURAÇÕES DE INTERFACE =====================
 
 // Janela
-#define JANELA_LARGURA         1024
+#define JANELA_LARGURA         900
 #define JANELA_ALTURA          600
 #define JANELA_TITULO          "Menu"
 
