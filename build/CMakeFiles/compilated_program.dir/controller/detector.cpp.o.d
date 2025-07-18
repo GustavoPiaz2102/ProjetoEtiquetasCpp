@@ -379,6 +379,4 @@ CMakeFiles/compilated_program.dir/controller/detector.cpp.o: \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_glfw.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_opengl3.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/heaters/capture.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/heaters/validator.h \
- /usr/include/c++/11/thread /usr/include/c++/11/bits/std_thread.h \
- /usr/include/c++/11/bits/this_thread_sleep.h /usr/include/c++/11/atomic
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/heaters/validator.h

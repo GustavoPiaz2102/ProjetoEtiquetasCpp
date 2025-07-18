@@ -29,8 +29,7 @@ Controller::~Controller() {
 
 void Controller::run() {
     interface.iniciar_janela();
-    detector.start();
-    while (!interface.shouldClose()) {
+    while (selected_option != 2) {
         interface.process_events();
         interface.begin_frame();
 
@@ -70,7 +69,6 @@ void Controller::run() {
 
         interface.end_frame();
     }
-    detector.stop();
 }
 
 bool Controller::requisitar_data_e_setar(int tipo, std::function<void(const std::string&)> setter) {

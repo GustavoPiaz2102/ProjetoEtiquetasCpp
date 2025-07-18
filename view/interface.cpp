@@ -1,19 +1,12 @@
 #include "interface.h"
 
-void Interface::beginFullscreenWindow(const char* name) {
-    ImGui::SetNextWindowPos(ImVec2(0, 0));
-    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
-    ImGui::Begin(name, nullptr,
-        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse |
-        ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus);
-}
-
 Interface::Interface(Validator& val) : validator(val) {
     texture_id = 0;
     last_width = last_height = 0;
     should_close = false;
-    
+    resolution_scale = 1.0f;  // Controle de escala de resolução
+    max_display_width = 1920; // Largura máxima padrão
+
     if (!iniciar_janela()) {
         std::cerr << "Falha ao iniciar a janela!\n";
     }
@@ -23,43 +16,61 @@ Interface::~Interface() {
     if (texture_id) {
         glDeleteTextures(1, &texture_id);
     }
-    
+
+    if (pboInitialized) {
+        glDeleteBuffers(2, pboIds);
+    }
+
     if (janela_iniciada) {
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
         finalizar_janela();
     }
-    if (pboInitialized) {
-    glDeleteBuffers(2, pboIds);
 }
 
+void Interface::beginFullscreenWindow(const char* name) {
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
+    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+    ImGui::Begin(name, nullptr,
+        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus);
 }
 
-bool Interface::iniciar_janela() {
-    if (janela_iniciada) return false;
+    bool Interface::iniciar_janela() {
+        if (janela_iniciada) return false;
 
-    if (!glfwInit()) {
-        std::cerr << "Falha ao inicializar GLFW\n";
-        return false;
+        if (!glfwInit()) {
+            std::cerr << "Falha ao inicializar GLFW\n";
+            return false;
+        }
+
+        window = glfwCreateWindow(JANELA_LARGURA, JANELA_ALTURA, JANELA_TITULO, NULL, NULL);
+        if (!window) {
+            glfwTerminate();
+            std::cerr << "Falha ao criar janela GLFW\n";
+            return false;
+        }
+
+        glfwMakeContextCurrent(window);
+        glfwSwapInterval(0);
+
+        // Substitui a verificação do GLAD por GLEW
+        glewExperimental = GL_TRUE;
+        if (glewInit() != GLEW_OK) {
+            std::cerr << "Falha ao inicializar GLEW" << std::endl;
+            return false;
+        }
+
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGui_ImplGlfw_InitForOpenGL(window, true);
+        ImGui_ImplOpenGL3_Init("#version 130");
+
+        janela_iniciada = true;
+        return true;
     }
-
-    window = glfwCreateWindow(JANELA_LARGURA, JANELA_ALTURA, JANELA_TITULO, NULL, NULL);
-    if (!window) {
-        glfwTerminate();
-        std::cerr << "Falha ao criar janela GLFW\n";
-        return false;
-    }
-    
-    glfwMakeContextCurrent(window);
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 130");
-    
-    janela_iniciada = true;
-    return true;
-}
 
 bool Interface::finalizar_janela() {
     if (!janela_iniciada) return false;
@@ -135,9 +146,20 @@ void Interface::menu(int& selected_option) {
 bool Interface::atualizar_frame(const cv::Mat& frame) {
     if (frame.empty()) return false;
 
-    const int frame_width = frame.cols;
-    const int frame_height = frame.rows;
-    const int data_size = frame_width * frame_height * frame.elemSize();
+    cv::Mat resized_frame;
+    const int max_display_width = 1920; // Largura máxima para exibição
+    
+    // Redimensionar se necessário usando GPU
+    if (frame.cols > max_display_width) {
+        double scale = static_cast<double>(max_display_width) / frame.cols;
+        cv::resize(frame, resized_frame, cv::Size(), scale, scale, cv::INTER_LINEAR);
+    } else {
+        resized_frame = frame;
+    }
+
+    const int frame_width = resized_frame.cols;
+    const int frame_height = resized_frame.rows;
+    const int data_size = frame_width * frame_height * resized_frame.elemSize();
 
     if (!texture_id || frame_width != last_width || frame_height != last_height) {
         if (texture_id) glDeleteTextures(1, &texture_id);
@@ -146,12 +168,13 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
             pboInitialized = false;
         }
 
-        // Criar textura
+        // Criar textura com formato compactado
         glGenTextures(1, &texture_id);
         glBindTexture(GL_TEXTURE_2D, texture_id);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, frame_width, frame_height, 0, GL_BGR, GL_UNSIGNED_BYTE, nullptr);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGB, frame_width, frame_height, 
+                     0, GL_BGR, GL_UNSIGNED_BYTE, nullptr);
 
         // Criar os PBOs
         glGenBuffers(2, pboIds);
@@ -178,24 +201,32 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
 
     // Mapear o próximo PBO e copiar os dados do frame atual
     glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pboIds[nextIndex]);
-    glBufferData(GL_PIXEL_UNPACK_BUFFER, data_size, nullptr, GL_STREAM_DRAW);  // invalida e realoca
+    if (!pboInitialized || data_size != last_data_size) {
+        glBufferData(GL_PIXEL_UNPACK_BUFFER, data_size, nullptr, GL_STREAM_DRAW);
+        last_data_size = data_size;
+    }
     void* ptr = glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY);
     if (ptr) {
-        memcpy(ptr, frame.data, data_size);
+        memcpy(ptr, resized_frame.data, data_size);
         glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
     }
     glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+    glFlush(); // Sincronização assíncrona
 
     // ImGui - exibindo textura
     beginFullscreenWindow("Camera View");
 
     float aspect_ratio = static_cast<float>(frame_width) / frame_height;
-    float display_width = ImGui::GetIO().DisplaySize.x * 0.75f;
+    float display_width = ImGui::GetIO().DisplaySize.x * 0.75f * resolution_scale;
     float display_height = display_width / aspect_ratio;
 
     ImGui::SetCursorPosX((ImGui::GetWindowWidth() - display_width) * 0.5f);
     ImGui::SetCursorPosY((ImGui::GetWindowHeight() - display_height) * 0.5f);
     ImGui::Image((ImTextureID)(intptr_t)texture_id, ImVec2(display_width, display_height));
+
+    // Controle de escala de resolução
+    ImGui::SetNextItemWidth(200);
+    //ImGui::SliderFloat("Escala", &resolution_scale, 0.5f, 2.0f);
 
     ImGui::SetWindowFontScale(ESCALA_FONTE_MENU);
     bool return_to_menu = ImGui::Button("Voltar ao Menu", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT));

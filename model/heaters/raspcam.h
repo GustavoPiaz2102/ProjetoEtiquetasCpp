@@ -19,5 +19,5 @@ private:
     cv::Mat frame;
 };
 
-*/
 #endif
+*/
