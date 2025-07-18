@@ -19,29 +19,29 @@ Includes:
 // ===================== CONFIGURAÇÕES DE INTERFACE =====================
 
 // Janela
-#define JANELA_LARGURA         1920
-#define JANELA_ALTURA          1080
+#define JANELA_LARGURA         1024
+#define JANELA_ALTURA          600
 #define JANELA_TITULO          "Menu"
 
-// Botões principais
-#define TAMANHO_BOTAO_LARG     950
-#define TAMANHO_BOTAO_ALT      450
-#define ESPACO_ENTRE_BOTOES    30.0f
+// Botões principais — adaptado para 2 botões lado a lado, por ex.
+#define TAMANHO_BOTAO_LARG     450
+#define TAMANHO_BOTAO_ALT      200
+#define ESPACO_ENTRE_BOTOES    20.0f
 
 // Botão menor (ex: "Voltar")
-#define TAMANHO_BOTAO_PEQUENO_LARG  400
-#define TAMANHO_BOTAO_PEQUENO_ALT   100
+#define TAMANHO_BOTAO_PEQUENO_LARG  250
+#define TAMANHO_BOTAO_PEQUENO_ALT   60
 
 // Estilo
 #define TAMANHO_BORDA_JANELA   0.0f
-#define ESCALA_FONTE_MENU      3.0f
-#define ESCALA_FONTE_DATA      3.0f
+#define ESCALA_FONTE_MENU      1.7f
+#define ESCALA_FONTE_DATA      1.5f
 
 // Estilo dos combos
-#define COMBO_LARGURA          550.0f
-#define PADDING_FRAME          ImVec2(45, 80)
-#define SPACING_ITEM           ImVec2(70, 70)
-#define SPACING_INTERNO        ImVec2(25, 45)
+#define COMBO_LARGURA          350.0f
+#define PADDING_FRAME          ImVec2(20, 40)
+#define SPACING_ITEM           ImVec2(30, 30)
+#define SPACING_INTERNO        ImVec2(15, 25)
 
 // Cor de fundo (RGBA)
 #define FUNDO_R 0.2f

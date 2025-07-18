@@ -3977,6 +3977,10 @@ CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.o
  /usr/local/include/opencv4/opencv2/video/tracking.hpp
  /usr/local/include/opencv4/opencv2/video/background_segm.hpp
 
+CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.o
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/raspcam.cpp
+ /usr/include/stdc-predef.h
+
 CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/sensors.cpp
  /usr/include/stdc-predef.h
