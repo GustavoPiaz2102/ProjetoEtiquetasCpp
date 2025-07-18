@@ -19,13 +19,13 @@ Includes:
 // ===================== CONFIGURAÇÕES DE INTERFACE =====================
 
 // Janela
-#define JANELA_LARGURA         900
+#define JANELA_LARGURA         1024
 #define JANELA_ALTURA          600
 #define JANELA_TITULO          "Menu"
 
 // Botões principais
 #define TAMANHO_BOTAO_LARG     500
-#define TAMANHO_BOTAO_ALT      250
+#define TAMANHO_BOTAO_ALT      225
 #define ESPACO_ENTRE_BOTOES    20.0f
 
 // Botão menor
