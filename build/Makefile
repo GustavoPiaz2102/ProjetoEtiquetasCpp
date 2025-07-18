@@ -465,6 +465,30 @@ model/implement/preprocessor.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.s
 .PHONY : model/implement/preprocessor.cpp.s
 
+model/implement/raspcam.o: model/implement/raspcam.cpp.o
+.PHONY : model/implement/raspcam.o
+
+# target to build an object file
+model/implement/raspcam.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.o
+.PHONY : model/implement/raspcam.cpp.o
+
+model/implement/raspcam.i: model/implement/raspcam.cpp.i
+.PHONY : model/implement/raspcam.i
+
+# target to preprocess a source file
+model/implement/raspcam.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.i
+.PHONY : model/implement/raspcam.cpp.i
+
+model/implement/raspcam.s: model/implement/raspcam.cpp.s
+.PHONY : model/implement/raspcam.s
+
+# target to generate assembly for a file
+model/implement/raspcam.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compilated_program.dir/build.make CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.s
+.PHONY : model/implement/raspcam.cpp.s
+
 model/implement/sensors.o: model/implement/sensors.cpp.o
 .PHONY : model/implement/sensors.o
 
@@ -612,6 +636,9 @@ help:
 	@echo "... model/implement/preprocessor.o"
 	@echo "... model/implement/preprocessor.i"
 	@echo "... model/implement/preprocessor.s"
+	@echo "... model/implement/raspcam.o"
+	@echo "... model/implement/raspcam.i"
+	@echo "... model/implement/raspcam.s"
 	@echo "... model/implement/sensors.o"
 	@echo "... model/implement/sensors.i"
 	@echo "... model/implement/sensors.s"

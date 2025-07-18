@@ -281,6 +281,9 @@ pkgcfg_lib_TESSERACT_archive:FILEPATH=/usr/lib/x86_64-linux-gnu/libarchive.so
 //Path to a library.
 pkgcfg_lib_TESSERACT_tesseract:FILEPATH=/usr/lib/x86_64-linux-gnu/libtesseract.so
 
+//The directory containing a CMake configuration file for raspicam.
+raspicam_DIR:PATH=raspicam_DIR-NOTFOUND
+
 
 ########################
 # INTERNAL cache entries

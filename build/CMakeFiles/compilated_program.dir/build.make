@@ -265,10 +265,24 @@ CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.s: cmake_forc
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/preprocessor.cpp -o CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.s
 
+CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.o: CMakeFiles/compilated_program.dir/flags.make
+CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.o: ../model/implement/raspcam.cpp
+CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.o -MF CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.o.d -o CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/raspcam.cpp
+
+CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/raspcam.cpp > CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.i
+
+CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/raspcam.cpp -o CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.s
+
 CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o: CMakeFiles/compilated_program.dir/flags.make
 CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o: ../model/implement/sensors.cpp
 CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o -MF CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o.d -o CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/sensors.cpp
 
 CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.i: cmake_force
@@ -282,7 +296,7 @@ CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.s: cmake_force
 CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.o: CMakeFiles/compilated_program.dir/flags.make
 CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.o: ../model/implement/strobo.cpp
 CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.o -MF CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.o.d -o CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/strobo.cpp
 
 CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.i: cmake_force
@@ -296,7 +310,7 @@ CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.s: cmake_force
 CMakeFiles/compilated_program.dir/model/implement/validator.cpp.o: CMakeFiles/compilated_program.dir/flags.make
 CMakeFiles/compilated_program.dir/model/implement/validator.cpp.o: ../model/implement/validator.cpp
 CMakeFiles/compilated_program.dir/model/implement/validator.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/compilated_program.dir/model/implement/validator.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/compilated_program.dir/model/implement/validator.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/model/implement/validator.cpp.o -MF CMakeFiles/compilated_program.dir/model/implement/validator.cpp.o.d -o CMakeFiles/compilated_program.dir/model/implement/validator.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/validator.cpp
 
 CMakeFiles/compilated_program.dir/model/implement/validator.cpp.i: cmake_force
@@ -310,7 +324,7 @@ CMakeFiles/compilated_program.dir/model/implement/validator.cpp.s: cmake_force
 CMakeFiles/compilated_program.dir/view/interface.cpp.o: CMakeFiles/compilated_program.dir/flags.make
 CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp
 CMakeFiles/compilated_program.dir/view/interface.cpp.o: CMakeFiles/compilated_program.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/compilated_program.dir/view/interface.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/compilated_program.dir/view/interface.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/compilated_program.dir/view/interface.cpp.o -MF CMakeFiles/compilated_program.dir/view/interface.cpp.o.d -o CMakeFiles/compilated_program.dir/view/interface.cpp.o -c /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/interface.cpp
 
 CMakeFiles/compilated_program.dir/view/interface.cpp.i: cmake_force
@@ -337,6 +351,7 @@ compilated_program_OBJECTS = \
 "CMakeFiles/compilated_program.dir/model/implement/arquiver.cpp.o" \
 "CMakeFiles/compilated_program.dir/model/implement/capture.cpp.o" \
 "CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.o" \
+"CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.o" \
 "CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o" \
 "CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.o" \
 "CMakeFiles/compilated_program.dir/model/implement/validator.cpp.o" \
@@ -359,6 +374,7 @@ compilated_program: CMakeFiles/compilated_program.dir/model/implement/OCR.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/model/implement/arquiver.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/model/implement/capture.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.o
+compilated_program: CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.o
 compilated_program: CMakeFiles/compilated_program.dir/model/implement/validator.cpp.o
@@ -385,7 +401,7 @@ compilated_program: /usr/local/lib/libopencv_flann.so.4.9.0
 compilated_program: /usr/local/lib/libopencv_imgproc.so.4.9.0
 compilated_program: /usr/local/lib/libopencv_core.so.4.9.0
 compilated_program: CMakeFiles/compilated_program.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Linking CXX executable compilated_program"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Linking CXX executable compilated_program"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/compilated_program.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

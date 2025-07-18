@@ -8,14 +8,13 @@ find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(GLEW REQUIRED)
-
-# Usa pkg-config para encontrar o Tesseract
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(TESSERACT REQUIRED tesseract)
+#find_package(raspicam REQUIRED)  # <---- Adicionado raspicam
 
 # Arquivos fontes
 file(GLOB SOURCES "*.cpp")
-list(REMOVE_ITEM SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/imguiexemple.cpp") # remove exemplo se necessário
+list(REMOVE_ITEM SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/imguiexemple.cpp")
 
 file(GLOB IMGUI_SOURCES 
     "model/implement/*.cpp"
@@ -38,6 +37,7 @@ target_include_directories(compilated_program PRIVATE
     ${GLEW_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
     ${TESSERACT_INCLUDE_DIRS}
+    #${raspicam_INCLUDE_DIRS}        # <---- Inclui raspicam
 )
 
 # Bibliotecas
@@ -50,4 +50,5 @@ target_link_libraries(compilated_program
     dl
     ${OpenCV_LIBS}
     ${TESSERACT_LIBRARIES}
+    #${raspicam_CV_LIBS}            
 )

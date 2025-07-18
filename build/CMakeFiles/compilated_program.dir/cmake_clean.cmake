@@ -27,6 +27,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/compilated_program.dir/model/implement/capture.cpp.o.d"
   "CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.o"
   "CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.o.d"
+  "CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.o"
+  "CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.o.d"
   "CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o"
   "CMakeFiles/compilated_program.dir/model/implement/sensors.cpp.o.d"
   "CMakeFiles/compilated_program.dir/model/implement/strobo.cpp.o"
