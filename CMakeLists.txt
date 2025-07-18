@@ -10,19 +10,22 @@ find_package(OpenCV REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(TESSERACT REQUIRED tesseract)
-#find_package(raspicam REQUIRED)  # <---- Adicionado raspicam
+#find_package(raspicam REQUIRED)  # <---- Adicionado raspicam (comentado)
 
 # Arquivos fontes
 file(GLOB SOURCES "*.cpp")
 list(REMOVE_ITEM SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/imguiexemple.cpp")
 
 file(GLOB IMGUI_SOURCES 
+    "libs/imgui/imgui.cpp"
+    "libs/imgui/imgui_draw.cpp"
+    "libs/imgui/imgui_tables.cpp"
+    "libs/imgui/imgui_widgets.cpp"
+    "libs/imgui/backends/imgui_impl_glfw.cpp"
+    "libs/imgui/backends/imgui_impl_opengl3.cpp"
     "model/implement/*.cpp"
     "controller/*.cpp"
     "view/*.cpp"
-    "libs/imgui/*c.cpp"
-    "libs/imgui/backends/imgui_impl_glfw.cpp"
-    "libs/imgui/backends/imgui_impl_opengl3.cpp"
 )
 
 # Executável
@@ -30,14 +33,14 @@ add_executable(compilated_program ${SOURCES} ${IMGUI_SOURCES})
 
 # Includes
 target_include_directories(compilated_program PRIVATE
-    libs/imgui/
-    libs/imgui/backends/
+    libs/imgui
+    libs/imgui/backends
     ${GLFW_INCLUDE_DIRS}
     ${OPENGL_INCLUDE_DIRS}
     ${GLEW_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
     ${TESSERACT_INCLUDE_DIRS}
-    #${raspicam_INCLUDE_DIRS}        # <---- Inclui raspicam
+    #${raspicam_INCLUDE_DIRS}        # <---- Inclui raspicam (comentado)
 )
 
 # Bibliotecas
@@ -50,5 +53,5 @@ target_link_libraries(compilated_program
     dl
     ${OpenCV_LIBS}
     ${TESSERACT_LIBRARIES}
-    #${raspicam_CV_LIBS}            
+    #${raspicam_CV_LIBS}             # <---- Link raspicam (comentado)
 )
