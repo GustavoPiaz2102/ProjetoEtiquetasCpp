@@ -1,24 +1,18 @@
 #include <opencv2/opencv.hpp>
-#include <iostream>
+#include <cstdlib>
 
 int main() {
-    cv::VideoCapture cap(0); // 0 == /dev/video0
+    // Captura imagem da câmera e salva em /tmp/frame.jpg
+    system("libcamera-jpeg -o /tmp/frame.jpg --width 640 --height 480 --quality 95");
 
-    if (!cap.isOpened()) {
-        std::cerr << "Não foi possível abrir a câmera!" << std::endl;
+    // Carrega a imagem no OpenCV
+    cv::Mat img = cv::imread("/tmp/frame.jpg");
+    if (img.empty()) {
+        std::cerr << "Erro ao carregar imagem!" << std::endl;
         return -1;
     }
 
-    cv::Mat frame;
-    std::cout << "Pressione ESC para sair." << std::endl;
-
-    while (true) {
-        cap >> frame;
-        if (frame.empty()) break;
-
-        cv::imshow("Câmera", frame);
-        if (cv::waitKey(30) == 27) break; // ESC
-    }
-
+    cv::imshow("Imagem", img);
+    cv::waitKey(0);
     return 0;
 }
