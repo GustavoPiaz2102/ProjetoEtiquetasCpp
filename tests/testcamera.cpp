@@ -1,6 +1,6 @@
 #include <iostream>
 #include <memory>
-#include <chrono>
+#include <vector>
 
 #include <libcamera/libcamera.h>
 
@@ -9,21 +9,16 @@ using namespace std;
 
 int main()
 {
-    // Cria uma instância do gerenciador de câmera
     unique_ptr<CameraManager> manager = make_unique<CameraManager>();
     
     try {
-        // Inicia o gerenciador de câmera
         manager->start();
         
-        // Verifica se há câmeras disponíveis
         if (manager->cameras().empty()) {
             cerr << "Nenhuma câmera encontrada!" << endl;
-            manager->stop();
             return EXIT_FAILURE;
         }
         
-        // Pega a primeira câmera disponível
         shared_ptr<Camera> camera = manager->get(manager->cameras()[0]->id());
         if (!camera) {
             cerr << "Falha ao obter câmera" << endl;
@@ -31,7 +26,6 @@ int main()
             return EXIT_FAILURE;
         }
         
-        // Configura a câmera
         if (camera->acquire()) {
             cerr << "Falha ao adquirir câmera" << endl;
             manager->stop();
@@ -40,7 +34,6 @@ int main()
         
         cout << "Câmera adquirida: " << camera->id() << endl;
         
-        // Configuração básica da câmera
         vector<StreamRole> roles = { StreamRole::Viewfinder };
         unique_ptr<CameraConfiguration> config = camera->generateConfiguration(roles);
         if (!config) {
@@ -50,18 +43,17 @@ int main()
             return EXIT_FAILURE;
         }
         
-        // Aplica a configuração
         switch (config->validate()) {
-        case CameraConfiguration::Valid:
-            break;
-        case CameraConfiguration::Adjusted:
-            cout << "Configuração ajustada" << endl;
-            break;
-        case CameraConfiguration::Invalid:
-            cerr << "Configuração inválida" << endl;
-            camera->release();
-            manager->stop();
-            return EXIT_FAILURE;
+            case CameraConfiguration::Valid:
+                break;
+            case CameraConfiguration::Adjusted:
+                cout << "Configuração ajustada" << endl;
+                break;
+            case CameraConfiguration::Invalid:
+                cerr << "Configuração inválida" << endl;
+                camera->release();
+                manager->stop();
+                return EXIT_FAILURE;
         }
         
         if (camera->configure(config.get()) < 0) {
@@ -71,11 +63,9 @@ int main()
             return EXIT_FAILURE;
         }
         
-        // Cria um alocador de buffer
+        Stream *stream = config->at(0).stream();
         FrameBufferAllocator *allocator = new FrameBufferAllocator(camera);
         
-        // Aloca buffers para o stream
-        Stream *stream = config->at(0).stream();
         if (allocator->allocate(stream) < 0) {
             cerr << "Falha ao alocar buffers" << endl;
             delete allocator;
@@ -84,19 +74,20 @@ int main()
             return EXIT_FAILURE;
         }
         
-        // Cria uma requisição
-        unique_ptr<Request> request = camera->createRequest();
-        if (!request) {
-            cerr << "Falha ao criar requisição" << endl;
-            delete allocator;
-            camera->release();
-            manager->stop();
-            return EXIT_FAILURE;
-        }
-        
-        // Adiciona buffers à requisição
+        // Criar uma única requisição por buffer
+        vector<unique_ptr<Request>> requests;
         const vector<unique_ptr<FrameBuffer>> &buffers = allocator->buffers(stream);
+        
         for (const unique_ptr<FrameBuffer> &buffer : buffers) {
+            unique_ptr<Request> request = camera->createRequest();
+            if (!request) {
+                cerr << "Falha ao criar requisição" << endl;
+                delete allocator;
+                camera->release();
+                manager->stop();
+                return EXIT_FAILURE;
+            }
+            
             if (request->addBuffer(stream, buffer.get()) < 0) {
                 cerr << "Falha ao adicionar buffer à requisição" << endl;
                 delete allocator;
@@ -104,9 +95,10 @@ int main()
                 manager->stop();
                 return EXIT_FAILURE;
             }
+            
+            requests.push_back(move(request));
         }
         
-        // Inicia a câmera
         if (camera->start()) {
             cerr << "Falha ao iniciar câmera" << endl;
             delete allocator;
@@ -116,22 +108,22 @@ int main()
         }
         
         cout << "Câmera iniciada com sucesso!" << endl;
-        cout << "Pressione Enter para sair..." << endl;
         
-        // Envia a requisição para captura
-        if (camera->queueRequest(request.get()) < 0) {
-            cerr << "Falha ao enfileirar requisição" << endl;
-            camera->stop();
-            delete allocator;
-            camera->release();
-            manager->stop();
-            return EXIT_FAILURE;
+        // Enfileirar todas as requisições
+        for (auto &request : requests) {
+            if (camera->queueRequest(request.get()) < 0) {
+                cerr << "Falha ao enfileirar requisição" << endl;
+                camera->stop();
+                delete allocator;
+                camera->release();
+                manager->stop();
+                return EXIT_FAILURE;
+            }
         }
         
-        // Aguarda entrada do usuário para sair
+        cout << "Pressione Enter para sair..." << endl;
         cin.get();
         
-        // Limpeza
         camera->stop();
         delete allocator;
         camera->release();
