@@ -12,3 +12,4 @@
 --Atualizar diagrama (fazer um de sequencia)(Parcial)
 --Corrigir a raspicam em cpp, estou tentando transferir a libcamera para o video10 mas esta dando muito problema, talvez seja valido procurar outra lib(!!!PRIORIDADE!!!)
 --Melhorar desempenho (EU começei a otimizar mas por conta do tamanho da imagem está ficando bem pesado, tentar otimizar principalmente a interface e a captura)(A finalizar)
+--Era interessante fazer um yml de configuração geral mas não é prioridade e vai ser trabalhoso.Fica a criterio posteriormente.
