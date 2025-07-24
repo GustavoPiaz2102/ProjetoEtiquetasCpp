@@ -7,8 +7,8 @@
 --Descobrir oque esta ocasionando o erro de saida (Esta chamando o destrutor duas vezes, é bom manter mesmo  que dê um warning para que tudo seja finalizado caso ocorra algum problema)
 -Implementar GUI em thread separado (Talvez não seja necessário, mas é bom manter a ideia)
 
---implementar sensors
---implementar out strobo
---Atualizar diagrama (fazer um de sequencia)
---Corrigir a raspicam em cpp, estou tentando transferir a libcamera para o video10 mas esta dando muito problema, talvez seja valido procurar outra lib
---Melhorar desempenho (EU começei a otimizar mas por conta do tamanho da imagem está ficando bem pesado, tentar otimizar principalmente a interface e a captura)
+--implementar sensors(Falta colocar na controller, mas tem que fazer de forma a não travar a GUI ou implementar direto na detector)
+--implementar out strobo('')
+--Atualizar diagrama (fazer um de sequencia)(Parcial)
+--Corrigir a raspicam em cpp, estou tentando transferir a libcamera para o video10 mas esta dando muito problema, talvez seja valido procurar outra lib(!!!PRIORIDADE!!!)
+--Melhorar desempenho (EU começei a otimizar mas por conta do tamanho da imagem está ficando bem pesado, tentar otimizar principalmente a interface e a captura)(A finalizar)
