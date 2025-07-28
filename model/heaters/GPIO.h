@@ -3,7 +3,7 @@
 
 #include <gpiod.h>
 #include <string>
-
+#include <iostream>
 class GPIO {
 private:
     int PinSensor;

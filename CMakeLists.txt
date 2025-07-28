@@ -10,6 +10,7 @@ find_package(OpenCV REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(TESSERACT REQUIRED tesseract)
+pkg_check_modules(GPIOD REQUIRED libgpiod)  # <---- Adicionado libgpiod
 #find_package(raspicam REQUIRED)  # <---- Adicionado raspicam (comentado)
 
 # Arquivos fontes
@@ -40,7 +41,8 @@ target_include_directories(compilated_program PRIVATE
     ${GLEW_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
     ${TESSERACT_INCLUDE_DIRS}
-    #${raspicam_INCLUDE_DIRS}        # <---- Inclui raspicam (comentado)
+    ${GPIOD_INCLUDE_DIRS}          # <---- Inclui libgpiod
+    #${raspicam_INCLUDE_DIRS}      # <---- Inclui raspicam (comentado)
 )
 
 # Bibliotecas
@@ -53,5 +55,6 @@ target_link_libraries(compilated_program
     dl
     ${OpenCV_LIBS}
     ${TESSERACT_LIBRARIES}
-    #${raspicam_CV_LIBS}             # <---- Link raspicam (comentado)
+    ${GPIOD_LIBRARIES}             # <---- Link libgpiod
+    #${raspicam_CV_LIBS}          # <---- Link raspicam (comentado)
 )
