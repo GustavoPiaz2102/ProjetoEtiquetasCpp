@@ -36,10 +36,6 @@ Capture::~Capture() {
     }
 }
 
-// Variáveis para medir FPS (como membros privados da classe Capture)
-int Capture::frameCount = 0;
-double Capture::totalTime = 0.0;
-std::chrono::high_resolution_clock::time_point Capture::lastTime;
 
 cv::Mat Capture::captureImage() {
     if (!cap.isOpened()) {
