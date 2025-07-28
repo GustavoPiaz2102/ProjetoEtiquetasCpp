@@ -14,6 +14,9 @@ public:
 private:
     cv::VideoCapture cap;
     cv::Mat frame;
+    int frameCount;
+    double totalTime;
+    std::chrono::high_resolution_clock::time_point lastTime;
 };
 
 #endif
