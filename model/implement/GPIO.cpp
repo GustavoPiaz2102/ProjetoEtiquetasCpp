@@ -1,4 +1,4 @@
-#include "GPIO.h"
+#include "../heaters/GPIO.h"
 
 GPIO::GPIO(int pinSensor, int pinStrobo, const std::string &chipname)
     : PinSensor(pinSensor), PinStrobo(pinStrobo), chip(nullptr), sensorLine(nullptr), stroboLine(nullptr)
