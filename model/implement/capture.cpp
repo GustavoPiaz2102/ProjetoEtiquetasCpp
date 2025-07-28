@@ -1,23 +1,26 @@
 #include "../heaters/capture.h"
 #include <opencv2/core/utils/logger.hpp> // Para desativar logs desnecessários
+#include <iostream>
 
-Capture::Capture(int cameraIndex) : cap(), frame() {
+Capture::Capture(int cameraIndex) : cap() {
     // Desativa logs verbosos do OpenCV
-    cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_ERROR);
-    
-    // Usa pipeline do libcamera via GStreamer
-    std::string pipeline = 
-        "libcamerasrc ! video/x-raw,width=" + std::to_string(IMG_SZE) + 
-        ",height=" + std::to_string(IMG_SZE2) +
-        ",framerate=30/1 ! videoconvert ! appsink";
+    cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);
 
-    cap.open(pipeline, cv::CAP_GSTREAMER);
-
-    if (!cap.isOpened()) {
-        std::cerr << "Erro: Não foi possível abrir a câmera via libcamera + GStreamer!" << std::endl;
+#ifdef __linux__
+    std::string pipeline =
+        "libcamerasrc ! videoconvert ! video/x-raw,format=BGR ! appsink";
+    if (!cap.open(pipeline, cv::CAP_GSTREAMER)) {
+        std::cerr << "Erro: Não foi possível abrir a câmera pelo pipeline!" << std::endl;
     } else {
-        std::cout << "Câmera inicializada com sucesso usando libcamera + GStreamer!" << std::endl;
+        std::cout << "Câmera aberta com sucesso pelo pipeline!" << std::endl;
     }
+#else
+    if (!cap.open(cameraIndex)) {
+        std::cerr << "Erro: Não foi possível abrir a câmera pelo índice!" << std::endl;
+    } else {
+        std::cout << "Câmera aberta com sucesso pelo índice!" << std::endl;
+    }
+#endif
 }
 
 Capture::~Capture() {
@@ -31,20 +34,10 @@ cv::Mat Capture::captureImage() {
         std::cerr << "Erro: Câmera não está aberta!" << std::endl;
         return cv::Mat();
     }
-
-    frame.release();
-
-    // Tenta capturar até 3 vezes antes de desistir
-    for (int attempt = 0; attempt < 3; ++attempt) {
-        if (cap.grab()) {
-            if (cap.retrieve(frame)) {
-                if (!frame.empty()) {
-                    return frame;
-                }
-            }
-        }
+    cv::Mat frame;
+    if (!cap.read(frame)) {
+        std::cerr << "Erro ao capturar o frame!" << std::endl;
+        return cv::Mat();
     }
-
-    std::cerr << "Erro: Falha ao capturar frame após 3 tentativas!" << std::endl;
-    return cv::Mat();
+    return frame;
 }
