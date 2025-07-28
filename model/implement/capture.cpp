@@ -20,8 +20,8 @@ Capture::Capture(int cameraIndex) : cap() {
         std::cerr << "Erro: Não foi possível abrir a câmera pelo índice!" << std::endl;
     } else {
         // Define resolução 640x480 para outros sistemas
-        cap.set(cv::CAP_PROP_FRAME_WIDTH, 640);
-        cap.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
+        cap.set(cv::CAP_PROP_FRAME_WIDTH, 1280);
+        cap.set(cv::CAP_PROP_FRAME_HEIGHT, 720);
         std::cout << "Câmera aberta com sucesso pelo índice!" << std::endl;
     }
 #endif
