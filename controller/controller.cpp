@@ -29,7 +29,7 @@ Controller::~Controller() {
 
 void Controller::run() {
     interface.iniciar_janela();
-    while (selected_option != 2) {
+    while (true) {
         interface.process_events();
         interface.begin_frame();
 
@@ -61,10 +61,14 @@ void Controller::run() {
                 }
                 break;
             }
-
-            case 2:
-                std::cout << "Saindo do sistema..." << std::endl;
-                return; // Encerra o loop e a função
+            case 5:{
+                interface.config_menu();
+                break;
+            }
+            case 2:{
+                selected_option = -1;
+                break;
+            }
         }
 
         interface.end_frame();

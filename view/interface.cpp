@@ -111,37 +111,63 @@ void Interface::end_frame() {
 }
 
 void Interface::menu(int& selected_option) {
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+    // Define um pequeno padding para evitar que a borda sobreponha os widgets
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8, 8));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, TAMANHO_BORDA_JANELA);
-    
+
     beginFullscreenWindow("Main");
     ImGui::SetWindowFontScale(ESCALA_FONTE_MENU);
-    
+
+    // Layout para o primeiro botão e informações do validador
     ImGui::Text(" Escolha um botão:");
     if (ImGui::Button("Rodar Sistema", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
         selected_option = 0;
     }
-    
+
     ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
     ImGui::Text("L. %s\nFAB.: %s\nVAL.: %s", 
                 validator.GetLT().c_str(), 
                 validator.GetFAB().c_str(), 
                 validator.GetVAL().c_str());
-    
+
+    // Espaçamento entre a primeira linha de elementos e a segunda
     ImGui::Dummy(ImVec2(0, ESPACO_ENTRE_BOTOES));
-    
+
+    // Layout para o segundo botão
     if (ImGui::Button("Atualizar Data", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
         selected_option = 1;
     }
+
     ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
-    
-    if (ImGui::Button("Sair", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
+
+    // Lógica do botão "Imprimir" com mudança de cor
+    bool style_pushed_for_print_button = false;
+    if (imprimindo) {
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.6f, 0.2f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.7f, 0.3f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.1f, 0.5f, 0.1f, 1.0f));
+        style_pushed_for_print_button = true;
+    }
+
+    if (ImGui::Button("Imprimir", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
         selected_option = 2;
+        imprimindo = !imprimindo;
+    }
+
+    if (style_pushed_for_print_button) {
+        ImGui::PopStyleColor(3);
+    }
+
+    ImGui::Dummy(ImVec2(0, ESPACO_ENTRE_BOTOES));
+
+    if (ImGui::Button("Configurar", ImVec2(TAMANHO_BOTAO_LARG / 2, TAMANHO_BOTAO_ALT / 5))) {
+        selected_option = 5;
     }
 
     ImGui::End();
     ImGui::PopStyleVar(2);
 }
+
 
 bool Interface::atualizar_frame(const cv::Mat& frame) {
     if (frame.empty()) return false;
@@ -319,6 +345,22 @@ bool Interface::requisitar_lt(std::string& selected_lt) {
     ImGui::PopStyleVar(3);
     ImGui::End();
     return clicked;
+}
+
+bool Interface::config_menu(){
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
+    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+    beginFullscreenWindow("MainPage");
+    
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, PADDING_FRAME);
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, SPACING_ITEM);
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, SPACING_INTERNO);
+    ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);
+
+    ImGui::Text(" Escolha uma data de Fabricação:");
+    ImGui::PopStyleVar(3);
+    ImGui::End();
+    return true;
 }
 
 bool Interface::requisitar_data(std::string& selected_date, int tipo) {

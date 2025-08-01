@@ -24,7 +24,7 @@ Includes:
 #define JANELA_TITULO          "Menu"
 
 // Botões principais
-#define TAMANHO_BOTAO_LARG     500
+#define TAMANHO_BOTAO_LARG     493
 #define TAMANHO_BOTAO_ALT      225
 #define ESPACO_ENTRE_BOTOES    20.0f
 
@@ -33,7 +33,7 @@ Includes:
 #define TAMANHO_BOTAO_PEQUENO_ALT   60
 
 // Estilo
-#define TAMANHO_BORDA_JANELA   0.1f
+#define TAMANHO_BORDA_JANELA   1.0f
 #define ESCALA_FONTE_MENU      2.0f
 #define ESCALA_FONTE_DATA      2.0f
 
@@ -73,6 +73,8 @@ private:
     float resolution_scale;   // Controle de escala de resolução
     int max_display_width;    // Largura máxima padrão
 
+    bool imprimindo = false;
+
 public:
     Interface(Validator& val);
     ~Interface();
@@ -89,6 +91,8 @@ public:
     bool requisitar_lt(std::string& selected_lt);
     std::string FormatDate(int day, int month, int year);
     void beginFullscreenWindow(const char* name);
+    bool config_menu();
+
 };
 
 #endif // INTERFACE_H

@@ -1,4 +1,4 @@
-#ifndef GPIO_H
+/*#ifndef GPIO_H
 #define GPIO_H
 
 #include <gpiod.h>
