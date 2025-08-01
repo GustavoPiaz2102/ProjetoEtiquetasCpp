@@ -3,26 +3,43 @@
 #include <iostream>
 
 Controller::Controller()
-    : validator("L. 000/00", "Fab 00/000/0000", "Val 00/000/0000"),
+    : validator("000/00", "00/000/0000", "00/000/0000"),
       interface(validator),
       detector(interface),
-      selected_option(-1)
+      selected_option(-1),
+      arquiver("data/config.txt")
 {
     // Carrega os dados do arquivo para o validador
     glewInit();
-    std::string lt, fab, val;
-    load_file(lt, fab, val);
-    validator.SetLT(lt);
-    validator.SetFAB(fab);
-    validator.SetVAL(val);
+    arquiver.load();
+    std::string lt_value = arquiver.dict["lt"];
+    std::string fab_value = arquiver.dict["fab"];
+    std::string val_value = arquiver.dict["val"];
 
+    // --- SOLUÇÃO PARA O ERRO DE BINDING ---
+    // Criamos uma variável local para cada valor e a passamos para a função Set.
+    if (!lt_value.empty()) {
+        std::string full_lt = lt_value; // Cria a variável local
+        validator.SetLT(full_lt);              // Passa a variável (lvalue)
+    }
+    if (!fab_value.empty()) {
+        std::string full_fab = fab_value;
+        validator.SetFAB(full_fab);
+    }
+    if (!val_value.empty()) {
+        std::string full_val = val_value;
+        validator.SetVAL(full_val);
+    }
     std::cout << "Dados carregados: ";
     validator.printall();
 }
 
 Controller::~Controller() {
     // Salva os dados do validador no arquivo ao destruir o controlador
-    save_file(validator.GetLT(), validator.GetFAB(), validator.GetVAL());
+    arquiver.dict["lt"]=validator.GetLT();
+    arquiver.dict["fab"]=validator.GetFAB();
+    arquiver.dict["val"]=validator.GetVAL();
+    arquiver.save();
     std::cout << "Dados salvos: ";
     validator.printall();
 }
@@ -46,11 +63,12 @@ void Controller::run() {
                 if (requisitar_data_e_setar(0, [&](const std::string& d) { validator.SetFAB(d); }))
                     selected_option = 3;
                 break;
-
+                
             case 3:
                 if (requisitar_data_e_setar(1, [&](const std::string& d) { validator.SetVAL(d); }))
                     selected_option = 4;
                 break;
+
 
             case 4: {
                 std::string lt;
@@ -58,6 +76,11 @@ void Controller::run() {
                     validator.SetLT(lt);
                     std::cout << "Lote selecionado: " << lt << std::endl;
                     selected_option = -1;
+                    arquiver.dict["lt"]=validator.GetLT();
+                    arquiver.dict["fab"]=validator.GetFAB();
+                    arquiver.dict["val"]=validator.GetVAL();
+                    arquiver.save();
+
                 }
                 break;
             }

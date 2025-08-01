@@ -71,6 +71,10 @@
         "list": "cpp",
         "set": "cpp",
         "unordered_set": "cpp",
-        "mutex": "cpp"
+        "mutex": "cpp",
+        "any": "cpp",
+        "csignal": "cpp",
+        "ranges": "cpp",
+        "valarray": "cpp"
     }
 }

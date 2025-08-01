@@ -22,6 +22,7 @@ private:
     Validator validator;
     bool requisitar_data_e_setar(int tipo, std::function<void(const std::string&)> setter);
     void rodar_detector();
+    Arquiver arquiver;
 
 };
 

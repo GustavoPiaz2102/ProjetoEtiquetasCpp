@@ -1,9 +1,18 @@
 #ifndef ARQUIVER_H
 #define ARQUIVER_H
+
 #include <string>
-#include <iostream>
-#include <fstream>
-#define FILE_PATH "data/arquiver.txt"
-void load_file(std::string & lt, std::string& fab, std::string& val);
-void save_file(const std::string & lt, const std::string& fab, const std::string& val);
-#endif
+#include <map>
+
+class Arquiver {
+    private:
+    std::string path;
+public:
+    std::map<std::string, std::string> dict;
+    Arquiver(const std::string& caminho);
+    bool load();
+    bool save() const;
+    void show() const;
+};
+
+#endif // ARQUIVER_H
