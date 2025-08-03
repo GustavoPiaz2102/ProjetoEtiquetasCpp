@@ -85,7 +85,7 @@ void Controller::run() {
                 break;
             }
             case 5:{
-                interface.config_menu();
+                if(interface.config_menu()) selected_option = -1;
                 break;
             }
             case 2:{

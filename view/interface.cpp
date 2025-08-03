@@ -347,21 +347,61 @@ bool Interface::requisitar_lt(std::string& selected_lt) {
     return clicked;
 }
 
-bool Interface::config_menu(){
+bool Interface::config_menu() {
+    static char tamanho_etiqueta[64] = "60 mm,40 mm";
+    static char espacamento[32] = "2 mm,0";
+    static int densidade = 8;
+    static int velocidade = 4;
+    static int direcao = 1;
+    static char texto_lote[64] = "L.:001/25";
+    static char texto_fabricacao[64] = "FAB.:23/JAN/2025";
+    static char texto_validade[64] = "VAL.:23/JAN/2027";
+    static char tamanho_fonte[8] = "3";
+    static int posicao_x = 100;
+    static int posicao_y_lote = 100;
+    static int posicao_y_fabricacao = 150;
+    static int posicao_y_validade = 200;
+    static int rotacao = 0;
+    static float escala_x = 1.0f;
+    static float escala_y = 1.0f;
+    static char fonte[8] = "3";
+
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
-    beginFullscreenWindow("MainPage");
-    
+    beginFullscreenWindow("Configurações da Etiqueta");
+
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, PADDING_FRAME);
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, SPACING_ITEM);
     ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, SPACING_INTERNO);
     ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);
 
-    ImGui::Text(" Escolha uma data de Fabricação:");
+    ImGui::Text("Parâmetros da Impressora:");
+    ImGui::InputText("Tamanho Etiqueta", tamanho_etiqueta, IM_ARRAYSIZE(tamanho_etiqueta));
+    ImGui::InputText("Espaçamento", espacamento, IM_ARRAYSIZE(espacamento));
+    ImGui::InputInt("Densidade", &densidade);
+    ImGui::InputInt("Velocidade", &velocidade);
+    ImGui::InputInt("Direção", &direcao);
+
+    ImGui::Separator();
+    ImGui::Text("Parâmetros do Texto:");
+
+    ImGui::InputText("Tamanho Fonte", tamanho_fonte, IM_ARRAYSIZE(tamanho_fonte));
+
+    ImGui::InputInt("Posição X", &posicao_x);
+    ImGui::InputInt("Y - Lote", &posicao_y_lote);
+    ImGui::InputInt("Y - Fabricação", &posicao_y_fabricacao);
+    ImGui::InputInt("Y - Validade", &posicao_y_validade);
+    ImGui::InputInt("Rotação", &rotacao);
+    ImGui::InputFloat("Escala X", &escala_x);
+    ImGui::InputFloat("Escala Y", &escala_y);
+    ImGui::InputText("Fonte", fonte, IM_ARRAYSIZE(fonte));
+    bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
     ImGui::PopStyleVar(3);
     ImGui::End();
-    return true;
+    if (clicked) return true;
+    else return false;
 }
+
 
 bool Interface::requisitar_data(std::string& selected_date, int tipo) {
     static int selected_day = 0;
