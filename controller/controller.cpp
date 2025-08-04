@@ -89,7 +89,7 @@ void Controller::run() {
                 break;
             }
             case 2:{
-                selected_option = -1;
+                if(interface.config_impress())selected_option = -1;
                 break;
             }
         }

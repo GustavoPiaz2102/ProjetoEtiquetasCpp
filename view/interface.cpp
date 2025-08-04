@@ -151,7 +151,6 @@ void Interface::menu(int& selected_option) {
 
     if (ImGui::Button("Imprimir", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
         selected_option = 2;
-        imprimindo = !imprimindo;
     }
 
     if (style_pushed_for_print_button) {
@@ -346,6 +345,69 @@ bool Interface::requisitar_lt(std::string& selected_lt) {
     ImGui::End();
     return clicked;
 }
+
+bool Interface::config_impress() {
+    if(imprimindo){imprimindo = !imprimindo;return true;}
+    else{
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
+    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+    beginFullscreenWindow("Configurações da Impressão");
+
+    // Estilos ampliados
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(16, 12));     // Aumenta área clicável dos botões
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 12));      // Espaçamento entre itens
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(8, 8));   // Espaço interno entre elementos
+    ImGui::SetWindowFontScale(2.0f); // Escala da fonte dentro da janela (2x maior)
+
+    static int value = 0;
+
+    ImGui::PushID("custom_input_int");
+    ImGui::Dummy(ImVec2(0, 150));
+    ImGui::Text("Quantidade de impressões:");
+    // Botões "-100", "-10", "-1"
+    if (ImGui::Button("-100", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))) {
+    if ((value - 100) >= 0) value -= 100;
+    else{value = 0;}
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("-10", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))){
+    if ((value - 10) >= 0) value -= 10;
+    else{value=0;}
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("-1", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))){
+    if ((value - 1) >= 0) value -= 1;
+    else{value=0;}
+    }
+    ImGui::SameLine();
+
+    // Input
+    ImGui::SetNextItemWidth(190.0f);
+    ImGui::InputInt("##custom_int", &value, 0, 0);
+
+    ImGui::SameLine();
+
+    // Botões "+1", "+10", "+100"
+    if (ImGui::Button("+1", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))) value += 1;
+    ImGui::SameLine();
+    if (ImGui::Button("+10", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))) value += 10;
+    ImGui::SameLine();
+    if (ImGui::Button("+100", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))) value += 100;
+
+    ImGui::PopID();
+    bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
+    ImGui::PopStyleVar(3);
+    ImGui::End();
+    if (clicked){
+    imprimindo=!imprimindo;
+    return true;
+    }
+    else return false;
+}
+}
+
+
+
 
 bool Interface::config_menu() {
     static char tamanho_etiqueta[64] = "60 mm,40 mm";

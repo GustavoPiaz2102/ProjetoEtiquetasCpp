@@ -92,7 +92,7 @@ public:
     std::string FormatDate(int day, int month, int year);
     void beginFullscreenWindow(const char* name);
     bool config_menu();
-
+    bool config_impress();
 };
 
 #endif // INTERFACE_H
