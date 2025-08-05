@@ -15,6 +15,7 @@ Includes:
 #include <sstream>
 #include "../model/heaters/capture.h"
 #include "../model/heaters/validator.h"
+#include "../model/heaters/arquiver.h"
 
 // ===================== CONFIGURAÇÕES DE INTERFACE =====================
 
@@ -91,7 +92,7 @@ public:
     bool requisitar_lt(std::string& selected_lt);
     std::string FormatDate(int day, int month, int year);
     void beginFullscreenWindow(const char* name);
-    bool config_menu();
+    bool config_menu(Arquiver& arq);
     bool config_impress();
 };
 

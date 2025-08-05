@@ -7,7 +7,9 @@ Controller::Controller()
       interface(validator),
       detector(interface),
       selected_option(-1),
-      arquiver("data/config.txt")
+      arquiver("data/config.txt"),
+      imp(arquiver)
+      
 {
     // Carrega os dados do arquivo para o validador
     glewInit();
@@ -46,57 +48,73 @@ Controller::~Controller() {
 
 void Controller::run() {
     interface.iniciar_janela();
-    while (true) {
-        interface.process_events();
-        interface.begin_frame();
 
-        switch (selected_option) {
-            case -1:
-                interface.menu(selected_option);
-                break;
+    try {
+        while (true) {
+            interface.process_events();
+            interface.begin_frame();
 
-            case 0:
-                rodar_detector();
-                break;
+            switch (selected_option) {
+                case -1:
+                    interface.menu(selected_option);
+                    break;
 
-            case 1:
-                if (requisitar_data_e_setar(0, [&](const std::string& d) { validator.SetFAB(d); }))
-                    selected_option = 3;
-                break;
-                
-            case 3:
-                if (requisitar_data_e_setar(1, [&](const std::string& d) { validator.SetVAL(d); }))
-                    selected_option = 4;
-                break;
+                case 0:
+                    rodar_detector();
+                    break;
 
+                case 1:
+                    if (requisitar_data_e_setar(0, [&](const std::string& d) { validator.SetFAB(d); }))
+                        selected_option = 3;
+                    break;
 
-            case 4: {
-                std::string lt;
-                if (interface.requisitar_lt(lt)) {
-                    validator.SetLT(lt);
-                    std::cout << "Lote selecionado: " << lt << std::endl;
-                    selected_option = -1;
-                    arquiver.dict["lt"]=validator.GetLT();
-                    arquiver.dict["fab"]=validator.GetFAB();
-                    arquiver.dict["val"]=validator.GetVAL();
-                    arquiver.save();
+                case 3:
+                    if (requisitar_data_e_setar(1, [&](const std::string& d) { validator.SetVAL(d); }))
+                        selected_option = 4;
+                    break;
 
+                case 4: {
+                    std::string lt;
+                    if (interface.requisitar_lt(lt)) {
+                        validator.SetLT(lt);
+                        std::cout << "Lote selecionado: " << lt << std::endl;
+                        selected_option = -1;
+                        arquiver.dict["lt"] = validator.GetLT();
+                        arquiver.dict["fab"] = validator.GetFAB();
+                        arquiver.dict["val"] = validator.GetVAL();
+                        arquiver.save();
+                    }
+                    break;
                 }
-                break;
-            }
-            case 5:{
-                if(interface.config_menu()) selected_option = -1;
-                break;
-            }
-            case 2:{
-                if(interface.config_impress())selected_option = -1;
-                break;
-            }
-        }
 
-        interface.end_frame();
+                case 5: {
+                    if (interface.config_menu(arquiver)){
+                        selected_option = -1;
+                        imp.LoadAtributes();
+                        imp.SaveAtributes();
+                    }
+                    break;
+                }
+
+                case 2: {
+                    if (interface.config_impress())
+                        selected_option = -1;
+                    break;
+                }
+            }
+
+            interface.end_frame();
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Erro capturado: " << e.what() << std::endl;
+        arquiver.save();
+        // Aqui você pode decidir se quer abortar, reiniciar o loop, ou outra coisa
+    } catch (...) {
+        std::cerr << "Erro desconhecido capturado." << std::endl;
+        arquiver.save();
     }
 }
+
 
 bool Controller::requisitar_data_e_setar(int tipo, std::function<void(const std::string&)> setter) {
     std::string data;

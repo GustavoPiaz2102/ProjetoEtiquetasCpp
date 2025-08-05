@@ -8,6 +8,7 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include "../model/heaters/arquiver.h" // Para carregar e salvar os dados do validador
+#include "../model/heaters/impress.h"
 
 class Controller {
 public:
@@ -23,7 +24,7 @@ private:
     bool requisitar_data_e_setar(int tipo, std::function<void(const std::string&)> setter);
     void rodar_detector();
     Arquiver arquiver;
-
+    Impress imp;
 };
 
 #endif // CONTROLLER_H

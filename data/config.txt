@@ -1,3 +1,18 @@
-fab:05/JUL/2030
-lt:007/29
-val:05/JUL/2030
+densidade:8
+direcao:1
+escala_x:1.000000
+escala_y:1.000000
+espacamento:2 mm,0
+fab:01/JAN/2065
+fonte:3
+lt:000/23
+posicao_x:100
+posicao_y_fabricacao:150
+posicao_y_lote:100
+posicao_y_validade:200
+rotacao:0
+tamanho_etiqueta:60 mm,40 mm
+tamanho_fonte:3
+texto:Teste
+val:01/JAN/2065
+velocidade:4

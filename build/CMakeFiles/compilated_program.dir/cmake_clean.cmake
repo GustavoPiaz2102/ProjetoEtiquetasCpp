@@ -25,6 +25,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/compilated_program.dir/model/implement/arquiver.cpp.o.d"
   "CMakeFiles/compilated_program.dir/model/implement/capture.cpp.o"
   "CMakeFiles/compilated_program.dir/model/implement/capture.cpp.o.d"
+  "CMakeFiles/compilated_program.dir/model/implement/impress.cpp.o"
+  "CMakeFiles/compilated_program.dir/model/implement/impress.cpp.o.d"
   "CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.o"
   "CMakeFiles/compilated_program.dir/model/implement/preprocessor.cpp.o.d"
   "CMakeFiles/compilated_program.dir/model/implement/raspcam.cpp.o"

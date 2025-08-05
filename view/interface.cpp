@@ -409,15 +409,13 @@ bool Interface::config_impress() {
 
 
 
-bool Interface::config_menu() {
+bool Interface::config_menu(Arquiver& arq) {
     static char tamanho_etiqueta[64] = "60 mm,40 mm";
     static char espacamento[32] = "2 mm,0";
     static int densidade = 8;
     static int velocidade = 4;
     static int direcao = 1;
-    static char texto_lote[64] = "L.:001/25";
-    static char texto_fabricacao[64] = "FAB.:23/JAN/2025";
-    static char texto_validade[64] = "VAL.:23/JAN/2027";
+
     static char tamanho_fonte[8] = "3";
     static int posicao_x = 100;
     static int posicao_y_lote = 100;
@@ -460,7 +458,30 @@ bool Interface::config_menu() {
     bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
     ImGui::PopStyleVar(3);
     ImGui::End();
-    if (clicked) return true;
+    if (clicked) {
+    // Salvar no dicionário do Arquiver
+    arq.dict["tamanho_etiqueta"] = tamanho_etiqueta;
+    arq.dict["espacamento"] = espacamento;
+    arq.dict["densidade"] = std::to_string(densidade);
+    arq.dict["velocidade"] = std::to_string(velocidade);
+    arq.dict["direcao"] = std::to_string(direcao);
+
+    arq.dict["tamanho_fonte"] = tamanho_fonte;
+    arq.dict["posicao_x"] = std::to_string(posicao_x);
+    arq.dict["posicao_y_lote"] = std::to_string(posicao_y_lote);
+    arq.dict["posicao_y_fabricacao"] = std::to_string(posicao_y_fabricacao);
+    arq.dict["posicao_y_validade"] = std::to_string(posicao_y_validade);
+    arq.dict["rotacao"] = std::to_string(rotacao);
+    arq.dict["escala_x"] = std::to_string(escala_x);
+    arq.dict["escala_y"] = std::to_string(escala_y);
+    arq.dict["fonte"] = fonte;
+
+    // Salva no arquivo
+    arq.save();
+
+    return true;
+}
+
     else return false;
 }
 
