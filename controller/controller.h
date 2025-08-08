@@ -25,6 +25,7 @@ private:
     void rodar_detector();
     Arquiver arquiver;
     Impress imp;
+    int qnt_impress; // Quantidade de impressões
 };
 
 #endif // CONTROLLER_H

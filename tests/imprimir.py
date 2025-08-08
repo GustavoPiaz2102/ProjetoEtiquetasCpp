@@ -9,7 +9,7 @@ CLS
 TEXT 100,100,"3",0,1,1,"L.:001/25"
 TEXT 100,150,"3",0,1,1,"FAB.:23/JAN/2025"
 TEXT 100,200,"3",0,1,1,"VAL.:23/JAN/2027"
-PRINT 2
+PRINT 1
 """
 
 def imprimir_etiqueta(comando):

@@ -8,7 +8,8 @@ Controller::Controller()
       detector(interface),
       selected_option(-1),
       arquiver("data/config.txt"),
-      imp(arquiver)
+      imp(arquiver),
+      qnt_impress(0)
       
 {
     // Carrega os dados do arquivo para o validador
@@ -56,7 +57,30 @@ void Controller::run() {
 
             switch (selected_option) {
                 case -1:
-                    interface.menu(selected_option);
+                    if(qnt_impress<=0){
+                        interface.setImprimindo(false);
+                    }
+                    interface.menu(selected_option,qnt_impress);
+                    if(interface.GetImprimindo()&&qnt_impress>0){ 
+                        if (qnt_impress > 0) {
+                            std::vector<std::string> strList = {
+                                validator.GetLT(),
+                                validator.GetFAB(),
+                                validator.GetVAL()
+                            };
+                            if (imp.print(strList)) {
+                                std::cout << "Impressão iniciada com sucesso!" << std::endl;
+                                qnt_impress--;
+                            } else {
+                                std::cout << "Erro ao iniciar impressão." << std::endl;
+                            }
+                        } else {
+                            interface.setImprimindo(false);
+                        }
+                    }
+                    else{
+                        qnt_impress=0;
+                    }
                     break;
 
                 case 0:
@@ -97,7 +121,7 @@ void Controller::run() {
                 }
 
                 case 2: {
-                    if (interface.config_impress())
+                    if (interface.config_impress(qnt_impress))
                         selected_option = -1;
                     break;
                 }

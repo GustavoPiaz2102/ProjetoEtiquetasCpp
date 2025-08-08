@@ -46,7 +46,43 @@ void Interface::beginFullscreenWindow(const char* name) {
             return false;
         }
 
-        window = glfwCreateWindow(JANELA_LARGURA, JANELA_ALTURA, JANELA_TITULO, NULL, NULL);
+        glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+        glfwWindowHint(GLFW_FLOATING, GLFW_TRUE);
+        glfwWindowHint(GLFW_FOCUS_ON_SHOW, GLFW_TRUE);
+        glfwWindowHint(GLFW_AUTO_ICONIFY, GLFW_FALSE);
+
+        int monitor_count;
+        GLFWmonitor** monitors = glfwGetMonitors(&monitor_count);
+
+        // Adicionar debug para verificar monitores
+        std::cout << "Monitores detectados: " << monitor_count << std::endl;
+        for (int i = 0; i < monitor_count; i++) {
+            const char* name = glfwGetMonitorName(monitors[i]);
+            int x, y;
+            glfwGetMonitorPos(monitors[i], &x, &y);
+            const GLFWvidmode* mode_debug = glfwGetVideoMode(monitors[i]);
+            std::cout << "Monitor " << i << ": " << name << " - Posição: (" << x << ", " << y << ") - Resolução: " << mode_debug->width << "x" << mode_debug->height << std::endl;
+        }
+
+        GLFWmonitor* selected_monitor = NULL;
+        if (monitor_count > 1) {
+            selected_monitor = monitors[1]; // Monitor secundário
+            std::cout << "Selecionado monitor secundário (índice 1)" << std::endl;
+        } else {
+            selected_monitor = monitors[0]; // Monitor primário (fallback)
+            std::cout << "Apenas um monitor detectado, usando monitor primário" << std::endl;
+        }
+
+        const GLFWvidmode* mode = glfwGetVideoMode(selected_monitor);
+
+        glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+        glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+        glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+        glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+        // Criar janela em modo windowed (não fullscreen exclusivo)
+        window = glfwCreateWindow(mode->width, mode->height, JANELA_TITULO, NULL, NULL);
         if (!window) {
             glfwTerminate();
             std::cerr << "Falha ao criar janela GLFW\n";
@@ -54,6 +90,15 @@ void Interface::beginFullscreenWindow(const char* name) {
         }
 
         glfwMakeContextCurrent(window);
+        
+        // Posicionar a janela no monitor selecionado
+        int monitor_x, monitor_y;
+        glfwGetMonitorPos(selected_monitor, &monitor_x, &monitor_y);
+        glfwSetWindowPos(window, monitor_x, monitor_y);
+        
+        std::cout << "Janela posicionada em: (" << monitor_x << ", " << monitor_y << ")" << std::endl;
+        std::cout << "Resolução da janela: " << mode->width << "x" << mode->height << std::endl;
+        
         glfwSwapInterval(0);
 
         // Substitui a verificação do GLAD por GLEW
@@ -110,7 +155,7 @@ void Interface::end_frame() {
     glfwSwapBuffers(window);
 }
 
-void Interface::menu(int& selected_option) {
+void Interface::menu(int& selected_option,int qntImp) {
     // Define um pequeno padding para evitar que a borda sobreponha os widgets
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8, 8));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, TAMANHO_BORDA_JANELA);
@@ -125,10 +170,11 @@ void Interface::menu(int& selected_option) {
     }
 
     ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
-    ImGui::Text("L. %s\nFAB.: %s\nVAL.: %s", 
+    ImGui::Text("L. %s\nFAB.: %s\nVAL.: %s\nQnt. Imp.: %d", 
                 validator.GetLT().c_str(), 
                 validator.GetFAB().c_str(), 
-                validator.GetVAL().c_str());
+                validator.GetVAL().c_str(),
+                qntImp); 
 
     // Espaçamento entre a primeira linha de elementos e a segunda
     ImGui::Dummy(ImVec2(0, ESPACO_ENTRE_BOTOES));
@@ -346,7 +392,7 @@ bool Interface::requisitar_lt(std::string& selected_lt) {
     return clicked;
 }
 
-bool Interface::config_impress() {
+bool Interface::config_impress(int & value) {
     if(imprimindo){imprimindo = !imprimindo;return true;}
     else{
     ImGui::SetNextWindowPos(ImVec2(0, 0));
@@ -358,8 +404,6 @@ bool Interface::config_impress() {
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 12));      // Espaçamento entre itens
     ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(8, 8));   // Espaço interno entre elementos
     ImGui::SetWindowFontScale(2.0f); // Escala da fonte dentro da janela (2x maior)
-
-    static int value = 0;
 
     ImGui::PushID("custom_input_int");
     ImGui::Dummy(ImVec2(0, 150));
@@ -566,4 +610,13 @@ bool Interface::requisitar_data(std::string& selected_date, int tipo) {
     ImGui::PopStyleVar(3);
     ImGui::End();
     return clicked;
+}
+// Should match the declaration in interface.h
+bool Interface::GetImprimindo() {
+    return imprimindo;
+}
+
+// Should match the declaration in interface.h
+void Interface::setImprimindo(bool value) {
+    imprimindo = value;
 }

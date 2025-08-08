@@ -1,3 +1,5 @@
+#include <iomanip>  // para std::setprecision
+#include <sstream>  // para std::ostringstream
 #include "../heaters/impress.h"
 
 Impress::Impress(Arquiver& arquiver) : arq(arquiver) {}
@@ -41,49 +43,71 @@ void Impress::SaveAtributes() {
     arq.save();
 }
 
-bool Impress::print(std::vector<std::string> StrList) {
-    std::string comando;
-    LoadAtributes();
-    // Monta o comando com os valores do objeto
-    comando += "SIZE " + std::string(tamanho_etiqueta) + "\n";
-    comando += "GAP " + std::string(espacamento) + "\n";
-    comando += "DENSITY " + std::to_string(densidade) + "\n";
-    comando += "SPEED " + std::to_string(velocidade) + "\n";
-    comando += "DIRECTION " + std::to_string(direcao) + "\n";
-    comando += "CLS\n";
+// Função auxiliar para formatar float sem casas decimais desnecessárias
+std::string formatFloat(float val) {
+    std::ostringstream ss;
+    if (val == (int)val) {
+        ss << std::fixed << std::setprecision(0) << val;
+    } else {
+        ss << std::fixed << std::setprecision(2) << val;
+    }
+    return ss.str();
+}
 
-    // Usa os textos do parâmetro StrList
-    // Espera: [lote, fabricacao, validade]
+bool Impress::print(std::vector<std::string> StrList) {
+    // Ver se já se passou 1 segundo desde a última impressão
+    std::chrono::duration<double> elapsed = std::chrono::high_resolution_clock::now() - TimeLastPrint;
+    if (elapsed.count() < 1.0) {
+        std::cout << "Aguarde 3 segundos entre as impressões." << std::endl;
+        return false;
+    }
+
+    LoadAtributes();
+
+    if (qnt <= 0) qnt = 1;
+    if (strlen(fonte) == 0) strcpy(fonte, "3");
+
+    std::string comando;
+    comando += "SIZE " + std::string(tamanho_etiqueta) + "\r\n";
+    comando += "GAP " + std::string(espacamento) + "\r\n";
+    comando += "DENSITY " + std::to_string(densidade) + "\r\n";
+    comando += "SPEED " + std::to_string(velocidade) + "\r\n";
+    comando += "DIRECTION " + std::to_string(direcao) + "\r\n";
+    comando += "CLS\r\n";
+
     if (StrList.size() > 0)
         comando += "TEXT " + std::to_string(posicao_x) + "," + std::to_string(posicao_y_lote) +
                    ",\"" + fonte + "\"," + std::to_string(rotacao) + "," +
-                   std::to_string(escala_x) + "," + std::to_string(escala_y) + ",\"L.:" + StrList[0] + "\"\n";
+                   formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"L.:" + StrList[0] + "\"\r\n";
 
     if (StrList.size() > 1)
         comando += "TEXT " + std::to_string(posicao_x) + "," + std::to_string(posicao_y_fabricacao) +
                    ",\"" + fonte + "\"," + std::to_string(rotacao) + "," +
-                   std::to_string(escala_x) + "," + std::to_string(escala_y) + ",\"FAB.:" + StrList[1] + "\"\n";
+                   formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"FAB.:" + StrList[1] + "\"\r\n";
 
     if (StrList.size() > 2)
         comando += "TEXT " + std::to_string(posicao_x) + "," + std::to_string(posicao_y_validade) +
                    ",\"" + fonte + "\"," + std::to_string(rotacao) + "," +
-                   std::to_string(escala_x) + "," + std::to_string(escala_y) + ",\"VAL.:" + StrList[2] + "\"\n";
+                   formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"VAL.:" + StrList[2] + "\"\r\n";
 
-    comando += "PRINT " + std::to_string(qnt) + "\n";
+    comando += "PRINT " + std::to_string(qnt) + "\r\n";
 
-    // Envia para impressora
     try {
         std::ofstream impressora("/dev/usb/lp0", std::ios::binary);
         if (!impressora.is_open()) {
             std::cerr << "❌ Erro: não foi possível abrir a impressora." << std::endl;
             return false;
         }
+
+        std::cout << "Enviando comando para impressora:\n" << comando << std::endl;
+
         impressora.write(comando.c_str(), comando.size());
         impressora.close();
+
         std::cout << "✅ Etiqueta enviada com sucesso!" << std::endl;
+        TimeLastPrint = std::chrono::high_resolution_clock::now();
         return true;
-    }
-    catch (const std::exception& e) {
+    } catch (const std::exception& e) {
         std::cerr << "❌ Erro ao imprimir: " << e.what() << std::endl;
         return false;
     }

@@ -7,6 +7,7 @@
 #include <cstdlib> // para std::stoi, std::stof
 #include <fstream>   // ofstream
 #include <vector>
+#include <chrono>
 class Impress {
 private:
     char tamanho_etiqueta[64] = "60 mm,40 mm";
@@ -25,7 +26,10 @@ private:
     float escala_y = 1.0f;
     char fonte[8] = "3";
     int qnt = 1;
+    float TempoEntreImpressao = 2.0f; // Tempo mínimo entre impressões em segundos
     Arquiver arq;
+
+    std::chrono::time_point<std::chrono::high_resolution_clock> TimeLastPrint;
 
 public:
     Impress(Arquiver& arquiver);

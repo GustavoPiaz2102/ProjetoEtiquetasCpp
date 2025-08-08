@@ -73,10 +73,11 @@ private:
     // Novos membros adicionados
     float resolution_scale;   // Controle de escala de resolução
     int max_display_width;    // Largura máxima padrão
-
     bool imprimindo = false;
 
+
 public:
+
     Interface(Validator& val);
     ~Interface();
 
@@ -86,14 +87,15 @@ public:
     bool shouldClose() const;
     void begin_frame();
     void end_frame();
-    void menu(int& selected_option);
+    void menu(int& selected_option, int qntImp);
     bool atualizar_frame(const cv::Mat& frame);
     bool requisitar_data(std::string& selected_date, int tipo);
     bool requisitar_lt(std::string& selected_lt);
     std::string FormatDate(int day, int month, int year);
     void beginFullscreenWindow(const char* name);
     bool config_menu(Arquiver& arq);
-    bool config_impress();
+    bool config_impress(int & value);
+    bool GetImprimindo();
+    void setImprimindo(bool value);
 };
-
 #endif // INTERFACE_H
