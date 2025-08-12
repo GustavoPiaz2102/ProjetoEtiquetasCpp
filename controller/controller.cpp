@@ -72,7 +72,11 @@ void Controller::run() {
                                 std::cout << "Impressão iniciada com sucesso!" << std::endl;
                                 qnt_impress--;
                             } else {
-                                std::cout << "Erro ao iniciar impressão." << std::endl;
+                                if(interface.PopUpError("Erro ao iniciar a impressão.")){
+                                    interface.setImprimindo(false);
+                                    qnt_impress = 0; // Reseta a quantidade de impressões
+
+                                }
                             }
                         } else {
                             interface.setImprimindo(false);
@@ -124,6 +128,11 @@ void Controller::run() {
                     if (interface.config_impress(qnt_impress))
                         selected_option = -1;
                     break;
+                }
+                case -10:{
+                    arquiver.save();
+                    std::system("shutdown now");
+
                 }
             }
 

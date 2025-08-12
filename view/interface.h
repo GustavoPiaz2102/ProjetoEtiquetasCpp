@@ -16,7 +16,7 @@ Includes:
 #include "../model/heaters/capture.h"
 #include "../model/heaters/validator.h"
 #include "../model/heaters/arquiver.h"
-
+#include "../libs/stb/stb_image.h"
 // ===================== CONFIGURAÇÕES DE INTERFACE =====================
 
 // Janela
@@ -49,6 +49,8 @@ Includes:
 #define FUNDO_G 0.2f
 #define FUNDO_B 0.2f
 #define FUNDO_A 1.0f
+#define STB_IMAGE_IMPLEMENTATION
+
 
 class Interface {
 private:
@@ -74,6 +76,7 @@ private:
     float resolution_scale;   // Controle de escala de resolução
     int max_display_width;    // Largura máxima padrão
     bool imprimindo = false;
+    GLuint shutdownTexture = 0;
 
 
 public:
@@ -97,5 +100,7 @@ public:
     bool config_impress(int & value);
     bool GetImprimindo();
     void setImprimindo(bool value);
+    bool PopUpError(const std::string& message); // faz um pop-up com uma mensagem de erro e um botão "OK"
+    GLuint LoadTextureFromFile(const char* filename);
 };
 #endif // INTERFACE_H

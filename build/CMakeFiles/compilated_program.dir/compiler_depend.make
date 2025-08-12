@@ -449,6 +449,7 @@ CMakeFiles/compilated_program.dir/controller/controller.cpp.o: ../controller/con
   ../model/heaters/capture.h \
   ../model/heaters/validator.h \
   ../model/heaters/arquiver.h \
+  ../libs/stb/stb_image.h \
   ../model/heaters/validator.h \
   ../model/heaters/arquiver.h \
   ../model/heaters/impress.h \
@@ -904,7 +905,8 @@ CMakeFiles/compilated_program.dir/controller/detector.cpp.o: ../controller/detec
   ../libs/imgui/backends/imgui_impl_opengl3.h \
   ../model/heaters/capture.h \
   ../model/heaters/validator.h \
-  ../model/heaters/arquiver.h
+  ../model/heaters/arquiver.h \
+  ../libs/stb/stb_image.h
 
 CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o: ../libs/imgui/backends/imgui_impl_glfw.cpp \
   /usr/include/stdc-predef.h \
@@ -2359,6 +2361,7 @@ CMakeFiles/compilated_program.dir/main.cpp.o: ../main.cpp \
   ../model/heaters/capture.h \
   ../model/heaters/validator.h \
   ../model/heaters/arquiver.h \
+  ../libs/stb/stb_image.h \
   ../model/heaters/validator.h \
   ../model/heaters/arquiver.h \
   ../model/heaters/impress.h \
@@ -4710,7 +4713,8 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
   /usr/local/include/opencv4/opencv2/video/background_segm.hpp \
   ../model/heaters/capture.h \
   ../model/heaters/validator.h \
-  ../model/heaters/arquiver.h
+  ../model/heaters/arquiver.h \
+  ../libs/stb/stb_image.h
 
 
 ../model/implement/preprocessor.cpp:
@@ -5025,6 +5029,10 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/waitflags.h:
 
+/usr/lib/gcc/x86_64-linux-gnu/11/include/amxtileintrin.h:
+
+/usr/include/c++/11/bits/shared_ptr_base.h:
+
 /usr/include/linux/limits.h:
 
 /usr/include/c++/11/bits/basic_string.h:
@@ -5325,6 +5333,8 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 
 /usr/include/c++/11/ext/atomicity.h:
 
+../libs/stb/stb_image.h:
+
 /usr/include/c++/11/bits/stl_pair.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h:
@@ -5408,10 +5418,6 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: ../view/interface.cpp \
 /usr/include/c++/11/pstl/execution_defs.h:
 
 /usr/local/include/opencv4/opencv2/core/check.hpp:
-
-/usr/include/c++/11/bits/shared_ptr_base.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/amxtileintrin.h:
 
 /usr/local/include/opencv4/opencv2/core/types.hpp:
 

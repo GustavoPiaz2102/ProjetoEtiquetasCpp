@@ -95,7 +95,7 @@ bool Impress::print(std::vector<std::string> StrList) {
     try {
         std::ofstream impressora("/dev/usb/lp0", std::ios::binary);
         if (!impressora.is_open()) {
-            std::cerr << "❌ Erro: não foi possível abrir a impressora." << std::endl;
+            //std::cerr << "❌ Erro: não foi possível abrir a impressora." << std::endl;
             return false;
         }
 

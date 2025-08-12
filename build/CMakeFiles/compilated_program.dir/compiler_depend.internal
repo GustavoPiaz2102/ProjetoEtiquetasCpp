@@ -450,6 +450,7 @@ CMakeFiles/compilated_program.dir/controller/controller.cpp.o
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/capture.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/validator.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/arquiver.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/stb/stb_image.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/validator.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/arquiver.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/impress.h
@@ -907,6 +908,7 @@ CMakeFiles/compilated_program.dir/controller/detector.cpp.o
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/capture.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/validator.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/arquiver.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/stb/stb_image.h
 
 CMakeFiles/compilated_program.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/backends/imgui_impl_glfw.cpp
@@ -2368,6 +2370,7 @@ CMakeFiles/compilated_program.dir/main.cpp.o
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/capture.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/validator.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/arquiver.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/stb/stb_image.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/validator.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/arquiver.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/impress.h
@@ -4729,4 +4732,5 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/capture.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/validator.h
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/arquiver.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/stb/stb_image.h
 

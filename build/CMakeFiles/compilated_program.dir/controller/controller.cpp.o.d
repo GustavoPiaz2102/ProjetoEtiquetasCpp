@@ -382,6 +382,7 @@ CMakeFiles/compilated_program.dir/controller/controller.cpp.o: \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/heaters/capture.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/heaters/validator.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../model/heaters/arquiver.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../view/../libs/stb/stb_image.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/heaters/validator.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/heaters/arquiver.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/heaters/impress.h \

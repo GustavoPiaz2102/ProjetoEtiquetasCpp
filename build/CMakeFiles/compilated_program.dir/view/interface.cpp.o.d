@@ -369,4 +369,5 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: \
  /usr/local/include/opencv4/opencv2/video/background_segm.hpp \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/../model/heaters/capture.h \
  /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/../model/heaters/validator.h \
- /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/../model/heaters/arquiver.h
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/../model/heaters/arquiver.h \
+ /home/gustavo/Desktop/git/ProjetoEtiquetasCpp/view/../libs/stb/stb_image.h

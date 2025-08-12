@@ -208,6 +208,11 @@ void Interface::menu(int& selected_option,int qntImp) {
     if (ImGui::Button("Configurar", ImVec2(TAMANHO_BOTAO_LARG / 2, TAMANHO_BOTAO_ALT / 5))) {
         selected_option = 5;
     }
+    // ShutDown button
+    ImGui::SameLine(0, ESPACO_ENTRE_BOTOES*25.7);
+    if (ImGui::Button("Desligar", ImVec2(TAMANHO_BOTAO_LARG / 2, TAMANHO_BOTAO_ALT / 5))) {
+        selected_option = -10;
+    }
 
     ImGui::End();
     ImGui::PopStyleVar(2);
@@ -619,4 +624,18 @@ bool Interface::GetImprimindo() {
 // Should match the declaration in interface.h
 void Interface::setImprimindo(bool value) {
     imprimindo = value;
+}
+bool Interface::PopUpError(const std::string& message) {
+    ImGui::OpenPopup("ErrorPopup");
+    if (ImGui::BeginPopupModal("ErrorPopup", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+        ImGui::Text("%s", message.c_str());
+        if (ImGui::Button("OK")) {
+            ImGui::CloseCurrentPopup();
+            ImGui::EndPopup();
+
+            return true;
+        }
+        ImGui::EndPopup();
+    }
+    return false;
 }
