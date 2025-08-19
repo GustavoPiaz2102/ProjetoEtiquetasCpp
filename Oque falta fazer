@@ -25,6 +25,6 @@ Falta colocar na Controller:
 
 A fazer/Terminar:
     --Camera atrasada, (o frame rate não está ruim mas a camera está demorando para exibir a imagem é possivel que eu tenha resolvido qundo alterei a pipeline)
-
+    --Implementar na impressão por validação e retirar timer
 Ultimas atualizações:
     --Fiz o botão do shutdown e fiz o lock da screen, o sistema agora é fechado, é interessante considerar de fazer um catch que finalize o programa caso algo ocorra.
