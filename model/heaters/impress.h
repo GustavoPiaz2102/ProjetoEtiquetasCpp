@@ -26,7 +26,7 @@ private:
     float escala_y = 1.0f;
     char fonte[8] = "3";
     int qnt = 1;
-    float TempoEntreImpressao = 2.0f; // Tempo mínimo entre impressões em segundos
+    //float TempoEntreImpressao = 2.0f; // Tempo mínimo entre impressões em segundos
     Arquiver arq;
 
     std::chrono::time_point<std::chrono::high_resolution_clock> TimeLastPrint;
@@ -35,6 +35,6 @@ public:
     Impress(Arquiver& arquiver);
     void LoadAtributes();
     void SaveAtributes();
-    bool print(std::vector<std::string> StrList) ;
+    bool print(std::vector<std::string> StrList,bool LastImpress) ;
 };
 #endif // IMPRESS_H

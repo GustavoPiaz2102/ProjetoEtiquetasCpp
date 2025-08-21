@@ -26,6 +26,8 @@ private:
     Arquiver arquiver;
     Impress imp;
     int qnt_impress; // Quantidade de impressões
+    bool Lastimp;
+    std::vector<std::string> strList;
 };
 
 #endif // CONTROLLER_H

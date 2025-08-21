@@ -75,6 +75,7 @@
         "any": "cpp",
         "csignal": "cpp",
         "ranges": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "complex": "cpp"
     }
 }

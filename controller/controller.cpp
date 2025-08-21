@@ -9,7 +9,8 @@ Controller::Controller()
       selected_option(-1),
       arquiver("data/config.txt"),
       imp(arquiver),
-      qnt_impress(0)
+      qnt_impress(0),
+      Lastimp(true)
       
 {
     // Carrega os dados do arquivo para o validador
@@ -63,21 +64,11 @@ void Controller::run() {
                     interface.menu(selected_option,qnt_impress);
                     if(interface.GetImprimindo()&&qnt_impress>0){ 
                         if (qnt_impress > 0) {
-                            std::vector<std::string> strList = {
+                            strList = {
                                 validator.GetLT(),
                                 validator.GetFAB(),
                                 validator.GetVAL()
                             };
-                            if (imp.print(strList)) {
-                                std::cout << "Impressão iniciada com sucesso!" << std::endl;
-                                qnt_impress--;
-                            } else {
-                                if(interface.PopUpError("Erro ao iniciar a impressão.")){
-                                    interface.setImprimindo(false);
-                                    qnt_impress = 0; // Reseta a quantidade de impressões
-
-                                }
-                            }
                         } else {
                             interface.setImprimindo(false);
                         }
@@ -123,12 +114,13 @@ void Controller::run() {
                     }
                     break;
                 }
-
+                //Imprime
                 case 2: {
                     if (interface.config_impress(qnt_impress))
                         selected_option = -1;
                     break;
                 }
+                //
                 case -10:{
                     arquiver.save();
                     std::system("shutdown now");
@@ -160,15 +152,28 @@ bool Controller::requisitar_data_e_setar(int tipo, std::function<void(const std:
 }
 
 void Controller::rodar_detector() {
-    std::string str = detector.run();
-    std::cout << "Resultado do detector: " << str << std::endl;
-    if (str == "return") {
-        selected_option = -1;
-        return;
+    if(interface.GetImprimindo()){
+    if (imp.print(strList,Lastimp)) {
+        std::cout << "Impressão iniciada com sucesso!" << std::endl;
+        qnt_impress--;
+    } else {
+        if(interface.PopUpError("Erro ao iniciar a impressão.")){
+            Lastimp = true;
+        }
+    }
     }
 
+    //Aqui vai ter que dar um sleep para a etiqueta chegar no lugar da detecção
+    //Aqui também faz o OUT do strobo
+    std::string str = detector.run();
+    //std::cout << "Resultado do detector: " << str << std::endl;
+    if (str == "return") {
+        selected_option = -1;
+        Lastimp = true;
+        return;
+    }
     if (!validator.Validate(str)) {
-        // TODO: Implementar aviso de erro para validação
+        Lastimp = false;
         std::cout << "Erro: código inválido." << std::endl;
     }
 }

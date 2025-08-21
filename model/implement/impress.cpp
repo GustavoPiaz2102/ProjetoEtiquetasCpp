@@ -54,11 +54,11 @@ std::string formatFloat(float val) {
     return ss.str();
 }
 
-bool Impress::print(std::vector<std::string> StrList) {
+bool Impress::print(std::vector<std::string> StrList, bool LastImpress) {
     // Ver se já se passou 1 segundo desde a última impressão
     std::chrono::duration<double> elapsed = std::chrono::high_resolution_clock::now() - TimeLastPrint;
-    if (elapsed.count() < 1.0) {
-        std::cout << "Aguarde 3 segundos entre as impressões." << std::endl;
+    if (LastImpress == false) {
+        std::cout << "A ultima impressão falhou!" << std::endl;
         return false;
     }
 
@@ -95,7 +95,7 @@ bool Impress::print(std::vector<std::string> StrList) {
     try {
         std::ofstream impressora("/dev/usb/lp0", std::ios::binary);
         if (!impressora.is_open()) {
-            //std::cerr << "❌ Erro: não foi possível abrir a impressora." << std::endl;
+            std::cerr << "❌ Erro: não foi possível abrir a impressora." << std::endl;
             return false;
         }
 
