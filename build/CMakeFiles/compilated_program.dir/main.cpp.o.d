@@ -350,6 +350,7 @@ CMakeFiles/compilated_program.dir/main.cpp.o: \
  /usr/include/opencv4/opencv2/video.hpp \
  /usr/include/opencv4/opencv2/video/tracking.hpp \
  /usr/include/opencv4/opencv2/video/background_segm.hpp \
+ /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/heaters/GPIO.h \
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/heaters/preprocessor.h \
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/../model/heaters/OCR.h \
  /usr/include/tesseract/baseapi.h /usr/include/tesseract/export.h \

@@ -3,6 +3,7 @@
 
 CMakeFiles/compilated_program.dir/controller/controller.cpp.o
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/controller.cpp
+ /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/GPIO.h
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/OCR.h
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/arquiver.h
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/capture.h
@@ -448,6 +449,7 @@ CMakeFiles/compilated_program.dir/controller/controller.cpp.o
 
 CMakeFiles/compilated_program.dir/controller/detector.cpp.o
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/controller/detector.cpp
+ /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/GPIO.h
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/OCR.h
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/capture.h
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/preprocessor.h
@@ -1924,6 +1926,7 @@ CMakeFiles/compilated_program.dir/libs/imgui/imgui_widgets.cpp.o
 
 CMakeFiles/compilated_program.dir/main.cpp.o
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/main.cpp
+ /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/GPIO.h
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/OCR.h
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/arquiver.h
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/capture.h
@@ -3011,6 +3014,7 @@ CMakeFiles/compilated_program.dir/model/implement/arquiver.cpp.o
 
 CMakeFiles/compilated_program.dir/model/implement/capture.cpp.o
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/capture.cpp
+ /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/GPIO.h
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/capture.h
  /usr/include/alloca.h
  /usr/include/asm-generic/errno-base.h
@@ -4259,6 +4263,7 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imconfig.h
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/imgui/imgui.h
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/libs/stb/stb_image.h
+ /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/GPIO.h
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/arquiver.h
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/capture.h
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/heaters/validator.h

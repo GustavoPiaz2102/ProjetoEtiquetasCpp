@@ -45,5 +45,14 @@ void GPIO::OutStrobo() {
     if (gpiod_line_set_value(stroboLine, 0) < 0) {
         std::cerr << "Erro ao desativar strobo (GPIO " << PinStrobo << ")\n";
     }
+void GPIO::BlinkStrobo(int Delay) {
+    if (gpiod_line_set_value(stroboLine, 1) < 0) {
+        std::cerr << "Erro ao ativar strobo (GPIO " << PinStrobo << ")\n";
+        return;
+    }
+    std::this_thread::sleep_for(std::chrono::milliseconds(Delay));
+    if (gpiod_line_set_value(stroboLine, 0) < 0) {
+        std::cerr << "Erro ao desativar strobo (GPIO " << PinStrobo << ")\n";
+    }
 }
 */

@@ -357,6 +357,7 @@ CMakeFiles/compilated_program.dir/view/interface.cpp.o: \
  /usr/include/opencv4/opencv2/video/tracking.hpp \
  /usr/include/opencv4/opencv2/video/background_segm.hpp \
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/view/../model/heaters/capture.h \
+ /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/view/../model/heaters/GPIO.h \
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/view/../model/heaters/validator.h \
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/view/../model/heaters/arquiver.h \
  /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/view/../libs/stb/stb_image.h

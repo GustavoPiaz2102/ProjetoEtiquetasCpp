@@ -348,6 +348,7 @@ CMakeFiles/compilated_program.dir/model/implement/capture.cpp.o: \
  /usr/include/opencv4/opencv2/video.hpp \
  /usr/include/opencv4/opencv2/video/tracking.hpp \
  /usr/include/opencv4/opencv2/video/background_segm.hpp \
+ /home/Gustavo/Desktop/git/ProjetoEtiquetasCpp/model/implement/../heaters/GPIO.h \
  /usr/include/opencv4/opencv2/core/utils/logger.hpp \
  /usr/include/opencv4/opencv2/core/utils/logger.defines.hpp \
  /usr/include/opencv4/opencv2/core/utils/logtag.hpp

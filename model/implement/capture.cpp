@@ -40,6 +40,9 @@ cv::Mat Capture::captureImage() {
         return cv::Mat();
     }
     cv::Mat frame;
+    //Faz o blink em um thread separado para que o strobo pisque enquanto a câmera captura
+    //std::thread blinkThread(&GPIO::BlinkStrobo, &gpio, 100);
+    //blinkThread.detach();
     if (!cap.read(frame)) {
         std::cerr << "Erro ao capturar o frame!" << std::endl;
         return cv::Mat();
