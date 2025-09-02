@@ -1,4 +1,4 @@
-/*#include "../heaters/GPIO.h"
+#include "../heaters/GPIO.h"
 
 GPIO::GPIO(int pinSensor, int pinStrobo, const std::string &chipname)
     : PinSensor(pinSensor), PinStrobo(pinStrobo), chip(nullptr), sensorLine(nullptr), stroboLine(nullptr)
@@ -55,4 +55,3 @@ void GPIO::BlinkStrobo(int Delay) {
         std::cerr << "Erro ao desativar strobo (GPIO " << PinStrobo << ")\n";
     }
 }
-*/

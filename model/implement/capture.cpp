@@ -6,7 +6,7 @@ Capture::Capture(int cameraIndex) : cap() {
     // Desativa logs verbosos do OpenCV
     cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);
 
-/*#ifdef __linux__
+#ifdef __linux__
     // Pipeline GStreamer com resolução 640x480 configurada
     std::string pipeline =
     "libcamerasrc ! videoconvert ! video/x-raw,format=BGR,width=640,height=480 ! queue max-size-buffers=1 leaky=downstream ! appsink max-buffers=1 drop=true";
@@ -16,7 +16,7 @@ Capture::Capture(int cameraIndex) : cap() {
         std::cout << "Câmera aberta com sucesso pelo pipeline!" << "\n";
     }
 #else
-*/
+
     if (!cap.open(cameraIndex)) {
         std::cerr << "Erro: Não foi possível abrir a câmera pelo índice!" << "\n";
     } else {
@@ -25,7 +25,7 @@ Capture::Capture(int cameraIndex) : cap() {
         cap.set(cv::CAP_PROP_FRAME_HEIGHT, IMG_SZE2);
         std::cout << "Câmera aberta com sucesso pelo índice!" << "\n";
     }
-//#endif
+#endif
 }
 
 Capture::~Capture() {
@@ -41,8 +41,8 @@ cv::Mat Capture::captureImage() {
     }
     cv::Mat frame;
     //Faz o blink em um thread separado para que o strobo pisque enquanto a câmera captura
-    //std::thread blinkThread(&GPIO::BlinkStrobo, &gpio, 100);
-    //blinkThread.detach();
+    std::thread blinkThread(&GPIO::BlinkStrobo, &gpio, 100);
+    blinkThread.detach();
     if (!cap.read(frame)) {
         std::cerr << "Erro ao capturar o frame!" << "\n";
         return cv::Mat();
