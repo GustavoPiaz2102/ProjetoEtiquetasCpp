@@ -96,7 +96,7 @@ void Controller::run() {
                     std::string lt;
                     if (interface.requisitar_lt(lt)) {
                         validator.SetLT(lt);
-                        std::cout << "Lote selecionado: " << lt << std::endl;
+                        std::cout << "Lote selecionado: " << lt << "\n";
                         selected_option = -1;
                         arquiver.dict["lt"] = validator.GetLT();
                         arquiver.dict["fab"] = validator.GetFAB();
@@ -131,11 +131,11 @@ void Controller::run() {
             interface.end_frame();
         }
     } catch (const std::exception& e) {
-        std::cerr << "Erro capturado: " << e.what() << std::endl;
+        std::cerr << "Erro capturado: " << e.what() << "\n";
         arquiver.save();
         // Aqui você pode decidir se quer abortar, reiniciar o loop, ou outra coisa
     } catch (...) {
-        std::cerr << "Erro desconhecido capturado." << std::endl;
+        std::cerr << "Erro desconhecido capturado.\n";
         arquiver.save();
     }
 }
@@ -144,7 +144,7 @@ void Controller::run() {
 bool Controller::requisitar_data_e_setar(int tipo, std::function<void(const std::string&)> setter) {
     std::string data;
     if (interface.requisitar_data(data, tipo)) {
-        std::cout << "Data selecionada: " << data << std::endl;
+        std::cout << "Data selecionada: " << data << "\n";
         setter(data);
         return true;
     }
@@ -154,7 +154,7 @@ bool Controller::requisitar_data_e_setar(int tipo, std::function<void(const std:
 void Controller::rodar_detector() {
     if(interface.GetImprimindo()){
     if (imp.print(strList,Lastimp)) {
-        std::cout << "Impressão iniciada com sucesso!" << std::endl;
+        std::cout << "Impressão iniciada com sucesso!" << "\n";
         qnt_impress--;
     } else {
         if(interface.PopUpError("Erro ao iniciar a impressão.")){
@@ -174,6 +174,6 @@ void Controller::rodar_detector() {
     }
     if (!validator.Validate(str)) {
         Lastimp = false;
-        std::cout << "Erro: código inválido." << std::endl;
+        std::cout << "Erro: código inválido." << "\n";
     }
 }

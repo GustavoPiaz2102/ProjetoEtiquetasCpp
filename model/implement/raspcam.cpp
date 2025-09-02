@@ -7,7 +7,7 @@ Capture::Capture(int cameraIndex) {
     cap.set(cv::CAP_PROP_FORMAT, CV_8UC3);  // formato BGR, igual ao OpenCV padrão
 
     if (!cap.open()) {
-        std::cerr << "Erro: Não foi possível abrir a câmera Raspberry Pi!" << std::endl;
+        std::cerr << "Erro: Não foi possível abrir a câmera Raspberry Pi!" << "\n";
     }
 }
 
@@ -22,10 +22,10 @@ cv::Mat Capture::captureImage() {
         cap.grab();
         cap.retrieve(frame);
         if (frame.empty()) {
-            std::cerr << "Erro: Frame capturado está vazio!" << std::endl;
+            std::cerr << "Erro: Frame capturado está vazio!" << "\n";
         }
     } else {
-        std::cerr << "Erro: Câmera não está aberta!" << std::endl;
+        std::cerr << "Erro: Câmera não está aberta!" << "\n";
     }
     return frame;
 }

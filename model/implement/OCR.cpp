@@ -4,7 +4,7 @@
 OCR::OCR(const std::string& language) {
     tess = new tesseract::TessBaseAPI();
     if (tess->Init(NULL, language.c_str())) {
-        std::cerr << "Erro: Não foi possível inicializar o Tesseract OCR." << std::endl;
+        std::cerr << "Erro: Não foi possível inicializar o Tesseract OCR." << "\n";
     }
 }
 
@@ -17,7 +17,7 @@ OCR::~OCR() {
 
 std::string OCR::extractText(const cv::Mat& inputImage) {
     if (inputImage.empty()) {
-        std::cerr << "Erro: Imagem vazia passada para OCR." << std::endl;
+        std::cerr << "Erro: Imagem vazia passada para OCR." << "\n";
         return "";
     }
 

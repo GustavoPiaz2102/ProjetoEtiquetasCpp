@@ -56,22 +56,22 @@ void Interface::beginFullscreenWindow(const char* name) {
         GLFWmonitor** monitors = glfwGetMonitors(&monitor_count);
 
         // Adicionar debug para verificar monitores
-        std::cout << "Monitores detectados: " << monitor_count << std::endl;
+        std::cout << "Monitores detectados: " << monitor_count << "\n";
         for (int i = 0; i < monitor_count; i++) {
             const char* name = glfwGetMonitorName(monitors[i]);
             int x, y;
             glfwGetMonitorPos(monitors[i], &x, &y);
             const GLFWvidmode* mode_debug = glfwGetVideoMode(monitors[i]);
-            std::cout << "Monitor " << i << ": " << name << " - Posição: (" << x << ", " << y << ") - Resolução: " << mode_debug->width << "x" << mode_debug->height << std::endl;
+            std::cout << "Monitor " << i << ": " << name << " - Posição: (" << x << ", " << y << ") - Resolução: " << mode_debug->width << "x" << mode_debug->height << "\n";
         }
 
         GLFWmonitor* selected_monitor = NULL;
         if (monitor_count > 1) {
             selected_monitor = monitors[1]; // Monitor secundário
-            std::cout << "Selecionado monitor secundário (índice 1)" << std::endl;
+            std::cout << "Selecionado monitor secundário (índice 1)" << "\n";
         } else {
             selected_monitor = monitors[0]; // Monitor primário (fallback)
-            std::cout << "Apenas um monitor detectado, usando monitor primário" << std::endl;
+            std::cout << "Apenas um monitor detectado, usando monitor primário" << "\n";
         }
 
         const GLFWvidmode* mode = glfwGetVideoMode(selected_monitor);
@@ -96,15 +96,15 @@ void Interface::beginFullscreenWindow(const char* name) {
         glfwGetMonitorPos(selected_monitor, &monitor_x, &monitor_y);
         glfwSetWindowPos(window, monitor_x, monitor_y);
         
-        std::cout << "Janela posicionada em: (" << monitor_x << ", " << monitor_y << ")" << std::endl;
-        std::cout << "Resolução da janela: " << mode->width << "x" << mode->height << std::endl;
+        std::cout << "Janela posicionada em: (" << monitor_x << ", " << monitor_y << ")" << "\n";
+        std::cout << "Resolução da janela: " << mode->width << "x" << mode->height << "\n";
         
         glfwSwapInterval(0);
 
         // Substitui a verificação do GLAD por GLEW
         glewExperimental = GL_TRUE;
         if (glewInit() != GLEW_OK) {
-            std::cerr << "Falha ao inicializar GLEW" << std::endl;
+            std::cerr << "Falha ao inicializar GLEW" << "\n";
             return false;
         }
 

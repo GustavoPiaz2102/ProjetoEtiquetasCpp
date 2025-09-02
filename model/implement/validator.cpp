@@ -44,7 +44,7 @@ void Validator::SetVAL(const std::string& val) {
     VAL = val;
 }
 void Validator::printall(){
-    std::cout<< std::endl << "LT: " << LT << std::endl
-              << "FAB: " << FAB << std::endl
-              << "VAL: " << VAL << std::endl;
+    std::cout<< "\n" << "LT: " << LT << "\n"
+              << "FAB: " << FAB << "\n"
+              << "VAL: " << VAL << "\n";
 }

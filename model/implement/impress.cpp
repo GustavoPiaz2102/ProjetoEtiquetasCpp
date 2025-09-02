@@ -58,7 +58,7 @@ bool Impress::print(std::vector<std::string> StrList, bool LastImpress) {
     // Ver se já se passou 1 segundo desde a última impressão
     std::chrono::duration<double> elapsed = std::chrono::high_resolution_clock::now() - TimeLastPrint;
     if (LastImpress == false) {
-        std::cout << "A ultima impressão falhou!" << std::endl;
+        std::cout << "A ultima impressão falhou!" << "\n";
         return false;
     }
 
@@ -95,20 +95,20 @@ bool Impress::print(std::vector<std::string> StrList, bool LastImpress) {
     try {
         std::ofstream impressora("/dev/usb/lp0", std::ios::binary);
         if (!impressora.is_open()) {
-            std::cerr << "❌ Erro: não foi possível abrir a impressora." << std::endl;
+            std::cerr << "❌ Erro: não foi possível abrir a impressora." << "\n";
             return false;
         }
 
-        std::cout << "Enviando comando para impressora:\n" << comando << std::endl;
+        std::cout << "Enviando comando para impressora:\n" << comando << "\n";
 
         impressora.write(comando.c_str(), comando.size());
         impressora.close();
 
-        std::cout << "✅ Etiqueta enviada com sucesso!" << std::endl;
+        std::cout << "✅ Etiqueta enviada com sucesso!" << "\n";
         TimeLastPrint = std::chrono::high_resolution_clock::now();
         return true;
     } catch (const std::exception& e) {
-        std::cerr << "❌ Erro ao imprimir: " << e.what() << std::endl;
+        std::cerr << "❌ Erro ao imprimir: " << e.what() << "\n";
         return false;
     }
 }

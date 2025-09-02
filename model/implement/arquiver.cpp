@@ -12,7 +12,7 @@ Arquiver::Arquiver(const std::string& caminho) : path(caminho) {}
 bool Arquiver::load() {
     std::ifstream file(path);
     if (!file.is_open()) {
-        std::cerr << "Erro ao abrir o arquivo: " << path << std::endl;
+        std::cerr << "Erro ao abrir o arquivo: " << path << "\n";
         return false;
     }
 
@@ -79,7 +79,7 @@ bool Arquiver::save() const {
     // Reescrever o arquivo completo
     std::ofstream outFile(path);
     if (!outFile.is_open()) {
-        std::cerr << "Erro ao abrir o arquivo para escrita: " << path << std::endl;
+        std::cerr << "Erro ao abrir o arquivo para escrita: " << path << "\n";
         return false;
     }
 
@@ -93,6 +93,6 @@ bool Arquiver::save() const {
 
 void Arquiver::show() const {
     for (const auto& pair : dict) {
-        std::cout << pair.first << " => " << pair.second << std::endl;
+        std::cout << pair.first << " => " << pair.second << "\n";
     }
 }

@@ -17,14 +17,13 @@ Implementado:
     --Implementar o objeto da impressora, a seleção dos dados está pronta, tem que definir no contrutor e fazer os getters e setters para encapsular,
     além disso tem que testar em c++  e o quão nativo é o driver raw, se terá que configurar de tempos em tempos ou como fica.(A principio funciona diretamente sem ter que fazer uma reconfiguração
     mas é bom testar mais, até então foi necessario apenas uma confuguração e tive problema com o driver poucas vezes)
-
+    --implementar sensors(Falta colocar na controller, mas tem que fazer de forma a não travar a GUI ou implementar direto na detector)//Não vai mais ser colocado
+    --implementar out strobo('Falta colocar na controller mas a principio está implementado')
 
 Falta colocar na Controller:
-    --implementar sensors(Falta colocar na controller, mas tem que fazer de forma a não travar a GUI ou implementar direto na detector)
-    --implementar out strobo('Falta colocar na controller mas a principio está implementado')
 
 A fazer/Terminar:
     --Camera atrasada, (o frame rate não está ruim mas a camera está demorando para exibir a imagem é possivel que eu tenha resolvido qundo alterei a pipeline)
-    --Implementar na impressão por validação e retirar timer
+    --Implementar na impressão por validação e retirar timer(Feito)
 Ultimas atualizações:
     --Fiz o botão do shutdown e fiz o lock da screen, o sistema agora é fechado, é interessante considerar de fazer um catch que finalize o programa caso algo ocorra..
