@@ -16,7 +16,7 @@ private:
     cv::VideoCapture cap;
     cv::Mat frame;
     //Cria o objeto GPIO com os pinos do sensor e do strobo
-    //GPIO gpio{17, 27, "gpiochip4"}; 
+    GPIO gpio{17, 27, "gpiochip4"}; 
 };
 
 #endif

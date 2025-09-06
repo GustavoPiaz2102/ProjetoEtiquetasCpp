@@ -1,4 +1,4 @@
-/*#ifndef GPIO_H
+#ifndef GPIO_H
 #define GPIO_H
 
 #include <gpiod.h>
@@ -24,7 +24,7 @@ public:
     void BlinkStrobo(int Delay); // Ativa o pino strobo por um tempo definido em milissegundos
 };
 #endif
-*/
+
 /*
 
 sudo apt update

@@ -1,4 +1,4 @@
-# Install script for directory: /home/gustavo/Desktop/git/ProjetoEtiquetasCpp
+# Install script for directory: /home/pi/Desktop/git/newversions/ProjetoEtiquetasCpp
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/gustavo/Desktop/git/ProjetoEtiquetasCpp/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/pi/Desktop/git/newversions/ProjetoEtiquetasCpp/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
