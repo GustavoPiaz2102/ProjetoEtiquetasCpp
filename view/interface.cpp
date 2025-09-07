@@ -459,21 +459,39 @@ bool Interface::config_impress(int & value) {
 
 
 bool Interface::config_menu(Arquiver& arq) {
-    static char tamanho_etiqueta[64] = "60 mm,40 mm";
-    static char espacamento[32] = "2 mm,0";
-    static int densidade = 8;
-    static int velocidade = 4;
-    static int direcao = 1;
+    arq.load(); // Carrega as configurações atuais do arquivo
 
-    static char tamanho_fonte[8] = "3";
-    static int posicao_x = 100;
-    static int posicao_y_lote = 100;
-    static int posicao_y_fabricacao = 150;
-    static int posicao_y_validade = 200;
-    static int rotacao = 0;
-    static float escala_x = 1.0f;
-    static float escala_y = 1.0f;
-    static char fonte[8] = "3";
+    // Campos de texto como char arrays para ImGui
+    static char tamanho_etiqueta[64];
+    static char espacamento[32];
+    static char tamanho_fonte[8];
+    static char fonte[8];
+
+    // Inicializa a primeira vez
+    static bool firstInit = true;
+    if (firstInit) {
+        strncpy(tamanho_etiqueta, arq.dict["tamanho_etiqueta"].c_str(), sizeof(tamanho_etiqueta));
+        tamanho_etiqueta[sizeof(tamanho_etiqueta)-1] = '\0';
+        strncpy(espacamento, arq.dict["espacamento"].c_str(), sizeof(espacamento));
+        espacamento[sizeof(espacamento)-1] = '\0';
+        strncpy(tamanho_fonte, arq.dict["tamanho_fonte"].c_str(), sizeof(tamanho_fonte));
+        tamanho_fonte[sizeof(tamanho_fonte)-1] = '\0';
+        strncpy(fonte, arq.dict["fonte"].c_str(), sizeof(fonte));
+        fonte[sizeof(fonte)-1] = '\0';
+        firstInit = false;
+    }
+
+    // Campos numéricos continuam como int/float
+    static int densidade           = std::stoi(arq.dict["densidade"]);
+    static int velocidade          = std::stoi(arq.dict["velocidade"]);
+    static int direcao             = std::stoi(arq.dict["direcao"]);
+    static int posicao_x           = std::stoi(arq.dict["posicao_x"]);
+    static int posicao_y_lote      = std::stoi(arq.dict["posicao_y_lote"]);
+    static int posicao_y_fabricacao= std::stoi(arq.dict["posicao_y_fabricacao"]);
+    static int posicao_y_validade  = std::stoi(arq.dict["posicao_y_validade"]);
+    static int rotacao             = std::stoi(arq.dict["rotacao"]);
+    static float escala_x          = std::stof(arq.dict["escala_x"]);
+    static float escala_y          = std::stof(arq.dict["escala_y"]);
 
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
@@ -493,9 +511,7 @@ bool Interface::config_menu(Arquiver& arq) {
 
     ImGui::Separator();
     ImGui::Text("Parâmetros do Texto:");
-
     ImGui::InputText("Tamanho Fonte", tamanho_fonte, IM_ARRAYSIZE(tamanho_fonte));
-
     ImGui::InputInt("Posição X", &posicao_x);
     ImGui::InputInt("Y - Lote", &posicao_y_lote);
     ImGui::InputInt("Y - Fabricação", &posicao_y_fabricacao);
@@ -504,35 +520,36 @@ bool Interface::config_menu(Arquiver& arq) {
     ImGui::InputFloat("Escala X", &escala_x);
     ImGui::InputFloat("Escala Y", &escala_y);
     ImGui::InputText("Fonte", fonte, IM_ARRAYSIZE(fonte));
+
     bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
     ImGui::PopStyleVar(3);
     ImGui::End();
+
     if (clicked) {
-    // Salvar no dicionário do Arquiver
-    arq.dict["tamanho_etiqueta"] = tamanho_etiqueta;
-    arq.dict["espacamento"] = espacamento;
-    arq.dict["densidade"] = std::to_string(densidade);
-    arq.dict["velocidade"] = std::to_string(velocidade);
-    arq.dict["direcao"] = std::to_string(direcao);
+        // Salvar no dicionário do Arquiver
+        arq.dict["tamanho_etiqueta"] = tamanho_etiqueta;
+        arq.dict["espacamento"]       = espacamento;
+        arq.dict["densidade"]         = std::to_string(densidade);
+        arq.dict["velocidade"]        = std::to_string(velocidade);
+        arq.dict["direcao"]           = std::to_string(direcao);
+        arq.dict["tamanho_fonte"]     = tamanho_fonte;
+        arq.dict["posicao_x"]         = std::to_string(posicao_x);
+        arq.dict["posicao_y_lote"]    = std::to_string(posicao_y_lote);
+        arq.dict["posicao_y_fabricacao"] = std::to_string(posicao_y_fabricacao);
+        arq.dict["posicao_y_validade"]   = std::to_string(posicao_y_validade);
+        arq.dict["rotacao"]           = std::to_string(rotacao);
+        arq.dict["escala_x"]          = std::to_string(escala_x);
+        arq.dict["escala_y"]          = std::to_string(escala_y);
+        arq.dict["fonte"]             = fonte;
 
-    arq.dict["tamanho_fonte"] = tamanho_fonte;
-    arq.dict["posicao_x"] = std::to_string(posicao_x);
-    arq.dict["posicao_y_lote"] = std::to_string(posicao_y_lote);
-    arq.dict["posicao_y_fabricacao"] = std::to_string(posicao_y_fabricacao);
-    arq.dict["posicao_y_validade"] = std::to_string(posicao_y_validade);
-    arq.dict["rotacao"] = std::to_string(rotacao);
-    arq.dict["escala_x"] = std::to_string(escala_x);
-    arq.dict["escala_y"] = std::to_string(escala_y);
-    arq.dict["fonte"] = fonte;
-
-    // Salva no arquivo
-    arq.save();
-
-    return true;
+        // Salva no arquivo
+        arq.save();
+        return true;
+    } else {
+        return false;
+    }
 }
 
-    else return false;
-}
 
 
 bool Interface::requisitar_data(std::string& selected_date, int tipo) {

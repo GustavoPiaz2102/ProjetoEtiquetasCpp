@@ -159,14 +159,23 @@ void Controller::rodar_detector() {
     } else {
         if(interface.PopUpError("Erro ao iniciar a impressão.")){
             Lastimp = true;
-        }
+            if(qnt_impress<=0){
+                interface.setImprimindo(false);
+                selected_option = -1;
+                Lastimp = true;
+                return;
+            }
+            else{
+                Lastimp = true;
+                return;
+            }
     }
     }
-
+}
     //Aqui vai ter que dar um sleep para a etiqueta chegar no lugar da detecção
     //Aqui também faz o OUT do strobo
     std::string str = detector.run();
-    //std::cout << "Resultado do detector: " << str << std::endl;
+    std::cout << "Resultado do detector: " << str << std::endl;
     if (str == "return") {
         selected_option = -1;
         Lastimp = true;

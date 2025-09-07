@@ -9,7 +9,7 @@ Detector::~Detector() {
 std::string Detector::run() {
     frame = camera.captureImage();
     if (interface.atualizar_frame(frame)) return "return";
-    frame = preprocessor.preprocess(frame);
+    //frame = preprocessor.preprocess(frame);
     std::string text = ocr.extractText(frame);
     return text;
 }
