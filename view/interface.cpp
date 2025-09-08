@@ -170,7 +170,7 @@ void Interface::menu(int& selected_option,int qntImp) {
     }
 
     ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
-    ImGui::Text("L. %s\nFAB.: %s\nVAL.: %s\nQnt. Imp.: %d", 
+    ImGui::Text("L: %s\nF: %s\nV: %s\nQnt. Imp.: %d", 
                 validator.GetLT().c_str(), 
                 validator.GetFAB().c_str(), 
                 validator.GetVAL().c_str(),

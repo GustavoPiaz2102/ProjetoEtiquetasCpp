@@ -78,17 +78,17 @@ bool Impress::print(std::vector<std::string> StrList, bool LastImpress) {
     if (StrList.size() > 0)
         comando += "TEXT " + std::to_string(posicao_x) + "," + std::to_string(posicao_y_lote) +
                    ",\"" + fonte + "\"," + std::to_string(rotacao) + "," +
-                   formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"L.:" + StrList[0] + "\"\r\n";
+                   formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"L:" + StrList[0] + "\"\r\n";
 
     if (StrList.size() > 1)
         comando += "TEXT " + std::to_string(posicao_x) + "," + std::to_string(posicao_y_fabricacao) +
                    ",\"" + fonte + "\"," + std::to_string(rotacao) + "," +
-                   formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"FAB.:" + StrList[1] + "\"\r\n";
+                   formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"F:" + StrList[1] + "\"\r\n";
 
     if (StrList.size() > 2)
         comando += "TEXT " + std::to_string(posicao_x) + "," + std::to_string(posicao_y_validade) +
                    ",\"" + fonte + "\"," + std::to_string(rotacao) + "," +
-                   formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"VAL.:" + StrList[2] + "\"\r\n";
+                   formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"V:" + StrList[2] + "\"\r\n";
 
     comando += "PRINT " + std::to_string(qnt) + "\r\n";
 
