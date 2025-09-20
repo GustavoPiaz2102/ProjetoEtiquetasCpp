@@ -47,6 +47,6 @@ cv::Mat Capture::captureImage() {
         std::cerr << "Erro ao capturar o frame!" << "\n";
         return cv::Mat();
     }
-    cv::flip(frame, frame, 0);
+    cv::flip(frame, frame, -1);
     return frame;
 }
