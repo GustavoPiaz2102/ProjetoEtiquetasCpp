@@ -3,7 +3,7 @@
 #include <iostream>
 
 Controller::Controller()
-    : validator("000/00", "00/000/0000", "00/000/0000"),
+    : validator("000/00", "00/00/0000", "00/00/0000"),
       interface(validator),
       detector(interface),
       selected_option(-1),

@@ -314,8 +314,8 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
 
 std::string Interface::FormatDate(int day, int month, int year) {
     static const char* month_names[] = {
-        "JAN", "FEV", "MAR", "ABR", "MAI", "JUN",
-        "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"
+        "01", "02", "03", "04", "05", "06",
+        "07", "08", "09", "10", "11", "12"
     };
     
     char buffer[20];
@@ -558,8 +558,8 @@ bool Interface::requisitar_data(std::string& selected_date, int tipo) {
     static int selected_year = 0;
     
     static const char* month_names[] = {
-        "JAN", "FEV", "MAR", "ABR", "MAI", "JUN",
-        "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"
+        "01", "02", "03", "04", "05", "06",
+        "07", "08", "09", "10", "11", "12"
     };
 
     static int days[31];
