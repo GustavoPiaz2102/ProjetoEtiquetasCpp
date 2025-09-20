@@ -7,6 +7,8 @@
 #include <memory>
 #include <opencv2/opencv.hpp>
 #include <iostream>
+#include <thread>
+#include <chrono>
 #include "../model/heaters/arquiver.h" // Para carregar e salvar os dados do validador
 #include "../model/heaters/impress.h"
 

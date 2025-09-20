@@ -173,7 +173,10 @@ void Controller::rodar_detector() {
     }
 }
     //Aqui vai ter que dar um sleep para a etiqueta chegar no lugar da detecção
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
     //Aqui também faz o OUT do strobo
+    
     std::string str = detector.run();
     std::cout << "Resultado do detector: " << str << std::endl;
     if (str == "return") {
