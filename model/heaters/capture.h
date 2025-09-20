@@ -4,8 +4,8 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include "GPIO.h"
-#define IMG_SZE 1280
-#define IMG_SZE2 720
+#define IMG_SZE 640
+#define IMG_SZE2 480
 
 class Capture {
 public:
