@@ -57,3 +57,14 @@ void GPIO::BlinkStrobo(int Delay) {
     }
 }
 
+void GPIO::SetStroboHigh() {
+    if (gpiod_line_set_value(stroboLine, 1) < 0) {
+        std::cerr << "Erro ao definir strobo como HIGH (GPIO " << PinStrobo << ")\n";
+    }
+}
+
+void GPIO::SetStroboLow() {
+    if (gpiod_line_set_value(stroboLine, 0) < 0) {
+        std::cerr << "Erro ao definir strobo como LOW (GPIO " << PinStrobo << ")\n";
+    }
+}

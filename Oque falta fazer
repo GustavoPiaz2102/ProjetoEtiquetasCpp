@@ -19,12 +19,13 @@ Implementado:
     mas é bom testar mais, até então foi necessario apenas uma confuguração e tive problema com o driver poucas vezes)
     --implementar sensors(Falta colocar na controller, mas tem que fazer de forma a não travar a GUI ou implementar direto na detector)//Não vai mais ser colocado
     --implementar out strobo('Falta colocar na controller mas a principio está implementado')
-
+    --Implementar Validator na detector
+    --Implementar o Thread do strobo
+    
 Falta colocar na Controller:
 
 A fazer/Terminar:
-    ---Implementar Validator na detector
-    ---Implementar o Thread do strobo
+    --Testar Alterações e Corrigir Bugs
     
 Ultimas atualizações:
     --Fiz o botão do shutdown e fiz o lock da screen, o sistema agora é fechado, é interessante considerar de fazer um catch que finalize o programa caso algo ocorra..

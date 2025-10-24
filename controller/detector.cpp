@@ -67,7 +67,9 @@ void Detector::SensorCaptureImpressTHR()
     {
         if (sensor.ReadSensor() == 0)
         {
+            sensor.SetStroboHigh();
             cv::Mat newFrame = camera.captureImage();
+            sensor.SetStroboLow();
 
             {
                 std::lock_guard<std::mutex> lock(frame_mutex);
