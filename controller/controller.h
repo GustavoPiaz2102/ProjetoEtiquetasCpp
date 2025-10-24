@@ -11,6 +11,7 @@
 #include <chrono>
 #include "../model/heaters/arquiver.h" // Para carregar e salvar os dados do validador
 #include "../model/heaters/impress.h"
+#include <mutex>
 
 class Controller {
 public:
@@ -28,8 +29,8 @@ private:
     Arquiver arquiver;
     Impress imp;
     int qnt_impress; // Quantidade de impressões
-    bool Lastimp;
-    std::vector<std::string> strList;
+    bool SensorActive = false;
+    bool ProcessActive = false;
 };
 
 #endif // CONTROLLER_H

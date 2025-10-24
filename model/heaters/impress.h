@@ -28,6 +28,9 @@ private:
     int qnt = 1;
     //float TempoEntreImpressao = 2.0f; // Tempo mínimo entre impressões em segundos
     Arquiver arq;
+    std::vector<std::string> StrList;
+    bool LastImpress = true;
+    int QntImpressao = 0;
 
     std::chrono::time_point<std::chrono::high_resolution_clock> TimeLastPrint;
 
@@ -35,6 +38,23 @@ public:
     Impress(Arquiver& arquiver);
     void LoadAtributes();
     void SaveAtributes();
-    bool print(std::vector<std::string> StrList,bool LastImpress) ;
+    bool print();
+
+    void setStrList(const std::vector<std::string>& strList) {
+        StrList = strList;
+    }
+    void setLastImpress(bool lastImpress) {
+        LastImpress = lastImpress;
+    }
+    bool getLastImpress() const {
+        return LastImpress;
+    }
+    void setQntImpressao(int qnt) {
+        QntImpressao = qnt;
+    }
+    int getQntImpressao() const {
+        return QntImpressao;
+    }
+    
 };
 #endif // IMPRESS_H

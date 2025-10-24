@@ -54,7 +54,7 @@ std::string formatFloat(float val) {
     return ss.str();
 }
 
-bool Impress::print(std::vector<std::string> StrList, bool LastImpress) {
+bool Impress::print() {
     // Ver se já se passou 1 segundo desde a última impressão
     std::chrono::duration<double> elapsed = std::chrono::high_resolution_clock::now() - TimeLastPrint;
     if (LastImpress == false) {
@@ -106,6 +106,7 @@ bool Impress::print(std::vector<std::string> StrList, bool LastImpress) {
 
         std::cout << "✅ Etiqueta enviada com sucesso!" << "\n";
         TimeLastPrint = std::chrono::high_resolution_clock::now();
+        QntImpressao--;
         return true;
     } catch (const std::exception& e) {
         std::cerr << "❌ Erro ao imprimir: " << e.what() << "\n";
