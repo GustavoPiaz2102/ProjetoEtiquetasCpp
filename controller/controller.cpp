@@ -4,7 +4,7 @@
 
 Controller::Controller()
     : validator("000/00", "00/00/0000", "00/00/0000"),
-      interface(validator), ,
+      interface(validator),
       selected_option(-1),
       arquiver("data/config.txt"),
       imp(arquiver),
@@ -74,7 +74,7 @@ void Controller::run()
                     {
                         imp.setStrList({validator.GetLT(),
                                         validator.GetFAB(),
-                                        validator.GetVAL()})
+                                        validator.GetVAL()});
                     }
                     else
                     {
@@ -148,6 +148,7 @@ void Controller::run()
                 interface.end_frame();
             }
         }
+    }
         catch (const std::exception &e)
         {
             std::cerr << "Erro capturado: " << e.what() << "\n";
@@ -246,4 +247,3 @@ void Controller::run()
             }
         }
     }
-}
