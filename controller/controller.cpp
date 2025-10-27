@@ -137,6 +137,7 @@ void Controller::run()
                 {
                     selected_option = -1;
                 }
+                imp.setQntImpressao(qnt_impress);
                 break;
 
             }
