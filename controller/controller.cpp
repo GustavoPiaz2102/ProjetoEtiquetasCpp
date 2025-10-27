@@ -231,8 +231,11 @@ void Controller::run()
                 detector.StartSensorThread();
             }
 
-            if(!FirstDet) interface.atualizar_frame(detector.GetFrame());
-            else: interface.atualizar_frame(cv::Mat::zeros(480,640,CV_8UC3));
+            if(!FirstDet){
+                interface.atualizar_frame(detector.GetFrame());
+            } else {
+                interface.atualizar_frame(cv::Mat::zeros(480,640,CV_8UC3));
+            }
 
             if (!ProcessActive)
             {
