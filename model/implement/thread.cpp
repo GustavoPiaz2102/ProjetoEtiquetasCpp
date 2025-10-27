@@ -1,4 +1,4 @@
-#include "../heaters/thread.h"
+/*#include "../heaters/thread.h"
 
 Thread::Thread() : running(false) {}
 Thread::~Thread() {
@@ -27,3 +27,4 @@ bool Thread::isRunning() const {
     return running.load();
 }
 #endif // THREAD_H
+*/
