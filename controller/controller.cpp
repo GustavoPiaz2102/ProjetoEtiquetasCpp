@@ -138,6 +138,7 @@ void Controller::run()
                     selected_option = -1;
                     break;
                 }
+            }
             //
             case -10:
             {
@@ -147,7 +148,7 @@ void Controller::run()
             }
 
                 interface.end_frame();
-            }
+            
         }
     }
         catch (const std::exception &e)
