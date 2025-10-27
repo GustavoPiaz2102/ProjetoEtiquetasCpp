@@ -132,7 +132,8 @@ void Controller::run()
             // Imprime
             case 2:
             {
-                if (interface.config_impress(imp.getQntImpressao()))
+                qnt_impress = imp.getQntImpressao();
+                if (interface.config_impress(qnt_impress))
                 {
                     selected_option = -1;
                     break;
