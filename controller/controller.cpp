@@ -136,14 +136,15 @@ void Controller::run()
                 if (interface.config_impress(qnt_impress))
                 {
                     selected_option = -1;
-                    break;
                 }
+                break;
+
             }
             //
             case -10:
             {
                 arquiver.save();
-                std::system("shutdown now");
+                //std::system("shutdown now");
             }
             }
 
