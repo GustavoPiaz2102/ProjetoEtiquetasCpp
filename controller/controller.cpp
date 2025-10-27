@@ -230,7 +230,10 @@ void Controller::run()
                 SensorActive = true;
                 detector.StartSensorThread();
             }
-            interface.atualizar_frame(detector.GetFrame());
+
+            if(!FirstDet) interface.atualizar_frame(detector.GetFrame());
+            else: interface.atualizar_frame(cv::Mat::zeros(480,640,CV_8UC3));
+
             if (!ProcessActive)
             {
                 ProcessActive = true;
@@ -249,5 +252,7 @@ void Controller::run()
                 ProcessActive = false;
                 detector.StopProcessThread();
             }
+            FirstDet = true;
+            selected_option = -1;
         }
     }

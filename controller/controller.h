@@ -31,6 +31,7 @@ private:
     int qnt_impress; // Quantidade de impressões
     bool SensorActive = false;
     bool ProcessActive = false;
+    bool FirstDet = true;
 };
 
 #endif // CONTROLLER_H
