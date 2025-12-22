@@ -33,8 +33,8 @@ private:
     Interface &interface;
     Validator &validator;
 
-    bool NewFrameAvailable = false;
-    bool LastWithError = false;
+    std::atomic<bool> NewFrameAvailable{false};
+    std::atomic<bool> LastWithError{false};
     std::function<void(bool, const std::string &)> validationCallback; // Callback para notificação de validação
 
 public:

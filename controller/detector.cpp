@@ -31,12 +31,23 @@ void Detector::ProcessLoop()
         if (NewFrameAvailable)
         {
             cv::Mat current_frame;
+            bool hasFrame = false;
+
             {
                 std::lock_guard<std::mutex> lock(frame_mutex);
-                if (frame.empty())
-                    continue;
-                current_frame = frame.clone();
+                if (!frame.empty())
+                {
+                    current_frame = frame.clone();
+                    hasFrame = true;
+                }
+            } // mutex liberado aqui
+
+            if (!hasFrame)
+            {
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+                continue;
             }
+
             cv::Mat processed = preprocessor.preprocess(current_frame);
             std::string text = ocr.extractText(processed);
 
@@ -44,20 +55,16 @@ void Detector::ProcessLoop()
             {
                 imp.setLastImpress(false);
                 LastWithError = true;
-                // Make signal
             }
             else
             {
                 LastWithError = false;
             }
-            NewFrameAvailable = false;
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            NewFrameAvailable = false;
         }
-        else
-        {
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
 
@@ -111,8 +118,10 @@ void Detector::SensorCaptureImpressTHR()
 }
 cv::Mat Detector::GetFrame()
 {
-    std::lock_guard<std::mutex> lock(frame_mutex);
-    return frame.clone();
+    {
+        std::lock_guard<std::mutex> lock(frame_mutex);
+        return frame.clone();
+    }
 }
 void Detector::StartSensorThread()
 {
