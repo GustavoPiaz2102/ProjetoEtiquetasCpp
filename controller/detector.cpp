@@ -1,7 +1,7 @@
 #include "detector.h"
 
 Detector::Detector(Impress &imp, Interface &interface, Validator &validator)
-    : camera(0), ocr("eng"), sensor(17, 18,"gpiochip4"), imp(imp), interface(interface), validator(validator) {}
+    : camera(0), ocr("eng"), sensor(17, 18,"gpiochip0"), imp(imp), interface(interface), validator(validator) {}
 
 Detector::~Detector()
 {
