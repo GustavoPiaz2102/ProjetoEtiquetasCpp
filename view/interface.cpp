@@ -449,7 +449,7 @@ bool Interface::config_impress(int & value,bool *InstantImpress) {
     *InstantImpress = ImGui::Button("Imprimir Instantaneo", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
     ImGui::PopStyleVar(3);
     ImGui::End();
-    if (clicked){
+    if (clicked || *InstantImpress){
     imprimindo=!imprimindo;
     return true;
     }
