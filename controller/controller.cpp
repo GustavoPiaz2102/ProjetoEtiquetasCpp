@@ -137,17 +137,19 @@ void Controller::run()
                 if (interface.config_impress(qnt_impress, &InstantImpress))
                 {
                     selected_option = -1;
+                    interface.setImprimindo(true);
+
                 }
                 imp.setQntImpressao(qnt_impress);
+
                 if (InstantImpress && qnt_impress > 0)
                 {
-                    interface.setImprimindo(true);
                     for (int i = 0; i < qnt_impress; i++)
                     {
                         imp.print();
                     }
+                    interface.setImprimindo(false);
                 }
-                interface.setImprimindo(false);
                 break;
             }
             //
