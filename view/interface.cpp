@@ -397,7 +397,7 @@ bool Interface::requisitar_lt(std::string& selected_lt) {
     return clicked;
 }
 
-bool Interface::config_impress(int & value) {
+bool Interface::config_impress(int & value,bool *InstantImpress) {
     if(imprimindo){imprimindo = !imprimindo;return true;}
     else{
     ImGui::SetNextWindowPos(ImVec2(0, 0));
@@ -445,6 +445,8 @@ bool Interface::config_impress(int & value) {
 
     ImGui::PopID();
     bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
+    ImGui::SameLine();
+    *InstantImpress = ImGui::Button("Imprimir Instantaneo", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
     ImGui::PopStyleVar(3);
     ImGui::End();
     if (clicked){

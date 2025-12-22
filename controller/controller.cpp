@@ -129,133 +129,144 @@ void Controller::run()
                 }
                 break;
             }
-            // Imprime
+            // Configura impressão
             case 2:
             {
+                bool InstantImpress = false;
                 qnt_impress = imp.getQntImpressao();
-                if (interface.config_impress(qnt_impress))
+                if (interface.config_impress(qnt_impress, &InstantImpress))
                 {
                     selected_option = -1;
                 }
                 imp.setQntImpressao(qnt_impress);
+                if (InstantImpress && qnt_impress > 0)
+                {
+                    interface.setImprimindo(true);
+                    for (int i = 0; i < qnt_impress; i++)
+                    {
+                        imp.print();
+                    }
+                }
+                interface.setImprimindo(false);
                 break;
-
             }
             //
             case -10:
             {
                 arquiver.save();
-                //std::system("shutdown now");
+                // std::system("shutdown now");
             }
             }
 
-                interface.end_frame();
-            
+            interface.end_frame();
         }
     }
-        catch (const std::exception &e)
-        {
-            std::cerr << "Erro capturado: " << e.what() << "\n";
-            arquiver.save();
-            // Aqui você pode decidir se quer abortar, reiniciar o loop, ou outra coisa
-        }
-        catch (...)
-        {
-            std::cerr << "Erro desconhecido capturado.\n";
-            arquiver.save();
-        }
-    }
-
-    bool Controller::requisitar_data_e_setar(int tipo, std::function<void(const std::string &)> setter)
+    catch (const std::exception &e)
     {
-        std::string data;
-        if (interface.requisitar_data(data, tipo))
-        {
-            std::cout << "Data selecionada: " << data << "\n";
-            setter(data);
-            return true;
-        }
-        return false;
+        std::cerr << "Erro capturado: " << e.what() << "\n";
+        arquiver.save();
+        // Aqui você pode decidir se quer abortar, reiniciar o loop, ou outra coisa
     }
-    /*
-    void Controller::rodar_detector() {
-        if(interface.GetImprimindo()){
-        if (imp.print()) {
-            std::cout << "Impressão iniciada com sucesso!" << "\n";
-            qnt_impress--;
-        } else {
-            if(interface.PopUpError("Erro ao iniciar a impressão.")){
-                imp.setLastImpress(true);
-                if(qnt_impress<=0){
-                    interface.setImprimindo(false);
-                    selected_option = -1;
-                    imp.setLastImpress(true);
-                    return;
-                }
-                else{
-                    imp.setLastImpress(true);
-                    return;
-                }
-        }
-        }
+    catch (...)
+    {
+        std::cerr << "Erro desconhecido capturado.\n";
+        arquiver.save();
     }
-        //Aqui vai ter que dar um sleep para a etiqueta chegar no lugar da detecção
-        active = 0;
-        while (!active){
-            active = Sensor.ReadSensor();
-        }
+}
 
-        //Aqui também faz o OUT do strobo
-        Sensor.OutStrobo()
-        std::string str = detector.run();
-        std::cout << "Resultado do detector: " << str << std::endl;
-        if (str == "return") {
-            selected_option = -1;
+bool Controller::requisitar_data_e_setar(int tipo, std::function<void(const std::string &)> setter)
+{
+    std::string data;
+    if (interface.requisitar_data(data, tipo))
+    {
+        std::cout << "Data selecionada: " << data << "\n";
+        setter(data);
+        return true;
+    }
+    return false;
+}
+/*
+void Controller::rodar_detector() {
+    if(interface.GetImprimindo()){
+    if (imp.print()) {
+        std::cout << "Impressão iniciada com sucesso!" << "\n";
+        qnt_impress--;
+    } else {
+        if(interface.PopUpError("Erro ao iniciar a impressão.")){
             imp.setLastImpress(true);
-            return;
-        }
-        if (!validator.Validate(str)) {
-            imp.setLastImpress(false);
-            std::cout << "Erro: código inválido." << "\n";
-        }
+            if(qnt_impress<=0){
+                interface.setImprimindo(false);
+                selected_option = -1;
+                imp.setLastImpress(true);
+                return;
+            }
+            else{
+                imp.setLastImpress(true);
+                return;
+            }
     }
-    */
-    void Controller::rodar_detector()
+    }
+}
+    //Aqui vai ter que dar um sleep para a etiqueta chegar no lugar da detecção
+    active = 0;
+    while (!active){
+        active = Sensor.ReadSensor();
+    }
+
+    //Aqui também faz o OUT do strobo
+    Sensor.OutStrobo()
+    std::string str = detector.run();
+    std::cout << "Resultado do detector: " << str << std::endl;
+    if (str == "return") {
+        selected_option = -1;
+        imp.setLastImpress(true);
+        return;
+    }
+    if (!validator.Validate(str)) {
+        imp.setLastImpress(false);
+        std::cout << "Erro: código inválido." << "\n";
+    }
+}
+*/
+void Controller::rodar_detector()
+{
+    if (interface.GetImprimindo())
     {
-        if (interface.GetImprimindo())
+        // aciona o thread para ler o sensor ,capturar imagem e imprimir
+        if (!SensorActive)
         {
-            // aciona o thread para ler o sensor ,capturar imagem e imprimir
-            if (!SensorActive)
-            {
-                SensorActive = true;
-                detector.StartSensorThread();
-            }
+            SensorActive = true;
+            detector.StartSensorThread();
+        }
 
-            if(!FirstDet){
-                interface.atualizar_frame(detector.GetFrame());
-            } else {
-                interface.atualizar_frame(cv::Mat::zeros(480,640,CV_8UC3));
-            }
-
-            if (!ProcessActive)
-            {
-                ProcessActive = true;
-                detector.StartProcessThread();
-            }
+        if (!FirstDet)
+        {
+            interface.atualizar_frame(detector.GetFrame());
         }
         else
         {
-            if (SensorActive)
-            {
-                SensorActive = false;
-                detector.StopSensorThread();
-            }
-            if (ProcessActive)
-            {
-                ProcessActive = false;
-                detector.StopProcessThread();
-            }
-            FirstDet = true;
-            selected_option = -1;
+            interface.atualizar_frame(cv::Mat::zeros(480, 640, CV_8UC3));
+        }
+
+        if (!ProcessActive)
+        {
+            ProcessActive = true;
+            detector.StartProcessThread();
         }
     }
+    else
+    {
+        if (SensorActive)
+        {
+            SensorActive = false;
+            detector.StopSensorThread();
+        }
+        if (ProcessActive)
+        {
+            ProcessActive = false;
+            detector.StopProcessThread();
+        }
+        FirstDet = true;
+        selected_option = -1;
+    }
+}
