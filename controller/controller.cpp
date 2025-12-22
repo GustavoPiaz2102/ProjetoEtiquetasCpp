@@ -17,12 +17,10 @@ Controller::Controller()
     std::string fab_value = arquiver.dict["fab"];
     std::string val_value = arquiver.dict["val"];
 
-    // --- SOLUÇÃO PARA O ERRO DE BINDING ---
-    // Criamos uma variável local para cada valor e a passamos para a função Set.
     if (!lt_value.empty())
     {
-        std::string full_lt = lt_value; // Cria a variável local
-        validator.SetLT(full_lt);       // Passa a variável (lvalue)
+        std::string full_lt = lt_value;
+        validator.SetLT(full_lt);
     }
     if (!fab_value.empty())
     {
@@ -40,7 +38,10 @@ Controller::Controller()
 
 Controller::~Controller()
 {
-    // Salva os dados do validador no arquivo ao destruir o controlador
+    // Para threads antes de destruir
+    detector.StopSensorThread();
+    detector.StopProcessThread();
+
     arquiver.dict["lt"] = validator.GetLT();
     arquiver.dict["fab"] = validator.GetFAB();
     arquiver.dict["val"] = validator.GetVAL();
@@ -152,11 +153,11 @@ void Controller::run()
                 }
                 break;
             }
-            //
             case -10:
             {
                 arquiver.save();
                 // std::system("shutdown now");
+                return; // Sai do loop e encerra
             }
             }
 
@@ -167,7 +168,6 @@ void Controller::run()
     {
         std::cerr << "Erro capturado: " << e.what() << "\n";
         arquiver.save();
-        // Aqui você pode decidir se quer abortar, reiniciar o loop, ou outra coisa
     }
     catch (...)
     {
@@ -187,67 +187,47 @@ bool Controller::requisitar_data_e_setar(int tipo, std::function<void(const std:
     }
     return false;
 }
-/*
-void Controller::rodar_detector() {
-    if(interface.GetImprimindo()){
-    if (imp.print()) {
-        std::cout << "Impressão iniciada com sucesso!" << "\n";
-        qnt_impress--;
-    } else {
-        if(interface.PopUpError("Erro ao iniciar a impressão.")){
-            imp.setLastImpress(true);
-            if(qnt_impress<=0){
-                interface.setImprimindo(false);
-                selected_option = -1;
-                imp.setLastImpress(true);
-                return;
-            }
-            else{
-                imp.setLastImpress(true);
-                return;
-            }
-    }
-    }
-}
-    //Aqui vai ter que dar um sleep para a etiqueta chegar no lugar da detecção
-    active = 0;
-    while (!active){
-        active = Sensor.ReadSensor();
-    }
 
-    //Aqui também faz o OUT do strobo
-    Sensor.OutStrobo()
-    std::string str = detector.run();
-    std::cout << "Resultado do detector: " << str << std::endl;
-    if (str == "return") {
-        selected_option = -1;
-        imp.setLastImpress(true);
-        return;
-    }
-    if (!validator.Validate(str)) {
-        imp.setLastImpress(false);
-        std::cout << "Erro: código inválido." << "\n";
-    }
-}
-*/
 void Controller::rodar_detector()
 {
+    // 1. VERIFICA ERRO CRÍTICO DA IMPRESSORA (Seguro para GUI)
+    if (detector.HasPrinterError())
+    {
+        // Agora estamos na thread principal, podemos desenhar o Popup!
+        if (interface.PopUpError("Erro ao iniciar a impressão."))
+        {
+            // Usuário deu OK no popup
+            imp.setLastImpress(true);
+            interface.setImprimindo(false); 
+            // A thread do sensor já se desligou sozinha (running=false)
+            // mas o cleanup final ocorrerá no 'else' abaixo ou no próximo ciclo.
+        }
+        // Retorna para evitar desenhar frames inválidos neste ciclo
+        return; 
+    }
+
     if (interface.GetImprimindo())
     {
-        // aciona o thread para ler o sensor ,capturar imagem e imprimir
+        // Inicia threads se necessário
         if (!SensorActive)
         {
             SensorActive = true;
             detector.StartSensorThread();
         }
 
-        if (!FirstDet)
+        // CORREÇÃO: Evita crash ou tela preta ao tentar desenhar frame vazio
+        cv::Mat frame = detector.GetFrame();
+        if (!frame.empty())
         {
-            interface.atualizar_frame(detector.GetFrame());
+            interface.atualizar_frame(frame);
+            FirstDet = false; // Só considera detectado se tiver imagem
         }
         else
         {
-            interface.atualizar_frame(cv::Mat::zeros(480, 640, CV_8UC3));
+            // Se ainda não tem imagem, desenha preto (loading)
+            if (FirstDet) {
+                interface.atualizar_frame(cv::Mat::zeros(480, 640, CV_8UC3));
+            }
         }
 
         if (!ProcessActive)
@@ -255,20 +235,26 @@ void Controller::rodar_detector()
             ProcessActive = true;
             detector.StartProcessThread();
         }
+        
+        // Atualiza status local baseado nas flags internas do detector
+        // Nota: Removido GetRunning direto para evitar race condition,
+        // confiamos na lógica do Controller e no HasPrinterError
     }
     else
     {
+        // Desligamento seguro
         if (SensorActive)
         {
             SensorActive = false;
-            detector.StopSensorThread();
+            detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
         }
         if (ProcessActive)
         {
             ProcessActive = false;
             detector.StopProcessThread();
         }
+        
         FirstDet = true;
-        selected_option = -1;
+        selected_option = -1; // Volta para o Menu
     }
 }
