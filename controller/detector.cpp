@@ -90,20 +90,18 @@ void Detector::SensorCaptureImpressTHR()
                 }
                 else
                 {
-                    if (interface.PopUpError("Erro ao iniciar a impressão."))
-                    {
-                        imp.setLastImpress(true);
 
-                        if (imp.getQntImpressao() <= 0)
-                        {
-                            interface.setImprimindo(false);
-                            running = false; // ✅ pode parar o loop
-                        }
-                        else
-                        {
-                            imp.setLastImpress(true);
-                        }
-                    }
+                imp.setLastImpress(true);
+
+                if (imp.getQntImpressao() <= 0)
+                {
+                    interface.setImprimindo(false);
+                    running = false; // ✅ pode parar o loop
+                }
+                else
+                {
+                    imp.setLastImpress(true);
+                }
                 }
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(1));
