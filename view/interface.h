@@ -97,7 +97,7 @@ public:
     std::string FormatDate(int day, int month, int year);
     void beginFullscreenWindow(const char* name);
     bool config_menu(Arquiver& arq);
-    bool config_impress(int & value);
+    bool config_impress(int & value,bool *InstantImpress);
     bool GetImprimindo();
     void setImprimindo(bool value);
     bool PopUpError(const std::string& message); // faz um pop-up com uma mensagem de erro e um botão "OK"

@@ -34,9 +34,10 @@ private:
     Interface &interface;
     Validator &validator;
 
-    bool NewFrameAvailable = false;
-    bool LastWithError = false;
+    std::atomic<bool> NewFrameAvailable{false};
+    std::atomic<bool> LastWithError{false};
     std::function<void(bool, const std::string &)> validationCallback; // Callback para notificação de validação
+    std::atomic<bool> printer_error{false};
 
 public:
     /** @brief Construtor da classe Detector que inicializa todos os componentes do sistema.
@@ -120,6 +121,21 @@ public:
     void setValidationCallback(std::function<void(bool, const std::string &)> callback)
     {
         validationCallback = callback;
+    }
+    bool GetRunning() const
+    {
+        return running;
+    }
+    bool GetProcessingRunning() const
+    {
+        return processing_running;
+    }
+    bool HasPrinterError() {               
+        if (printer_error) {
+            printer_error = false;
+            return true;
+        }
+        return false;
     }
 };
 

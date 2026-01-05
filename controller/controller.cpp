@@ -17,12 +17,10 @@ Controller::Controller()
     std::string fab_value = arquiver.dict["fab"];
     std::string val_value = arquiver.dict["val"];
 
-    // --- SOLUÇÃO PARA O ERRO DE BINDING ---
-    // Criamos uma variável local para cada valor e a passamos para a função Set.
     if (!lt_value.empty())
     {
-        std::string full_lt = lt_value; // Cria a variável local
-        validator.SetLT(full_lt);       // Passa a variável (lvalue)
+        std::string full_lt = lt_value;
+        validator.SetLT(full_lt);
     }
     if (!fab_value.empty())
     {
@@ -40,7 +38,10 @@ Controller::Controller()
 
 Controller::~Controller()
 {
-    // Salva os dados do validador no arquivo ao destruir o controlador
+    // Para threads antes de destruir
+    detector.StopSensorThread();
+    detector.StopProcessThread();
+
     arquiver.dict["lt"] = validator.GetLT();
     arquiver.dict["fab"] = validator.GetFAB();
     arquiver.dict["val"] = validator.GetVAL();
@@ -129,133 +130,131 @@ void Controller::run()
                 }
                 break;
             }
-            // Imprime
+            // Configura impressão
             case 2:
             {
+                bool InstantImpress = false;
                 qnt_impress = imp.getQntImpressao();
-                if (interface.config_impress(qnt_impress))
+                if (interface.config_impress(qnt_impress, &InstantImpress))
                 {
                     selected_option = -1;
+
                 }
                 imp.setQntImpressao(qnt_impress);
-                break;
 
+                if (InstantImpress && qnt_impress > 0)
+                {
+                    interface.setImprimindo(true);
+                    for (int i = 0; i < qnt_impress; i++)
+                    {
+                        imp.print();
+                    }
+                    interface.setImprimindo(false);
+                }
+                break;
             }
-            //
             case -10:
             {
                 arquiver.save();
-                //std::system("shutdown now");
+                // std::system("shutdown now");
+                return; // Sai do loop e encerra
             }
             }
 
-                interface.end_frame();
-            
+            interface.end_frame();
         }
     }
-        catch (const std::exception &e)
-        {
-            std::cerr << "Erro capturado: " << e.what() << "\n";
-            arquiver.save();
-            // Aqui você pode decidir se quer abortar, reiniciar o loop, ou outra coisa
-        }
-        catch (...)
-        {
-            std::cerr << "Erro desconhecido capturado.\n";
-            arquiver.save();
-        }
-    }
-
-    bool Controller::requisitar_data_e_setar(int tipo, std::function<void(const std::string &)> setter)
+    catch (const std::exception &e)
     {
-        std::string data;
-        if (interface.requisitar_data(data, tipo))
-        {
-            std::cout << "Data selecionada: " << data << "\n";
-            setter(data);
-            return true;
-        }
-        return false;
+        std::cerr << "Erro capturado: " << e.what() << "\n";
+        arquiver.save();
     }
-    /*
-    void Controller::rodar_detector() {
-        if(interface.GetImprimindo()){
-        if (imp.print()) {
-            std::cout << "Impressão iniciada com sucesso!" << "\n";
-            qnt_impress--;
-        } else {
-            if(interface.PopUpError("Erro ao iniciar a impressão.")){
-                imp.setLastImpress(true);
-                if(qnt_impress<=0){
-                    interface.setImprimindo(false);
-                    selected_option = -1;
-                    imp.setLastImpress(true);
-                    return;
-                }
-                else{
-                    imp.setLastImpress(true);
-                    return;
-                }
-        }
-        }
+    catch (...)
+    {
+        std::cerr << "Erro desconhecido capturado.\n";
+        arquiver.save();
     }
-        //Aqui vai ter que dar um sleep para a etiqueta chegar no lugar da detecção
-        active = 0;
-        while (!active){
-            active = Sensor.ReadSensor();
-        }
+}
 
-        //Aqui também faz o OUT do strobo
-        Sensor.OutStrobo()
-        std::string str = detector.run();
-        std::cout << "Resultado do detector: " << str << std::endl;
-        if (str == "return") {
-            selected_option = -1;
+bool Controller::requisitar_data_e_setar(int tipo, std::function<void(const std::string &)> setter)
+{
+    std::string data;
+    if (interface.requisitar_data(data, tipo))
+    {
+        std::cout << "Data selecionada: " << data << "\n";
+        setter(data);
+        return true;
+    }
+    return false;
+}
+
+void Controller::rodar_detector()
+{
+    // 1. VERIFICA ERRO CRÍTICO DA IMPRESSORA (Seguro para GUI)
+    if (detector.HasPrinterError())
+    {
+        // Agora estamos na thread principal, podemos desenhar o Popup!
+        if (interface.PopUpError("Erro ao iniciar a impressão."))
+        {
+            // Usuário deu OK no popup
             imp.setLastImpress(true);
-            return;
+            interface.setImprimindo(false); 
+            // A thread do sensor já se desligou sozinha (running=false)
+            // mas o cleanup final ocorrerá no 'else' abaixo ou no próximo ciclo.
         }
-        if (!validator.Validate(str)) {
-            imp.setLastImpress(false);
-            std::cout << "Erro: código inválido." << "\n";
-        }
+        // Retorna para evitar desenhar frames inválidos neste ciclo
+        return; 
     }
-    */
-    void Controller::rodar_detector()
+
+    if (interface.GetImprimindo())
     {
-        if (interface.GetImprimindo())
+        // Inicia threads se necessário
+        if (!SensorActive)
         {
-            // aciona o thread para ler o sensor ,capturar imagem e imprimir
-            if (!SensorActive)
-            {
-                SensorActive = true;
-                detector.StartSensorThread();
-            }
+            SensorActive = true;
+            detector.StartSensorThread();
+        }
 
-            if(!FirstDet){
-                interface.atualizar_frame(detector.GetFrame());
-            } else {
-                interface.atualizar_frame(cv::Mat::zeros(480,640,CV_8UC3));
-            }
-
-            if (!ProcessActive)
-            {
-                ProcessActive = true;
-                detector.StartProcessThread();
-            }
+        // CORREÇÃO: Evita crash ou tela preta ao tentar desenhar frame vazio
+        cv::Mat frame = detector.GetFrame();
+        if (!frame.empty())
+        {
+            interface.atualizar_frame(frame);
+            FirstDet = false; // Só considera detectado se tiver imagem
         }
         else
         {
-            if (SensorActive)
-            {
-                SensorActive = false;
-                detector.StopSensorThread();
+            // Se ainda não tem imagem, desenha preto (loading)
+            if (FirstDet) {
+                interface.atualizar_frame(cv::Mat::zeros(480, 640, CV_8UC3));
             }
-            if (ProcessActive)
-            {
-                ProcessActive = false;
-                detector.StopProcessThread();
-            }
-            FirstDet = true;
-            selected_option = -1;
         }
+
+        if (!ProcessActive)
+        {
+            ProcessActive = true;
+            detector.StartProcessThread();
+        }
+        
+        // Atualiza status local baseado nas flags internas do detector
+        // Nota: Removido GetRunning direto para evitar race condition,
+        // confiamos na lógica do Controller e no HasPrinterError
     }
+    else
+    {
+        // Desligamento seguro
+        if (SensorActive)
+        {
+            SensorActive = false;
+            detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
+        }
+        if (ProcessActive)
+        {
+            ProcessActive = false;
+            detector.StopProcessThread();
+        }
+        
+        FirstDet = true;
+        selected_option = -1; // Volta para o Menu
+    }
+}
