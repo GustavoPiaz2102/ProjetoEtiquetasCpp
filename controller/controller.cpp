@@ -144,6 +144,7 @@ void Controller::run()
 
                 if (InstantImpress && qnt_impress > 0)
                 {
+                    std::cout << "Impressão instantânea de " << qnt_impress << " etiquetas.\n";
                     interface.setImprimindo(true);
                     for (int i = 0; i < qnt_impress; i++)
                     {

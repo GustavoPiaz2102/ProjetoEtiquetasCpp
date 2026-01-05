@@ -14,7 +14,7 @@ private:
     gpiod_chip *chip;
     gpiod_line *sensorLine;
     gpiod_line *stroboLine;
-    bool LastSensorValue;
+    bool LastSensorValue = false;
 
 public:
     GPIO(int pinSensor, int pinStrobo, const std::string &chipname = "gpiochip4");
