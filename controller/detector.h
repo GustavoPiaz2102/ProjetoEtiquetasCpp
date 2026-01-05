@@ -28,6 +28,7 @@ private:
     std::atomic<bool> running{false};            // Controle da thread de captura
     std::atomic<bool> processing_running{false}; // Controle da thread de processamento
 
+    
     GPIO sensor;
     Impress &imp;
     Interface &interface;

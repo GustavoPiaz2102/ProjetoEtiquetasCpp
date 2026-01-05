@@ -33,7 +33,11 @@ bool GPIO::ReadSensor() {
         std::cerr << "Erro ao ler valor do sensor (GPIO " << PinSensor << ")\n";
         return false;
     }
-    return value;
+    if (value != LastSensorValue) {
+        LastSensorValue = value;
+        return value;
+    }
+    return false;
 }
 
 void GPIO::OutStrobo() {
