@@ -78,17 +78,11 @@ void Detector::ProcessLoop()
     }
 }
 
-// No seu Detector.cpp
 void Detector::SensorCaptureImpressTHR()
 {
-    bool jaImprimiuNesteCiclo = false; // Variável para controle de borda
-
     while (running)
     {
-        int estadoSensor = sensor.ReadSensor();
-
-        // Só tenta imprimir se o sensor disparar E ainda houver etiquetas pendentes
-        if (estadoSensor != 0 && !jaImprimiuNesteCiclo && imp.getQntImpressao() > 0)
+        if (sensor.ReadSensor() != 0)
         {
             sensor.SetStroboHigh();
             cv::Mat newFrame = camera.captureImage();
@@ -96,26 +90,43 @@ void Detector::SensorCaptureImpressTHR()
 
             {
                 std::lock_guard<std::mutex> lock(frame_mutex);
+                
+                // CORREÇÃO: Atualizamos o frame ANTES de tentar imprimir.
+                // Isso garante que a imagem apareça na tela mesmo se a impressora falhar.
                 frame = std::move(newFrame);
                 NewFrameAvailable = true;
             }
 
-            if (imp.print()) {
-                std::cout << "Etiqueta impressa! Restam: " << imp.getQntImpressao() << "\n";
-                jaImprimiuNesteCiclo = true; // Bloqueia novas impressões até o sensor resetar
-            } else {
-                printer_error = true; 
-                running = false; 
+            // Agora tentamos imprimir
+            bool sucesso = imp.print();
+            
+            if (sucesso)
+            {
+                std::cout << "Impressão iniciada com sucesso!" << "\n";
             }
-        } 
-        // Se o sensor voltar a 0, liberamos para a próxima etiqueta
-        else if (estadoSensor == 0) 
-        {
-            jaImprimiuNesteCiclo = false;
-        }
+            else
+            {
+                // CORREÇÃO: Lógica segura de erro.
+                std::cout << "Falha ao iniciar a impressão! Parando thread." << "\n";
+                
+                // 1. Sinaliza erro para a thread principal (Controller)
+                printer_error = true; 
+                
+                // 2. Para o loop desta thread imediatamente
+                running = false; 
+                
+                // 3. Marca erro na impressão
+                imp.setLastImpress(true);
+            }
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+        else
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
     }
+    std::cout << "Thread de captura e impressão encerrada (loop finalizado).\n";
 }
 
 cv::Mat Detector::GetFrame()
