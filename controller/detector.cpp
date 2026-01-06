@@ -49,7 +49,7 @@ void Detector::ProcessLoop()
                 std::lock_guard<std::mutex> lock(frame_mutex);
                 if (!frame.empty())
                 {
-                    current_fthreadrame = frame.clone();
+                    current_frame = frame.clone();
                     hasFrame = true;
                 }
             } // mutex liberado aqui
