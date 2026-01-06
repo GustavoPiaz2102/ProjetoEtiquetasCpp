@@ -35,6 +35,9 @@ Controller::Controller()
     std::cout << "Dados carregados: ";
     validator.printall();
     imp.LoadAtributes();
+    imp.setStrList({validator.GetLT(),
+        validator.GetFAB(),
+        validator.GetVAL()});
 }
 
 Controller::~Controller()
@@ -117,8 +120,9 @@ void Controller::run()
                     arquiver.dict["fab"] = validator.GetFAB();
                     arquiver.dict["val"] = validator.GetVAL();
                     arquiver.save();
-                    imp.LoadAtributes();
-                    imp.SaveAtributes();
+                    imp.setStrList({validator.GetLT(),
+                                        validator.GetFAB(),
+                                        validator.GetVAL()});
                 }
                 break;
             }
