@@ -111,7 +111,7 @@ void Detector::SensorCaptureImpressTHR()
                     imp.setLastImpress(true);
                 }
                 //Se o erro for 1 foi erro de detecção apenas então desconsidera
-=                std::cout << "Impressão iniciada com sucesso.\n";
+                std::cout << "Impressão iniciada com sucesso.\n";
             }
             else
             {
