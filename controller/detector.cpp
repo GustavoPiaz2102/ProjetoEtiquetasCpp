@@ -49,7 +49,7 @@ void Detector::ProcessLoop()
                 std::lock_guard<std::mutex> lock(frame_mutex);
                 if (!frame.empty())
                 {
-                    current_frame = frame.clone();
+                    current_fthreadrame = frame.clone();
                     hasFrame = true;
                 }
             } // mutex liberado aqui
@@ -137,6 +137,7 @@ void Detector::SensorCaptureImpressTHR()
         }
     }
     sensor.ReturnToFirst();
+    imp.ResetLastImpress();
     std::cout << "Esperando Pela finalização da thread na main\n";
 }
 

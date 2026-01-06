@@ -61,5 +61,9 @@ public:
     {
         return QntImpressao;
     }
+    void ResetLastImpress()
+    {
+        LastImpress = true;
+    }
 };
 #endif // IMPRESS_H
