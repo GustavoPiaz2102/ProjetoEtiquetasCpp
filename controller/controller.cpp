@@ -209,7 +209,7 @@ void Controller::rodar_detector()
 
     if (interface.GetImprimindo() && imp.getQntImpressao() > 0)
     {
-        if(FirstDet || (detector.GetRunning() && detector.GetProcessingRunning))
+        if(FirstDet || (detector.GetRunning() && detector.GetProcessingRunning()))
         {
         // Inicia threads se necessário
         if (!SensorActive)
