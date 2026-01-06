@@ -7,6 +7,10 @@
 #include <stdexcept>
 #include <thread>
 #include <chrono>
+
+
+#define DebounceValue 2
+
 class GPIO
 {
 private:
@@ -17,7 +21,7 @@ private:
     gpiod_line *stroboLine;
     bool LastSensorValue = false;
     bool firstRead = true;
-
+    int ActualCounter = 0;
 public:
     GPIO(int pinSensor, int pinStrobo, const std::string &chipname = "gpiochip4");
     ~GPIO();
@@ -27,7 +31,7 @@ public:
     void BlinkStrobo(int Delay); // Ativa o pino strobo por um tempo definido em milissegundos
     void SetStroboHigh();        // Define o pino strobo como HIGH
     void SetStroboLow();         // Define o pino strobo como LOW
-    void ReturnToFirst(){firstRead = true;}
+    void ReturnToFirst(){firstRead = true; ActualCounter = 0; LastSensorValue = false;} // Reseta a leitura do sensor
 };
 #endif
 

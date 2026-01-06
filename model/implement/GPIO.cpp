@@ -39,6 +39,11 @@ bool GPIO::ReadSensor() {
         return false;
     }
     if (value != LastSensorValue) {
+        ActualCounter++;
+    } else {
+        ActualCounter = 0;
+    }
+    if (ActualCounter >= DebounceValue) {
         LastSensorValue = value;
         return value;
     }
