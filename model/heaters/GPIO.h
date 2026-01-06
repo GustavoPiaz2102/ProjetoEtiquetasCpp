@@ -27,6 +27,7 @@ public:
     void BlinkStrobo(int Delay); // Ativa o pino strobo por um tempo definido em milissegundos
     void SetStroboHigh();        // Define o pino strobo como HIGH
     void SetStroboLow();         // Define o pino strobo como LOW
+    void ReturnToFirst(){firstRead = true;}
 };
 #endif
 

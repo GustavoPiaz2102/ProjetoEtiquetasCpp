@@ -260,6 +260,7 @@ void Controller::rodar_detector()
         }
 
         FirstDet = true;
+        sensor.ReturnToFirst();
         selected_option = -1; // Volta para o Menu
     }
 }
