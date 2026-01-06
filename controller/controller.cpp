@@ -34,6 +34,7 @@ Controller::Controller()
     }
     std::cout << "Dados carregados: ";
     validator.printall();
+    imp.LoadAtributes();
 }
 
 Controller::~Controller()
