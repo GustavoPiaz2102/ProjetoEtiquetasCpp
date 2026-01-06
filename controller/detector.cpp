@@ -78,7 +78,7 @@ void Detector::ProcessLoop()
     }
     std::cout << "Esperando Pela finalização da thread de processamento na main\n";
     //Interface imprimindo off
-    
+
     while (true) std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
 
@@ -108,7 +108,6 @@ void Detector::SensorCaptureImpressTHR()
            if (printReturn)
             {
                 if (error == 1){
-                    printer_error = true; 
                     imp.setLastImpress(true);
                 }
                 //Se o erro for 1 foi erro de detecção apenas então desconsidera
@@ -120,6 +119,7 @@ void Detector::SensorCaptureImpressTHR()
                 std::cout << "Falha ao iniciar a impressão! Parando thread." << "\n";
                 
                 // 1. Sinaliza erro para a thread principal (Controller)
+                printer_error = true; 
 
                 // 2. Para o loop desta thread imediatamente
                 running = false; 

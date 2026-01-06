@@ -32,6 +32,7 @@ private:
     bool SensorActive = false;
     bool ProcessActive = false;
     bool FirstDet = true;
+    cv::Mat NonDetectedFrame = cv::Mat::zeros(480, 640, CV_8UC3); // Frame preto para quando não há detecção
 };
 
 #endif // CONTROLLER_H

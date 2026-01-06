@@ -69,7 +69,7 @@ void Controller::run()
                     interface.setImprimindo(false);
                 }
                 interface.menu(selected_option, imp.getQntImpressao());
-                if (interface.GetImprimindo() && imp.getQntImpressao() > 0)
+                if (interface.GetImprimindo())
                 {
                     if (imp.getQntImpressao() > 0)
                     {
@@ -221,7 +221,7 @@ void Controller::rodar_detector()
             // Se ainda não tem imagem, desenha preto (loading)
             if (FirstDet)
             {
-                interface.atualizar_frame(cv::Mat::zeros(480, 640, CV_8UC3));
+                interface.atualizar_frame(NonDetectedFrame);
             }
         }
 
