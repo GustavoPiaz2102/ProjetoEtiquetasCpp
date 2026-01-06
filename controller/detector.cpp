@@ -131,10 +131,10 @@ void Detector::SensorCaptureImpressTHR()
         }
         else
         {
-            sensor.ReturnToFirst();
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
     }
+    sensor.ReturnToFirst();
     std::cout << "Esperando Pela finalização da thread na main\n";
 }
 
