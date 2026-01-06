@@ -31,6 +31,7 @@ void Detector::StopProcessThread()
     if (process_thread.joinable())
     {
         process_thread.join();
+        std::cout << "Thread de processamento limpa com sucesso.\n";
     }
 }
 
