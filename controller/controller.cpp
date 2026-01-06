@@ -207,8 +207,10 @@ void Controller::rodar_detector()
         return;
     }
 
-    if (interface.GetImprimindo() && imp.getQntImpressao() > 0 && detector.GetRunning() && detector.GetProcessingRunning())
+    if (interface.GetImprimindo() && imp.getQntImpressao() > 0)
     {
+        if(FirstDet || (detector.GetRunning() && detector.GetProcessingRunning))
+        {
         // Inicia threads se necessário
         if (!SensorActive)
         {
@@ -242,6 +244,7 @@ void Controller::rodar_detector()
         // Nota: Removido GetRunning direto para evitar race condition,
         // confiamos na lógica do Controller e no HasPrinterError
     }
+}
     else
     {
         // Desligamento seguro
