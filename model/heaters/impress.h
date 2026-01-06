@@ -5,10 +5,11 @@
 #include <iostream>
 #include <cstring> // para strcpy
 #include <cstdlib> // para std::stoi, std::stof
-#include <fstream>   // ofstream
+#include <fstream> // ofstream
 #include <vector>
 #include <chrono>
-class Impress {
+class Impress
+{
 private:
     char tamanho_etiqueta[64] = "60 mm,40 mm";
     char espacamento[32] = "2 mm,0";
@@ -26,7 +27,7 @@ private:
     float escala_y = 1.0f;
     char fonte[8] = "3";
     int qnt = 1;
-    //float TempoEntreImpressao = 2.0f; // Tempo mínimo entre impressões em segundos
+    // float TempoEntreImpressao = 2.0f; // Tempo mínimo entre impressões em segundos
     Arquiver arq;
     std::vector<std::string> StrList;
     bool LastImpress = true;
@@ -35,26 +36,30 @@ private:
     std::chrono::time_point<std::chrono::high_resolution_clock> TimeLastPrint;
 
 public:
-    Impress(Arquiver& arquiver);
+    Impress(Arquiver &arquiver);
     void LoadAtributes();
     void SaveAtributes();
-    bool print();
+    bool print(int &errorCode = 0); // Retorna true se a impressão foi iniciada com sucesso
 
-    void setStrList(const std::vector<std::string>& strList) {
+    void setStrList(const std::vector<std::string> &strList)
+    {
         StrList = strList;
     }
-    void setLastImpress(bool lastImpress) {
+    void setLastImpress(bool lastImpress)
+    {
         LastImpress = lastImpress;
     }
-    bool getLastImpress() const {
+    bool getLastImpress() const
+    {
         return LastImpress;
     }
-    void setQntImpressao(int qnt) {
+    void setQntImpressao(int qnt)
+    {
         QntImpressao = qnt;
     }
-    int getQntImpressao() const {
+    int getQntImpressao() const
+    {
         return QntImpressao;
     }
-    
 };
 #endif // IMPRESS_H

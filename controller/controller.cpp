@@ -138,7 +138,6 @@ void Controller::run()
                 if (interface.config_impress(qnt_impress, &InstantImpress))
                 {
                     selected_option = -1;
-
                 }
                 imp.setQntImpressao(qnt_impress);
 
@@ -191,23 +190,17 @@ bool Controller::requisitar_data_e_setar(int tipo, std::function<void(const std:
 
 void Controller::rodar_detector()
 {
-    // 1. VERIFICA ERRO CRÍTICO DA IMPRESSORA (Seguro para GUI)
     if (detector.HasPrinterError())
     {
-        // Agora estamos na thread principal, podemos desenhar o Popup!
         if (interface.PopUpError("Erro ao iniciar a impressão."))
         {
-            // Usuário deu OK no popup
             imp.setLastImpress(true);
-            interface.setImprimindo(false); 
-            // A thread do sensor já se desligou sozinha (running=false)
-            // mas o cleanup final ocorrerá no 'else' abaixo ou no próximo ciclo.
+            interface.setImprimindo(false);
         }
-        // Retorna para evitar desenhar frames inválidos neste ciclo
-        return; 
+        return;
     }
 
-    if (interface.GetImprimindo())
+    if (interface.GetImprimindo() && imp.getQntImpressao() > 0 && detector.GetRunning() && detector.GetProcessingRunning())
     {
         // Inicia threads se necessário
         if (!SensorActive)
@@ -226,7 +219,8 @@ void Controller::rodar_detector()
         else
         {
             // Se ainda não tem imagem, desenha preto (loading)
-            if (FirstDet) {
+            if (FirstDet)
+            {
                 interface.atualizar_frame(cv::Mat::zeros(480, 640, CV_8UC3));
             }
         }
@@ -236,7 +230,7 @@ void Controller::rodar_detector()
             ProcessActive = true;
             detector.StartProcessThread();
         }
-        
+
         // Atualiza status local baseado nas flags internas do detector
         // Nota: Removido GetRunning direto para evitar race condition,
         // confiamos na lógica do Controller e no HasPrinterError
@@ -254,7 +248,7 @@ void Controller::rodar_detector()
             ProcessActive = false;
             detector.StopProcessThread();
         }
-        
+
         FirstDet = true;
         selected_option = -1; // Volta para o Menu
     }
