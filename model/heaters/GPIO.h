@@ -7,7 +7,8 @@
 #include <stdexcept>
 #include <thread>
 #include <chrono>
-class GPIO {
+class GPIO
+{
 private:
     int PinSensor;
     int PinStrobo;
@@ -15,16 +16,17 @@ private:
     gpiod_line *sensorLine;
     gpiod_line *stroboLine;
     bool LastSensorValue = false;
+    bool firstRead = true;
 
 public:
     GPIO(int pinSensor, int pinStrobo, const std::string &chipname = "gpiochip4");
     ~GPIO();
 
-    bool ReadSensor();   // Retorna valor booleano do pino sensor
-    void OutStrobo();    // Ativa e desativa o pino strobo
+    bool ReadSensor();           // Retorna valor booleano do pino sensor
+    void OutStrobo();            // Ativa e desativa o pino strobo
     void BlinkStrobo(int Delay); // Ativa o pino strobo por um tempo definido em milissegundos
-    void SetStroboHigh(); // Define o pino strobo como HIGH
-    void SetStroboLow();  // Define o pino strobo como LOW
+    void SetStroboHigh();        // Define o pino strobo como HIGH
+    void SetStroboLow();         // Define o pino strobo como LOW
 };
 #endif
 
