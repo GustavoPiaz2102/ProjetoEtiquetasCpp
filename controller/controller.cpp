@@ -116,6 +116,8 @@ void Controller::run()
                     arquiver.dict["fab"] = validator.GetFAB();
                     arquiver.dict["val"] = validator.GetVAL();
                     arquiver.save();
+                    imp.LoadAtributes();
+                    imp.SaveAtributes();
                 }
                 break;
             }
