@@ -103,7 +103,7 @@ void Detector::SensorCaptureImpressTHR()
 
             // Agora tentamos imprimir
             int error = 0;
-            bool printReturn = imp.print(error);
+            bool printReturn = imp.print(&error);
             //Caso precise saber o erro usar a variavel
            if (printReturn)
             {

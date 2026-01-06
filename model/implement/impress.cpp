@@ -76,14 +76,14 @@ std::string formatFloat(float val)
     return ss.str();
 }
 
-bool Impress::print(int &errorCode)
+bool Impress::print(int *errorCode)
 {
     // Ver se já se passou 1 segundo desde a última impressão
     std::chrono::duration<double> elapsed = std::chrono::high_resolution_clock::now() - TimeLastPrint;
     if (LastImpress == false)
     {
         std::cout << "A ultima impressão falhou!" << "\n";
-        errorCode = 1;
+        if (errorCode != nullptr) *errorCode = 1;
         return true;
     }
 

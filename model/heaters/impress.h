@@ -39,7 +39,7 @@ public:
     Impress(Arquiver &arquiver);
     void LoadAtributes();
     void SaveAtributes();
-    bool print(int &errorCode = 0); // Retorna true se a impressão foi iniciada com sucesso
+    bool print(int *errorCode = nullptr); // Retorna true se a impressão foi iniciada com sucesso
 
     void setStrList(const std::vector<std::string> &strList)
     {
