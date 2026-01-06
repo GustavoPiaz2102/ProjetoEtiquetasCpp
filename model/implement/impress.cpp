@@ -82,9 +82,9 @@ bool Impress::print(int *errorCode)
     std::chrono::duration<double> elapsed = std::chrono::high_resolution_clock::now() - TimeLastPrint;
     if (LastImpress == false)
     {
-        std::cout << "A ultima impressão falhou!" << "\n";
+        std::cout << "A ultima impressão Teve Falhas" << "\n";
         if (errorCode != nullptr) *errorCode = 1;
-        return true;
+        LastImpress = true;
     }
 
     LoadAtributes();
