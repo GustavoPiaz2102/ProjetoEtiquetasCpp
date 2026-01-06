@@ -258,6 +258,7 @@ void Controller::rodar_detector()
             ProcessActive = false;
             detector.StopProcessThread();
         }
+        imp.ResetLastImpress();
 
         FirstDet = true;
         selected_option = -1; // Volta para o Menu
