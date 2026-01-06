@@ -79,7 +79,6 @@ void Detector::ProcessLoop()
     std::cout << "Esperando Pela finalização da thread de processamento na main\n";
     //Interface imprimindo off
 
-    while (true) std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
 
 void Detector::SensorCaptureImpressTHR()
@@ -136,7 +135,6 @@ void Detector::SensorCaptureImpressTHR()
         }
     }
     std::cout << "Esperando Pela finalização da thread na main\n";
-    while (true) std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
 
 cv::Mat Detector::GetFrame()
