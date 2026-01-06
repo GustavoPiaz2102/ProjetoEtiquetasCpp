@@ -19,6 +19,7 @@ void Detector::StartProcessThread()
         return;
     processing_running = true;
     process_thread = std::thread(&Detector::ProcessLoop, this);
+    std::cout << "Thread de processamento iniciada.\n";
 }
 
 void Detector::StopProcessThread()
