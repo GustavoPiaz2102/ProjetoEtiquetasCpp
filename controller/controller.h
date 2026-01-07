@@ -28,7 +28,7 @@ private:
     void rodar_detector();
     Arquiver arquiver;
     Impress imp;
-    int qnt_impress; // Quantidade de impressões
+    int qnt_impress; 
     bool SensorActive = false;
     bool ProcessActive = false;
     bool FirstDet = true;
