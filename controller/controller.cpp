@@ -197,6 +197,7 @@ bool Controller::requisitar_data_e_setar(int tipo, std::function<void(const std:
 
 void Controller::rodar_detector()
 {
+    if(!ReturnToMenu){
     if (detector.HasPrinterError())
     {
         if (interface.PopUpError("Erro ao iniciar a impressão."))
@@ -222,16 +223,13 @@ void Controller::rodar_detector()
         cv::Mat frame = detector.GetFrame();
         if (!frame.empty())
         {
-            interface.atualizar_frame(frame);
+            ReturnToMenu = interface.atualizar_frame(frame);
             FirstDet = false; // Só considera detectado se tiver imagem
         }
         else
         {
-            // Se ainda não tem imagem, desenha preto (loading)
-            if (FirstDet)
-            {
-                interface.atualizar_frame(NonDetectedFrame);
-            }
+            ReturnToMenu = interface.atualizar_frame(NonDetectedFrame);
+
         }
 
         if (!ProcessActive)
@@ -262,5 +260,24 @@ void Controller::rodar_detector()
 
         FirstDet = true;
         selected_option = -1; // Volta para o Menu
+        ReturnToMenu = false;
     }
+}
+else{
+        if (SensorActive)
+        {
+            SensorActive = false;
+            detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
+        }
+        if (ProcessActive)
+        {
+            ProcessActive = false;
+            detector.StopProcessThread();
+        }
+        imp.ResetLastImpress();
+
+        FirstDet = true;
+        selected_option = -1; // Volta para o Menu
+        ReturnToMenu = false;
+}
 }
