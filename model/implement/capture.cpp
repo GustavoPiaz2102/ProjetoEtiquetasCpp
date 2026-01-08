@@ -50,6 +50,7 @@ cv::Mat Capture::captureImage() {
     //salvar imagem para debug
     std::string filename = "../../DebugImages/debug_capture(" + std::to_string(debug_counter) + ").jpg";
     cv::imwrite(filename, frame);
+    std::cout << "Imagem Salva em: " << filename;
     debug_counter++;
     //cv::flip(frame, frame, -1);
     return frame;
