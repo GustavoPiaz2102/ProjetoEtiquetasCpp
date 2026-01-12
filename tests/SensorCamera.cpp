@@ -29,13 +29,10 @@ int main(){
     bool LastSensorValue = false;
     int ActualCounter = 0;
     
-    cv::Mat fullFrame;  // Imagem original (640x480)
-    cv::Mat cropFrame;  // Imagem recortada (320x240)
-    cv::Mat grayFrame;  // Imagem final para OCR
+    cv::Mat frame;      // Imagem original (640x480)
+    cv::Mat grayFrame;  // Imagem final para OCR (640x480)
 
-    // MANTEMOS O PIPELINE ESTÁVEL (640x480)
-    // Se tentarmos mudar o GStreamer agora, pode dar erro de negociação novamente.
-    // Faremos o crop via software (OpenCV) que é mais seguro e mantém a qualidade do pixel.
+    // PIPELINE BLINDADO (640x480)
     std::string pipeline = "libcamerasrc ! videoconvert ! videoscale ! video/x-raw, width=640, height=480, format=BGR ! appsink drop=1";
 
     cv::VideoCapture cap(pipeline, cv::CAP_GSTREAMER);
@@ -45,34 +42,25 @@ int main(){
         return -1;
     }
 
-    // Define a área de corte (CENTRO 320x240)
-    // Matemática: (640 - 320) / 2 = 160 (X inicial)
-    //             (480 - 240) / 2 = 120 (Y inicial)
-    cv::Rect roi(320, 240, 640, 480); // x, y, width, height
+    // Janela com tamanho original
+    cv::namedWindow("Live View (640x480)", cv::WINDOW_AUTOSIZE);
 
-    cv::namedWindow("Foco (640x480)", cv::WINDOW_AUTOSIZE);
-
-    std::cout << "--- SISTEMA COM ZOOM DIGITAL (CROP) ---" << "\n";
+    std::cout << "--- SISTEMA PADRAO (640x480) ---" << "\n";
 
     while (true) {
         // 1. LEITURA
-        if (!cap.read(fullFrame) || fullFrame.empty()) {
+        if (!cap.read(frame) || frame.empty()) {
             std::cerr << "Falha na leitura." << std::endl;
             break;
         }
 
-        // 2. CROP (Recorte sem perda de qualidade)
-        // Isso pega apenas o miolo da imagem, criando efeito de zoom
-        cropFrame = fullFrame(roi);
-
-        // 3. VISUALIZAÇÃO
-        // Mostramos apenas a parte recortada, que é o que importa
-        cv::imshow("Foco (320x240)", cropFrame);
+        // 2. VISUALIZAÇÃO (Mostra a imagem inteira)
+        cv::imshow("Live View (640x480)", frame);
 
         char key = (char)cv::waitKey(1); 
         if (key == 27) break; 
 
-        // 4. LÓGICA DO SENSOR
+        // 3. LÓGICA DO SENSOR
         int value = gpiod_line_get_value(sensorLine);
         
         if (value != LastSensorValue) ActualCounter++;
@@ -85,15 +73,16 @@ int main(){
                 // Se o sensor ATIVOU (1)
                 if (value == 1) { 
                     
-                    // PROCESSAMENTO (Usamos o cropFrame, pois queremos ler a etiqueta centralizada)
-                    cv::cvtColor(cropFrame, grayFrame, cv::COLOR_BGR2GRAY);
+                    // PROCESSAMENTO (Usa a imagem inteira de 640x480)
+                    cv::cvtColor(frame, grayFrame, cv::COLOR_BGR2GRAY);
 
-                    std::cout << "[SENSOR] Captura realizada na area de foco!" << "\n";
-                    std::cout << "Processando imagem de dimensoes: " << grayFrame.cols << "x" << grayFrame.rows << "\n";
+                    std::cout << "[SENSOR] Captura realizada!" << "\n";
+                    std::cout << "Processando imagem completa: " << grayFrame.cols << "x" << grayFrame.rows << "\n";
 
-                    // Se quiser ver a foto exata que foi para o OCR:
+                    // Mostra o que será enviado para o OCR
                     cv::imshow("Snapshot OCR", grayFrame);
-                    cv::waitKey(1);
+                    cv::waitKey(1); // Atualiza a janela do snapshot
+                    
                     // processarEtiqueta(grayFrame);
                 }
             }
