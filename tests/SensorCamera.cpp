@@ -49,6 +49,7 @@ int main(){
 
     while (true) {
         // 1. LEITURA
+        
         if (!cap.read(frame) || frame.empty()) {
             std::cerr << "Falha na leitura." << std::endl;
             break;
@@ -81,6 +82,7 @@ int main(){
 
                     // Mostra o que será enviado para o OCR
                     cv::imshow("Snapshot OCR", grayFrame);
+                    ActualCounter = 0;
                     cv::waitKey(1); // Atualiza a janela do snapshot
                     
                     // processarEtiqueta(grayFrame);
