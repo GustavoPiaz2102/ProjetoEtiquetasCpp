@@ -8,8 +8,12 @@ Capture::Capture(int cameraIndex) : cap() {
 
 #ifdef __linux__
     // Pipeline GStreamer com resolução 640x480 configurada
+    /*
     std::string pipeline =
-    "libcamerasrc ! videoconvert ! video/x-raw,format=BGR,width=640,height=480 ! queue max-size-buffers=1 leaky=downstream ! appsink max-buffers=1 drop=true";
+    "libcamerasrc ! videoconvert ! video/x-raw,format=BGR,width=1024,height=780 ! queue max-size-buffers=1 leaky=downstream ! appsink max-buffers=1 drop=true";
+    */
+    std::string pipeline = "libcamerasrc ! videoconvert ! videoscale ! video/x-raw, width=640, height=480, format=BGR ! appsink drop=1";
+
     if (!cap.open(pipeline, cv::CAP_GSTREAMER)) {
         std::cerr << "Erro: Não foi possível abrir a câmera pelo pipeline!" << "\n";
     } else {
