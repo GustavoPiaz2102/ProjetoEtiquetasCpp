@@ -29,41 +29,50 @@ int main(){
     bool LastSensorValue = false;
     int ActualCounter = 0;
     
-    cv::Mat frame;      // Imagem colorida (Live View)
-    cv::Mat grayFrame;  // Imagem processada (Snapshot)
+    cv::Mat fullFrame;  // Imagem original (640x480)
+    cv::Mat cropFrame;  // Imagem recortada (320x240)
+    cv::Mat grayFrame;  // Imagem final para OCR
 
-    // PIPELINE BLINDADO RPI 5
+    // MANTEMOS O PIPELINE ESTÁVEL (640x480)
+    // Se tentarmos mudar o GStreamer agora, pode dar erro de negociação novamente.
+    // Faremos o crop via software (OpenCV) que é mais seguro e mantém a qualidade do pixel.
     std::string pipeline = "libcamerasrc ! videoconvert ! videoscale ! video/x-raw, width=640, height=480, format=BGR ! appsink drop=1";
 
     cv::VideoCapture cap(pipeline, cv::CAP_GSTREAMER);
 
     if (!cap.isOpened()) {
-        std::cerr << "Erro ao abrir a câmera com o pipeline GStreamer." << std::endl;
+        std::cerr << "Erro ao abrir a câmera." << std::endl;
         return -1;
     }
 
-    // Cria a janela antecipadamente
-    cv::namedWindow("Live View", cv::WINDOW_AUTOSIZE);
+    // Define a área de corte (CENTRO 320x240)
+    // Matemática: (640 - 320) / 2 = 160 (X inicial)
+    //             (480 - 240) / 2 = 120 (Y inicial)
+    cv::Rect roi(160, 120, 320, 240);
 
-    std::cout << "--- INICIANDO SISTEMA COM VIDEO ---" << "\n";
-    std::cout << "Pressione ESC na janela do vídeo para sair." << "\n";
+    cv::namedWindow("Foco (320x240)", cv::WINDOW_AUTOSIZE);
+
+    std::cout << "--- SISTEMA COM ZOOM DIGITAL (CROP) ---" << "\n";
 
     while (true) {
-        // 1. LEITURA CONTÍNUA (Para ter vídeo fluido)
-        if (!cap.read(frame) || frame.empty()) {
-            std::cerr << "Falha ao ler frame da câmera." << std::endl;
+        // 1. LEITURA
+        if (!cap.read(fullFrame) || fullFrame.empty()) {
+            std::cerr << "Falha na leitura." << std::endl;
             break;
         }
 
-        // 2. VISUALIZAÇÃO (SHOW)
-        cv::imshow("Live View", frame);
+        // 2. CROP (Recorte sem perda de qualidade)
+        // Isso pega apenas o miolo da imagem, criando efeito de zoom
+        cropFrame = fullFrame(roi);
 
-        // O waitKey é OBRIGATÓRIO para o imshow funcionar (desenhar a janela)
-        // Se pressionar ESC (27), sai do programa.
+        // 3. VISUALIZAÇÃO
+        // Mostramos apenas a parte recortada, que é o que importa
+        cv::imshow("Foco (320x240)", cropFrame);
+
         char key = (char)cv::waitKey(1); 
         if (key == 27) break; 
 
-        // 3. LÓGICA DO SENSOR
+        // 4. LÓGICA DO SENSOR
         int value = gpiod_line_get_value(sensorLine);
         
         if (value != LastSensorValue) ActualCounter++;
@@ -73,29 +82,25 @@ int main(){
             if (value != LastSensorValue) { 
                 LastSensorValue = value;
 
-                // Se o sensor ATIVOU (Assumindo 1. Se seu sensor for invertido, mude para 0)
+                // Se o sensor ATIVOU (1)
                 if (value == 1) { 
                     
-                    // PROCESSAMENTO (Tira a "foto" do momento atual)
-                    cv::cvtColor(frame, grayFrame, cv::COLOR_BGR2GRAY);
+                    // PROCESSAMENTO (Usamos o cropFrame, pois queremos ler a etiqueta centralizada)
+                    cv::cvtColor(cropFrame, grayFrame, cv::COLOR_BGR2GRAY);
 
-                    std::cout << "[SENSOR] Captura! Processando etiqueta..." << "\n";
-                    
-                    // Exemplo: Mostra o que foi capturado em outra janela, se quiser
-                    cv::imshow("Ultima Captura", grayFrame);
+                    std::cout << "[SENSOR] Captura realizada na area de foco!" << "\n";
+                    std::cout << "Processando imagem de dimensoes: " << grayFrame.cols << "x" << grayFrame.rows << "\n";
+
+                    // Se quiser ver a foto exata que foi para o OCR:
+                    cv::imshow("Snapshot OCR", grayFrame);
                     cv::waitKey(1);
-                    
-                    // AQUI ENTRA SEU OCR
                     // processarEtiqueta(grayFrame);
                 }
             }
         }
-        
-        // Removemos o sleep longo para o vídeo não ficar "travando"
-        // O waitKey(1) já faz um pequeno delay.
     }
 
     gpiod_chip_close(chip);
-    cv::destroyAllWindows(); // Fecha janelas ao sair
+    cv::destroyAllWindows();
     return 0;
 }
