@@ -28,12 +28,11 @@ int main(){
 
     bool LastSensorValue = false;
     int ActualCounter = 0;
-    bool firstRead = true;
     
-    cv::Mat frame;      // Imagem colorida (vinda da câmera)
-    cv::Mat grayFrame;  // Imagem em tons de cinza (para processamento)
+    cv::Mat frame;      // Imagem colorida (Live View)
+    cv::Mat grayFrame;  // Imagem processada (Snapshot)
 
-    // PIPELINE BLINDADO (Testado e Aprovado)
+    // PIPELINE BLINDADO RPI 5
     std::string pipeline = "libcamerasrc ! videoconvert ! videoscale ! video/x-raw, width=640, height=480, format=BGR ! appsink drop=1";
 
     cv::VideoCapture cap(pipeline, cv::CAP_GSTREAMER);
@@ -43,65 +42,60 @@ int main(){
         return -1;
     }
 
-    std::cout << "--- INICIANDO SISTEMA DE ETIQUETAS ---" << "\n";
+    // Cria a janela antecipadamente
+    cv::namedWindow("Live View", cv::WINDOW_AUTOSIZE);
+
+    std::cout << "--- INICIANDO SISTEMA COM VIDEO ---" << "\n";
+    std::cout << "Pressione ESC na janela do vídeo para sair." << "\n";
 
     while (true) {
-        // --- BLOC 1: DIAGNÓSTICO INICIAL ---
-        if (firstRead) {
-            firstRead = false;
-            // Lê alguns frames para limpar o buffer e estabilizar a luz
-            for(int i=0; i<5; i++) cap.read(frame);
+        // 1. LEITURA CONTÍNUA (Para ter vídeo fluido)
+        if (!cap.read(frame) || frame.empty()) {
+            std::cerr << "Falha ao ler frame da câmera." << std::endl;
+            break;
+        }
 
-            if(cap.read(frame)) {
-                std::cout << "Primeiro Frame Capturado!" << "\n";
-                std::cout << "Resolução: " << frame.cols << "x" << frame.rows << "\n";
-                std::cout << "Canais: " << frame.channels() << "\n";
-                
-                // Agora verificamos se é 3 canais (BGR), pois é isso que o pipeline entrega
-                if (frame.cols == 640 && frame.channels() == 3) {
-                    std::cout << "STATUS: SUCESSO! Câmera operante. Pronto para o sensor." << "\n";
-                } else {
-                    std::cout << "STATUS: ALERTA! Formato inesperado (" << frame.channels() << " canais)." << "\n";
-                }
-            } else {
-                std::cerr << "Erro: Não foi possível ler o primeiro frame." << "\n";
-            }
-        } 
-        // --- BLOCO 2: LEITURA DO SENSOR ---
-        else {
-            int value = gpiod_line_get_value(sensorLine);
-            
-            // Lógica de borda (detecta mudança)
-            if (value != LastSensorValue) ActualCounter++;
-            else ActualCounter = 0;
+        // 2. VISUALIZAÇÃO (SHOW)
+        cv::imshow("Live View", frame);
 
-            if (ActualCounter >= DebounceValue) {
-                // Atualiza o estado apenas após debounce
-                if (value != LastSensorValue) { 
-                    LastSensorValue = value;
+        // O waitKey é OBRIGATÓRIO para o imshow funcionar (desenhar a janela)
+        // Se pressionar ESC (27), sai do programa.
+        char key = (char)cv::waitKey(1); 
+        if (key == 27) break; 
 
-                    // Se o sensor foi ATIVADO (assumindo 1 como ativo, ajuste se for 0)
-                    if (value == 1) { 
-                        if (cap.read(frame) && !frame.empty()) {
-                            
-                            // CONVERSÃO PARA CINZA (Ideal para OCR/Etiquetas)
-                            cv::cvtColor(frame, grayFrame, cv::COLOR_BGR2GRAY);
+        // 3. LÓGICA DO SENSOR
+        int value = gpiod_line_get_value(sensorLine);
+        
+        if (value != LastSensorValue) ActualCounter++;
+        else ActualCounter = 0;
 
-                            std::cout << "[SENSOR] Captura realizada! Processando imagem..." << "\n";
+        if (ActualCounter >= DebounceValue) {
+            if (value != LastSensorValue) { 
+                LastSensorValue = value;
 
-                            // --- AQUI ENTRA SEU CÓDIGO DE OCR ---
-                            // Exemplo: processarEtiqueta(grayFrame);
-                            
-                            // Se quiser salvar para testar:
-                            // cv::imwrite("teste_etiqueta.jpg", grayFrame);
-                        }
-                    }
+                // Se o sensor ATIVOU (Assumindo 1. Se seu sensor for invertido, mude para 0)
+                if (value == 1) { 
+                    
+                    // PROCESSAMENTO (Tira a "foto" do momento atual)
+                    cv::cvtColor(frame, grayFrame, cv::COLOR_BGR2GRAY);
+
+                    std::cout << "[SENSOR] Captura! Processando etiqueta..." << "\n";
+                    
+                    // Exemplo: Mostra o que foi capturado em outra janela, se quiser
+                    cv::imshow("Ultima Captura", grayFrame);
+                    cv::waitKey(1);
+                    
+                    // AQUI ENTRA SEU OCR
+                    // processarEtiqueta(grayFrame);
                 }
             }
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        
+        // Removemos o sleep longo para o vídeo não ficar "travando"
+        // O waitKey(1) já faz um pequeno delay.
     }
 
     gpiod_chip_close(chip);
+    cv::destroyAllWindows(); // Fecha janelas ao sair
     return 0;
 }
