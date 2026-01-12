@@ -50,17 +50,6 @@ int main(){
     while (true) {
         // 1. LEITURA
         
-        if (!cap.read(frame) || frame.empty()) {
-            std::cerr << "Falha na leitura." << std::endl;
-            break;
-        }
-
-        // 2. VISUALIZAÇÃO (Mostra a imagem inteira)
-        cv::imshow("Live View (640x480)", frame);
-
-        char key = (char)cv::waitKey(1); 
-        if (key == 27) break; 
-
         // 3. LÓGICA DO SENSOR
         int value = gpiod_line_get_value(sensorLine);
         
@@ -73,17 +62,20 @@ int main(){
 
                 // Se o sensor ATIVOU (1)
                 if (value == 1) { 
-                    
-                    // PROCESSAMENTO (Usa a imagem inteira de 640x480)
-                    cv::cvtColor(frame, grayFrame, cv::COLOR_BGR2GRAY);
+                    if (!cap.read(frame) || frame.empty()) {
+                    std::cerr << "Falha na leitura." << std::endl;
+                    break;
+                }
 
-                    std::cout << "[SENSOR] Captura realizada!" << "\n";
-                    std::cout << "Processando imagem completa: " << grayFrame.cols << "x" << grayFrame.rows << "\n";
+                // 2. VISUALIZAÇÃO (Mostra a imagem inteira)
+                cv::imshow("Live View (640x480)", frame);
+
+                char key = (char)cv::waitKey(1); 
+                if (key == 27) break; 
 
                     // Mostra o que será enviado para o OCR
-                    cv::imshow("Snapshot OCR", grayFrame);
+                    //cv::imshow("Snapshot OCR", grayFrame);
                     ActualCounter = 0;
-                    cv::waitKey(1); // Atualiza a janela do snapshot
                     
                     // processarEtiqueta(grayFrame);
                 }
