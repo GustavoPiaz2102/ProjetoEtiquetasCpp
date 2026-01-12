@@ -59,7 +59,7 @@ int main(){
         if (ActualCounter >= DebounceValue) {
             if (value != LastSensorValue) { 
                 LastSensorValue = value;
-
+                std::cout << "Sensor mudou para: " << value << std::endl;
                 // Se o sensor ATIVOU (1)
                 if (value == 1) { 
                     if (!cap.read(frame) || frame.empty()) {
