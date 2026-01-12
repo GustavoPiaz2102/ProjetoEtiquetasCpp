@@ -31,14 +31,9 @@ int main(){
     bool firstRead = true;
     cv::Mat frame;
 
-    // --- PIPELINE CORRIGIDO ---
-    // 1. libcamerasrc: O driver vai cuspir 1280x1080 (não temos controle sobre isso aqui).
-    // 2. video/x-raw,width=1280,height=1080: Dizemos ao GStreamer "Ok, aceito esse tamanho".
-    // 3. videoconvert: Converte o formato de cor (de RGB/YUV para o que o próximo passo precisar).
-    // 4. videoscale: AQUI acontece a redução.
-    // 5. video/x-raw,width=640,height=480,format=GRAY8: Forçamos a saída final.
-    // 6. appsink: Entrega para o C++.
-    std::string pipeline = "libcamerasrc ! video/x-raw, width=640, height=480, framerate=30/1 ! videoconvert ! video/x-raw, format=BGR ! appsink drop=1";
+
+    std::string pipeline = "libcamerasrc ! videoconvert ! videoscale ! video/x-raw, width=640, height=480, format=BGR ! appsink drop=1";
+
     cv::VideoCapture cap(pipeline, cv::CAP_GSTREAMER);
 
     if (!cap.isOpened()) {
