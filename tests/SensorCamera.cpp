@@ -48,9 +48,9 @@ int main(){
     // Define a área de corte (CENTRO 320x240)
     // Matemática: (640 - 320) / 2 = 160 (X inicial)
     //             (480 - 240) / 2 = 120 (Y inicial)
-    cv::Rect roi(160, 120, 320, 240);
+    cv::Rect roi(320, 240, 640, 480); // x, y, width, height
 
-    cv::namedWindow("Foco (320x240)", cv::WINDOW_AUTOSIZE);
+    cv::namedWindow("Foco (640x480)", cv::WINDOW_AUTOSIZE);
 
     std::cout << "--- SISTEMA COM ZOOM DIGITAL (CROP) ---" << "\n";
 
