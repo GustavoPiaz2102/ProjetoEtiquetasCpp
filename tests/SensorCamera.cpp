@@ -29,8 +29,7 @@ int main(){
     int ActualCounter = 0;
     bool firstRead = true;
     cv::Mat frame;
-    std::string pipeline =
-    "libcamerasrc ! videoconvert ! video/x-raw,format=BGR,width=640,height=480 ! queue max-size-buffers=1 leaky=downstream ! appsink max-buffers=1 drop=true";
+    std::string pipeline = "libcamerasrc ! videoconvert ! videoscale ! video/x-raw,format=BGR,width=640,height=480 ! appsink drop=true max-buffers=1";
     cv::VideoCapture cap;
     if (!cap.open(pipeline, cv::CAP_GSTREAMER)) {
         std::cerr << "Erro: Não foi possível abrir a câmera pelo pipeline!" << "\n";
