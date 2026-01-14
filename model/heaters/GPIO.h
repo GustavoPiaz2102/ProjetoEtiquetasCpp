@@ -11,7 +11,7 @@
 
 #define DebounceValue 2
 
-class GPIO
+class sGPIO
 {
 private:
     int PinSensor;
