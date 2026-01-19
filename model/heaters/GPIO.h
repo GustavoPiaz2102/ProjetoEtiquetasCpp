@@ -22,6 +22,7 @@ private:
     bool LastSensorValue = false;
     bool firstRead = true;
     int ActualCounter = 0;
+    int value = 0;
 public:
     GPIO(int pinSensor, int pinStrobo, const std::string &chipname = "gpiochip4");
     ~GPIO();
