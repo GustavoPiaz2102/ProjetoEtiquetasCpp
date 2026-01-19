@@ -30,11 +30,17 @@ GPIO::~GPIO() {
 bool GPIO::ReadSensor() {
     if (firstRead) {
     std::cerr << "Primeira leitura do sensor (GPIO " << PinSensor << ")\n";
+    value = gpiod_line_get_value(sensorLine);
+    if (value < 0) {
+        std::cerr << "Erro ao ler valor do sensor (GPIO " << PinSensor << ")\n";
+        return false;
+    }
+    LastSensorValue = value;
     firstRead = false;
     return true;
     }
     else{
-    int value = gpiod_line_get_value(sensorLine);
+    value = gpiod_line_get_value(sensorLine);
     if (value < 0) {
         std::cerr << "Erro ao ler valor do sensor (GPIO " << PinSensor << ")\n";
         return false;
