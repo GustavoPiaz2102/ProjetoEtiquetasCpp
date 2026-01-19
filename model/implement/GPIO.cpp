@@ -29,6 +29,7 @@ GPIO::~GPIO() {
 
 bool GPIO::ReadSensor() {
     if (firstRead) {
+    std::cerr << "Primeira leitura do sensor (GPIO " << PinSensor << ")\n";
     firstRead = false;
     return true;
     }
@@ -39,11 +40,15 @@ bool GPIO::ReadSensor() {
         return false;
     }
     if (value != LastSensorValue) {
+        std::cout << "Incremento Adicionado" << "\n";
         ActualCounter++;
     } else {
+        std::cout << "Contador Zerado" << "\n";
         ActualCounter = 0;
     }
     if (ActualCounter >= DebounceValue) {
+        std::cout << "Leitura Válida do Sensor: " << value << "\n";
+        ActualCounter = 0;
         LastSensorValue = value;
         return value;
     }
