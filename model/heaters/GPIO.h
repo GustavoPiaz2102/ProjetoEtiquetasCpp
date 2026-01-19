@@ -9,7 +9,7 @@
 #include <chrono>
 
 
-#define DebounceValue 2
+#define DebounceValue 1
 
 class GPIO
 {
