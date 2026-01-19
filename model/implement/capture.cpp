@@ -1,32 +1,39 @@
 #include "../heaters/capture.h"
-#include <opencv2/core/utils/logger.hpp> // Para desativar logs desnecessários
+#include <opencv2/core/utils/logger.hpp>
 #include <iostream>
 
+// Adicione uma flag ou variável membro no header para controlar o debug
+// bool save_debug_images = false; 
+
 Capture::Capture(int cameraIndex) : cap() {
-    // Desativa logs verbosos do OpenCV
     cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);
 
 #ifdef __linux__
-    // Pipeline GStreamer com resolução 640x480 configurada
-    /*
-    std::string pipeline =
-    "libcamerasrc ! videoconvert ! video/x-raw,format=BGR,width=1024,height=780 ! queue max-size-buffers=1 leaky=downstream ! appsink max-buffers=1 drop=true";
-    */
-    std::string pipeline = "libcamerasrc ! videoconvert ! videoscale ! video/x-raw, width=640, height=480, format=BGR ! appsink drop=1";
+    // PIPELINE OTIMIZADO PARA BAIXA LATÊNCIA
+    // 1. videoscale e videoconvert podem ser pesados. Tentamos pedir o formato direto antes.
+    // 2. queue max-size-buffers=1 leaky=downstream: Isso é CRÍTICO. 
+    //    Significa: "Se tiver mais de 1 frame na fila, jogue fora o velho e fique só com o novo".
+    std::string pipeline = 
+        "libcamerasrc ! "
+        "video/x-raw, width=640, height=480 ! " // Tenta pedir a resolução nativa primeiro
+        "videoconvert ! "
+        "video/x-raw, format=BGR ! "
+        "queue max-size-buffers=1 leaky=downstream ! " // O segredo da baixa latência
+        "appsink drop=true max-buffers=1 sync=false";  // sync=false para não tentar sincronizar com relógio
 
     if (!cap.open(pipeline, cv::CAP_GSTREAMER)) {
-        std::cerr << "Erro: Não foi possível abrir a câmera pelo pipeline!" << "\n";
+        std::cerr << "Erro GStreamer: Falha ao abrir pipeline!" << "\n";
     } else {
-        std::cout << "Câmera aberta com sucesso pelo pipeline!" << "\n";
+        std::cout << "GStreamer: Câmera aberta (Modo Baixa Latência)!" << "\n";
     }
 #else
-
     if (!cap.open(cameraIndex)) {
         std::cerr << "Erro: Não foi possível abrir a câmera pelo índice!" << "\n";
     } else {
-        // Define resolução 640x480 para outros sistemas
-        cap.set(cv::CAP_PROP_FRAME_WIDTH, IMG_SZE);
-        cap.set(cv::CAP_PROP_FRAME_HEIGHT, IMG_SZE2);
+        cap.set(cv::CAP_PROP_FRAME_WIDTH, 640);
+        cap.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
+        // Em Windows/Mac, definimos o buffer size para 1 para evitar lag
+        cap.set(cv::CAP_PROP_BUFFERSIZE, 1); 
         std::cout << "Câmera aberta com sucesso pelo índice!" << "\n";
     }
 #endif
@@ -43,17 +50,28 @@ cv::Mat Capture::captureImage() {
         std::cerr << "Erro: Câmera não está aberta!" << "\n";
         return cv::Mat();
     }
+
     cv::Mat frame;
-    //Faz o blink em um thread separado para que o strobo pisque enquanto a câmera captura
+
+    // DICA DE LIMPEZA DE BUFFER (Opcional, mas útil se o lag persistir):
+    // Às vezes o buffer interno do OpenCV segura um frame velho.
+    // cap.grab(); // Descarta o frame atual no buffer para forçar a pegar o próximo
+
     if (!cap.read(frame)) {
         std::cerr << "Erro ao capturar o frame!" << "\n";
         return cv::Mat();
     }
-    //salvar imagem para debug
-    //std::string filename = "./DebugImages/debug_capture(" + std::to_string(debug_counter) + ").jpg";
-    //cv::imwrite(filename, frame);
-    //std::cout << "Imagem Salva em: " << filename;
-    debug_counter++;
-    //cv::flip(frame, frame, -1);
+
+    // --- CORREÇÃO DO BLOQUEIO DE DISCO ---
+    // Só salva se realmente necessário. 
+    // Se precisar salvar sempre, isso DEVE ser feito em outra thread.
+    
+    // if (save_debug_images) { 
+    //    std::string filename = "./DebugImages/debug_capture(" + std::to_string(debug_counter) + ").jpg";
+    //    cv::imwrite(filename, frame); // <--- ISSO TRAVA O PROCESSO POR 100-500ms
+    //    std::cout << "Imagem Salva: " << filename << "\n";
+    //    debug_counter++;
+    // }
+    
     return frame;
 }
