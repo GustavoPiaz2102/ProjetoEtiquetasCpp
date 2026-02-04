@@ -8,36 +8,34 @@
 #include <thread>
 #include <chrono>
 
-
+#define ADC_FILE_PATH "/sys/bus/iio/devices/iio:device0/in_voltage0_raw"
+#define SENSOR_THRESHOLD 2000 
 #define DebounceValue 1
 
 class GPIO
 {
 private:
-    int PinSensor;
     int PinStrobo;
     gpiod_chip *chip;
-    gpiod_line *sensorLine;
     gpiod_line *stroboLine;
+    
     bool LastSensorValue = false;
     bool firstRead = true;
     int ActualCounter = 0;
-    int value = 0;
+
 public:
-    GPIO(int pinSensor, int pinStrobo, const std::string &chipname = "gpiochip4");
+    GPIO(int pinStrobo, const std::string &chipname = "gpiochip4");
     ~GPIO();
 
-    bool ReadSensor();           // Retorna valor booleano do pino sensor
-    void OutStrobo();            // Ativa e desativa o pino strobo
-    void BlinkStrobo(int Delay); // Ativa o pino strobo por um tempo definido em milissegundos
-    void SetStroboHigh();        // Define o pino strobo como HIGH
-    void SetStroboLow();         // Define o pino strobo como LOW
-    void ReturnToFirst(){firstRead = true; ActualCounter = 0; LastSensorValue = false;} // Reseta a leitura do sensor
+    bool ReadSensor();           
+    int ReadADC_Raw();           
+
+    void OutStrobo();            
+    void BlinkStrobo(int Delay); 
+    void SetStroboHigh();        
+    void SetStroboLow();         
+    
+    void ReturnToFirst() { firstRead = true; ActualCounter = 0; LastSensorValue = false; }
 };
-#endif
 
-/*
-
-sudo apt update
-sudo apt install libgpiod-dev gpiod
-*/
+#endif  

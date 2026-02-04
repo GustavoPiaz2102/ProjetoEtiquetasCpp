@@ -1,7 +1,7 @@
 #include "detector.h"
 
 Detector::Detector(Impress &imp, Interface &interface, Validator &validator)
-    : camera(0), ocr("eng"), sensor(19, 21, "gpiochip4"), imp(imp), interface(interface), validator(validator) 
+    : camera(0), ocr("eng"), sensor(21, "gpiochip4"), imp(imp), interface(interface), validator(validator) 
 {
     // Inicializa flags de forma segura
     printer_error = false;
