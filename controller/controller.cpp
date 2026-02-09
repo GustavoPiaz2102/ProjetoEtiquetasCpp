@@ -280,4 +280,5 @@ else{
         selected_option = -1; // Volta para o Menu
         ReturnToMenu = false;
 }
+std::cout<<FirstDet;
 }
