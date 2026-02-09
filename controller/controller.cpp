@@ -68,6 +68,7 @@ void Controller::run()
             switch (selected_option)
             {
             case -1:
+                FirstDet = true; // Reseta flag para nova detecção
                 if (imp.getQntImpressao() <= 0)
                 {
                     interface.setImprimindo(false);
