@@ -58,15 +58,12 @@ void Controller::run()
 {
     interface.iniciar_janela();
 
-    try
-    {
-        while (true)
-        {
+    try{
+        while (true){
             interface.process_events();
             interface.begin_frame();
 
-            switch (selected_option)
-            {
+            switch (selected_option){
             case -1:
                 FirstDet = true; // Reseta flag para nova detecção
                 if (imp.getQntImpressao() <= 0)
@@ -74,16 +71,12 @@ void Controller::run()
                     interface.setImprimindo(false);
                 }
                 interface.menu(selected_option, imp.getQntImpressao());
-                if (interface.GetImprimindo())
-                {
-                    if (imp.getQntImpressao() > 0)
-                    {
+                if (interface.GetImprimindo()){
+                    if (imp.getQntImpressao() > 0){
                         imp.setStrList({validator.GetLT(),
                                         validator.GetFAB(),
                                         validator.GetVAL()});
-                    }
-                    else
-                    {
+                    } else{
                         interface.setImprimindo(false);
                     }
                 }
@@ -110,7 +103,6 @@ void Controller::run()
                 break;
 
             case 4:
-            {
                 std::string lt;
                 if (interface.requisitar_lt(lt))
                 {
@@ -126,10 +118,8 @@ void Controller::run()
                                         validator.GetVAL()});
                 }
                 break;
-            }
 
             case 5:
-            {
                 if (interface.config_menu(arquiver))
                 {
                     selected_option = -1;
@@ -137,10 +127,9 @@ void Controller::run()
                     imp.SaveAtributes();
                 }
                 break;
-            }
+            
             // Configura impressão
             case 2:
-            {
                 bool InstantImpress = false;
                 qnt_impress = imp.getQntImpressao();
                 if (interface.config_impress(qnt_impress, &InstantImpress))
@@ -160,13 +149,11 @@ void Controller::run()
                     interface.setImprimindo(false);
                 }
                 break;
-            }
+
             case -10:
-            {
                 arquiver.save();
                 // std::system("shutdown now");
                 return; // Sai do loop e encerra
-            }
             }
 
             interface.end_frame();
@@ -242,10 +229,9 @@ void Controller::rodar_detector()
         // Atualiza status local baseado nas flags internas do detector
         // Nota: Removido GetRunning direto para evitar race condition,
         // confiamos na lógica do Controller e no HasPrinterError
+        }
     }
-}
-    else
-    {
+    else{
         std::cout << "Desligamento seguro\n";
         if (SensorActive)
         {
@@ -263,23 +249,23 @@ void Controller::rodar_detector()
         selected_option = -1; // Volta para o Menu
         ReturnToMenu = false;
     }
-}
-else{
-        if (SensorActive)
-        {
-            SensorActive = false;
-            detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
-        }
-        if (ProcessActive)
-        {
-            ProcessActive = false;
-            detector.StopProcessThread();
-        }
-        imp.ResetLastImpress();
+    }
+    else{
+            if (SensorActive)
+            {
+                SensorActive = false;
+                detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
+            }
+            if (ProcessActive)
+            {
+                ProcessActive = false;
+                detector.StopProcessThread();
+            }
+            imp.ResetLastImpress();
 
-        FirstDet = true;
-        selected_option = -1; // Volta para o Menu
-        ReturnToMenu = false;
-}
-
+            FirstDet = true;
+            selected_option = -1; // Volta para o Menu
+            ReturnToMenu = false;
+    }
+    std::cout << "FirstDet: " << FirstDet << "\n";
 }
