@@ -14,11 +14,10 @@ Capture::Capture(int cameraIndex) : cap() {
     // 2. queue max-size-buffers=1 leaky=downstream: Isso é CRÍTICO. 
     //    Significa: "Se tiver mais de 1 frame na fila, jogue fora o velho e fique só com o novo".
     std::string pipeline = 
-            "libcamerasrc auto-exposure=0 exposure-time=830 analogue-gain=1.0 ! "
-            "video/x-raw, width=640, height=480, framerate=60/1, format=NV12 ! " 
-            "v4l2convert ! "
-            "video/x-raw, format=BGR ! "
-            "appsink drop=true max-buffers=1 sync=false";
+        "libcamerasrc auto-exposure=0 exposure-time=830 analogue-gain=1.0 ! "
+        "video/x-raw, width=640, height=480 ! "
+        "videoconvert ! "
+        "appsink drop=true max-buffers=1";
 
     if (!cap.open(pipeline, cv::CAP_GSTREAMER)) {
         std::cerr << "Erro GStreamer: Falha ao abrir pipeline!" << "\n";
