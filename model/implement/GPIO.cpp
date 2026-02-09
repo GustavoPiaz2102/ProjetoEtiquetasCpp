@@ -88,10 +88,10 @@ bool GPIO::ReadSensor() {
     }
     
     if (ActualCounter >= DebounceValue) {
-        std::cout << "Leitura Válida do Sensor (Raw: " << rawValue << ")\n";
+        //std::cout << "Leitura Válida do Sensor (Raw: " << rawValue << ")\n";
         ActualCounter = 0;
         LastSensorState = currentLogicalState;
-		std::cout << "Tempo desde a última detecção: " << (std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count() - LastDetectedTime) << " segundos\n";
+		//std::cout << "Tempo desde a última detecção: " << (std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count() - LastDetectedTime) << " segundos\n";
 		LastDetectedTime = std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
         return currentLogicalState;
     }
