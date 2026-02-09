@@ -22,11 +22,11 @@ private:
 	gpiod_chip *chip;
 	gpiod_line *stroboLine;
 	
-	bool LastSensorValue = false;
 	bool firstRead = true;
 	int ActualCounter = 0;
 	double scale;
 	int lastValidatedRaw = 0;
+	bool LastSensorState = false;
 public:
 	GPIO(int pinStrobo, const std::string &chipname = "gpiochip4");
 	~GPIO();

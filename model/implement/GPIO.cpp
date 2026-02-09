@@ -47,7 +47,7 @@ bool GPIO::ReadSensor() {
 
 	if (rawValue < 0) {
 		std::cout << "Sensor com erro!!"<<std::endl;
-	return false
+	return false;
 	}
 
 	bool currentLogicalState = (abs(rawValue - lastValidatedRaw) > SENSOR_THRESHOLD);
