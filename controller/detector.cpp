@@ -11,6 +11,7 @@ Detector::~Detector()
 {
     StopSensorThread();
     StopProcessThread();
+    sensor.ReturnToFirst(); // Garante que o sensor volte ao estado inicial para evitar bloqueio
 }
 
 void Detector::StartProcessThread()
@@ -29,6 +30,7 @@ void Detector::StopProcessThread()
     
     // CORREÇÃO CRÍTICA: Sempre tenta o join se for possível,
     // independente do valor da flag
+    sensor.ReturnToFirst(); // Garante que o sensor volte ao estado inicial para evitar bloqueio
     if (process_thread.joinable())
     {
         process_thread.join();
@@ -139,7 +141,7 @@ void Detector::SensorCaptureImpressTHR()
     }
     sensor.ReturnToFirst();
     imp.ResetLastImpress();
-    
+
     std::cout << "Esperando Pela finalização da thread na main\n";
 }
 
