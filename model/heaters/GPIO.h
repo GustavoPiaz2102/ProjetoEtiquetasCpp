@@ -14,7 +14,7 @@ const std::string FILE_RAW   = DEVICE_DIR + "in_voltage0_raw";
 const std::string FILE_SCALE = DEVICE_DIR + "in_voltage0_scale"; 
 
 #define SENSOR_THRESHOLD 16000
-#define DebounceValue 20
+#define DebounceValue 30
 
 class GPIO
 {
