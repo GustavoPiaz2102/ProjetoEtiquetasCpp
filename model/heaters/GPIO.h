@@ -29,7 +29,7 @@ private:
 	int lastValidatedRaw = 0;
 	bool LastSensorState = false;
 public:
-	GPIO(int pinStrobo, const std::string &chipname = "gpiochip4");
+	GPIO(int pinStrobo, const std::string &chipname = "gpiochip0");
 	~GPIO();
 
 	bool ReadSensor();           
