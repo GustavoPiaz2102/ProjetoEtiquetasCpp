@@ -102,7 +102,7 @@ void Controller::run()
                     selected_option = 4;
                 break;
 
-            case 4:
+            case 4:{
                 std::string lt;
                 if (interface.requisitar_lt(lt))
                 {
@@ -118,8 +118,9 @@ void Controller::run()
                                         validator.GetVAL()});
                 }
                 break;
+            }
 
-            case 5:
+            case 5:{
                 if (interface.config_menu(arquiver))
                 {
                     selected_option = -1;
@@ -127,9 +128,10 @@ void Controller::run()
                     imp.SaveAtributes();
                 }
                 break;
+            }
             
             // Configura impressão
-            case 2:
+            case 2:{
                 bool InstantImpress = false;
                 qnt_impress = imp.getQntImpressao();
                 if (interface.config_impress(qnt_impress, &InstantImpress))
@@ -149,11 +151,13 @@ void Controller::run()
                     interface.setImprimindo(false);
                 }
                 break;
+            }
 
-            case -10:
+            case -10:{
                 arquiver.save();
                 // std::system("shutdown now");
                 return; // Sai do loop e encerra
+            }
             }
 
             interface.end_frame();
