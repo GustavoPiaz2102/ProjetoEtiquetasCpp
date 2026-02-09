@@ -13,11 +13,6 @@ GPIO::GPIO(int pinStrobo, const std::string &chipname): PinStrobo(pinStrobo), ch
 		throw std::runtime_error("Erro ao configurar linha do strobo (GPIO " + std::to_string(PinStrobo) + ")");
 	}
     gpiod_line_release(stroboLine);
-    if (gpiod_line_request_output(stroboLine, "projeto_etiquetas", 0) < 0) {
-        gpiod_chip_close(chip);
-        // O erro 'Device or resource busy' geralmente acontece aqui
-        throw std::runtime_error("Erro no request_output: " + std::string(strerror(errno)));
-    }
 	std::ifstream fs(FILE_SCALE);
 	if (fs.is_open()) {
 		fs >> scale;
