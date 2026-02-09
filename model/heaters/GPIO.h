@@ -26,6 +26,7 @@ private:
 	int ActualCounter = 0;
 	double scale;
 	bool LastSensorState = false;
+	double LastDetectedTime = 0.0;
 public:
 	bool firstRead = true;
 	GPIO(int pinStrobo, const std::string &chipname = "gpiochip4");

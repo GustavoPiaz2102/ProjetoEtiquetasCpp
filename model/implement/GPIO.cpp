@@ -76,6 +76,7 @@ bool GPIO::ReadSensor() {
         std::cerr << "Primeira leitura analógica: " << rawValue 
                   << " (Estado: " << currentLogicalState << ")\n";
         LastSensorState = currentLogicalState;
+		LastDetectedTime = std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
         firstRead = false;
         return true;
     }
@@ -90,6 +91,8 @@ bool GPIO::ReadSensor() {
         std::cout << "Leitura Válida do Sensor (Raw: " << rawValue << ")\n";
         ActualCounter = 0;
         LastSensorState = currentLogicalState;
+		std::cout << "Tempo desde a última detecção: " << (std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count() - LastDetectedTime) << " segundos\n";
+		LastDetectedTime = std::chrono::duration<double>(std::chrono::steady_clock::
         return currentLogicalState;
     }
     return false; 
