@@ -92,7 +92,7 @@ bool GPIO::ReadSensor() {
         ActualCounter = 0;
         LastSensorState = currentLogicalState;
 		std::cout << "Tempo desde a última detecção: " << (std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count() - LastDetectedTime) << " segundos\n";
-		LastDetectedTime = std::chrono::duration<double>(std::chrono::steady_clock::
+		LastDetectedTime = std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
         return currentLogicalState;
     }
     return false; 
