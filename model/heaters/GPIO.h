@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <thread>
 #include <chrono>
+#include <fstream>
 
 const std::string DEVICE_DIR = "/sys/bus/iio/devices/iio:device0/";
 const std::string FILE_RAW   = DEVICE_DIR + "in_voltage0_raw";   
