@@ -13,8 +13,8 @@ const std::string DEVICE_DIR = "/sys/bus/iio/devices/iio:device0/";
 const std::string FILE_RAW   = DEVICE_DIR + "in_voltage0_raw";   
 const std::string FILE_SCALE = DEVICE_DIR + "in_voltage0_scale"; 
 
-#define SENSOR_THRESHOLD 16000
-#define DebounceValue 10
+#define SENSOR_THRESHOLD 16200
+#define DebounceValue 0
 
 class GPIO
 {
