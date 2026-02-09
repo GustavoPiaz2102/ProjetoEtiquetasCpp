@@ -4,6 +4,7 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include "GPIO.h"
+
 #define IMG_SZE 640
 #define IMG_SZE2 480
 
@@ -12,6 +13,7 @@ public:
     Capture(int cameraIndex = 0);
     ~Capture();
     cv::Mat captureImage();
+
 private:
     cv::VideoCapture cap;
     cv::Mat frame;

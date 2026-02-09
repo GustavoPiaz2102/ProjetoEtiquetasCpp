@@ -1,27 +1,54 @@
 #include "../heaters/capture.h"
 #include <opencv2/core/utils/logger.hpp>
 #include <iostream>
-
-// Adicione uma flag ou variável membro no header para controlar o debug
-// bool save_debug_images = false; 
+#include <fcntl.h>      // Para open()
+#include <sys/ioctl.h>  // Para ioctl()
+#include <linux/v4l2-subdev.h> // Para V4L2_CID_EXPOSURE
+#include <unistd.h>     // Para close()
 
 Capture::Capture(int cameraIndex) : cap() {
     cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);
 
 #ifdef __linux__
-    // PIPELINE OTIMIZADO PARA BAIXA LATÊNCIA
-    // 1. videoscale e videoconvert podem ser pesados. Tentamos pedir o formato direto antes.
-    // 2. queue max-size-buffers=1 leaky=downstream: Isso é CRÍTICO. 
-    //    Significa: "Se tiver mais de 1 frame na fila, jogue fora o velho e fique só com o novo".
+    // Pipeline simplificado para evitar erro de negociação de 'structure' no IMX500
+    // O hardware (PiSP) cuidará do redimensionamento para 640x480
     std::string pipeline = 
-        "libcamerasrc auto-exposure=0 exposure-time=830 ! "
-        "video/x-raw,width=640,height=480 ! "
+        "libcamerasrc ! "
+        "video/x-raw, width=640, height=480 ! "
         "videoconvert ! "
         "appsink drop=true max-buffers=1 sync=false";
+
     if (!cap.open(pipeline, cv::CAP_GSTREAMER)) {
-        std::cerr << "Erro GStreamer: Falha ao abrir pipeline!" << "\n";
+        std::cerr << "Erro GStreamer: Falha ao abrir pipeline! Tentando V4L2..." << "\n";
+        cap.open(0, cv::CAP_V4L2);
     } else {
-        std::cout << "GStreamer: Câmera aberta (Modo Baixa Latência)!" << "\n";
+        std::cout << "GStreamer: Câmera aberta. Aplicando controles de hardware no IMX500..." << "\n";
+
+        // --- BYPASS PARA CONTROLE DE EXPOSIÇÃO (Kernel Style) ---
+        // Abrimos o sub-device do sensor para setar os 830us (54 linhas)
+        int fd = open("/dev/v4l-subdev2", O_RDWR);
+        if (fd >= 0) {
+            struct v4l2_control ctrl;
+
+            // 1. Exposure: 54 linhas conforme calculado para o pixel_rate do sensor
+            ctrl.id = 0x00980911; // V4L2_CID_EXPOSURE
+            ctrl.value = 54;
+            if (ioctl(fd, VIDIOC_S_CTRL, &ctrl) < 0) {
+                perror("[ERRO] Falha ao setar Exposure via ioctl");
+            }
+
+            // 2. Analogue Gain: Aumentamos para compensar a baixa exposição
+            ctrl.id = 0x009e0903; // V4L2_CID_ANALOGUE_GAIN
+            ctrl.value = 250;     // Ajuste entre 0 e 978 conforme a luz do local
+            if (ioctl(fd, VIDIOC_S_CTRL, &ctrl) < 0) {
+                perror("[ERRO] Falha ao setar Analogue Gain via ioctl");
+            }
+
+            close(fd);
+            std::cout << "[HARDWARE] IMX500 configurado: Exposure=54, Gain=250" << std::endl;
+        } else {
+            std::cerr << "[AVISO] Nao foi possivel acessar /dev/v4l-subdev2 para ajuste de hardware." << std::endl;
+        }
     }
 #else
     if (!cap.open(cameraIndex)) {
@@ -29,9 +56,7 @@ Capture::Capture(int cameraIndex) : cap() {
     } else {
         cap.set(cv::CAP_PROP_FRAME_WIDTH, 640);
         cap.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
-        // Em Windows/Mac, definimos o buffer size para 1 para evitar lag
         cap.set(cv::CAP_PROP_BUFFERSIZE, 1); 
-        std::cout << "Câmera aberta com sucesso pelo índice!" << "\n";
     }
 #endif
 }
@@ -43,32 +68,12 @@ Capture::~Capture() {
 }
 
 cv::Mat Capture::captureImage() {
-    if (!cap.isOpened()) {
-        std::cerr << "Erro: Câmera não está aberta!" << "\n";
+    if (!cap.isOpened()) return cv::Mat();
+
+    cv::Mat frame_out;
+    if (!cap.read(frame_out)) {
         return cv::Mat();
     }
-
-    cv::Mat frame;
-
-    // DICA DE LIMPEZA DE BUFFER (Opcional, mas útil se o lag persistir):
-    // Às vezes o buffer interno do OpenCV segura um frame velho.
-    // cap.grab(); // Descarta o frame atual no buffer para forçar a pegar o próximo
-
-    if (!cap.read(frame)) {
-        std::cerr << "Erro ao capturar o frame!" << "\n";
-        return cv::Mat();
-    }
-
-    // --- CORREÇÃO DO BLOQUEIO DE DISCO ---
-    // Só salva se realmente necessário. 
-    // Se precisar salvar sempre, isso DEVE ser feito em outra thread.
     
-    // if (save_debug_images) { 
-    //    std::string filename = "./DebugImages/debug_capture(" + std::to_string(debug_counter) + ").jpg";
-    //    cv::imwrite(filename, frame); // <--- ISSO TRAVA O PROCESSO POR 100-500ms
-    //    std::cout << "Imagem Salva: " << filename << "\n";
-    //    debug_counter++;
-    // }
-    
-    return frame;
+    return frame_out;
 }

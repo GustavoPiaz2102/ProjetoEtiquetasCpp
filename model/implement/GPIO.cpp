@@ -56,7 +56,7 @@ int GPIO::ReadRaw() {
     std::ifstream fs(FILE_RAW);
     int value = 0;
     if (fs.is_open()) {
-        fs >> value;
+        fs >> value;	
         fs.close();
         return (value < 0) ? -1 : value;
     }
