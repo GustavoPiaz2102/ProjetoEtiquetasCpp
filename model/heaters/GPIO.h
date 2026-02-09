@@ -18,27 +18,27 @@ const std::string FILE_SCALE = DEVICE_DIR + "in_voltage0_scale";
 class GPIO
 {
 private:
-    int PinStrobo;
-    gpiod_chip *chip;
-    gpiod_line *stroboLine;
-    
-    bool LastSensorValue = false;
-    bool firstRead = true;
-    int ActualCounter = 0;
-    double scale;
-    int lastValidatedRaw = 0;
+	int PinStrobo;
+	gpiod_chip *chip;
+	gpiod_line *stroboLine;
+	
+	bool LastSensorValue = false;
+	bool firstRead = true;
+	int ActualCounter = 0;
+	double scale;
+	int lastValidatedRaw = 0;
 public:
-    GPIO(int pinStrobo, const std::string &chipname = "gpiochip4");
-    ~GPIO();
+	GPIO(int pinStrobo, const std::string &chipname = "gpiochip4");
+	~GPIO();
 
-    bool ReadSensor();           
-    int ReadRaw();           
+	bool ReadSensor();           
+	int ReadRaw();           
 
-    void OutStrobo();            
-    void BlinkStrobo(int Delay); 
-    void SetStroboHigh();        
-    void SetStroboLow();         
-    void ReturnToFirst() { firstRead = true; ActualCounter = 0; LastSensorValue = false; }
+	void OutStrobo();            
+	void BlinkStrobo(int Delay); 
+	void SetStroboHigh();        
+	void SetStroboLow();         
+	void ReturnToFirst() { firstRead = true; ActualCounter = 0; LastSensorValue = false; }
 };
 
 #endif  
