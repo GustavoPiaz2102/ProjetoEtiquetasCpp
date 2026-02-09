@@ -15,11 +15,10 @@ Capture::Capture(int cameraIndex) : cap() {
     //    Significa: "Se tiver mais de 1 frame na fila, jogue fora o velho e fique só com o novo".
     std::string pipeline = 
         "libcamerasrc ! "
-        "video/x-raw, width=640, height=480 ! " // Tenta pedir a resolução nativa primeiro
+        "video/x-raw, width=640, height=480, format=RGBx ! " // Pedindo RGBx que é eficiente no Pi
         "videoconvert ! "
         "video/x-raw, format=BGR ! "
-        "queue max-size-buffers=1 leaky=downstream ! " // O segredo da baixa latência
-        "appsink drop=true max-buffers=1 sync=false";  // sync=false para não tentar sincronizar com relógio
+        "appsink drop=true max-buffers=1 sync=false";
 
     if (!cap.open(pipeline, cv::CAP_GSTREAMER)) {
         std::cerr << "Erro GStreamer: Falha ao abrir pipeline!" << "\n";
