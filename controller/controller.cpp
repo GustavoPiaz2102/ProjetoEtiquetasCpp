@@ -4,7 +4,7 @@
 
 Controller::Controller()
     : validator("000/00", "00/00/0000", "00/00/0000"),
-      interface(validator),
+      int   erface(validator),
       selected_option(-1),
       arquiver("data/config.txt"),
       imp(arquiver),
