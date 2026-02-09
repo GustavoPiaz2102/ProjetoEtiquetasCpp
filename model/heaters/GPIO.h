@@ -13,7 +13,7 @@ const std::string DEVICE_DIR = "/sys/bus/iio/devices/iio:device0/";
 const std::string FILE_RAW   = DEVICE_DIR + "in_voltage0_raw";   
 const std::string FILE_SCALE = DEVICE_DIR + "in_voltage0_scale"; 
 
-#define SENSOR_THRESHOLD 190
+#define SENSOR_THRESHOLD 16000
 #define DebounceValue 4
 
 class GPIO
@@ -25,9 +25,8 @@ private:
 	
 	int ActualCounter = 0;
 	double scale;
-	int lastValidatedRaw = 0;
 	bool LastSensorState = false;
-	public:
+public:
 	bool firstRead = true;
 	GPIO(int pinStrobo, const std::string &chipname = "gpiochip4");
 	~GPIO();

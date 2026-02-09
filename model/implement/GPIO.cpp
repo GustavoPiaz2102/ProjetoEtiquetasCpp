@@ -70,14 +70,13 @@ bool GPIO::ReadSensor() {
         return false;
     }
 
-    bool currentLogicalState = (std::abs(rawValue - lastValidatedRaw) > SENSOR_THRESHOLD);
+    bool currentLogicalState = (rawValue > SENSOR_THRESHOLD);
 
     if (firstRead) {
         std::cerr << "Primeira leitura analógica: " << rawValue 
                   << " (Estado: " << currentLogicalState << ")\n";
         LastSensorState = currentLogicalState;
         firstRead = false;
-        lastValidatedRaw = rawValue;
         return true;
     }
 
@@ -91,7 +90,6 @@ bool GPIO::ReadSensor() {
         std::cout << "Leitura Válida do Sensor (Raw: " << rawValue << ")\n";
         ActualCounter = 0;
         LastSensorState = currentLogicalState;
-        lastValidatedRaw = rawValue;
         return currentLogicalState;
     }
     return false; 
