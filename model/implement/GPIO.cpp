@@ -1,99 +1,120 @@
 #include "../heaters/GPIO.h"
+#include <cstring>   // Para strerror
+#include <errno.h>   // Para errno
 
-GPIO::GPIO(int pinStrobo, const std::string &chipname): PinStrobo(pinStrobo), chip(nullptr), stroboLine(nullptr)
+GPIO::GPIO(int pinStrobo, const std::string &chipname) 
+    : PinStrobo(pinStrobo), chip(nullptr), stroboLine(nullptr) 
 {
-	chip = gpiod_chip_open_by_name(chipname.c_str());
-	if (!chip) {
-		throw std::runtime_error("Erro ao abrir o chip GPIO: " + chipname);
-	}
-	std::cout << "[INIT] GPIO chip aberto: " << chipname << ", pino strobo: " << PinStrobo << "";
-	stroboLine = gpiod_chip_get_line(chip, PinStrobo);
-	if (!stroboLine || gpiod_line_request_output(stroboLine, "gpio_strobo", 0) < 0) {
-		gpiod_chip_close(chip);
-		throw std::runtime_error("Erro ao configurar linha do strobo (GPIO " + std::to_string(PinStrobo) + ")");
-	}
-    gpiod_line_release(stroboLine);
-	std::ifstream fs(FILE_SCALE);
-	if (fs.is_open()) {
-		fs >> scale;
-		fs.close();
-		std::cout << "[INIT] Escala detectada: " << scale << " mV/unidade\n";
-	} else {
-		scale = 0.1875; // Valor padrão comum para ganho +/- 6.144V
-		std::cerr << "[AVISO] Nao foi possivel ler escala. Usando padrao: " << scale << "\n";
-	}
-}
-int GPIO::ReadRaw() {
-	std::ifstream fs(FILE_RAW);
-	int value = 0;
+    // 1. Abre o chip
+    chip = gpiod_chip_open_by_name(chipname.c_str());
+    if (!chip) {
+        throw std::runtime_error("Erro ao abrir o chip GPIO: " + chipname + 
+                                 " (" + strerror(errno) + ")");
+    }
 
-	if (fs.is_open()) {
-		fs >> value;
-		fs.close();
-		if(value < 0) return -1;
-		return value;
-	}
-	return -1; // Erro
+    std::cout << "[INIT] GPIO chip aberto: " << chipname << ", pino strobo: " << PinStrobo << std::endl;
+
+    // 2. Obtém a linha
+    stroboLine = gpiod_chip_get_line(chip, PinStrobo);
+    if (!stroboLine) {
+        gpiod_chip_close(chip);
+        throw std::runtime_error("Erro: Nao foi possivel obter a linha " + std::to_string(PinStrobo));
+    }
+
+    // 3. Requisita a linha como SAÍDA
+    // Nota: REMOVIDO o gpiod_line_release daqui. A linha deve ficar "presa" ao objeto.
+    if (gpiod_line_request_output(stroboLine, "projeto_etiquetas", 0) < 0) {
+        std::string erro_msg = strerror(errno);
+        gpiod_chip_close(chip);
+        throw std::runtime_error("Erro ao configurar output do strobo (GPIO " + 
+                                 std::to_string(PinStrobo) + "): " + erro_msg);
+    }
+
+    // 4. Carrega escala (Leitura de arquivos do sistema)
+    std::ifstream fs(FILE_SCALE);
+    if (fs.is_open()) {
+        fs >> scale;
+        fs.close();
+        std::cout << "[INIT] Escala detectada: " << scale << " mV/unidade\n";
+    } else {
+        scale = 0.1875; 
+        std::cerr << "[AVISO] Nao foi possivel ler escala. Usando padrao: " << scale << "\n";
+    }
 }
 
 GPIO::~GPIO() {
-	if (chip) {
-		gpiod_chip_close(chip);
-	}
+    // No destrutor, liberamos a linha antes de fechar o chip para evitar 'Device busy' depois
+    if (stroboLine) {
+        gpiod_line_release(stroboLine);
+    }
+    if (chip) {
+        gpiod_chip_close(chip);
+    }
+}
+
+int GPIO::ReadRaw() {
+    std::ifstream fs(FILE_RAW);
+    int value = 0;
+    if (fs.is_open()) {
+        fs >> value;
+        fs.close();
+        return (value < 0) ? -1 : value;
+    }
+    return -1;
 }
 
 bool GPIO::ReadSensor() {
-	int rawValue = ReadRaw();
+    int rawValue = ReadRaw();
+    if (rawValue < 0) {
+        std::cout << "Sensor com erro!!" << std::endl;
+        return false;
+    }
 
-	if (rawValue < 0) {
-		std::cout << "Sensor com erro!!"<<std::endl;
-	return false;
-	}
+    bool currentLogicalState = (std::abs(rawValue - lastValidatedRaw) > SENSOR_THRESHOLD);
 
-	bool currentLogicalState = (abs(rawValue - lastValidatedRaw) > SENSOR_THRESHOLD);
+    if (firstRead) {
+        std::cerr << "Primeira leitura analógica: " << rawValue 
+                  << " (Estado: " << currentLogicalState << ")\n";
+        LastSensorState = currentLogicalState;
+        firstRead = false;
+        lastValidatedRaw = rawValue;
+        return currentLogicalState;
+    }
 
-	if (firstRead) {
-		std::cerr << "Primeira leitura analógica: " << rawValue 
-				  << " (Estado: " << currentLogicalState << ")\n";
-		LastSensorState = currentLogicalState;
-		firstRead = false;
-	lastValidatedRaw = rawValue;
-		return currentLogicalState;
-	}
-
-	if (currentLogicalState != LastSensorState) {
-		ActualCounter++;
-	} else {
-		ActualCounter = 0;
-	}
-	
-	if (ActualCounter >= DebounceValue) {
-		std::cout << "Leitura Válida do Sensor (Raw: " << rawValue << ")\n";
-		ActualCounter = 0;
-		LastSensorState = currentLogicalState;
-	lastValidatedRaw = rawValue;
-		return currentLogicalState;
-	}
-
-	return false; 
+    if (currentLogicalState != LastSensorState) {
+        ActualCounter++;
+    } else {
+        ActualCounter = 0;
+    }
+    
+    if (ActualCounter >= DebounceValue) {
+        std::cout << "Leitura Válida do Sensor (Raw: " << rawValue << ")\n";
+        ActualCounter = 0;
+        LastSensorState = currentLogicalState;
+        lastValidatedRaw = rawValue;
+        return currentLogicalState;
+    }
+    return false; 
 }
 
-
+// Comandos de controle do Strobo
 void GPIO::OutStrobo() {
-	if (gpiod_line_set_value(stroboLine, 1) < 0) return;
-	if (gpiod_line_set_value(stroboLine, 0) < 0) return;
+    if (!stroboLine) return;
+    gpiod_line_set_value(stroboLine, 1);
+    gpiod_line_set_value(stroboLine, 0);
 }
 
 void GPIO::BlinkStrobo(int Delay) {
-	gpiod_line_set_value(stroboLine, 1);
-	std::this_thread::sleep_for(std::chrono::milliseconds(Delay));
-	gpiod_line_set_value(stroboLine, 0);
+    if (!stroboLine) return;
+    gpiod_line_set_value(stroboLine, 1);
+    std::this_thread::sleep_for(std::chrono::milliseconds(Delay));
+    gpiod_line_set_value(stroboLine, 0);
 }
 
 void GPIO::SetStroboHigh() {
-	gpiod_line_set_value(stroboLine, 1);
+    if (stroboLine) gpiod_line_set_value(stroboLine, 1);
 }
 
 void GPIO::SetStroboLow() {
-	gpiod_line_set_value(stroboLine, 0);
+    if (stroboLine) gpiod_line_set_value(stroboLine, 0);
 }
