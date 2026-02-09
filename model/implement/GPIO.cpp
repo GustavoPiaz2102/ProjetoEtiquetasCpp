@@ -78,7 +78,7 @@ bool GPIO::ReadSensor() {
         LastSensorState = currentLogicalState;
         firstRead = false;
         lastValidatedRaw = rawValue;
-        return currentLogicalState;
+        return true;
     }
 
     if (currentLogicalState != LastSensorState) {

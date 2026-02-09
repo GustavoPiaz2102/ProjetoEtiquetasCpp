@@ -270,6 +270,7 @@ void Controller::rodar_detector()
             FirstDet = true;
             selected_option = -1; // Volta para o Menu
             ReturnToMenu = false;
+
     }
     std::cout << "FirstDet: " << FirstDet << "\n";
 }

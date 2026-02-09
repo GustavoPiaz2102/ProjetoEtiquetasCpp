@@ -142,7 +142,7 @@ void Detector::SensorCaptureImpressTHR()
     imp.ResetLastImpress();
 
     std::cout << sensor.firstRead << std::endl;
-
+    std::cout << "imprimindo:" << interface.GetImprimindo() << std::endl;
     std::cout << "Esperando Pela finalização da thread na main\n";
 }
 
