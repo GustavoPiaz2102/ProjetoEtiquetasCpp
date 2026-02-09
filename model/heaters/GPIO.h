@@ -38,7 +38,7 @@ public:
 	void BlinkStrobo(int Delay); 
 	void SetStroboHigh();        
 	void SetStroboLow();         
-	void ReturnToFirst() { firstRead = true; ActualCounter = 0; LastSensorValue = false; }
+	void ReturnToFirst() { firstRead = true; ActualCounter = 0; LastSensorState = false; }
 };
 
 #endif  
