@@ -30,7 +30,6 @@ void Detector::StopProcessThread()
     
     // CORREÇÃO CRÍTICA: Sempre tenta o join se for possível,
     // independente do valor da flag
-    sensor.ReturnToFirst(); // Garante que o sensor volte ao estado inicial para evitar bloqueio
     if (process_thread.joinable())
     {
         process_thread.join();
@@ -178,6 +177,7 @@ void Detector::StopSensorThread()
 
     // 2. CORREÇÃO CRÍTICA: Sempre verifica se precisa limpar a memória.
     // Removemos o "if (!running) return" que causava o crash.
+    sensor.ReturnToFirst(); // Garante que o sensor volte ao estado inicial para evitar bloqueio
     if (sensor_thread.joinable())
     {
         sensor_thread.join();
