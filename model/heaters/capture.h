@@ -15,7 +15,6 @@ public:
 private:
     cv::VideoCapture cap;
     cv::Mat frame;
-    //Cria o objeto GPIO com os pinos do sensor e do strobo
     int debug_counter = 0;
 };
 
