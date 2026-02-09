@@ -91,9 +91,9 @@ void Detector::SensorCaptureImpressTHR()
         if (sensor.ReadSensor() != 0)
         {
             sensor.SetStroboHigh();
-            std::this_thread::sleep_for(std::chrono::milliseconds(65));
+            std::this_thread::sleep_for(std::chrono::milliseconds(70));
             cv::Mat newFrame = camera.captureImage();
-            std::this_thread::sleep_for(std::chrono::milliseconds(30));
+            std::this_thread::sleep_for(std::chrono::milliseconds(35));
             sensor.SetStroboLow();
 
             {
