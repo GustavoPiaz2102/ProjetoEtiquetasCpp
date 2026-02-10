@@ -10,14 +10,15 @@
 
 class Capture {
 public:
-    Capture(int cameraIndex = 0);
-    ~Capture();
-    cv::Mat captureImage();
+	Capture(int cameraIndex = 0);
+	~Capture();
+	void captureImage();
+	cv::retrieveImage();
 
 private:
-    cv::VideoCapture cap;
-    cv::Mat frame;
-    int debug_counter = 0;
+	cv::VideoCapture cap;
+	cv::Mat frame;
+	int debug_counter = 0;
 };
 
 #endif
