@@ -10,6 +10,8 @@
 #include <cstdio>
 #include <vector>
 #include <errno.h>    // Para verificar erros de leitura
+#include <csignal>
+#include <sys/types.h>
 
 #define IMG_SZE 640
 #define IMG_SZE2 480

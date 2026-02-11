@@ -9,8 +9,8 @@ static std::vector<uchar> buffer(460800);
 Capture::Capture(int cameraIndex) : shutter_us(1600) {
     // Comando para rpicam-vid: 
     // -t 0 (infinito), codec yuv420, shutter e gain manuais, output para o pipe (-)
-    std::string cmd = "rpicam-vid -t 0 --shutter " + std::to_string(shutter_us) + 
-                      " --gain 4.0 --width 640 --height 480 --nopreview --codec yuv420 -o -";
+	std::string cmd = "rpicam-still -t 0 --signal --shutter " + std::to_string(shutter_us) + 
+			" --gain 4.0 --width 640 --height 480 --nopreview --codec yuv420 -o -";
     
     std::cout << "Iniciando captura via Pipe: " << cmd << std::endl;
     pipePtr = popen(cmd.c_str(), "r");
@@ -27,13 +27,23 @@ Capture::~Capture() {
 }
 
 void Capture::captureImage() {
-    // Lê exatamente o tamanho de um frame do pipe
-    size_t bytesRead = fread(buffer.data(), 1, buffer.size(), pipePtr);
-    std::cout <<"Tamanho" << bytesRead<<std::endl;
-    if (bytesRead != buffer.size()) {
-        // Se falhar, pode ser que o rpicam ainda esteja iniciando
-        // ou o buffer esteja vazio.
+    // 1. Envia o sinal SIGUSR1 para o processo rpicam-still
+    // Isso "pede" um novo frame para a câmera
+    system("pkill -USR1 rpicam-still");
+
+    // 2. Agora o pipe terá exatamente um frame esperando.
+    // O fread vai bloquear aqui até que o frame chegue, garantindo sincronia total.
+    size_t bytesRead = 0;
+    size_t totalRead = 0;
+    
+    // Garantimos a leitura do frame completo (YUV420)
+    while (totalRead < buffer.size()) {
+        bytesRead = fread(buffer.data() + totalRead, 1, buffer.size() - totalRead, pipePtr);
+        if (bytesRead <= 0) break;
+        totalRead += bytesRead;
     }
+    
+    std::cout << "Frame capturado sob comando! Bytes: " << totalRead << std::endl;
 }
 
 cv::Mat Capture::retrieveImage() {
