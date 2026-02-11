@@ -10,7 +10,7 @@ Capture::Capture(int cameraIndex) : shutter_us(1600) {
     // Comando para rpicam-vid: 
     // -t 0 (infinito), codec yuv420, shutter e gain manuais, output para o pipe (-)
     std::string cmd = "rpicam-vid -t 0 --shutter " + std::to_string(shutter_us) + 
-                      " --gain 4.0 --width 640 --height 480 --nopreview --codec yuv420 --flush -o -";
+                      " --gain 4.0 --width 640 --height 480 --nopreview --codec yuv420 -o -";
     
     std::cout << "Iniciando captura via Pipe: " << cmd << std::endl;
     pipePtr = popen(cmd.c_str(), "r");
@@ -44,6 +44,5 @@ cv::Mat Capture::retrieveImage() {
     if (!yuvFrame.empty()) {
         cv::cvtColor(yuvFrame, frame, cv::COLOR_YUV2BGR_I420);
     }
-    fseek(pipePtr, 0, SEEK_END);
     return frame;
 }
