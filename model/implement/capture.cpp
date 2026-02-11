@@ -1,8 +1,5 @@
 #include "../heaters/capture.h"
-#include <iostream>
-#include <opencv2/imgproc.hpp>
-#include <cstdio>
-#include <vector>
+
 
 // Ponteiro para o processo do rpicam
 static FILE* pipePtr = nullptr;
