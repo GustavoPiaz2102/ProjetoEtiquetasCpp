@@ -9,12 +9,12 @@ static std::vector<uchar> buffer(460800);
 Capture::Capture(int cameraIndex) : shutter_us(1600) {
     // Comando para rpicam-vid: 
     // -t 0 (infinito), codec yuv420, shutter e gain manuais, output para o pipe (-)
-	std::string cmd = "rpicam-still -t 0 --signal --shutter " + std::to_string(shutter_us) + 
-			" --gain 4.0 --width 640 --height 480 --nopreview --codec yuv420 -o -";
+    std::string cmd = "rpicam-vid -t 0 --shutter " + std::to_string(shutter_us) + 
+                      " --gain 4.0 --width 640 --height 480 --nopreview --codec yuv420 -o -";
     
     std::cout << "Iniciando captura via Pipe: " << cmd << std::endl;
     pipePtr = popen(cmd.c_str(), "r");
-
+	
     if (!pipePtr) {
         std::cerr << "Erro ao abrir o processo rpicam-vid!" << std::endl;
     }
@@ -27,25 +27,12 @@ Capture::~Capture() {
 }
 
 void Capture::captureImage() {
-    // 1. Limpa qualquer resíduo (lixo) que possa estar no pipe
-    // Embora o modo --signal minimize isso, é uma boa prática
-    
-    // 2. Envia o sinal de trigger
-    system("pkill -USR1 rpicam-still");
-
-    // 3. Leitura bloqueante e completa
-    size_t totalRead = 0;
-    while (totalRead < buffer.size()) {
-        size_t bytes = fread(buffer.data() + totalRead, 1, buffer.size() - totalRead, pipePtr);
-        if (bytes <= 0) {
-             // Se chegar aqui, o rpicam-still pode ter fechado ou falhado
-             break; 
-        }
-        totalRead += bytes;
-    }
-
-    if (totalRead < buffer.size()) {
-        std::cout << "Aguardando frame... (Verde evitado)" << std::endl;
+    // Lê exatamente o tamanho de um frame do pipe
+    size_t bytesRead = fread(buffer.data(), 1, buffer.size(), pipePtr);
+    std::cout <<"Tamanho" << bytesRead<<std::endl;
+    if (bytesRead != buffer.size()) {
+        // Se falhar, pode ser que o rpicam ainda esteja iniciando
+        // ou o buffer esteja vazio.
     }
 }
 
