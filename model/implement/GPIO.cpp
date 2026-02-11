@@ -73,6 +73,7 @@ bool GPIO::ReadSensor() {
     bool currentLogicalState = (rawValue > SENSOR_THRESHOLD);
 
     if (firstRead) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
         std::cerr << "Primeira leitura analógica: " << rawValue 
                   << " (Estado: " << currentLogicalState << ")\n";
         LastSensorState = currentLogicalState;
