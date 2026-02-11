@@ -6,7 +6,7 @@ static FILE* pipePtr = nullptr;
 // Buffer para armazenar um frame YUV420 (640 * 480 * 1.5)
 static std::vector<uchar> buffer(460800);
 
-Capture::Capture(int cameraIndex) : shutter_us(200) {
+Capture::Capture(int cameraIndex) : shutter_us(1600) {
     // Comando para rpicam-vid: 
     // -t 0 (infinito), codec yuv420, shutter e gain manuais, output para o pipe (-)
     std::string cmd = "rpicam-vid -t 0 --shutter " + std::to_string(shutter_us) + 
@@ -29,7 +29,7 @@ Capture::~Capture() {
 void Capture::captureImage() {
     // Lê exatamente o tamanho de um frame do pipe
     size_t bytesRead = fread(buffer.data(), 1, buffer.size(), pipePtr);
-    
+    std::cout <<"Tamanho" << bytesRead<<std::endl;
     if (bytesRead != buffer.size()) {
         // Se falhar, pode ser que o rpicam ainda esteja iniciando
         // ou o buffer esteja vazio.
