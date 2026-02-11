@@ -26,13 +26,42 @@ Capture::~Capture() {
     }
 }
 
+#include <poll.h> // Para monitorar o pipe com precisão
+
 void Capture::captureImage() {
-    // Lê exatamente o tamanho de um frame do pipe
-    size_t bytesRead = fread(buffer.data(), 1, buffer.size(), pipePtr);
+    if (!pipePtr) return;
+    int fd = fileno(pipePtr);
+
+    // 1. DRENAGEM TOTAL (Vesvaziar o cano)
+    int flags = fcntl(fd, F_GETFL, 0);
+    fcntl(fd, F_SETFL, flags | O_NONBLOCK);
     
-    if (bytesRead != buffer.size()) {
-        // Se falhar, pode ser que o rpicam ainda esteja iniciando
-        // ou o buffer esteja vazio.
+    uchar dummy[8192];
+    while (read(fd, dummy, sizeof(dummy)) > 0); 
+
+    // 2. SINCRONIZAÇÃO (Esperar o próximo frame "nascer")
+    // Usamos poll para esperar até que o pipe tenha dados novos
+    struct pollfd pfd;
+    pfd.fd = fd;
+    pfd.events = POLLIN;
+    
+    // Espera até 100ms por novos dados
+    int ret = poll(&pfd, 1, 100);
+    
+    fcntl(fd, F_SETFL, flags); // Volta para o modo bloqueante
+
+    if (ret <= 0) {
+        // Câmera parou de enviar dados ou deu timeout
+        return; 
+    }
+
+    // 3. LEITURA ATÔMICA
+    // Agora que sabemos que o frame acabou de começar a chegar, lemos o bloco inteiro
+    size_t totalRead = 0;
+    while (totalRead < buffer.size()) {
+        size_t n = fread(buffer.data() + totalRead, 1, buffer.size() - totalRead, pipePtr);
+        if (n <= 0) break;
+        totalRead += n;
     }
 }
 
