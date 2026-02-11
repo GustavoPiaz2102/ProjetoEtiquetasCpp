@@ -27,23 +27,14 @@ Capture::~Capture() {
 }
 
 void Capture::captureImage() {
-    // 1. Envia o sinal SIGUSR1 para o processo rpicam-still
-    // Isso "pede" um novo frame para a câmera
-    system("pkill -USR1 rpicam-still");
-
-    // 2. Agora o pipe terá exatamente um frame esperando.
-    // O fread vai bloquear aqui até que o frame chegue, garantindo sincronia total.
-    size_t bytesRead = 0;
-    size_t totalRead = 0;
-    
-    // Garantimos a leitura do frame completo (YUV420)
-    while (totalRead < buffer.size()) {
-        bytesRead = fread(buffer.data() + totalRead, 1, buffer.size() - totalRead, pipePtr);
-        if (bytesRead <= 0) break;
-        totalRead += bytesRead;
+    // Lê exatamente o tamanho de um frame do pipe
+	system("pkill -USR1 rpicam-still");
+    size_t bytesRead = fread(buffer.data(), 1, buffer.size(), pipePtr);
+    std::cout <<"Tamanho" << bytesRead<<std::endl;
+    if (bytesRead != buffer.size()) {
+        // Se falhar, pode ser que o rpicam ainda esteja iniciando
+        // ou o buffer esteja vazio.
     }
-    
-    std::cout << "Frame capturado sob comando! Bytes: " << totalRead << std::endl;
 }
 
 cv::Mat Capture::retrieveImage() {
