@@ -30,22 +30,27 @@ Capture::~Capture() {
 }
 
 void Capture::captureImage() {
-    // 1. Drenar o buffer: Se o seu processamento demorou, 
-    // podem existir frames "velhos" esperando no pipe.
-    // Vamos ler o que estiver lá até que o pipe esteja quase vazio.
-    
-    int fd = fileno(pipePtr);
-    int flags = fcntl(fd, F_GETFL, 0);
-    fcntl(fd, F_SETFL, flags | O_NONBLOCK); // Torna a leitura não-bloqueante temporariamente
+    if (!pipePtr) return;
 
+    int fd = fileno(pipePtr);
+    
+    // 1. Pegar as flags atuais do Pipe
+    int flags = fcntl(fd, F_GETFL, 0);
+    
+    // 2. Ligar o modo NÃO-BLOQUEANTE (O_NONBLOCK)
+    fcntl(fd, F_SETFL, flags | O_NONBLOCK);
+
+    // 3. DRENAGEM: Lê e descarta tudo o que estiver acumulado no buffer do Pipe
+    // Isso remove os "fantasmas" (frames antigos)
     std::vector<uchar> junk(buffer.size());
     while (read(fd, junk.data(), junk.size()) > 0) {
-        // Continua lendo e descartando enquanto houver frames completos acumulados
+        // Apenas esvaziando o cano...
     }
 
-    fcntl(fd, F_SETFL, flags); // Volta para o modo bloqueante para ler o frame atual
+    // 4. Desligar o modo não-bloqueante para ler o frame atual de forma estável
+    fcntl(fd, F_SETFL, flags);
 
-    // 2. Agora lemos o frame "fresco" que acabou de chegar
+    // 5. Ler o frame novo (640x480x1.5 bytes)
     size_t totalRead = 0;
     while (totalRead < buffer.size()) {
         size_t bytes = fread(buffer.data() + totalRead, 1, buffer.size() - totalRead, pipePtr);

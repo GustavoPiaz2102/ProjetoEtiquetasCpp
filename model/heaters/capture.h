@@ -3,6 +3,8 @@
 
 #include <opencv2/opencv.hpp>
 #include <iostream>
+#include <fcntl.h>    // Para F_GETFL, F_SETFL e O_NONBLOCK
+#include <unistd.h>   // Para read() e fileno()
 #include "GPIO.h"
 
 #define IMG_SZE 640
