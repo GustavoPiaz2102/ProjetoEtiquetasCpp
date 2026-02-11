@@ -107,8 +107,7 @@ class Detector{
          * @details Utilizado pela interface para determinar se deve exibir indicadores de erro.
          * @return bool True se a última validação falhou, False caso contrário.
          */
-        bool WasLastWithError() const
-        {
+        bool WasLastWithError() const{
             return LastWithError;
         }
 
@@ -117,37 +116,37 @@ class Detector{
          *          O callback recebe dois parâmetros: isValid (bool) e text (string com o código detectado).
          * @param[in] callback Função callback com signature void(bool, const std::string&)
          */
-        void setValidationCallback(std::function<void(bool, const std::string &)> callback)
-        {
+        void setValidationCallback(std::function<void(bool, const std::string &)> callback){
             validationCallback = callback;
         }
+
         /** @brief Obtém o estado de execução da thread de captura.
          * @return bool True se a thread de captura estiver em execução, False caso contrário.
          */                                                                     
-
-        bool GetRunning() const
-        {
+        bool GetRunning() const{
             return running;
         }
+
         /** @brief Obtém o estado de execução da thread de processamento.
          * @return bool True se a thread de processamento estiver em execução, False caso contrário.
          */
-        bool GetProcessingRunning() const
-        {
+        bool GetProcessingRunning() const{
             return processing_running;
         }
-            /** @brief Verifica se houve erro crítico na impressora.
-            * @details Utilizado pelo Controller para detectar erros de impressão e notificar a interface.
-            *          Reseta a flag de erro após a verificação.
-            * @return bool True se houve erro crítico, False caso contrário.
-            */
-        bool HasPrinterError() {               
-            if (printer_error) {
+
+        /** @brief Verifica se houve erro crítico na impressora.
+        * @details Utilizado pelo Controller para detectar erros de impressão e notificar a interface.
+        *          Reseta a flag de erro após a verificação.
+        * @return bool True se houve erro crítico, False caso contrário.
+        */
+        bool HasPrinterError(){               
+            if(printer_error){
                 printer_error = false;
                 return true;
             }
+
             return false;
         }
 };
 
-#endif
+#endif // DETECTOR_H

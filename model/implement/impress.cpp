@@ -105,7 +105,7 @@ bool Impress::print(int *errorCode){
         impressora.close();
 
         std::cout << "✅ Etiqueta enviada com sucesso!" << "\n";
-        TimeLastPrint = std::chrono::high_resolution_clock::now();
+        //TimeLastPrint = std::chrono::high_resolution_clock::now();
         QntImpressao--;
         return true;
     } catch(const std::exception &e){
