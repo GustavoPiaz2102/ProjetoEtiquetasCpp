@@ -33,30 +33,35 @@ GPIO::GPIO(int pinStrobo, const std::string &chipname) : PinStrobo(pinStrobo), c
         scale = 0.1875; 
         std::cerr << "[AVISO] Nao foi possivel ler escala. Usando padrao: " << scale << "\n";
     }
+
+    fsRaw.open(FILE_RAW);
+    if(!fsRaw.is_open()) std::cerr << "[ERRO] Nao foi possivel abrir o arquivo do sensor: " << FILE_RAW << "\n";
 }
 
 GPIO::~GPIO(){
+    if(fsRaw.is_open()) fsRaw.close();
     if(stroboLine) gpiod_line_release(stroboLine);
     if(chip) gpiod_chip_close(chip);
 }
 
 int GPIO::ReadRaw(){
-    std::ifstream fs(FILE_RAW);
+    if(!fsRaw.is_open()) return -1;
+
+    fsRaw.seekg(0);
     int value = 0;
-    if(fs.is_open()){
-        fs >> value;	
-        fs.close();
-        return (value < 0) ? -1 : value;
+    fsRaw >> value;	
+
+    if(fsRaw.fail()){
+        fsRaw.clear();
+        return -1;
     }
-    return -1;
+
+    return value;
 }
 
 bool GPIO::ReadSensor(){
     int rawValue = ReadRaw();
-    if (rawValue < 0) {
-        std::cout << "Sensor com erro!!" << std::endl;
-        return false;
-    }
+    if (rawValue < 0) return false;
 
     bool currentLogicalState = (rawValue > SENSOR_THRESHOLD);
 
@@ -64,22 +69,24 @@ bool GPIO::ReadSensor(){
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         std::cerr << "Primeira leitura analógica: " << rawValue << " (Estado: " << currentLogicalState << ")\n";
         LastSensorState = currentLogicalState;
-		LastDetectedTime = std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
+		//LastDetectedTime = std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
         firstRead = false;
         return true;
     }
 
-    if(currentLogicalState != LastSensorState) ActualCounter++;
-    else ActualCounter = 0;
+    if(currentLogicalState != LastSensorState) {
+        ActualCounter++;
+
+        if (ActualCounter >= DebounceValue){
+            //std::cout << "Leitura Válida do Sensor (Raw: " << rawValue << ")\n";
+            LastSensorState = currentLogicalState;
+            ActualCounter = 0;
+            //std::cout << "Tempo desde a última detecção: " << (std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count() - LastDetectedTime) << " segundos\n";
+            //LastDetectedTime = std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
+            return currentLogicalState;
+        }
+    } else ActualCounter = 0;
     
-    if (ActualCounter >= DebounceValue){
-        std::cout << "Leitura Válida do Sensor (Raw: " << rawValue << ")\n";
-        ActualCounter = 0;
-        LastSensorState = currentLogicalState;
-		//std::cout << "Tempo desde a última detecção: " << (std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count() - LastDetectedTime) << " segundos\n";
-		//LastDetectedTime = std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
-        return currentLogicalState;
-    }
     return false; 
 }
 
@@ -87,6 +94,7 @@ bool GPIO::ReadSensor(){
 void GPIO::OutStrobo(){
     if(!stroboLine) return;
     gpiod_line_set_value(stroboLine, 1);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
     gpiod_line_set_value(stroboLine, 0);
 }
 

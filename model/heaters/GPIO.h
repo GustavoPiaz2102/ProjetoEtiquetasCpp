@@ -16,30 +16,30 @@ const std::string FILE_SCALE = DEVICE_DIR + "in_voltage0_scale";
 #define SENSOR_THRESHOLD 16200
 #define DebounceValue 5
 
-class GPIO
-{
-private:
-	int PinStrobo;
-	gpiod_chip *chip;
-	gpiod_line *stroboLine;
-	
-	int ActualCounter = 0;
-	double scale;
-	bool LastSensorState = false;
-	double LastDetectedTime = 0.0;
-public:
-	bool firstRead = true;
-	GPIO(int pinStrobo, const std::string &chipname = "gpiochip4");
-	~GPIO();
+class GPIO{
+	private:
+		int PinStrobo;
+		gpiod_chip *chip;
+		gpiod_line *stroboLine;
+		std::ifstream fsRaw;
+		
+		int ActualCounter = 0;
+		double scale;
+		bool LastSensorState = false;
+		double LastDetectedTime = 0.0;
+	public:
+		bool firstRead = true;
+		GPIO(int pinStrobo, const std::string &chipname = "gpiochip4");
+		~GPIO();
 
-	bool ReadSensor();           
-	int ReadRaw();           
+		bool ReadSensor();           
+		int ReadRaw();           
 
-	void OutStrobo();            
-	void BlinkStrobo(int Delay); 
-	void SetStroboHigh();        
-	void SetStroboLow();         
-	void ReturnToFirst() { firstRead = true; ActualCounter = 0; LastSensorState = false; }
+		void OutStrobo();            
+		void BlinkStrobo(int Delay); 
+		void SetStroboHigh();        
+		void SetStroboLow();         
+		void ReturnToFirst() { firstRead = true; ActualCounter = 0; LastSensorState = false; }
 };
 
 #endif  
