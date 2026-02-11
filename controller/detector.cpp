@@ -81,7 +81,7 @@ void Detector::SensorCaptureImpressTHR() {
 			camera.captureImage();
 			// std::this_thread::sleep_for(std::chrono::milliseconds(50));
 			sensor.SetStroboLow();
-			cv::mat newFrame = camera.retrieveImage();
+			cv::Mat newFrame = camera.retrieveImage();
 
 			{
 				std::lock_guard<std::mutex> lock(frame_mutex);
