@@ -55,7 +55,7 @@ cv::Mat Capture::retrieveImage() {
     
     // Converte de YUV420 (I420) para BGR (OpenCV padrão)
     if (!yuvFrame.empty()) {
-        cv::cvtColor(yuvFrame, frame, cv::COLOR_YUV2BGR_I420);
+        cv::cvtColor(yuvFrame, frame, cv::COLOR_YUV2BGR_NV12);
     }
     return frame;
 }
