@@ -19,6 +19,8 @@ private:
 	cv::VideoCapture cap;
 	cv::Mat frame;
 	int debug_counter = 0;
+	std::string tempFile;
+	int shutter_us;
 };
 
 #endif
