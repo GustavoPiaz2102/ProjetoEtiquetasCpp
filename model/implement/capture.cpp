@@ -1,47 +1,52 @@
 #include "../heaters/capture.h"
 #include <iostream>
-#include <opencv2/core/utils/logger.hpp>
+#include <opencv2/imgproc.hpp>
+#include <cstdio>
+#include <vector>
 
-Capture::Capture(int cameraIndex)
-    : shutter_us(1000) 
-{
-    cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);
+// Ponteiro para o processo do rpicam
+static FILE* pipePtr = nullptr;
+// Buffer para armazenar um frame YUV420 (640 * 480 * 1.5)
+static std::vector<uchar> buffer(460800);
 
-#ifdef __linux__
-    // Pipeline otimizado para 640x480 e controle de exposição manual
-    // exposure-mode=1 é o modo manual no libcamerasrc
-    std::string pipeline = "libcamerasrc exposure-mode=1 exposure-time=" + std::to_string(shutter_us) + 
-                           " ! video/x-raw, width=640, height=480, framerate=30/1 "
-                           " ! videoconvert ! appsink";
+Capture::Capture(int cameraIndex) : shutter_us(1000) {
+    // Comando para rpicam-vid: 
+    // -t 0 (infinito), codec yuv420, shutter e gain manuais, output para o pipe (-)
+    std::string cmd = "rpicam-vid -t 0 --shutter " + std::to_string(shutter_us) + 
+                      " --gain 4.0 --width 640 --height 480 --nopreview --codec yuv420 --flush -o -";
     
-    std::cout << "Abrindo Pipeline: " << pipeline << std::endl;
-    
-    if (!cap.open(pipeline, cv::CAP_GSTREAMER)) {
-        std::cerr << "Erro: Não foi possível abrir o pipeline GStreamer!\n";
+    std::cout << "Iniciando captura via Pipe: " << cmd << std::endl;
+    pipePtr = popen(cmd.c_str(), "r");
+
+    if (!pipePtr) {
+        std::cerr << "Erro ao abrir o processo rpicam-vid!" << std::endl;
     }
-#else
-    if (!cap.open(cameraIndex)) {
-        std::cerr << "Erro: Não foi possível abrir a câmera!\n";
-    }
-#endif
 }
 
 Capture::~Capture() {
-    if (cap.isOpened())
-        cap.release();
+    if (pipePtr) {
+        pclose(pipePtr);
+    }
 }
 
 void Capture::captureImage() {
-    // Agora o grab() apenas limpa o buffer para pegar o frame mais recente
-    if (!cap.grab()) {
-        std::cerr << "Erro ao capturar frame!\n";
+    // Lê exatamente o tamanho de um frame do pipe
+    size_t bytesRead = fread(buffer.data(), 1, buffer.size(), pipePtr);
+    
+    if (bytesRead != buffer.size()) {
+        // Se falhar, pode ser que o rpicam ainda esteja iniciando
+        // ou o buffer esteja vazio.
     }
 }
 
 cv::Mat Capture::retrieveImage() {
-    if (!cap.retrieve(frame)) {
-        std::cerr << "Erro ao decodificar frame!\n";
-        return cv::Mat(); // Retorna matriz vazia (corrigido o erro anterior)
+    // No formato YUV420, a altura total no buffer é 1.5x a altura da imagem
+    cv::Mat yuvFrame(480 + 240, 640, CV_8UC1, buffer.data());
+    
+    // Converte de YUV420 (I420) para BGR (OpenCV padrão)
+    if (!yuvFrame.empty()) {
+        cv::cvtColor(yuvFrame, frame, cv::COLOR_YUV2BGR_I420);
     }
+
     return frame;
 }
