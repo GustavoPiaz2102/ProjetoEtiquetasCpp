@@ -1,17 +1,24 @@
 #include "../heaters/capture.h"
 #include <iostream>
 #include <opencv2/core/utils/logger.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <cstdlib>
 
 Capture::Capture(int cameraIndex)
-    : cap(), shutter_us(1000) // 1000 µs = 1ms
+    : shutter_us(1000) 
 {
     cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);
 
 #ifdef __linux__
-    tempFile = "/tmp/capture.jpg";
-    std::cout << "Modo libcamera (sem GStreamer) iniciado\n";
+    // Pipeline otimizado para 640x480 e controle de exposição manual
+    // exposure-mode=1 é o modo manual no libcamerasrc
+    std::string pipeline = "libcamerasrc exposure-mode=1 exposure-time=" + std::to_string(shutter_us) + 
+                           " ! video/x-raw, width=640, height=480, framerate=30/1 "
+                           " ! videoconvert ! appsink";
+    
+    std::cout << "Abrindo Pipeline: " << pipeline << std::endl;
+    
+    if (!cap.open(pipeline, cv::CAP_GSTREAMER)) {
+        std::cerr << "Erro: Não foi possível abrir o pipeline GStreamer!\n";
+    }
 #else
     if (!cap.open(cameraIndex)) {
         std::cerr << "Erro: Não foi possível abrir a câmera!\n";
@@ -20,51 +27,21 @@ Capture::Capture(int cameraIndex)
 }
 
 Capture::~Capture() {
-#ifndef __linux__
     if (cap.isOpened())
         cap.release();
-#endif
 }
 
 void Capture::captureImage() {
-#ifdef __linux__
-
-    // Comando usando shutter manual e desativando auto exposure
-	std::string command =
-	"rpicam-still "
-	"--shutter " + std::to_string(shutter_us) + " "
-	"--gain 4.0 "
-	"--timeout 100 "
-	"--nopreview "
-	"-o " + tempFile;
-
-    int ret = system(command.c_str());
-
-    if (ret != 0) {
-        std::cerr << "Erro ao executar libcamera-still\n";
+    // Agora o grab() apenas limpa o buffer para pegar o frame mais recente
+    if (!cap.grab()) {
+        std::cerr << "Erro ao capturar frame!\n";
     }
-
-#else
-    cap.grab();
-#endif
 }
 
 cv::Mat Capture::retrieveImage() {
-#ifdef __linux__
-
-    frame = cv::imread(tempFile, cv::IMREAD_COLOR);
-
-    if (frame.empty()) {
-        std::cerr << "Erro ao carregar imagem capturada!\n";
-    }
-
-    return frame;
-
-#else
     if (!cap.retrieve(frame)) {
         std::cerr << "Erro ao decodificar frame!\n";
-        return cv::Mat();
+        return cv::Mat(); // Retorna matriz vazia (corrigido o erro anterior)
     }
     return frame;
-#endif
 }
