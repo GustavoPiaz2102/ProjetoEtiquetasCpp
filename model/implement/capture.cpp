@@ -44,6 +44,6 @@ cv::Mat Capture::retrieveImage() {
     if (!yuvFrame.empty()) {
         cv::cvtColor(yuvFrame, frame, cv::COLOR_YUV2BGR_I420);
     }
-
+    fseek(pipePtr, 0, SEEK_END);
     return frame;
 }
