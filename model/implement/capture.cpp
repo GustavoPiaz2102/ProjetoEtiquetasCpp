@@ -30,12 +30,27 @@ Capture::~Capture() {
 }
 
 void Capture::captureImage() {
-    // Lê exatamente o tamanho de um frame do pipe
-    size_t bytesRead = fread(buffer.data(), 1, buffer.size(), pipePtr);
+    // 1. Drenar o buffer: Se o seu processamento demorou, 
+    // podem existir frames "velhos" esperando no pipe.
+    // Vamos ler o que estiver lá até que o pipe esteja quase vazio.
     
-    if (bytesRead != buffer.size()) {
-        // Se falhar, pode ser que o rpicam ainda esteja iniciando
-        // ou o buffer esteja vazio.
+    int fd = fileno(pipePtr);
+    int flags = fcntl(fd, F_GETFL, 0);
+    fcntl(fd, F_SETFL, flags | O_NONBLOCK); // Torna a leitura não-bloqueante temporariamente
+
+    std::vector<uchar> junk(buffer.size());
+    while (read(fd, junk.data(), junk.size()) > 0) {
+        // Continua lendo e descartando enquanto houver frames completos acumulados
+    }
+
+    fcntl(fd, F_SETFL, flags); // Volta para o modo bloqueante para ler o frame atual
+
+    // 2. Agora lemos o frame "fresco" que acabou de chegar
+    size_t totalRead = 0;
+    while (totalRead < buffer.size()) {
+        size_t bytes = fread(buffer.data() + totalRead, 1, buffer.size() - totalRead, pipePtr);
+        if (bytes <= 0) break;
+        totalRead += bytes;
     }
 }
 
