@@ -1,23 +1,22 @@
 #include "../heaters/OCR.h"
 #include <iostream>
 
-OCR::OCR(const std::string& language) {
+OCR::OCR(const std::string& language){
     tess = new tesseract::TessBaseAPI();
-    if (tess->Init(NULL, language.c_str())) {
-        std::cerr << "Erro: Não foi possível inicializar o Tesseract OCR." << "\n";
-    }
+    if(tess->Init(NULL, language.c_str())) std::cerr << "Erro: Não foi possível inicializar o Tesseract OCR." << "\n";
 }
 
-OCR::~OCR() {
-    if (tess) {
+OCR::~OCR(){
+    if(tess){
         tess->End();
         delete tess;
     }
 }
 
-std::string OCR::extractText(const cv::Mat& inputImage) {
+std::string OCR::extractText(const cv::Mat& inputImage){
     float minConfidence = 40.0f;
-    if (inputImage.empty()) {
+
+    if (inputImage.empty()){
         std::cerr << "Erro: imagem vazia passada para OCR.\n";
         return "";
     }
@@ -27,11 +26,8 @@ std::string OCR::extractText(const cv::Mat& inputImage) {
 
     // Converter para grayscale se tiver 3 canais
     cv::Mat gray;
-    if (img.channels() == 3) {
-        cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
-    } else {
-        gray = img;
-    }
+    if (img.channels() == 3) cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+    else gray = img;
 
     // Ajuste mínimo de contraste
     cv::Mat contrast;
@@ -54,12 +50,12 @@ std::string OCR::extractText(const cv::Mat& inputImage) {
     tesseract::ResultIterator* ri = tess->GetIterator();
     tesseract::PageIteratorLevel level = tesseract::RIL_WORD;
 
-    if (ri != nullptr) {
-        do {
+    if(ri != nullptr){
+        do{
             const char* word = ri->GetUTF8Text(level);
             float conf = ri->Confidence(level);  // Confiança de 0 a 100
 
-            if (word && conf >= minConfidence) {
+            if (word && conf >= minConfidence){
                 finalText += word;
                 finalText += "\n";
             }
