@@ -30,14 +30,13 @@ void Capture::captureImage() {
 #ifdef __linux__
 
     // Comando usando shutter manual e desativando auto exposure
-    std::string command =
-        "libcamera-still "
-        "--shutter " + std::to_string(shutter_us) + " "
-        "--gain 1.0 "
-        "--awbgains 1,1 "
-        "--timeout 1 "
-        "--nopreview "
-        "-o " + tempFile;
+	std::string command =
+	"rpicam-still "
+	"--shutter " + std::to_string(shutter_us) + " "
+	"--gain 4.0 "
+	"--timeout 100 "
+	"--nopreview "
+	"-o " + tempFile;
 
     int ret = system(command.c_str());
 
