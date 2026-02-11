@@ -80,7 +80,7 @@ void Detector::SensorCaptureImpressTHR() {
 			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 			camera.captureImage();
 			//std::this_thread::sleep_for(std::chrono::milliseconds(50));
-			sensor.SetStroboLow();
+			//sensor.SetStroboLow();
 			cv::Mat newFrame = camera.retrieveImage();
 
 			{
