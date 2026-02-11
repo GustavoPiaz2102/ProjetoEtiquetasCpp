@@ -29,7 +29,7 @@ Capture::~Capture() {
 void Capture::captureImage() {
     // Lê exatamente o tamanho de um frame do pipe
     size_t bytesRead = fread(buffer.data(), 1, buffer.size(), pipePtr);
-    
+    std::cout <<"Tamanho" << bytesRead<<std::endl;
     if (bytesRead != buffer.size()) {
         // Se falhar, pode ser que o rpicam ainda esteja iniciando
         // ou o buffer esteja vazio.
@@ -42,7 +42,7 @@ cv::Mat Capture::retrieveImage() {
     
     // Converte de YUV420 (I420) para BGR (OpenCV padrão)
     if (!yuvFrame.empty()) {
-        cv::cvtColor(yuvFrame, frame, cv::COLOR_YUV2BGR_NV12);
+        cv::cvtColor(yuvFrame, frame, cv::COLOR_YUV2BGR_I420);
     }
     fseek(pipePtr, 0, SEEK_END);
     return frame;
