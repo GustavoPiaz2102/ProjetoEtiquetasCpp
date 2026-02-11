@@ -98,17 +98,12 @@ void GPIO::OutStrobo(){
     gpiod_line_set_value(stroboLine, 0);
 }
 
-void GPIO::BlinkStrobo(int Delay){
-    if (!stroboLine) return;
-    gpiod_line_set_value(stroboLine, 1);
-    std::this_thread::sleep_for(std::chrono::milliseconds(Delay));
-    gpiod_line_set_value(stroboLine, 0);
+void GPIO::SetStroboHigh(int sleep){
+    if(stroboLine) gpiod_line_set_value(stroboLine, 1);
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep));
 }
 
-void GPIO::SetStroboHigh(){
-    if (stroboLine) gpiod_line_set_value(stroboLine, 1);
-}
-
-void GPIO::SetStroboLow() {
+void GPIO::SetStroboLow(int sleep) {
     if (stroboLine) gpiod_line_set_value(stroboLine, 0);
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep));
 }
