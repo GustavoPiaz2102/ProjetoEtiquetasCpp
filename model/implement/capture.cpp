@@ -62,7 +62,7 @@ void Capture::captureImage() {
 cv::Mat Capture::retrieveImage() {
 	if (!cap.retrieve(frame)) {
 		std::cerr << "Erro ao decodificar o frame!" << "\n";
-		return cv::Mat();
+		return cv::Mat;
 	}
 	return frame;
 }
