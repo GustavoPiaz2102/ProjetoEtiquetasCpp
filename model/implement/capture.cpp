@@ -10,7 +10,7 @@ Capture::Capture(int cameraIndex) : shutter_us(1600) {
     // Comando para rpicam-vid: 
     // -t 0 (infinito), codec yuv420, shutter e gain manuais, output para o pipe (-)
     std::string cmd = "rpicam-vid -t 0 --shutter " + std::to_string(shutter_us) + 
-                      " --gain 4.0 --width 640 --height 480 --nopreview --codec yuv420 --flush -o -";
+                      " --gain 4.0 --width 640 --height 480 --nopreview --codec yuv420 -o -";
     
     std::cout << "Iniciando captura via Pipe: " << cmd << std::endl;
     pipePtr = popen(cmd.c_str(), "r");
@@ -28,7 +28,6 @@ Capture::~Capture() {
 
 void Capture::captureImage() {
     // Lê exatamente o tamanho de um frame do pipe
-    fseek(pipePtr, 0, SEEK_SET);
     size_t bytesRead = fread(buffer.data(), 1, buffer.size(), pipePtr);
     std::cout <<"Tamanho" << bytesRead<<std::endl;
     if (bytesRead != buffer.size()) {
