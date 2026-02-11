@@ -12,8 +12,9 @@ static std::vector<uchar> buffer(460800);
 Capture::Capture(int cameraIndex) : shutter_us(200) {
     // Comando para rpicam-vid: 
     // -t 0 (infinito), codec yuv420, shutter e gain manuais, output para o pipe (-)
+// No construtor Capture::Capture
 	std::string cmd = "rpicam-vid -t 0 --shutter " + std::to_string(shutter_us) + 
-			" --gain 8.0 --width 640 --height 480 --nopreview --codec yuv420 --flush -o -";
+			" --gain 8.0 --width 640 --height 480 --nopreview --codec mjpeg -o -";
     
     std::cout << "Iniciando captura via Pipe: " << cmd << std::endl;
     pipePtr = popen(cmd.c_str(), "r");
@@ -29,44 +30,45 @@ Capture::~Capture() {
     }
 }
 
+#include <vector>
+#include <opencv2/imgcodecs.hpp> // Essencial para imdecode
+
+// Buffer global ou na classe para armazenar o JPEG
+std::vector<uchar> jpegBuffer;
+
 void Capture::captureImage() {
     if (!pipePtr) return;
 
+    // 1. Drenamos os frames antigos lendo rapidamente o que está no pipe
+    // Para MJPEG, como queremos o frame mais recente, uma forma simples é
+    // ler o buffer até o final antes de processar.
+    
+    // Vamos ler um bloco grande para garantir que chegamos no frame atual
+    static uchar temp[1024 * 100]; // 100KB buffer temporário
+    
+    // Limpar o excesso (drenagem bruta para evitar lag)
     int fd = fileno(pipePtr);
-    
-    // 1. Pegar as flags atuais do Pipe
     int flags = fcntl(fd, F_GETFL, 0);
-    
-    // 2. Ligar o modo NÃO-BLOQUEANTE (O_NONBLOCK)
     fcntl(fd, F_SETFL, flags | O_NONBLOCK);
-
-    // 3. DRENAGEM: Lê e descarta tudo o que estiver acumulado no buffer do Pipe
-    // Isso remove os "fantasmas" (frames antigos)
-    std::vector<uchar> junk(buffer.size());
-    while (read(fd, junk.data(), junk.size()) > 0) {
-        // Apenas esvaziando o cano...
-    }
-
-    // 4. Desligar o modo não-bloqueante para ler o frame atual de forma estável
+    while (read(fd, temp, sizeof(temp)) > 0); 
     fcntl(fd, F_SETFL, flags);
 
-    // 5. Ler o frame novo (640x480x1.5 bytes)
-    size_t totalRead = 0;
-    while (totalRead < buffer.size()) {
-        size_t bytes = fread(buffer.data() + totalRead, 1, buffer.size() - totalRead, pipePtr);
-        if (bytes <= 0) break;
-        totalRead += bytes;
-    }
+    // 2. Captura o próximo frame completo
+    // Como o tamanho do JPEG varia, vamos ler até encontrar o fim de um frame
+    // ou simplesmente ler um tamanho máximo estimado para 640x480 (~150KB)
+    jpegBuffer.resize(150000); 
+    size_t n = fread(jpegBuffer.data(), 1, jpegBuffer.size(), pipePtr);
+    if (n > 0) jpegBuffer.resize(n);
 }
 
 cv::Mat Capture::retrieveImage() {
-    // No formato YUV420, a altura total no buffer é 1.5x a altura da imagem
-    cv::Mat yuvFrame(480 + 240, 640, CV_8UC1, buffer.data());
-    
-    // Converte de YUV420 (I420) para BGR (OpenCV padrão)
-    if (!yuvFrame.empty()) {
-        cv::cvtColor(yuvFrame, frame, cv::COLOR_YUV2BGR_I420);
-    }
+    if (jpegBuffer.empty()) return cv::Mat();
 
+    // O imdecode é mágico: ele procura o início do JPEG no buffer e ignora o lixo
+    cv::Mat decoded = cv::imdecode(jpegBuffer, cv::IMREAD_COLOR);
+    
+    if (!decoded.empty()) {
+        frame = decoded;
+    }
     return frame;
 }
