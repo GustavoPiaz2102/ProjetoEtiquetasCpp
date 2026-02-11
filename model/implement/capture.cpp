@@ -59,7 +59,7 @@ void Capture::captureImage() {
 	// para limpar qualquer frame que tenha ficado "no cano" do CSI.
 	cap.grab();
 }
-cv::mat Capture::retrieveImage() {
+cv::Mat Capture::retrieveImage() {
 	if (!cap.retrieve(frame)) {
 		std::cerr << "Erro ao decodificar o frame!" << "\n";
 		return cv::Mat();

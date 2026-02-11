@@ -13,7 +13,7 @@ public:
 	Capture(int cameraIndex = 0);
 	~Capture();
 	void captureImage();
-	cv::retrieveImage();
+	cv::Mat retrieveImage();
 
 private:
 	cv::VideoCapture cap;
