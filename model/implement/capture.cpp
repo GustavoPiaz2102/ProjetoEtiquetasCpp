@@ -28,6 +28,7 @@ Capture::~Capture() {
 
 void Capture::captureImage() {
     // Lê exatamente o tamanho de um frame do pipe
+    fseek(pipePtr, 0, SEEK_SET);
     size_t bytesRead = fread(buffer.data(), 1, buffer.size(), pipePtr);
     std::cout <<"Tamanho" << bytesRead<<std::endl;
     if (bytesRead != buffer.size()) {
@@ -44,6 +45,5 @@ cv::Mat Capture::retrieveImage() {
     if (!yuvFrame.empty()) {
         cv::cvtColor(yuvFrame, frame, cv::COLOR_YUV2BGR_I420);
     }
-    fseek(pipePtr, 0, SEEK_END);
     return frame;
 }
