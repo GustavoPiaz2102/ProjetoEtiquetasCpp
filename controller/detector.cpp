@@ -1,34 +1,28 @@
 #include "detector.h"
 
-Detector::Detector(Impress &imp, Interface &interface, Validator &validator)
-		: camera(0), ocr("eng"), sensor(21, "gpiochip4"), imp(imp),
-			interface(interface), validator(validator) {
-	// Inicializa flags de forma segura
+Detector::Detector(Impress &imp, Interface &interface, Validator &validator) : camera(0), ocr("eng"), sensor(21, "gpiochip4"), imp(imp), interface(interface), validator(validator) {
 	printer_error = false;
 }
 
-Detector::~Detector() {
+Detector::~Detector(){
 	StopSensorThread();
 	StopProcessThread();
-	sensor.ReturnToFirst(); // Garante que o sensor volte ao estado inicial para
-	// evitar bloqueio
+	sensor.ReturnToFirst();
 }
 
-void Detector::StartProcessThread() {
-	if (processing_running)
-		return;
+void Detector::StartProcessThread(){
+	if (processing_running)	return;
+
 	processing_running = true;
 	process_thread = std::thread(&Detector::ProcessLoop, this);
+
 	std::cout << "Thread de processamento iniciada.\n";
 }
 
-void Detector::StopProcessThread() {
-	// Sinaliza parada
+void Detector::StopProcessThread(){
 	processing_running = false;
 
-	// CORREÇÃO CRÍTICA: Sempre tenta o join se for possível,
-	// independente do valor da flag
-	if (process_thread.joinable()) {
+	if(process_thread.joinable()){
 		process_thread.join();
 		std::cout << "Thread de processamento limpa com sucesso.\n";
 	}
@@ -49,7 +43,7 @@ void Detector::ProcessLoop(){
 				}
 			}
 
-			if (!hasFrame) {
+			if(!hasFrame){
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
 				continue;
 			}
@@ -72,7 +66,7 @@ void Detector::ProcessLoop(){
 	// Interface imprimindo off
 }
 
-void Detector::SensorCaptureImpressTHR() {
+void Detector::SensorCaptureImpressTHR(){
 	while(running){
 		if(sensor.ReadSensor() != 0){
 			sensor.SetStroboHigh(100);
@@ -113,7 +107,7 @@ void Detector::SensorCaptureImpressTHR() {
 	std::cout << "Esperando Pela finalização da thread na main\n";
 }
 
-cv::Mat Detector::GetFrame() {
+cv::Mat Detector::GetFrame(){
 	std::lock_guard<std::mutex> lock(frame_mutex);
 
 	if (frame.empty()) return cv::Mat(); // Retorna vazio se não houver frame
@@ -154,7 +148,7 @@ std::string Detector::RunProcess() {
 		if (frame.empty()) return "";
 		current_frame = frame.clone();
 	}
-	
+
 	cv::Mat processed = preprocessor.preprocess(current_frame);
 	std::string text = ocr.extractText(processed);
 	return text;
