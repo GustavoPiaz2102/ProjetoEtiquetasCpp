@@ -67,9 +67,7 @@ bool GPIO::ReadSensor(){
 
     if(firstRead){
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
-        std::cerr << "Primeira leitura analógica: " << rawValue << " (Estado: " << currentLogicalState << ")\n";
         LastSensorState = currentLogicalState;
-		//LastDetectedTime = std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
         firstRead = false;
         return true;
     }
@@ -78,11 +76,8 @@ bool GPIO::ReadSensor(){
         ActualCounter++;
 
         if (ActualCounter >= DebounceValue){
-            //std::cout << "Leitura Válida do Sensor (Raw: " << rawValue << ")\n";
             LastSensorState = currentLogicalState;
             ActualCounter = 0;
-            //std::cout << "Tempo desde a última detecção: " << (std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count() - LastDetectedTime) << " segundos\n";
-            //LastDetectedTime = std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
             return currentLogicalState;
         }
     } else ActualCounter = 0;
@@ -98,12 +93,12 @@ void GPIO::OutStrobo(){
     gpiod_line_set_value(stroboLine, 0);
 }
 
-void GPIO::SetStroboHigh(int sleep){
+void GPIO::SetStroboHigh(int sleep = 0){
     if(stroboLine) gpiod_line_set_value(stroboLine, 1);
     std::this_thread::sleep_for(std::chrono::milliseconds(sleep));
 }
 
-void GPIO::SetStroboLow(int sleep) {
+void GPIO::SetStroboLow(int sleep = 0) {
     if (stroboLine) gpiod_line_set_value(stroboLine, 0);
     std::this_thread::sleep_for(std::chrono::milliseconds(sleep));
 }

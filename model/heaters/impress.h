@@ -12,6 +12,8 @@
 
 class Impress{
     private:
+        Arquiver arq;
+        std::vector<std::string> StrList;
         char tamanho_etiqueta[64] = "60 mm,40 mm";
         char espacamento[32] = "2 mm,0";
         int densidade = 8;
@@ -27,14 +29,13 @@ class Impress{
         float escala_x = 1.0f;
         float escala_y = 1.0f;
         char fonte[8] = "3";
-        int qnt = 1;
-        // float TempoEntreImpressao = 2.0f; // Tempo mínimo entre impressões em segundos
-        Arquiver arq;
-        std::vector<std::string> StrList;
-        bool LastImpress = true;
+        int QuantidadeDeImpressõesPorOrdem = 1; 
+
         int QntImpressao = 0;
 
-        //std::chrono::time_point<std::chrono::high_resolution_clock> TimeLastPrint;
+	// Flags //
+	
+	bool LastImpress = true; //Ultima impressão teve sucesso
 
     public:
         Impress(Arquiver &arquiver);

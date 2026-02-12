@@ -20,23 +20,26 @@ class Detector{
         Capture camera;
         Preprocessor preprocessor;
         OCR ocr;
-        cv::Mat frame;                                                      // Frame capturado da câmera
-        std::mutex frame_mutex;                                             // Protege acesso ao frame
-        std::thread sensor_thread;                                          // Thread de captura e impressão
-        std::thread process_thread;                                         // Thread de processamento (RunProcess)
-        std::atomic<bool> running{false};                                   // Controle da thread de captura
-        std::atomic<bool> processing_running{false};                        // Controle da thread de processamento
-
-        
-        GPIO sensor;
+	GPIO sensor;
         Impress &imp;
         Interface &interface;
         Validator &validator;
 
-        std::atomic<bool> NewFrameAvailable{false};
-        std::atomic<bool> LastWithError{false};
+
+        cv::Mat frame;                                                      // Frame capturado da câmera
+        std::mutex frame_mutex;                                             // Protege acesso ao frame
+        std::thread sensor_thread;                                          // Thread de captura e impressão
+        std::thread process_thread;                                         // Thread de processamento (RunProcess)  
+	
+	// Flags //
+
+        std::atomic<bool> NewFrameAvailable{false}; 
+        std::atomic<bool> LastWithError{false}; // Flag da validator, indica que o OCR achou um erro
         std::function<void(bool, const std::string &)> validationCallback;  // Callback para notificação de validação
         std::atomic<bool> printer_error{false};
+	
+	std::atomic<bool> sensor_running{false};                                   // Controle da thread de captura
+        std::atomic<bool> processing_running{false};                        // Controle da thread de processamento
 
     public:
         /** @brief Construtor da classe Detector que inicializa todos os componentes do sistema.

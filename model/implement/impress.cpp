@@ -54,7 +54,6 @@ std::string formatFloat(float val){
 }
 
 bool Impress::print(int *errorCode){
-    //std::chrono::duration<double> elapsed = std::chrono::high_resolution_clock::now() - TimeLastPrint; // Ver se já se passou 1 segundo desde a última impressão
 
     if (LastImpress == false){
         std::cout << "A ultima impressão Teve Falhas" << "\n";
@@ -64,7 +63,6 @@ bool Impress::print(int *errorCode){
 
     LoadAtributes();
 
-    if (qnt <= 0) qnt = 1;
     if (strlen(fonte) == 0) strcpy(fonte, "3");
 
     std::string comando;
@@ -90,7 +88,7 @@ bool Impress::print(int *errorCode){
                    ",\"" + fonte + "\"," + std::to_string(rotacao) + "," +
                    formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"V:" + StrList[2] + "\"\r\n";
 
-    comando += "PRINT " + std::to_string(qnt) + "\r\n";
+    comando += "PRINT " + std::to_string(QuantidadeDeImpressõesPorOrdem) + "\r\n";
 
     try{
         std::ofstream impressora("/dev/usb/lp0", std::ios::binary);
@@ -105,9 +103,9 @@ bool Impress::print(int *errorCode){
         impressora.close();
 
         std::cout << "✅ Etiqueta enviada com sucesso!" << "\n";
-        //TimeLastPrint = std::chrono::high_resolution_clock::now();
         QntImpressao--;
         return true;
+	
     } catch(const std::exception &e){
         std::cerr << "❌ Erro ao imprimir: " << e.what() << "\n";
         return false;

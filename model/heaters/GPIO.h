@@ -23,12 +23,14 @@ class GPIO{
 		gpiod_line *stroboLine;
 		std::ifstream fsRaw;
 		
-		int ActualCounter = 0;
 		double scale;
-		bool LastSensorState = false;
-		//double LastDetectedTime = 0.0;
 	public:
+		// Flags
 		bool firstRead = true;
+		bool LastSensorState = false;
+		int ActualCounter = 0;
+
+		//
 		GPIO(int pinStrobo, const std::string &chipname = "gpiochip4");
 		~GPIO();
 

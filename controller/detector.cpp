@@ -67,7 +67,7 @@ void Detector::ProcessLoop(){
 }
 
 void Detector::SensorCaptureImpressTHR(){
-	while(running){
+	while(sensor_running){
 		if(sensor.ReadSensor() != 0){
 			sensor.SetStroboHigh(100);
 			camera.captureImage();
@@ -86,54 +86,58 @@ void Detector::SensorCaptureImpressTHR(){
 
 			if(printReturn){
 				if (error == 1) imp.setLastImpress(true);
-				std::cout << "Impressão iniciada com sucesso.\n";
+				//std::cout << "Impressão iniciada com sucesso.\n";
 			} else{
 				std::cout << "Falha ao iniciar a impressão! Parando thread." << "\n";
 
 				printer_error = true;
-				running = false;
+				sensor_running = false;
 				imp.setLastImpress(true);
 			}
 
-			//std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		}
 	}
 
 	sensor.ReturnToFirst();
 	imp.ResetLastImpress();
 
-	std::cout << sensor.firstRead << std::endl;
-	std::cout << "Imprimindo:" << interface.GetImprimindo() << std::endl;
-	std::cout << "Esperando Pela finalização da thread na main\n";
+	//std::cout << sensor.firstRead << std::endl;
+	//std::cout << "Imprimindo:" << interface.GetImprimindo() << std::endl;
+	//std::cout << "Esperando Pela finalização da thread na main\n";
 }
 
 cv::Mat Detector::GetFrame(){
 	std::lock_guard<std::mutex> lock(frame_mutex);
 
-	if (frame.empty()) return cv::Mat(); // Retorna vazio se não houver frame
+	if (frame.empty()) return cv::Mat();
 
 	return frame.clone();
 }
 
 void Detector::StartSensorThread() {
-	if (running) {
+	if (sensor_running) {
 		std::cout << "Thread já está rodando!\n";
 		return;
 	}
 
-	// Limpeza de segurança caso tenha sobrado lixo anterior
 	if (sensor_thread.joinable()) sensor_thread.join();
 
-	running = true;
-	printer_error = false; // Reseta flag de erro ao iniciar
+
+	// Resetando as flags
+	LastWithError = false;
+	NewFrameAvailable = false;
+	printer_error = false;
+	sensor.ReturnToFirst();
+	///
+
+	sensor_running = true;
 	sensor_thread = std::thread(&Detector::SensorCaptureImpressTHR, this);
 	std::cout << "Thread de captura e impressão iniciada.\n";
 }
 
 void Detector::StopSensorThread() {
-	running = false;
 
-	sensor.ReturnToFirst();
+	sensor_running = false;
 
 	if (sensor_thread.joinable()) {
 		sensor_thread.join();
@@ -152,4 +156,4 @@ std::string Detector::RunProcess() {
 	cv::Mat processed = preprocessor.preprocess(current_frame);
 	std::string text = ocr.extractText(processed);
 	return text;
-}
+} 

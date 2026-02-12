@@ -22,17 +22,23 @@ public:
 private:
     Interface interface;
     Detector detector;
-    int selected_option;
     Validator validator;
-    bool requisitar_data_e_setar(int tipo, std::function<void(const std::string&)> setter);
-    void rodar_detector();
     Arquiver arquiver;
     Impress imp;
-    int qnt_impress; 
+
+    int selected_option = -1;
+    int qnt_impress; //Quantidade de impressões Atual
+
+    bool requisitar_data_e_setar(int tipo, std::function<void(const std::string&)> setter);
+    void rodar_detector();
+
+    cv::Mat NonDetectedFrame = cv::imread("../data/NonDetectedFrame.png");
+
+    // Flags //
+
     bool SensorActive = false;
     bool ProcessActive = false;
     bool FirstDet = true;
-    cv::Mat NonDetectedFrame = cv::imread("../data/NonDetectedFrame.png");
     bool ReturnToMenu = false;
 };
 
