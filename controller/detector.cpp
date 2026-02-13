@@ -67,7 +67,7 @@ void Detector::ProcessLoop(){
 }
 
 void Detector::SensorCaptureImpressTHR(){
-	sensor.SetStroboHigh(300);
+	sensor.SetStroboHigh(1000);
 	while(sensor_running){
 		if(sensor.ReadSensor() != 0){
 			camera.captureImage();
