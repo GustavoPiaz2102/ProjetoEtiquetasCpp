@@ -9,14 +9,6 @@
 #define IMG_SZE 640
 #define IMG_SZE2 480
 
-std::string pipeline =
-		"libcamerasrc ! "
-		"video/x-raw, width=640, height=480, format=RGBx ! " 
-		"videoconvert ! "
-		"video/x-raw, format=BGR ! "
-		"appsink drop=true max-buffers=1 sync=false";
-
-
 class Capture {
 public:
 	Capture(int cameraIndex = 0);

@@ -1,5 +1,12 @@
 #include "../heaters/capture.h"
 
+std::string pipeline =
+		"libcamerasrc ! "
+		"video/x-raw, width=640, height=480, format=RGBx ! " 
+		"videoconvert ! "
+		"video/x-raw, format=BGR ! "
+		"appsink drop=true max-buffers=1 sync=false";
+
 Capture::Capture(int cameraIndex) : cap() {
 
 	cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);
