@@ -38,8 +38,8 @@ class GPIO{
 		int ReadRaw();           
 
 		void OutStrobo();            
-		void SetStroboHigh(int sleep);        
-		void SetStroboLow(int sleep);         
+		void SetStroboHigh(int sleep = 0);        
+		void SetStroboLow(int sleep = 0);         
 		void ReturnToFirst() { firstRead = true; ActualCounter = 0; LastSensorState = false; }
 };
 
