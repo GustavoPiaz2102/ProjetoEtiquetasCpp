@@ -93,12 +93,12 @@ void GPIO::OutStrobo(){
 	gpiod_line_set_value(stroboLine, 0);
 }
 
-void GPIO::SetStroboHigh(int sleep = 0){
+void GPIO::SetStroboHigh(int sleep){
 	if(stroboLine) gpiod_line_set_value(stroboLine, 1);
 	std::this_thread::sleep_for(std::chrono::milliseconds(sleep));
 }
 
-void GPIO::SetStroboLow(int sleep = 0) {
+void GPIO::SetStroboLow(int sleep) {
 	if (stroboLine) gpiod_line_set_value(stroboLine, 0);
 	std::this_thread::sleep_for(std::chrono::milliseconds(sleep));
 }
