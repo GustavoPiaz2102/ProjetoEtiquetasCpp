@@ -71,7 +71,7 @@ void Detector::SensorCaptureImpressTHR(){
 		if(sensor.ReadSensor() != 0){
 			sensor.SetStroboHigh(100);
 			camera.captureImage();
-			sensor.SetStroboLow();
+			//sensor.SetStroboLow();
 			cv::Mat newFrame = camera.retrieveImage();
 
 			{
@@ -97,7 +97,7 @@ void Detector::SensorCaptureImpressTHR(){
 
 		}
 	}
-
+	sensor.SetStroboLow();
 	sensor.ReturnToFirst();
 	imp.ResetLastImpress();
 
