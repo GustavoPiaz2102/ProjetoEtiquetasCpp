@@ -6,14 +6,14 @@
 #include <string>
 
 class OCR {
-    private:
-        tesseract::TessBaseAPI* tess;
+	private:
+		tesseract::TessBaseAPI* tess;
 
-    public:
-        OCR(const std::string& language = "eng");
-        ~OCR();
+	public:
+		OCR(const std::string& language = "eng");
+		~OCR();
 
-        std::string extractText(const cv::Mat& inputImage);
+		std::string extractText(const cv::Mat& inputImage);
 };
 
 #endif // OCR_H

@@ -30,7 +30,7 @@ class GPIO{
 		bool LastSensorState = false;
 		int ActualCounter = 0;
 
-		//
+		
 		GPIO(int pinStrobo, const std::string &chipname = "gpiochip4");
 		~GPIO();
 

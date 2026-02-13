@@ -1,459 +1,459 @@
 #include "interface.h"
 
 Interface::Interface(Validator& val) : validator(val) {
-    texture_id = 0;
-    last_width = last_height = 0;
-    should_close = false;
-    resolution_scale = 1.0f;  // Controle de escala de resolução
-    max_display_width = 1920; // Largura máxima padrão
+	texture_id = 0;
+	last_width = last_height = 0;
+	should_close = false;
+	resolution_scale = 1.0f;  // Controle de escala de resolução
+	max_display_width = 1920; // Largura máxima padrão
 
-    if (!iniciar_janela()) {
-        std::cerr << "Falha ao iniciar a janela!\n";
-    }
+	if (!iniciar_janela()) {
+		std::cerr << "Falha ao iniciar a janela!\n";
+	}
 }
 
 Interface::~Interface() {
-    if (texture_id) {
-        glDeleteTextures(1, &texture_id);
-    }
+	if (texture_id) {
+		glDeleteTextures(1, &texture_id);
+	}
 
-    if (pboInitialized) {
-        glDeleteBuffers(2, pboIds);
-    }
+	if (pboInitialized) {
+		glDeleteBuffers(2, pboIds);
+	}
 
-    if (janela_iniciada) {
-        ImGui_ImplOpenGL3_Shutdown();
-        ImGui_ImplGlfw_Shutdown();
-        ImGui::DestroyContext();
-        finalizar_janela();
-    }
+	if (janela_iniciada) {
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplGlfw_Shutdown();
+		ImGui::DestroyContext();
+		finalizar_janela();
+	}
 }
 
 void Interface::beginFullscreenWindow(const char* name) {
-    ImGui::SetNextWindowPos(ImVec2(0, 0));
-    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
-    ImGui::Begin(name, nullptr,
-        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse |
-        ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus);
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+	ImGui::Begin(name, nullptr,
+		ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus);
 }
 
-    bool Interface::iniciar_janela() {
-        if (janela_iniciada) return false;
+	bool Interface::iniciar_janela() {
+		if (janela_iniciada) return false;
 
-        if (!glfwInit()) {
-            std::cerr << "Falha ao inicializar GLFW\n";
-            return false;
-        }
+		if (!glfwInit()) {
+			std::cerr << "Falha ao inicializar GLFW\n";
+			return false;
+		}
 
-        glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-        glfwWindowHint(GLFW_FLOATING, GLFW_TRUE);
-        glfwWindowHint(GLFW_FOCUS_ON_SHOW, GLFW_TRUE);
-        glfwWindowHint(GLFW_AUTO_ICONIFY, GLFW_FALSE);
+		glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+		glfwWindowHint(GLFW_FLOATING, GLFW_TRUE);
+		glfwWindowHint(GLFW_FOCUS_ON_SHOW, GLFW_TRUE);
+		glfwWindowHint(GLFW_AUTO_ICONIFY, GLFW_FALSE);
 
-        int monitor_count;
-        GLFWmonitor** monitors = glfwGetMonitors(&monitor_count);
+		int monitor_count;
+		GLFWmonitor** monitors = glfwGetMonitors(&monitor_count);
 
-        // Adicionar debug para verificar monitores
-        std::cout << "Monitores detectados: " << monitor_count << "\n";
-        for (int i = 0; i < monitor_count; i++) {
-            const char* name = glfwGetMonitorName(monitors[i]);
-            int x, y;
-            glfwGetMonitorPos(monitors[i], &x, &y);
-            const GLFWvidmode* mode_debug = glfwGetVideoMode(monitors[i]);
-            std::cout << "Monitor " << i << ": " << name << " - Posição: (" << x << ", " << y << ") - Resolução: " << mode_debug->width << "x" << mode_debug->height << "\n";
-        }
+		// Adicionar debug para verificar monitores
+		std::cout << "Monitores detectados: " << monitor_count << "\n";
+		for (int i = 0; i < monitor_count; i++) {
+			const char* name = glfwGetMonitorName(monitors[i]);
+			int x, y;
+			glfwGetMonitorPos(monitors[i], &x, &y);
+			const GLFWvidmode* mode_debug = glfwGetVideoMode(monitors[i]);
+			std::cout << "Monitor " << i << ": " << name << " - Posição: (" << x << ", " << y << ") - Resolução: " << mode_debug->width << "x" << mode_debug->height << "\n";
+		}
 
-        GLFWmonitor* selected_monitor = NULL;
-        if (monitor_count > 1) {
-            selected_monitor = monitors[1]; // Monitor secundário
-            std::cout << "Selecionado monitor secundário (índice 1)" << "\n";
-        } else {
-            selected_monitor = monitors[0]; // Monitor primário (fallback)
-            std::cout << "Apenas um monitor detectado, usando monitor primário" << "\n";
-        }
+		GLFWmonitor* selected_monitor = NULL;
+		if (monitor_count > 1) {
+			selected_monitor = monitors[1]; // Monitor secundário
+			std::cout << "Selecionado monitor secundário (índice 1)" << "\n";
+		} else {
+			selected_monitor = monitors[0]; // Monitor primário (fallback)
+			std::cout << "Apenas um monitor detectado, usando monitor primário" << "\n";
+		}
 
-        const GLFWvidmode* mode = glfwGetVideoMode(selected_monitor);
+		const GLFWvidmode* mode = glfwGetVideoMode(selected_monitor);
 
-        glfwWindowHint(GLFW_RED_BITS, mode->redBits);
-        glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
-        glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
-        glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+		glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+		glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+		glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+		glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 
-        // Criar janela em modo windowed (não fullscreen exclusivo)
-        window = glfwCreateWindow(mode->width, mode->height, JANELA_TITULO, NULL, NULL);
-        if (!window) {
-            glfwTerminate();
-            std::cerr << "Falha ao criar janela GLFW\n";
-            return false;
-        }
+		// Criar janela em modo windowed (não fullscreen exclusivo)
+		window = glfwCreateWindow(mode->width, mode->height, JANELA_TITULO, NULL, NULL);
+		if (!window) {
+			glfwTerminate();
+			std::cerr << "Falha ao criar janela GLFW\n";
+			return false;
+		}
 
-        glfwMakeContextCurrent(window);
-        
-        // Posicionar a janela no monitor selecionado
-        int monitor_x, monitor_y;
-        glfwGetMonitorPos(selected_monitor, &monitor_x, &monitor_y);
-        glfwSetWindowPos(window, monitor_x, monitor_y);
-        
-        std::cout << "Janela posicionada em: (" << monitor_x << ", " << monitor_y << ")" << "\n";
-        std::cout << "Resolução da janela: " << mode->width << "x" << mode->height << "\n";
-        
-        glfwSwapInterval(0);
+		glfwMakeContextCurrent(window);
+		
+		// Posicionar a janela no monitor selecionado
+		int monitor_x, monitor_y;
+		glfwGetMonitorPos(selected_monitor, &monitor_x, &monitor_y);
+		glfwSetWindowPos(window, monitor_x, monitor_y);
+		
+		std::cout << "Janela posicionada em: (" << monitor_x << ", " << monitor_y << ")" << "\n";
+		std::cout << "Resolução da janela: " << mode->width << "x" << mode->height << "\n";
+		
+		glfwSwapInterval(0);
 
-        // Substitui a verificação do GLAD por GLEW
-        glewExperimental = GL_TRUE;
-        if (glewInit() != GLEW_OK) {
-            std::cerr << "Falha ao inicializar GLEW" << "\n";
-            return false;
-        }
+		// Substitui a verificação do GLAD por GLEW
+		glewExperimental = GL_TRUE;
+		if (glewInit() != GLEW_OK) {
+			std::cerr << "Falha ao inicializar GLEW" << "\n";
+			return false;
+		}
 
-        IMGUI_CHECKVERSION();
-        ImGui::CreateContext();
-        ImGui_ImplGlfw_InitForOpenGL(window, true);
-        ImGui_ImplOpenGL3_Init("#version 130");
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGui_ImplGlfw_InitForOpenGL(window, true);
+		ImGui_ImplOpenGL3_Init("#version 130");
 
-        janela_iniciada = true;
-        return true;
-    }
+		janela_iniciada = true;
+		return true;
+	}
 
 bool Interface::finalizar_janela() {
-    if (!janela_iniciada) return false;
+	if (!janela_iniciada) return false;
 
-    if (window) {
-        glfwDestroyWindow(window);
-        window = NULL;
-    }
-    glfwTerminate();
-    janela_iniciada = false;
-    return true;
+	if (window) {
+		glfwDestroyWindow(window);
+		window = NULL;
+	}
+	glfwTerminate();
+	janela_iniciada = false;
+	return true;
 }
 
 void Interface::process_events() {
-    glfwPollEvents();
-    should_close = glfwWindowShouldClose(window);
+	glfwPollEvents();
+	should_close = glfwWindowShouldClose(window);
 }
 
 bool Interface::shouldClose() const {
-    return should_close;
+	return should_close;
 }
 
 void Interface::begin_frame() {
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
 }
 
 void Interface::end_frame() {
-    ImGui::Render();
-    int display_w, display_h;
-    glfwGetFramebufferSize(window, &display_w, &display_h);
-    glViewport(0, 0, display_w, display_h);
-    glClearColor(FUNDO_R, FUNDO_G, FUNDO_B, FUNDO_A);
-    glClear(GL_COLOR_BUFFER_BIT);
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    glfwSwapBuffers(window);
+	ImGui::Render();
+	int display_w, display_h;
+	glfwGetFramebufferSize(window, &display_w, &display_h);
+	glViewport(0, 0, display_w, display_h);
+	glClearColor(FUNDO_R, FUNDO_G, FUNDO_B, FUNDO_A);
+	glClear(GL_COLOR_BUFFER_BIT);
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	glfwSwapBuffers(window);
 }
 
 void Interface::menu(int& selected_option,int qntImp) {
-    // Define um pequeno padding para evitar que a borda sobreponha os widgets
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8, 8));
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, TAMANHO_BORDA_JANELA);
+	// Define um pequeno padding para evitar que a borda sobreponha os widgets
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8, 8));
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, TAMANHO_BORDA_JANELA);
 
-    beginFullscreenWindow("Main");
-    ImGui::SetWindowFontScale(ESCALA_FONTE_MENU);
+	beginFullscreenWindow("Main");
+	ImGui::SetWindowFontScale(ESCALA_FONTE_MENU);
 
-    // Layout para o primeiro botão e informações do validador
-    ImGui::Text(" Escolha um botão:");
-    if (ImGui::Button("Rodar Sistema", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
-        selected_option = 0;
-    }
+	// Layout para o primeiro botão e informações do validador
+	ImGui::Text(" Escolha um botão:");
+	if (ImGui::Button("Rodar Sistema", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
+		selected_option = 0;
+	}
 
-    ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
-    ImGui::Text("L: %s\nF: %s\nV: %s\nQnt. Imp.: %d", 
-                validator.GetLT().c_str(), 
-                validator.GetFAB().c_str(), 
-                validator.GetVAL().c_str(),
-                qntImp); 
+	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
+	ImGui::Text("L: %s\nF: %s\nV: %s\nQnt. Imp.: %d", 
+				validator.GetLT().c_str(), 
+				validator.GetFAB().c_str(), 
+				validator.GetVAL().c_str(),
+				qntImp); 
 
-    // Espaçamento entre a primeira linha de elementos e a segunda
-    ImGui::Dummy(ImVec2(0, ESPACO_ENTRE_BOTOES));
+	// Espaçamento entre a primeira linha de elementos e a segunda
+	ImGui::Dummy(ImVec2(0, ESPACO_ENTRE_BOTOES));
 
-    // Layout para o segundo botão
-    if (ImGui::Button("Atualizar Data", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
-        selected_option = 1;
-    }
+	// Layout para o segundo botão
+	if (ImGui::Button("Atualizar Data", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
+		selected_option = 1;
+	}
 
-    ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
+	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
 
-    // Lógica do botão "Imprimir" com mudança de cor
-    bool style_pushed_for_print_button = false;
-    if (imprimindo) {
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.6f, 0.2f, 1.0f));
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.7f, 0.3f, 1.0f));
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.1f, 0.5f, 0.1f, 1.0f));
-        style_pushed_for_print_button = true;
-    }
+	// Lógica do botão "Imprimir" com mudança de cor
+	bool style_pushed_for_print_button = false;
+	if (imprimindo) {
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.6f, 0.2f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.7f, 0.3f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.1f, 0.5f, 0.1f, 1.0f));
+		style_pushed_for_print_button = true;
+	}
 
-    if (ImGui::Button("Imprimir", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
-        selected_option = 2;
-    }
+	if (ImGui::Button("Imprimir", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
+		selected_option = 2;
+	}
 
-    if (style_pushed_for_print_button) {
-        ImGui::PopStyleColor(3);
-    }
+	if (style_pushed_for_print_button) {
+		ImGui::PopStyleColor(3);
+	}
 
-    ImGui::Dummy(ImVec2(0, ESPACO_ENTRE_BOTOES));
+	ImGui::Dummy(ImVec2(0, ESPACO_ENTRE_BOTOES));
 
-    if (ImGui::Button("Configurar", ImVec2(TAMANHO_BOTAO_LARG / 2, TAMANHO_BOTAO_ALT / 5))) {
-        selected_option = 5;
-    }
-    // ShutDown button
-    ImGui::SameLine(0, ESPACO_ENTRE_BOTOES*25.7);
-    if (ImGui::Button("Desligar", ImVec2(TAMANHO_BOTAO_LARG / 2, TAMANHO_BOTAO_ALT / 5))) {
-        selected_option = -10;
-    }
+	if (ImGui::Button("Configurar", ImVec2(TAMANHO_BOTAO_LARG / 2, TAMANHO_BOTAO_ALT / 5))) {
+		selected_option = 5;
+	}
+	// ShutDown button
+	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES*25.7);
+	if (ImGui::Button("Desligar", ImVec2(TAMANHO_BOTAO_LARG / 2, TAMANHO_BOTAO_ALT / 5))) {
+		selected_option = -10;
+	}
 
-    ImGui::End();
-    ImGui::PopStyleVar(2);
+	ImGui::End();
+	ImGui::PopStyleVar(2);
 }
 
 
 bool Interface::atualizar_frame(const cv::Mat& frame) {
-    if (frame.empty()) return false;
+	if (frame.empty()) return false;
 
-    cv::Mat resized_frame;
-    const int max_display_width = 1920; // Largura máxima para exibição
-    
-    // Redimensionar se necessário usando GPU
-    if (frame.cols > max_display_width) {
-        double scale = static_cast<double>(max_display_width) / frame.cols;
-        cv::resize(frame, resized_frame, cv::Size(), scale, scale, cv::INTER_LINEAR);
-    } else {
-        resized_frame = frame;
-    }
+	cv::Mat resized_frame;
+	const int max_display_width = 1920; // Largura máxima para exibição
+	
+	// Redimensionar se necessário usando GPU
+	if (frame.cols > max_display_width) {
+		double scale = static_cast<double>(max_display_width) / frame.cols;
+		cv::resize(frame, resized_frame, cv::Size(), scale, scale, cv::INTER_LINEAR);
+	} else {
+		resized_frame = frame;
+	}
 
-    const int frame_width = resized_frame.cols;
-    const int frame_height = resized_frame.rows;
-    const int data_size = frame_width * frame_height * resized_frame.elemSize();
+	const int frame_width = resized_frame.cols;
+	const int frame_height = resized_frame.rows;
+	const int data_size = frame_width * frame_height * resized_frame.elemSize();
 
-    if (!texture_id || frame_width != last_width || frame_height != last_height) {
-        if (texture_id) glDeleteTextures(1, &texture_id);
-        if (pboInitialized) {
-            glDeleteBuffers(2, pboIds);
-            pboInitialized = false;
-        }
+	if (!texture_id || frame_width != last_width || frame_height != last_height) {
+		if (texture_id) glDeleteTextures(1, &texture_id);
+		if (pboInitialized) {
+			glDeleteBuffers(2, pboIds);
+			pboInitialized = false;
+		}
 
-        // Criar textura com formato compactado
-        glGenTextures(1, &texture_id);
-        glBindTexture(GL_TEXTURE_2D, texture_id);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGB, frame_width, frame_height, 
-                     0, GL_BGR, GL_UNSIGNED_BYTE, nullptr);
+		// Criar textura com formato compactado
+		glGenTextures(1, &texture_id);
+		glBindTexture(GL_TEXTURE_2D, texture_id);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGB, frame_width, frame_height, 
+					 0, GL_BGR, GL_UNSIGNED_BYTE, nullptr);
 
-        // Criar os PBOs
-        glGenBuffers(2, pboIds);
-        for (int i = 0; i < 2; ++i) {
-            glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pboIds[i]);
-            glBufferData(GL_PIXEL_UNPACK_BUFFER, data_size, nullptr, GL_STREAM_DRAW);
-        }
-        glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+		// Criar os PBOs
+		glGenBuffers(2, pboIds);
+		for (int i = 0; i < 2; ++i) {
+			glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pboIds[i]);
+			glBufferData(GL_PIXEL_UNPACK_BUFFER, data_size, nullptr, GL_STREAM_DRAW);
+		}
+		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 
-        last_width = frame_width;
-        last_height = frame_height;
-        pboInitialized = true;
-    }
+		last_width = frame_width;
+		last_height = frame_height;
+		pboInitialized = true;
+	}
 
-    if (!pboInitialized) return false;
+	if (!pboInitialized) return false;
 
-    pboIndex = (pboIndex + 1) % 2;
-    int nextIndex = (pboIndex + 1) % 2;
+	pboIndex = (pboIndex + 1) % 2;
+	int nextIndex = (pboIndex + 1) % 2;
 
-    // Upload do frame anterior (do PBO "pronto")
-    glBindTexture(GL_TEXTURE_2D, texture_id);
-    glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pboIds[pboIndex]);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, frame_width, frame_height, GL_BGR, GL_UNSIGNED_BYTE, 0);
+	// Upload do frame anterior (do PBO "pronto")
+	glBindTexture(GL_TEXTURE_2D, texture_id);
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pboIds[pboIndex]);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, frame_width, frame_height, GL_BGR, GL_UNSIGNED_BYTE, 0);
 
-    // Mapear o próximo PBO e copiar os dados do frame atual
-    glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pboIds[nextIndex]);
-    if (!pboInitialized || data_size != last_data_size) {
-        glBufferData(GL_PIXEL_UNPACK_BUFFER, data_size, nullptr, GL_STREAM_DRAW);
-        last_data_size = data_size;
-    }
-    void* ptr = glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY);
-    if (ptr) {
-        memcpy(ptr, resized_frame.data, data_size);
-        glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
-    }
-    glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-    glFlush(); // Sincronização assíncrona
+	// Mapear o próximo PBO e copiar os dados do frame atual
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pboIds[nextIndex]);
+	if (!pboInitialized || data_size != last_data_size) {
+		glBufferData(GL_PIXEL_UNPACK_BUFFER, data_size, nullptr, GL_STREAM_DRAW);
+		last_data_size = data_size;
+	}
+	void* ptr = glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY);
+	if (ptr) {
+		memcpy(ptr, resized_frame.data, data_size);
+		glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
+	}
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+	glFlush(); // Sincronização assíncrona
 
-    // ImGui - exibindo textura
-    beginFullscreenWindow("Camera View");
+	// ImGui - exibindo textura
+	beginFullscreenWindow("Camera View");
 
-    float aspect_ratio = static_cast<float>(frame_width) / frame_height;
-    float display_width = ImGui::GetIO().DisplaySize.x * 0.75f * resolution_scale;
-    float display_height = display_width / aspect_ratio;
+	float aspect_ratio = static_cast<float>(frame_width) / frame_height;
+	float display_width = ImGui::GetIO().DisplaySize.x * 0.75f * resolution_scale;
+	float display_height = display_width / aspect_ratio;
 
-    ImGui::SetCursorPosX((ImGui::GetWindowWidth() - display_width) * 0.5f);
-    ImGui::SetCursorPosY((ImGui::GetWindowHeight() - display_height) * 0.5f);
-    ImGui::Image((ImTextureID)(intptr_t)texture_id, ImVec2(display_width, display_height));
+	ImGui::SetCursorPosX((ImGui::GetWindowWidth() - display_width) * 0.5f);
+	ImGui::SetCursorPosY((ImGui::GetWindowHeight() - display_height) * 0.5f);
+	ImGui::Image((ImTextureID)(intptr_t)texture_id, ImVec2(display_width, display_height));
 
-    // Controle de escala de resolução
-    ImGui::SetNextItemWidth(200);
-    //ImGui::SliderFloat("Escala", &resolution_scale, 0.5f, 2.0f);
+	// Controle de escala de resolução
+	ImGui::SetNextItemWidth(200);
+	//ImGui::SliderFloat("Escala", &resolution_scale, 0.5f, 2.0f);
 
-    ImGui::SetWindowFontScale(ESCALA_FONTE_MENU);
-    bool return_to_menu = ImGui::Button("Voltar ao Menu", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT));
+	ImGui::SetWindowFontScale(ESCALA_FONTE_MENU);
+	bool return_to_menu = ImGui::Button("Voltar ao Menu", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT));
 
-    ImGui::End();
-    return return_to_menu;
+	ImGui::End();
+	return return_to_menu;
 }
 
 
 std::string Interface::FormatDate(int day, int month, int year) {
-    static const char* month_names[] = {
-        "01", "02", "03", "04", "05", "06",
-        "07", "08", "09", "10", "11", "12"
-    };
-    
-    char buffer[20];
-    snprintf(buffer, sizeof(buffer), "%02d/%s/%d", day, month_names[month], year);
-    return buffer;
+	static const char* month_names[] = {
+		"01", "02", "03", "04", "05", "06",
+		"07", "08", "09", "10", "11", "12"
+	};
+	
+	char buffer[20];
+	snprintf(buffer, sizeof(buffer), "%02d/%s/%d", day, month_names[month], year);
+	return buffer;
 }
 
 bool Interface::requisitar_lt(std::string& selected_lt) {
-    static int lotes[101];
-    static int anos[50];
-    static bool initialized = false;
-    
-    if (!initialized) {
-        for (int i = 0; i <= 100; ++i) lotes[i] = i;
-        for (int i = 0; i < 50; ++i) anos[i] = 23 + i;
-        initialized = true;
-    }
+	static int lotes[101];
+	static int anos[50];
+	static bool initialized = false;
+	
+	if (!initialized) {
+		for (int i = 0; i <= 100; ++i) lotes[i] = i;
+		for (int i = 0; i < 50; ++i) anos[i] = 23 + i;
+		initialized = true;
+	}
 
-    ImGui::SetNextWindowPos(ImVec2(0, 0));
-    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);   
-    beginFullscreenWindow("LotePage");
-    
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, PADDING_FRAME);
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, SPACING_ITEM);
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, SPACING_INTERNO);
-    ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);   
+	beginFullscreenWindow("LotePage");
+	
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, PADDING_FRAME);
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, SPACING_ITEM);
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, SPACING_INTERNO);
+	ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);
 
-    ImGui::Text(" Insira o valor do lote: ");
-    ImGui::Text(" L. ");
-    ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
-    
-    char lote_label[4];
-    snprintf(lote_label, sizeof(lote_label), "%03d", lotes[selected_lote]);
-    ImGui::SetNextItemWidth(COMBO_LARGURA);
-    if (ImGui::BeginCombo("##lote", lote_label)) {
-        for (int i = 0; i <= 100; ++i) {
-            char lote_item[4];
-            snprintf(lote_item, sizeof(lote_item), "%03d", i);
-            if (ImGui::Selectable(lote_item, selected_lote == i)) {
-                selected_lote = i;
-            }
-        }
-        ImGui::EndCombo();
-    }
-    
-    ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
-    char ano_label[3];
-    snprintf(ano_label, sizeof(ano_label), "%02d", anos[selected_ano]);
-    ImGui::SetNextItemWidth(COMBO_LARGURA);
-    if (ImGui::BeginCombo("##ano", ano_label)) {
-        for (int i = 0; i < 50; ++i) {
-            char ano_item[3];
-            snprintf(ano_item, sizeof(ano_item), "%02d", anos[i]);
-            if (ImGui::Selectable(ano_item, selected_ano == i)) {
-                selected_ano = i;
-            }
-        }
-        ImGui::EndCombo();
-    }
+	ImGui::Text(" Insira o valor do lote: ");
+	ImGui::Text(" L. ");
+	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
+	
+	char lote_label[4];
+	snprintf(lote_label, sizeof(lote_label), "%03d", lotes[selected_lote]);
+	ImGui::SetNextItemWidth(COMBO_LARGURA);
+	if (ImGui::BeginCombo("##lote", lote_label)) {
+		for (int i = 0; i <= 100; ++i) {
+			char lote_item[4];
+			snprintf(lote_item, sizeof(lote_item), "%03d", i);
+			if (ImGui::Selectable(lote_item, selected_lote == i)) {
+				selected_lote = i;
+			}
+		}
+		ImGui::EndCombo();
+	}
+	
+	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
+	char ano_label[3];
+	snprintf(ano_label, sizeof(ano_label), "%02d", anos[selected_ano]);
+	ImGui::SetNextItemWidth(COMBO_LARGURA);
+	if (ImGui::BeginCombo("##ano", ano_label)) {
+		for (int i = 0; i < 50; ++i) {
+			char ano_item[3];
+			snprintf(ano_item, sizeof(ano_item), "%02d", anos[i]);
+			if (ImGui::Selectable(ano_item, selected_ano == i)) {
+				selected_ano = i;
+			}
+		}
+		ImGui::EndCombo();
+	}
 
-    ImGui::Spacing();
-    ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
 
-    bool clicked = false;
-    if (ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2))) {
-        char result[7];
-        snprintf(result, sizeof(result), "%03d/%02d", selected_lote, anos[selected_ano]);
-        selected_lt = result;
-        clicked = true;
-    }
+	bool clicked = false;
+	if (ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2))) {
+		char result[7];
+		snprintf(result, sizeof(result), "%03d/%02d", selected_lote, anos[selected_ano]);
+		selected_lt = result;
+		clicked = true;
+	}
 
-    if (!selected_lt.empty()) {
-        ImGui::Spacing();
-        ImGui::Text("Lote selecionado: %s", selected_lt.c_str());
-    }
+	if (!selected_lt.empty()) {
+		ImGui::Spacing();
+		ImGui::Text("Lote selecionado: %s", selected_lt.c_str());
+	}
 
-    ImGui::PopStyleVar(3);
-    ImGui::End();
-    return clicked;
+	ImGui::PopStyleVar(3);
+	ImGui::End();
+	return clicked;
 }
 
 bool Interface::config_impress(int & value,bool *InstantImpress) {
-    if(imprimindo){imprimindo = !imprimindo;return true;}
-    else{
-    ImGui::SetNextWindowPos(ImVec2(0, 0));
-    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
-    beginFullscreenWindow("Configurações da Impressão");
+	if(imprimindo){imprimindo = !imprimindo;return true;}
+	else{
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+	beginFullscreenWindow("Configurações da Impressão");
 
-    // Estilos ampliados
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(16, 12));     // Aumenta área clicável dos botões
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 12));      // Espaçamento entre itens
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(8, 8));   // Espaço interno entre elementos
-    ImGui::SetWindowFontScale(2.0f); // Escala da fonte dentro da janela (2x maior)
+	// Estilos ampliados
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(16, 12));     // Aumenta área clicável dos botões
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 12));      // Espaçamento entre itens
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(8, 8));   // Espaço interno entre elementos
+	ImGui::SetWindowFontScale(2.0f); // Escala da fonte dentro da janela (2x maior)
 
-    ImGui::PushID("custom_input_int");
-    ImGui::Dummy(ImVec2(0, 150));
-    ImGui::Text("Quantidade de impressões:");
-    // Botões "-100", "-10", "-1"
-    if (ImGui::Button("-100", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))) {
-    if ((value - 100) >= 0) value -= 100;
-    else{value = 0;}
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("-10", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))){
-    if ((value - 10) >= 0) value -= 10;
-    else{value=0;}
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("-1", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))){
-    if ((value - 1) >= 0) value -= 1;
-    else{value=0;}
-    }
-    ImGui::SameLine();
+	ImGui::PushID("custom_input_int");
+	ImGui::Dummy(ImVec2(0, 150));
+	ImGui::Text("Quantidade de impressões:");
+	// Botões "-100", "-10", "-1"
+	if (ImGui::Button("-100", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))) {
+	if ((value - 100) >= 0) value -= 100;
+	else{value = 0;}
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("-10", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))){
+	if ((value - 10) >= 0) value -= 10;
+	else{value=0;}
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("-1", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))){
+	if ((value - 1) >= 0) value -= 1;
+	else{value=0;}
+	}
+	ImGui::SameLine();
 
-    // Input
-    ImGui::SetNextItemWidth(190.0f);
-    ImGui::InputInt("##custom_int", &value, 0, 0);
+	// Input
+	ImGui::SetNextItemWidth(190.0f);
+	ImGui::InputInt("##custom_int", &value, 0, 0);
 
-    ImGui::SameLine();
+	ImGui::SameLine();
 
-    // Botões "+1", "+10", "+100"
-    if (ImGui::Button("+1", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))) value += 1;
-    ImGui::SameLine();
-    if (ImGui::Button("+10", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))) value += 10;
-    ImGui::SameLine();
-    if (ImGui::Button("+100", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))) value += 100;
+	// Botões "+1", "+10", "+100"
+	if (ImGui::Button("+1", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))) value += 1;
+	ImGui::SameLine();
+	if (ImGui::Button("+10", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))) value += 10;
+	ImGui::SameLine();
+	if (ImGui::Button("+100", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))) value += 100;
 
-    ImGui::PopID();
-    bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
-    ImGui::SameLine();
-    *InstantImpress = ImGui::Button("Instantaneo", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
-    ImGui::PopStyleVar(3);
-    ImGui::End();
-    if (clicked || *InstantImpress){
-    imprimindo=!imprimindo;
-    return true;
-    }
-    else return false;
+	ImGui::PopID();
+	bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
+	ImGui::SameLine();
+	*InstantImpress = ImGui::Button("Instantaneo", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
+	ImGui::PopStyleVar(3);
+	ImGui::End();
+	if (clicked || *InstantImpress){
+	imprimindo=!imprimindo;
+	return true;
+	}
+	else return false;
 }
 }
 
@@ -461,200 +461,200 @@ bool Interface::config_impress(int & value,bool *InstantImpress) {
 
 
 bool Interface::config_menu(Arquiver& arq) {
-    arq.load(); // Carrega as configurações atuais do arquivo
+	arq.load(); // Carrega as configurações atuais do arquivo
 
-    // Campos de texto como char arrays para ImGui
-    static char tamanho_etiqueta[64];
-    static char espacamento[32];
-    static char tamanho_fonte[8];
-    static char fonte[8];
+	// Campos de texto como char arrays para ImGui
+	static char tamanho_etiqueta[64];
+	static char espacamento[32];
+	static char tamanho_fonte[8];
+	static char fonte[8];
 
-    // Inicializa a primeira vez
-    static bool firstInit = true;
-    if (firstInit) {
-        strncpy(tamanho_etiqueta, arq.dict["tamanho_etiqueta"].c_str(), sizeof(tamanho_etiqueta));
-        tamanho_etiqueta[sizeof(tamanho_etiqueta)-1] = '\0';
-        strncpy(espacamento, arq.dict["espacamento"].c_str(), sizeof(espacamento));
-        espacamento[sizeof(espacamento)-1] = '\0';
-        strncpy(tamanho_fonte, arq.dict["tamanho_fonte"].c_str(), sizeof(tamanho_fonte));
-        tamanho_fonte[sizeof(tamanho_fonte)-1] = '\0';
-        strncpy(fonte, arq.dict["fonte"].c_str(), sizeof(fonte));
-        fonte[sizeof(fonte)-1] = '\0';
-        firstInit = false;
-    }
+	// Inicializa a primeira vez
+	static bool firstInit = true;
+	if (firstInit) {
+		strncpy(tamanho_etiqueta, arq.dict["tamanho_etiqueta"].c_str(), sizeof(tamanho_etiqueta));
+		tamanho_etiqueta[sizeof(tamanho_etiqueta)-1] = '\0';
+		strncpy(espacamento, arq.dict["espacamento"].c_str(), sizeof(espacamento));
+		espacamento[sizeof(espacamento)-1] = '\0';
+		strncpy(tamanho_fonte, arq.dict["tamanho_fonte"].c_str(), sizeof(tamanho_fonte));
+		tamanho_fonte[sizeof(tamanho_fonte)-1] = '\0';
+		strncpy(fonte, arq.dict["fonte"].c_str(), sizeof(fonte));
+		fonte[sizeof(fonte)-1] = '\0';
+		firstInit = false;
+	}
 
-    // Campos numéricos continuam como int/float
-    static int densidade           = std::stoi(arq.dict["densidade"]);
-    static int velocidade          = std::stoi(arq.dict["velocidade"]);
-    static int direcao             = std::stoi(arq.dict["direcao"]);
-    static int posicao_x           = std::stoi(arq.dict["posicao_x"]);
-    static int posicao_y_lote      = std::stoi(arq.dict["posicao_y_lote"]);
-    static int posicao_y_fabricacao= std::stoi(arq.dict["posicao_y_fabricacao"]);
-    static int posicao_y_validade  = std::stoi(arq.dict["posicao_y_validade"]);
-    static int rotacao             = std::stoi(arq.dict["rotacao"]);
-    static float escala_x          = std::stof(arq.dict["escala_x"]);
-    static float escala_y          = std::stof(arq.dict["escala_y"]);
+	// Campos numéricos continuam como int/float
+	static int densidade           = std::stoi(arq.dict["densidade"]);
+	static int velocidade          = std::stoi(arq.dict["velocidade"]);
+	static int direcao             = std::stoi(arq.dict["direcao"]);
+	static int posicao_x           = std::stoi(arq.dict["posicao_x"]);
+	static int posicao_y_lote      = std::stoi(arq.dict["posicao_y_lote"]);
+	static int posicao_y_fabricacao= std::stoi(arq.dict["posicao_y_fabricacao"]);
+	static int posicao_y_validade  = std::stoi(arq.dict["posicao_y_validade"]);
+	static int rotacao             = std::stoi(arq.dict["rotacao"]);
+	static float escala_x          = std::stof(arq.dict["escala_x"]);
+	static float escala_y          = std::stof(arq.dict["escala_y"]);
 
-    ImGui::SetNextWindowPos(ImVec2(0, 0));
-    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
-    beginFullscreenWindow("Configurações da Etiqueta");
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+	beginFullscreenWindow("Configurações da Etiqueta");
 
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, PADDING_FRAME);
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, SPACING_ITEM);
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, SPACING_INTERNO);
-    ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, PADDING_FRAME);
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, SPACING_ITEM);
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, SPACING_INTERNO);
+	ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);
 
-    ImGui::Text("Parâmetros da Impressora:");
-    ImGui::InputText("Tamanho Etiqueta", tamanho_etiqueta, IM_ARRAYSIZE(tamanho_etiqueta));
-    ImGui::InputText("Espaçamento", espacamento, IM_ARRAYSIZE(espacamento));
-    ImGui::InputInt("Densidade", &densidade);
-    ImGui::InputInt("Velocidade", &velocidade);
-    ImGui::InputInt("Direção", &direcao);
+	ImGui::Text("Parâmetros da Impressora:");
+	ImGui::InputText("Tamanho Etiqueta", tamanho_etiqueta, IM_ARRAYSIZE(tamanho_etiqueta));
+	ImGui::InputText("Espaçamento", espacamento, IM_ARRAYSIZE(espacamento));
+	ImGui::InputInt("Densidade", &densidade);
+	ImGui::InputInt("Velocidade", &velocidade);
+	ImGui::InputInt("Direção", &direcao);
 
-    ImGui::Separator();
-    ImGui::Text("Parâmetros do Texto:");
-    ImGui::InputText("Tamanho Fonte", tamanho_fonte, IM_ARRAYSIZE(tamanho_fonte));
-    ImGui::InputInt("Posição X", &posicao_x);
-    ImGui::InputInt("Y - Lote", &posicao_y_lote);
-    ImGui::InputInt("Y - Fabricação", &posicao_y_fabricacao);
-    ImGui::InputInt("Y - Validade", &posicao_y_validade);
-    ImGui::InputInt("Rotação", &rotacao);
-    ImGui::InputFloat("Escala X", &escala_x);
-    ImGui::InputFloat("Escala Y", &escala_y);
-    ImGui::InputText("Fonte", fonte, IM_ARRAYSIZE(fonte));
+	ImGui::Separator();
+	ImGui::Text("Parâmetros do Texto:");
+	ImGui::InputText("Tamanho Fonte", tamanho_fonte, IM_ARRAYSIZE(tamanho_fonte));
+	ImGui::InputInt("Posição X", &posicao_x);
+	ImGui::InputInt("Y - Lote", &posicao_y_lote);
+	ImGui::InputInt("Y - Fabricação", &posicao_y_fabricacao);
+	ImGui::InputInt("Y - Validade", &posicao_y_validade);
+	ImGui::InputInt("Rotação", &rotacao);
+	ImGui::InputFloat("Escala X", &escala_x);
+	ImGui::InputFloat("Escala Y", &escala_y);
+	ImGui::InputText("Fonte", fonte, IM_ARRAYSIZE(fonte));
 
-    bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
-    ImGui::PopStyleVar(3);
-    ImGui::End();
+	bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
+	ImGui::PopStyleVar(3);
+	ImGui::End();
 
-    if (clicked) {
-        // Salvar no dicionário do Arquiver
-        arq.dict["tamanho_etiqueta"] = tamanho_etiqueta;
-        arq.dict["espacamento"]       = espacamento;
-        arq.dict["densidade"]         = std::to_string(densidade);
-        arq.dict["velocidade"]        = std::to_string(velocidade);
-        arq.dict["direcao"]           = std::to_string(direcao);
-        arq.dict["tamanho_fonte"]     = tamanho_fonte;
-        arq.dict["posicao_x"]         = std::to_string(posicao_x);
-        arq.dict["posicao_y_lote"]    = std::to_string(posicao_y_lote);
-        arq.dict["posicao_y_fabricacao"] = std::to_string(posicao_y_fabricacao);
-        arq.dict["posicao_y_validade"]   = std::to_string(posicao_y_validade);
-        arq.dict["rotacao"]           = std::to_string(rotacao);
-        arq.dict["escala_x"]          = std::to_string(escala_x);
-        arq.dict["escala_y"]          = std::to_string(escala_y);
-        arq.dict["fonte"]             = fonte;
+	if (clicked) {
+		// Salvar no dicionário do Arquiver
+		arq.dict["tamanho_etiqueta"] = tamanho_etiqueta;
+		arq.dict["espacamento"]       = espacamento;
+		arq.dict["densidade"]         = std::to_string(densidade);
+		arq.dict["velocidade"]        = std::to_string(velocidade);
+		arq.dict["direcao"]           = std::to_string(direcao);
+		arq.dict["tamanho_fonte"]     = tamanho_fonte;
+		arq.dict["posicao_x"]         = std::to_string(posicao_x);
+		arq.dict["posicao_y_lote"]    = std::to_string(posicao_y_lote);
+		arq.dict["posicao_y_fabricacao"] = std::to_string(posicao_y_fabricacao);
+		arq.dict["posicao_y_validade"]   = std::to_string(posicao_y_validade);
+		arq.dict["rotacao"]           = std::to_string(rotacao);
+		arq.dict["escala_x"]          = std::to_string(escala_x);
+		arq.dict["escala_y"]          = std::to_string(escala_y);
+		arq.dict["fonte"]             = fonte;
 
-        // Salva no arquivo
-        arq.save();
-        return true;
-    } else {
-        return false;
-    }
+		// Salva no arquivo
+		arq.save();
+		return true;
+	} else {
+		return false;
+	}
 }
 
 
 
 bool Interface::requisitar_data(std::string& selected_date, int tipo) {
-    static int selected_day = 0;
-    static int selected_month = 0;
-    static int selected_year = 0;
-    
-    static const char* month_names[] = {
-        "01", "02", "03", "04", "05", "06",
-        "07", "08", "09", "10", "11", "12"
-    };
+	static int selected_day = 0;
+	static int selected_month = 0;
+	static int selected_year = 0;
+	
+	static const char* month_names[] = {
+		"01", "02", "03", "04", "05", "06",
+		"07", "08", "09", "10", "11", "12"
+	};
 
-    static int days[31];
-    static int years[100];
-    static bool initialized = false;
-    
-    if (!initialized) {
-        for (int i = 0; i < 31; ++i) days[i] = i + 1;
-        for (int i = 0; i < 100; ++i) years[i] = 2025 + i;
-        initialized = true;
-    }
+	static int days[31];
+	static int years[100];
+	static bool initialized = false;
+	
+	if (!initialized) {
+		for (int i = 0; i < 31; ++i) days[i] = i + 1;
+		for (int i = 0; i < 100; ++i) years[i] = 2025 + i;
+		initialized = true;
+	}
 
-    ImGui::SetNextWindowPos(ImVec2(0, 0));
-    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
-    beginFullscreenWindow("MainPage");
-    
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, PADDING_FRAME);
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, SPACING_ITEM);
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, SPACING_INTERNO);
-    ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+	beginFullscreenWindow("MainPage");
+	
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, PADDING_FRAME);
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, SPACING_ITEM);
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, SPACING_INTERNO);
+	ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);
 
-    if (tipo == 0) ImGui::Text(" Escolha uma data de Fabricação:");
-    else ImGui::Text(" Escolha uma data de Validade:");
+	if (tipo == 0) ImGui::Text(" Escolha uma data de Fabricação:");
+	else ImGui::Text(" Escolha uma data de Validade:");
 
-    ImGui::SetNextItemWidth(COMBO_LARGURA);
-    if (ImGui::BeginCombo("##dia", std::to_string(days[selected_day]).c_str())) {
-        for (int i = 0; i < 31; ++i) {
-            if (ImGui::Selectable(std::to_string(days[i]).c_str(), selected_day == i)) {
-                selected_day = i;
-            }
-        }
-        ImGui::EndCombo();
-    }
-    
-    ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
-    ImGui::SetNextItemWidth(COMBO_LARGURA);
-    if (ImGui::BeginCombo("##mes", month_names[selected_month])) {
-        for (int i = 0; i < 12; ++i) {
-            if (ImGui::Selectable(month_names[i], selected_month == i)) {
-                selected_month = i;
-            }
-        }
-        ImGui::EndCombo();
-    }
-    
-    ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
-    ImGui::SetNextItemWidth(COMBO_LARGURA);
-    if (ImGui::BeginCombo("##ano", std::to_string(years[selected_year]).c_str())) {
-        for (int i = 0; i < 100; ++i) {
-            if (ImGui::Selectable(std::to_string(years[i]).c_str(), selected_year == i)) {
-                selected_year = i;
-            }
-        }
-        ImGui::EndCombo();
-    }
+	ImGui::SetNextItemWidth(COMBO_LARGURA);
+	if (ImGui::BeginCombo("##dia", std::to_string(days[selected_day]).c_str())) {
+		for (int i = 0; i < 31; ++i) {
+			if (ImGui::Selectable(std::to_string(days[i]).c_str(), selected_day == i)) {
+				selected_day = i;
+			}
+		}
+		ImGui::EndCombo();
+	}
+	
+	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
+	ImGui::SetNextItemWidth(COMBO_LARGURA);
+	if (ImGui::BeginCombo("##mes", month_names[selected_month])) {
+		for (int i = 0; i < 12; ++i) {
+			if (ImGui::Selectable(month_names[i], selected_month == i)) {
+				selected_month = i;
+			}
+		}
+		ImGui::EndCombo();
+	}
+	
+	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
+	ImGui::SetNextItemWidth(COMBO_LARGURA);
+	if (ImGui::BeginCombo("##ano", std::to_string(years[selected_year]).c_str())) {
+		for (int i = 0; i < 100; ++i) {
+			if (ImGui::Selectable(std::to_string(years[i]).c_str(), selected_year == i)) {
+				selected_year = i;
+			}
+		}
+		ImGui::EndCombo();
+	}
 
-    ImGui::Spacing();
-    ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
 
-    bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
-    if (clicked) {
-        selected_date = FormatDate(days[selected_day], selected_month, years[selected_year]);
-    }
+	bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
+	if (clicked) {
+		selected_date = FormatDate(days[selected_day], selected_month, years[selected_year]);
+	}
 
-    if (!selected_date.empty()) {
-        ImGui::Spacing();
-        ImGui::Text("Data selecionada: %s", selected_date.c_str());
-    }
+	if (!selected_date.empty()) {
+		ImGui::Spacing();
+		ImGui::Text("Data selecionada: %s", selected_date.c_str());
+	}
 
-    ImGui::PopStyleVar(3);
-    ImGui::End();
-    return clicked;
+	ImGui::PopStyleVar(3);
+	ImGui::End();
+	return clicked;
 }
 // Should match the declaration in interface.h
 bool Interface::GetImprimindo() {
-    return imprimindo;
+	return imprimindo;
 }
 
 // Should match the declaration in interface.h
 void Interface::setImprimindo(bool value) {
-    imprimindo = value;
+	imprimindo = value;
 }
 bool Interface::PopUpError(const std::string& message) {
-    ImGui::OpenPopup("ErrorPopup");
-    if (ImGui::BeginPopupModal("ErrorPopup", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-        ImGui::Text("%s", message.c_str());
-        if (ImGui::Button("OK")) {
-            ImGui::CloseCurrentPopup();
-            ImGui::EndPopup();
+	ImGui::OpenPopup("ErrorPopup");
+	if (ImGui::BeginPopupModal("ErrorPopup", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+		ImGui::Text("%s", message.c_str());
+		if (ImGui::Button("OK")) {
+			ImGui::CloseCurrentPopup();
+			ImGui::EndPopup();
 
-            return true;
-        }
-        ImGui::EndPopup();
-    }
-    return false;
+			return true;
+		}
+		ImGui::EndPopup();
+	}
+	return false;
 }
