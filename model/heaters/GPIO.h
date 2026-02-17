@@ -24,6 +24,15 @@ class GPIO{
 		std::ifstream fsRaw;
 		
 		double scale;
+
+		// Encolder
+		/*
+		std::atomic<int> encoderPulses{0};
+		std::thread encoderThread;
+		gpiod_line *encoderLine;
+		gpiod_line *stepLine;
+		*/
+
 	public:
 		// Flags
 		bool firstRead = true;
@@ -41,6 +50,11 @@ class GPIO{
 		void SetStroboHigh(int sleep = 0);        
 		void SetStroboLow(int sleep = 0);         
 		void ReturnToFirst() { firstRead = true; ActualCounter = 0; LastSensorState = false; }
+
+		// Encoder
+
+		// int GetAndResetEncoderPulses();
+		// void MonitorEncoder();
 };
 
 #endif  // GPIO_H

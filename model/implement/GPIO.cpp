@@ -36,12 +36,17 @@ GPIO::GPIO(int pinStrobo, const std::string &chipname) : PinStrobo(pinStrobo), c
 
 	fsRaw.open(FILE_RAW);
 	if(!fsRaw.is_open()) std::cerr << "[ERRO] Nao foi possivel abrir o arquivo do sensor: " << FILE_RAW << "\n";
+
+	// Encoder
+
+	// EncoderThread = std::thread(&GPIO::MonitorEncoder, this);
 }
 
 GPIO::~GPIO(){
 	if(fsRaw.is_open()) fsRaw.close();
 	if(stroboLine) gpiod_line_release(stroboLine);
 	if(chip) gpiod_chip_close(chip);
+	// if(encoderThread.joinable()) encoderThread.detach();
 }
 
 int GPIO::ReadRaw(){
@@ -84,6 +89,24 @@ bool GPIO::ReadSensor(){
 	
 	return false; 
 }
+
+/*
+// Leitura do encoder
+int GPIO::GetAndResetEncoderPulses() {
+    int current = encoderPulses.load();
+    encoderPulses.store(0);
+    return current;
+}
+
+void GPIO::MonitorEncoder() {
+    while(true){
+        if(gpiod_line_event_wait(encoderLine, NULL) == 1){
+            gpiod_line_event event;
+            if(gpiod_line_event_read(encoderLine, &event) == 0) if(event.event_type == GPIOD_LINE_EVENT_RISING_EDGE) encoderPulses++;
+        }
+    }
+}
+*/
 
 // Comandos de controle do Strobo
 void GPIO::OutStrobo(){
