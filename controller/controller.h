@@ -11,6 +11,7 @@
 #include <chrono>
 #include "../model/heaters/arquiver.h" // Para carregar e salvar os dados do validador
 #include "../model/heaters/impress.h"
+//#include "../model/heaters/rewinder.h" // Para controle do motor rebobinador
 #include <mutex>
 
 class Controller {
@@ -21,6 +22,7 @@ public:
 
 private:
 	Interface interface;
+	//Rewinder rewinder;
 	Detector detector;
 	Validator validator;
 	Arquiver arquiver;

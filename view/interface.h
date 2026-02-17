@@ -12,6 +12,7 @@ Includes:
 #include <string>
 #include <opencv2/opencv.hpp>
 #include <ctime>
+#include <atomic>
 #include <sstream>
 #include "../model/heaters/capture.h"
 #include "../model/heaters/validator.h"
@@ -75,7 +76,7 @@ private:
 	// Novos membros adicionados
 	float resolution_scale; // Controle de escala de resolução
 	int max_display_width;  // Largura máxima padrão
-	bool imprimindo = false;
+	std::atomic<bool> imprimindo{false};
 	GLuint shutdownTexture = 0;
 
 public:

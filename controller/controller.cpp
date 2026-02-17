@@ -9,6 +9,7 @@ Controller::Controller()
 	  arquiver("data/config.txt"),
 	  imp(arquiver),
 	  detector(imp, interface, validator)
+
 {
 	// Carrega os dados do arquivo para o validador
 	glewInit();
