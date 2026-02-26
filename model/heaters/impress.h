@@ -29,13 +29,13 @@ class Impress{
 		float escala_x = 1.0f;
 		float escala_y = 1.0f;
 		char fonte[8] = "3";
-		int QuantidadeDeImpressõesPorOrdem = 1; 
+		int QuantidadeDeImpressõesPorOrdem = 1;
 
 		int QntImpressao = 0;
 
 		// Flags //
-		
-		bool LastImpress = true; //Ultima impressão teve sucesso
+
+		bool LastImpress = true; // Ultima impressão teve sucesso
 
 	public:
 		Impress(Arquiver &arquiver);
@@ -44,27 +44,27 @@ class Impress{
 		bool print(int *errorCode = nullptr); // Retorna true se a impressão foi iniciada com sucesso
 
 		void setStrList(const std::vector<std::string> &strList){
-		StrList = strList;
+			StrList = strList;
 		}
 
 		void setLastImpress(bool lastImpress){
-		LastImpress = lastImpress;
+			LastImpress = lastImpress;
 		}
-		
+
 		bool getLastImpress() const{
-		return LastImpress;
+			return LastImpress;
 		}
 
 		void setQntImpressao(int qnt){
-		QntImpressao = qnt;
+			QntImpressao = qnt;
 		}
 
 		int getQntImpressao() const{
-		return QntImpressao;
+			return QntImpressao;
 		}
 
 		void ResetLastImpress(){
-		LastImpress = true;
+			LastImpress = true;
 		}
 };
 

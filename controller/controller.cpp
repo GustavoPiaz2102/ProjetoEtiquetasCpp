@@ -51,13 +51,13 @@ void Controller::run(){
 			interface.begin_frame();
 
 			switch(selected_option){
-				case -1:
+				case -1: // caso padrao na inicialização
 					FirstDet = true; // Reseta flag para nova detecção
-					if (imp.getQntImpressao() <= 0) interface.setImprimindo(false);
+					if(imp.getQntImpressao() <= 0) interface.setImprimindo(false);
 
 					interface.menu(selected_option, imp.getQntImpressao());
 					if(interface.GetImprimindo()){
-						if (imp.getQntImpressao() > 0) imp.setStrList({validator.GetLT(), validator.GetFAB(), validator.GetVAL()});
+						if(imp.getQntImpressao() > 0) imp.setStrList({validator.GetLT(), validator.GetFAB(), validator.GetVAL()});
 						else interface.setImprimindo(false);
 					} else imp.setQntImpressao(0);
 
@@ -110,7 +110,7 @@ void Controller::run(){
 				{
 					bool InstantImpress = false;
 					qnt_impress = imp.getQntImpressao();
-					if (interface.config_impress(qnt_impress, &InstantImpress)) selected_option = -1;
+					if(interface.config_impress(qnt_impress, &InstantImpress)) selected_option = -1;
 
 					imp.setQntImpressao(qnt_impress);
 
@@ -160,8 +160,8 @@ bool Controller::requisitar_data_e_setar(int tipo, std::function<void(const std:
 
 void Controller::rodar_detector(){
 	if(!ReturnToMenu){
-		if (detector.HasPrinterError()){
-			if (interface.PopUpError("Erro ao iniciar a impressão.")){
+		if(detector.HasPrinterError()){
+			if(interface.PopUpError("Erro ao iniciar a impressão.")){
 				imp.setLastImpress(true);
 				interface.setImprimindo(false);
 			}
@@ -171,27 +171,27 @@ void Controller::rodar_detector(){
 
 		if(interface.GetImprimindo() && imp.getQntImpressao() > 0){
 			if(FirstDet || (detector.GetRunning() && detector.GetProcessingRunning())){
-			// Inicia threads se necessário
-			if (!SensorActive){
-				SensorActive = true;
-				detector.StartSensorThread();
-			}
+				// Inicia threads se necessário
+				if (!SensorActive){
+					SensorActive = true;
+					detector.StartSensorThread();
+				}
 
-			// CORREÇÃO: Evita crash ou tela preta ao tentar desenhar frame vazio
-			cv::Mat frame = detector.GetFrame();
-			if (!frame.empty()){
-				ReturnToMenu = interface.atualizar_frame(frame);
-				FirstDet = false; // Só considera detectado se tiver imagem
-			} else ReturnToMenu = interface.atualizar_frame(NonDetectedFrame);
+				// CORREÇÃO: Evita crash ou tela preta ao tentar desenhar frame vazio
+				cv::Mat frame = detector.GetFrame();
+				if (!frame.empty()){
+					ReturnToMenu = interface.atualizar_frame(frame);
+					FirstDet = false; // Só considera detectado se tiver imagem
+				} else ReturnToMenu = interface.atualizar_frame(NonDetectedFrame);
 
-			if (!ProcessActive){
-				ProcessActive = true;
-				detector.StartProcessThread();
-			}
+				if (!ProcessActive){
+					ProcessActive = true;
+					detector.StartProcessThread();
+				}
 
-			// Atualiza status local baseado nas flags internas do detector
-			// Nota: Removido GetRunning direto para evitar race condition,
-			// confiamos na lógica do Controller e no HasPrinterError
+				// Atualiza status local baseado nas flags internas do detector
+				// Nota: Removido GetRunning direto para evitar race condition,
+				// confiamos na lógica do Controller e no HasPrinterError
 			}
 		} else{
 			std::cout << "Desligamento seguro\n";
