@@ -15,33 +15,33 @@
 #include <mutex>
 
 class Controller {
-public:
-	Controller();  // Somente a declaração aqui
-	~Controller();
-	void run();
+	public:
+		Controller();  // Somente a declaração aqui
+		~Controller();
+		void run();
 
-private:
-	Interface interface;
-	//Rewinder rewinder;
-	Detector detector;
-	Validator validator;
-	Arquiver arquiver;
-	Impress imp;
+	private:
+		Interface interface;
+		//Rewinder rewinder;
+		Detector detector;
+		Validator validator;
+		Arquiver arquiver;
+		Impress imp;
 
-	int selected_option = -1;
-	int qnt_impress; //Quantidade de impressões Atual
+		int selected_option = -1;
+		int qnt_impress; //Quantidade de impressões Atual
 
-	bool requisitar_data_e_setar(int tipo, std::function<void(const std::string&)> setter);
-	void rodar_detector();
+		bool requisitar_data_e_setar(int tipo, std::function<void(const std::string&)> setter);
+		void rodar_detector();
 
-	cv::Mat NonDetectedFrame = cv::imread("../data/NonDetectedFrame.png");
+		cv::Mat NonDetectedFrame = cv::imread("../data/NonDetectedFrame.png");
 
-	// Flags //
+		// Flags //
 
-	bool SensorActive = false;
-	bool ProcessActive = false;
-	bool FirstDet = true;
-	bool ReturnToMenu = false;
+		bool SensorActive = false;
+		bool ProcessActive = false;
+		bool FirstDet = true;
+		bool ReturnToMenu = false;
 };
 
 #endif // CONTROLLER_H
