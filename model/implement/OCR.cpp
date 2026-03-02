@@ -30,16 +30,16 @@ std::string OCR::extractText(const cv::Mat& inputImage){
 	else gray = img;
 
 	// Ajuste mínimo de contraste
-	cv::Mat contrast;
-	cv::normalize(gray, contrast, 0, 255, cv::NORM_MINMAX);
+	//cv::Mat contrast;
+	//cv::normalize(gray, contrast, 0, 255, cv::NORM_MINMAX);
 
 	// Leve nitidez
-	cv::Mat kernel = (cv::Mat_<float>(3,3) << 0, -1, 0, -1, 5, -1, 0, -1, 0);
-	cv::filter2D(contrast, contrast, contrast.depth(), kernel);
+	//cv::Mat kernel = (cv::Mat_<float>(3,3) << 0, -1, 0, -1, 5, -1, 0, -1, 0);
+	//cv::filter2D(contrast, contrast, contrast.depth(), kernel);
 
 	// Passar para Tesseract
-	tess->SetImage(contrast.data, contrast.cols, contrast.rows, 1, contrast.step);
-
+	//tess->SetImage(contrast.data, contrast.cols, contrast.rows, 1, contrast.step);
+	tess->SetImage(gray.data, gray.cols, gray.rows, 1, gray.step);
 	// PSM adequado para múltiplas linhas de um bloco
 	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
 
