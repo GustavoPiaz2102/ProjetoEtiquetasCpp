@@ -15,7 +15,7 @@ class Rewinder {
         std::thread rewinderThread; 
         Interface& interface;
         HardwarePWM pwmMode{0, 0};
-        GPIO gpio
+        GPIO gpio;
         
         std::atomic<double> targetSpeed{0};
 
