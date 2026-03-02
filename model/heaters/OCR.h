@@ -4,6 +4,10 @@
 #include <opencv2/opencv.hpp>
 #include <tesseract/baseapi.h>
 #include <string>
+#include <iostream>
+#include <memory>
+#include <string>
+#include <vector>
 
 class OCR {
 	private:

@@ -1,57 +1,62 @@
 #include "../heaters/OCR.h"
-#include <iostream>
 
-OCR::OCR(const std::string& language) {
-	tess = new tesseract::TessBaseAPI();
-	if (tess->Init(NULL, language.c_str()))
-		std::cerr << "Erro: Não foi possível inicializar o Tesseract OCR.\n";
+OCR::OCR(const std::string& language, float minConf) : minConfidence(minConf) {
+	tess = std::make_unique<tesseract::TessBaseAPI>();
+	
+	if (tess->Init(nullptr, language.c_str())) {
+		throw std::runtime_error("Erro ao inicializar Tesseract.");
+	}
 
+	// Otimizações de dicionário (essencial para strings fixas/códigos)
 	tess->SetVariable("load_system_dawg", "0");
 	tess->SetVariable("load_freq_dawg", "0");
-	tess->SetVariable("tessedit_do_invert", "0");
+	tess->SetVariable("load_punc_dawg", "0");
+	tess->SetVariable("load_number_dawg", "0");
+	tess->SetVariable("load_unambig_dawg", "0");
+	tess->SetVariable("load_bigram_dawg", "0");
+	tess->SetVariable("load_fixed_length_dawgs", "0");
+	
 	tess->SetVariable("tessedit_char_whitelist", "0123456789/:abdefgijlmnorstuvz ");
+	
+	// Como o tamanho é fixo, SINGLE_LINE ou SINGLE_BLOCK costumam ser mais rápidos
+	tess->SetPageSegMode(tesseract::PSM_SINGLE_LINE); 
 }
 
-OCR::~OCR() {
-	if (tess) {
-		tess->End();
-		delete tess;
-	}
-}
+std::string OCR::extractText(const cv::Mat& inputImage) {
+	if (inputImage.empty()) return "";
 
-std::string OCR::extractText(const cv::Mat& inputImage){
-	if (inputImage.empty()){
-		std::cerr << "Erro: imagem vazia passada para OCR.\n";
-		return "";
-	}
-
-	//cv::Mat img = inputImage.isContinuous() ? inputImage : inputImage.clone();
-	/*
+	// 1. Garantir Grayscale sem cópia desnecessária
 	cv::Mat gray;
-	if (img.channels() == 3) cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
-	else gray = img;
-	*/
+	if (inputImage.channels() > 1) {
+		cv::cvtColor(inputImage, gray, cv::COLOR_BGR2GRAY);
+	} else {
+		gray = inputImage;
+	}
 
-	tess->SetImage(inputImage.data, inputImage.cols, inputImage.rows, 1, inputImage.step);
-	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
+	tess->SetImage(gray.data, gray.cols, gray.rows, 1, static_cast<int>(gray.step));
+	
+	if (tess->Recognize(nullptr) != 0) return "";
 
-	tess->Recognize(0);
-
+	// 2. Pré-alocação exata de memória
 	std::string finalText;
-	tesseract::ResultIterator* ri = tess->GetIterator();
-	tesseract::PageIteratorLevel level = tesseract::RIL_WORD;
+	finalText.reserve(32); // 31 caracteres + null terminator
 
-	if(ri != nullptr){
-		do{
-			const char* word = ri->GetUTF8Text(level);
-			float conf = ri->Confidence(level);  // Confiança de 0 a 100
+	std::unique_ptr<tesseract::ResultIterator> ri(tess->GetIterator());
+	const tesseract::PageIteratorLevel level = tesseract::RIL_SYMBOL; // Nível de caractere para maior controle
 
-			if (word && conf >= minConfidence){
-				finalText += word;
-				finalText += "\n";
+	if (ri) {
+		do {
+			float conf = ri->Confidence(level);
+			if (conf >= minConfidence) {
+				char* symbol = ri->GetUTF8Text(level);
+				if (symbol) {
+					finalText.append(symbol);
+					delete[] symbol;
+				}
 			}
+			// Interrompe se já atingiu o limite (evita lixo no final da imagem)
+			if (finalText.length() >= 31) break;
 
-			delete[] word;
 		} while (ri->Next(level));
 	}
 
