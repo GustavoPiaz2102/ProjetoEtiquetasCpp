@@ -155,7 +155,7 @@ void Interface::end_frame() {
 	glfwSwapBuffers(window);
 }
 
-void Interface::menu(int& selected_option,int qntImp) {
+void Interface::menu(int& selected_option, int qntImp) {
 	// Define um pequeno padding para evitar que a borda sobreponha os widgets
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8, 8));
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, TAMANHO_BORDA_JANELA);
@@ -350,14 +350,13 @@ bool Interface::requisitar_lt(std::string& selected_lt) {
 	char lote_label[4];
 	snprintf(lote_label, sizeof(lote_label), "%03d", lotes[selected_lote]);
 	ImGui::SetNextItemWidth(COMBO_LARGURA);
-	if (ImGui::BeginCombo("##lote", lote_label)) {
-		for (int i = 0; i <= 100; ++i) {
+	if(ImGui::BeginCombo("##lote", lote_label)){
+		for(int i = 0; i <= 100; ++i) {
 			char lote_item[4];
 			snprintf(lote_item, sizeof(lote_item), "%03d", i);
-			if (ImGui::Selectable(lote_item, selected_lote == i)) {
-				selected_lote = i;
-			}
+			if(ImGui::Selectable(lote_item, selected_lote == i)) selected_lote = i;
 		}
+
 		ImGui::EndCombo();
 	}
 	
@@ -365,14 +364,13 @@ bool Interface::requisitar_lt(std::string& selected_lt) {
 	char ano_label[3];
 	snprintf(ano_label, sizeof(ano_label), "%02d", anos[selected_ano]);
 	ImGui::SetNextItemWidth(COMBO_LARGURA);
-	if (ImGui::BeginCombo("##ano", ano_label)) {
-		for (int i = 0; i < 50; ++i) {
+	if(ImGui::BeginCombo("##ano", ano_label)) {
+		for(int i = 0; i < 50; ++i) {
 			char ano_item[3];
 			snprintf(ano_item, sizeof(ano_item), "%02d", anos[i]);
-			if (ImGui::Selectable(ano_item, selected_ano == i)) {
-				selected_ano = i;
-			}
+			if(ImGui::Selectable(ano_item, selected_ano == i)) selected_ano = i;
 		}
+
 		ImGui::EndCombo();
 	}
 
@@ -380,14 +378,14 @@ bool Interface::requisitar_lt(std::string& selected_lt) {
 	ImGui::Spacing();
 
 	bool clicked = false;
-	if (ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2))) {
+	if(ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2))) {
 		char result[7];
 		snprintf(result, sizeof(result), "%03d/%02d", selected_lote, anos[selected_ano]);
 		selected_lt = result;
 		clicked = true;
 	}
 
-	if (!selected_lt.empty()) {
+	if(!selected_lt.empty()) {
 		ImGui::Spacing();
 		ImGui::Text("Lote selecionado: %s", selected_lt.c_str());
 	}
@@ -397,68 +395,69 @@ bool Interface::requisitar_lt(std::string& selected_lt) {
 	return clicked;
 }
 
-bool Interface::config_impress(int & value,bool *InstantImpress) {
-	if(imprimindo){imprimindo = !imprimindo;return true;}
-	else{
-	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
-	beginFullscreenWindow("Configurações da Impressão");
+bool Interface::config_impress(int &value, bool *InstantImpress){
+	if(imprimindo){
+		imprimindo = !imprimindo;
+		return true;
+	} else{
+		ImGui::SetNextWindowPos(ImVec2(0, 0));
+		ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+		beginFullscreenWindow("Configurações da Impressão");
 
-	// Estilos ampliados
-	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(16, 12));     // Aumenta área clicável dos botões
-	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 12));      // Espaçamento entre itens
-	ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(8, 8));   // Espaço interno entre elementos
-	ImGui::SetWindowFontScale(2.0f); // Escala da fonte dentro da janela (2x maior)
+		// Estilos ampliados
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(16, 12));   // Aumenta área clicável dos botões
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 12));	   // Espaçamento entre itens
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(8, 8)); // Espaço interno entre elementos
+		ImGui::SetWindowFontScale(2.0f);								   // Escala da fonte dentro da janela (2x maior)
 
-	ImGui::PushID("custom_input_int");
-	ImGui::Dummy(ImVec2(0, 150));
-	ImGui::Text("Quantidade de impressões:");
-	// Botões "-100", "-10", "-1"
-	if (ImGui::Button("-100", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))) {
-	if ((value - 100) >= 0) value -= 100;
-	else{value = 0;}
+		ImGui::PushID("custom_input_int");
+		ImGui::Dummy(ImVec2(0, 150));
+		ImGui::Text("Quantidade de impressões:");
+		// Botões "-100", "-10", "-1"
+		if (ImGui::Button("-100", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2))){
+			if ((value - 100) >= 0) value -= 100;
+			else value = 0;
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("-10", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2))){
+			if ((value - 10) >= 0) value -= 10;
+			else value = 0;
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("-1", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2))){
+			if ((value - 1) >= 0) value -= 1;
+			else value = 0;
+		}
+
+		ImGui::SameLine();
+
+		// Input
+		ImGui::SetNextItemWidth(190.0f);
+		ImGui::InputInt("##custom_int", &value, 0, 0);
+
+		ImGui::SameLine();
+
+		// Botões "+1", "+10", "+100"
+		if (ImGui::Button("+1", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2))) value += 1;
+		ImGui::SameLine();
+		if (ImGui::Button("+10", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2))) value += 10;
+		ImGui::SameLine();
+		if (ImGui::Button("+100", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2))) value += 100;
+
+		ImGui::PopID();
+		bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
+		ImGui::SameLine();
+		*InstantImpress = ImGui::Button("Instantaneo", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
+		ImGui::PopStyleVar(3);
+		ImGui::End();
+		if (clicked || *InstantImpress){
+			imprimindo = !imprimindo;
+			return true;
+		} else return false;
 	}
-	ImGui::SameLine();
-	if (ImGui::Button("-10", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))){
-	if ((value - 10) >= 0) value -= 10;
-	else{value=0;}
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("-1", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))){
-	if ((value - 1) >= 0) value -= 1;
-	else{value=0;}
-	}
-	ImGui::SameLine();
-
-	// Input
-	ImGui::SetNextItemWidth(190.0f);
-	ImGui::InputInt("##custom_int", &value, 0, 0);
-
-	ImGui::SameLine();
-
-	// Botões "+1", "+10", "+100"
-	if (ImGui::Button("+1", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))) value += 1;
-	ImGui::SameLine();
-	if (ImGui::Button("+10", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))) value += 10;
-	ImGui::SameLine();
-	if (ImGui::Button("+100", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG/2, TAMANHO_BOTAO_PEQUENO_ALT*2))) value += 100;
-
-	ImGui::PopID();
-	bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
-	ImGui::SameLine();
-	*InstantImpress = ImGui::Button("Instantaneo", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
-	ImGui::PopStyleVar(3);
-	ImGui::End();
-	if (clicked || *InstantImpress){
-	imprimindo=!imprimindo;
-	return true;
-	}
-	else return false;
 }
-}
-
-
-
 
 bool Interface::config_menu(Arquiver& arq) {
 	arq.load(); // Carrega as configurações atuais do arquivo
@@ -644,6 +643,7 @@ bool Interface::GetImprimindo() {
 void Interface::setImprimindo(bool value) {
 	imprimindo = value;
 }
+
 bool Interface::PopUpError(const std::string& message) {
 	ImGui::OpenPopup("ErrorPopup");
 	if (ImGui::BeginPopupModal("ErrorPopup", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {

@@ -11,7 +11,7 @@ Detector::~Detector(){
 }
 
 void Detector::StartProcessThread(){
-	if (processing_running)	return;
+	if(processing_running)	return;
 
 	processing_running = true;
 	process_thread = std::thread(&Detector::ProcessLoop, this);
@@ -94,9 +94,9 @@ void Detector::SensorCaptureImpressTHR(){
 				sensor_running = false;
 				imp.setLastImpress(true);
 			}
-
 		}
 	}
+
 	sensor.SetStroboLow();
 	sensor.ReturnToFirst();
 	imp.ResetLastImpress();
@@ -114,7 +114,7 @@ cv::Mat Detector::GetFrame(){
 	return frame.clone();
 }
 
-void Detector::StartSensorThread() {
+void Detector::StartSensorThread(){
 	if (sensor_running) {
 		std::cout << "Thread já está rodando!\n";
 		return;
@@ -122,21 +122,18 @@ void Detector::StartSensorThread() {
 
 	if (sensor_thread.joinable()) sensor_thread.join();
 
-
 	// Resetando as flags
 	LastWithError = false;
 	NewFrameAvailable = false;
 	printer_error = false;
 	sensor.ReturnToFirst();
-	///
 
 	sensor_running = true;
 	sensor_thread = std::thread(&Detector::SensorCaptureImpressTHR, this);
 	std::cout << "Thread de captura e impressão iniciada.\n";
 }
 
-void Detector::StopSensorThread() {
-
+void Detector::StopSensorThread(){
 	sensor_running = false;
 
 	if (sensor_thread.joinable()) {
@@ -145,8 +142,9 @@ void Detector::StopSensorThread() {
 	}
 }
 
-std::string Detector::RunProcess() {
+std::string Detector::RunProcess(){
 	cv::Mat current_frame;
+
 	{
 		std::lock_guard<std::mutex> lock(frame_mutex);
 		if (frame.empty()) return "";
