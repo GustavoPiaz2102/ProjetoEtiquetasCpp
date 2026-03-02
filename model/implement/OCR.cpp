@@ -25,7 +25,7 @@ std::string OCR::extractText(const cv::Mat& inputImage) {
 		return {};
 	}
 
-	tess->SetImage(inputImage.data, inputImage.cols, inputImage.rows, 1, inputImage.step);
+	tess->SetImage(inputImage.data, inputImage.cols, inputImage.rows, 1, (int)inputImage.step);
 	tess->SetPageSegMode(tesseract::PSM_SPARSE_TEXT);
 	tess->Recognize(0);
 
