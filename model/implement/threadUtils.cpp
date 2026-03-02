@@ -1,4 +1,4 @@
-#include "../model/heaters/threadUtils.hpp"
+#include "../heaters/threadUtils.hpp"
 
 void setThreadPriority(std::thread& t, int priority) {
 	sched_param param;
