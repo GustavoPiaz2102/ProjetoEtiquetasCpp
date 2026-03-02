@@ -6,8 +6,8 @@
 #include "GPIO.h"
 #include <opencv2/core/utils/logger.hpp>
 
-#define IMG_SZE 320
-#define IMG_SZE2 240
+#define IMG_SZE 640
+#define IMG_SZE2 480
 
 class Capture {
 public:
@@ -15,6 +15,7 @@ public:
 	~Capture();
 	void captureImage();
 	cv::Mat retrieveImage();
+	cv::Rect roi;
 
 private:
 	cv::VideoCapture cap;

@@ -7,7 +7,7 @@ std::string pipeline =
 		"video/x-raw, format=BGR ! "
 		"appsink drop=true max-buffers=1 sync=false";
 
-Capture::Capture(int cameraIndex) : cap() {
+Capture::Capture(int cameraIndex) : cap() ,roi(0, 0, IMG_SZE, IMG_SZE2) {
 
 	cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);
 
@@ -27,14 +27,14 @@ void Capture::captureImage() {
 	if (!cap.isOpened())
 		return ;
 
-	cv::Mat frame;
 
 	cap.grab(); // grab para capturar o frame no momento e não oque tem no buffer
+	
 }
 cv::Mat Capture::retrieveImage() {
 	if (!cap.retrieve(frame)) {
 		std::cerr << "Erro ao decodificar o frame!" << "\n";
 		return cv::Mat();
 	}
-	return frame;
+	return frame(roi).clone();
 }
