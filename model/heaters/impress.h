@@ -9,6 +9,7 @@
 #include <fstream> // ofstream
 #include <vector>
 #include <chrono>
+#include <atomic>
 
 class Impress{
 	private:
@@ -35,7 +36,7 @@ class Impress{
 
 		// Flags //
 
-		bool LastImpress = true; // Ultima impressão teve sucesso
+		std::atomic<bool> LastImpress = true; // Ultima impressão teve sucesso
 
 	public:
 		Impress(Arquiver &arquiver);
