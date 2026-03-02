@@ -8,7 +8,7 @@
 #include "../model/heaters/GPIO.h"
 #include "../model/heaters/impress.h"
 #include "../model/heaters/validator.h"
-#include "../model/heaters/threadUtils.hpp"
+#include "../model/heaters/threadUtils.h"
 #include <opencv2/opencv.hpp>
 #include <thread>
 #include <mutex>
