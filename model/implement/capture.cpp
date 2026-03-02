@@ -7,7 +7,7 @@ std::string pipeline =
 		"video/x-raw, format=BGR ! "
 		"appsink drop=true max-buffers=1 sync=false";
 
-Capture::Capture(int cameraIndex) : cap() ,roi(0, 0, IMG_SZE/2, IMG_SZE2/2) {
+Capture::Capture(int cameraIndex) : cap() ,roi(160, 120, IMG_SZE/2, IMG_SZE2/2) {
 
 	cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);
 
