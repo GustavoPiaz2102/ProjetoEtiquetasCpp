@@ -2,8 +2,6 @@
 
 Detector::Detector(Impress &imp, Interface &interface, Validator &validator) : camera(0), ocr("eng"), sensor(21, "gpiochip4"), imp(imp), interface(interface), validator(validator) {
 	printer_error = false;
-	setThreadPriority(process_thread, 99);
-	setThreadAffinity(process_thread, {2, 3});
 }
 
 Detector::~Detector(){
@@ -17,6 +15,9 @@ void Detector::StartProcessThread(){
 
 	processing_running = true;
 	process_thread = std::thread(&Detector::ProcessLoop, this);
+
+	setThreadPriority(process_thread, 99);
+	setThreadAffinity(process_thread, {2, 3});
 
 	std::cout << "Thread de processamento iniciada.\n";
 }
