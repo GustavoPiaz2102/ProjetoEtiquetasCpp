@@ -2,12 +2,12 @@
 
 std::string pipeline =
 		"libcamerasrc ! "
-		"video/x-raw, width=640, height=480, format=RGBx ! " 
+		"video/x-raw, width=" + std::to_string(IMG_WIDTH) + ", height=" + std::to_string(IMG_HEIGHT) + ", format=RGBx ! "
 		"videoconvert ! "
 		"video/x-raw, format=BGR ! "
 		"appsink drop=true max-buffers=1 sync=false";
 
-Capture::Capture(int cameraIndex) : cap() ,roi(160, 120, IMG_SZE/2, IMG_SZE2/2) {
+Capture::Capture(int cameraIndex) : cap() ,roi((IMG_WIDTH - ROI_WIDTH) / 2, (IMG_HEIGHT - ROI_HEIGHT) / 2, ROI_WIDTH, ROI_HEIGHT) {
 
 	cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);
 
