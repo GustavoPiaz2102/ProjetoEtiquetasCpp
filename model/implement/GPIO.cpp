@@ -81,15 +81,14 @@ bool GPIO::ReadSensor() {
 	bool currentLogicalState = lastLogicalState;
 	if (smoothedValue > (SENSOR_THRESHOLD + SENSOR_HYSTERESIS)) {
 		currentLogicalState = true;
-	} else if (smoothedValue < (SENSOR_THRESHOLD - SENSOR_HYSTERESIS)) {
-		currentLogicalState = false;
-	}
+	} else currentLogicalState = false;
 
 	auto now = std::chrono::steady_clock::now();
 
 	if (currentLogicalState != lastLogicalState) {
 		lastStateChange = now;
 		lastLogicalState = currentLogicalState;
+		return currentLogicalState;
 	} else {
 		if (currentLogicalState != stableState) {
 			auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastStateChange).count();
@@ -98,13 +97,8 @@ bool GPIO::ReadSensor() {
 				stableState = currentLogicalState;
 			}
 		}
+		return false;
 	}
-	std::cout<< "Estado Detectado: " << stableState << "\n";
-	if(stableState!=lastSensorState){
-		lastSensorState=stableState;
-		return true;
-	}
-	else return false;
 }
 
 /*
