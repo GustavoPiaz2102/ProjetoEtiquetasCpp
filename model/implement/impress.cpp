@@ -97,7 +97,7 @@ bool Impress::print(int *errorCode){
 			return false;
 	}
 
-	std::cout << "Enviando comando para impressora:\n" << comando << "\n";
+	//std::cout << "Enviando comando para impressora:\n" << comando << "\n";
 
 	impressora.write(comando.c_str(), comando.size());
 	impressora.close();

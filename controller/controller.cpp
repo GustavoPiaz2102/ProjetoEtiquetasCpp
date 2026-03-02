@@ -225,5 +225,5 @@ void Controller::rodar_detector(){
 			ReturnToMenu = false;
 	}
 
-	std::cout << "FirstDet: " << FirstDet << "\n";
+	//std::cout << "FirstDet: " << FirstDet << "\n";
 }
