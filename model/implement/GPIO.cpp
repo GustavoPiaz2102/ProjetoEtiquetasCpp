@@ -100,9 +100,10 @@ bool GPIO::ReadSensor() {
 		}
 	}
 	std::cout<< "Estado Detectado: " << stableState << "\n";
-	if(stableState!=lastSensorState)
+	if(stableState!=lastSensorState){
 		lastSensorState=stableState;
 		return true;
+	}
 	else return false;
 }
 
