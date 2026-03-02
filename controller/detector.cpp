@@ -50,6 +50,7 @@ void Detector::ProcessLoop(){
 
 			cv::Mat processed = preprocessor.preprocess(current_frame);
 			std::string text = ocr.extractText(processed);
+			std::cout << "texto Detectado: " << text << std::endl;
 
 			if(!validator.Validate(text)){
 				imp.setLastImpress(false);
