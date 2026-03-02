@@ -14,7 +14,7 @@ OCR::~OCR(){
 }
 
 std::string OCR::extractText(const cv::Mat& inputImage){
-	float minConfidence = 40.0f;
+	float minConfidence = 50.0f;
 
 	if (inputImage.empty()){
 		std::cerr << "Erro: imagem vazia passada para OCR.\n";
