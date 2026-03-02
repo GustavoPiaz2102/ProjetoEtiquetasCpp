@@ -33,6 +33,8 @@ void Detector::StopProcessThread(){
 void Detector::ProcessLoop(){
 	while(processing_running){
 		if(NewFrameAvailable){
+
+			NewFrameAvailable = false;
 			cv::Mat current_frame;
 			bool hasFrame = false;
 
@@ -61,7 +63,6 @@ void Detector::ProcessLoop(){
 				LastWithError = true;
 			} else LastWithError = false;
 
-			NewFrameAvailable = false;
 		}
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -75,6 +76,7 @@ void Detector::SensorCaptureImpressTHR(){
 	sensor.SetStroboHigh(1000);
 	while(sensor_running){
 		if(sensor.ReadSensor() != 0){
+			if(!NewFrameAvailable){
 			camera.captureImage();
 			//sensor.SetStroboLow();
 			cv::Mat newFrame = camera.retrieveImage();
@@ -99,6 +101,10 @@ void Detector::SensorCaptureImpressTHR(){
 				sensor_running = false;
 				imp.setLastImpress(true);
 			}
+		}
+		else{
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		}
 		}
 	}
 
