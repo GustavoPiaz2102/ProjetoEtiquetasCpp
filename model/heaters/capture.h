@@ -10,7 +10,7 @@
 #define IMG_HEIGHT 480
 
 #define ROI_WIDTH 360
-#define ROI_HEIGHT 360
+#define ROI_HEIGHT 180
 
 class Capture {
 public:
