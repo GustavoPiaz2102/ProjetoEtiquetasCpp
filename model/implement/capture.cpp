@@ -18,15 +18,12 @@ Capture::Capture(int cameraIndex) : cap() ,roi((IMG_WIDTH - ROI_WIDTH) / 2, (IMG
 }
 
 Capture::~Capture() {
-	if (cap.isOpened()) {
-		cap.release();
-	}
+	if (cap.isOpened()) cap.release();
 }
 
 void Capture::captureImage() {
 	if (!cap.isOpened())
-		return ;
-
+		return;
 
 	cap.grab(); // grab para capturar o frame no momento e não oque tem no buffer
 	
