@@ -19,36 +19,41 @@ OCR::~OCR() {
 	}
 }
 
-std::string OCR::extractText(const cv::Mat& inputImage) {
-	if (inputImage.empty()) {
+std::string OCR::extractText(const cv::Mat& inputImage){
+	if (inputImage.empty()){
 		std::cerr << "Erro: imagem vazia passada para OCR.\n";
-		return {};
+		return "";
 	}
 
-	tess->SetImage(inputImage.data, inputImage.cols, inputImage.rows, 1, (int)inputImage.step);
-	tess->SetPageSegMode(tesseract::PSM_SPARSE_TEXT);
+	//cv::Mat img = inputImage.isContinuous() ? inputImage : inputImage.clone();
+	/*
+	cv::Mat gray;
+	if (img.channels() == 3) cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+	else gray = img;
+	*/
+
+	tess->SetImage(inputImage.data, inputImage.cols, inputImage.rows, 1, inputImage.step);
+	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
+
 	tess->Recognize(0);
 
-	std::unique_ptr<tesseract::ResultIterator> ri(tess->GetIterator());
-	if (!ri) return {};
+	std::string finalText;
+	tesseract::ResultIterator* ri = tess->GetIterator();
+	tesseract::PageIteratorLevel level = tesseract::RIL_WORD;
 
-	constexpr auto level = tesseract::RIL_WORD;
-	m_textBuffer.clear();
+	if(ri != nullptr){
+		do{
+			const char* word = ri->GetUTF8Text(level);
+			float conf = ri->Confidence(level);  // Confiança de 0 a 100
 
-	do {
-	auto word = std::unique_ptr<const char[], void(*)(const char*)>(
-		ri->GetUTF8Text(level),
-		[](const char* p){ delete[] p; }
-	);
+			if (word && conf >= minConfidence){
+				finalText += word;
+				finalText += "\n";
+			}
 
-	if (word && ri->Confidence(level) >= minConfidence) {
-		m_textBuffer += word.get();
-		m_textBuffer += ' ';
+			delete[] word;
+		} while (ri->Next(level));
 	}
-	} while (ri->Next(level));
 
-		if (!m_textBuffer.empty())
-			m_textBuffer.pop_back();
-
-		return m_textBuffer;
+	return finalText;
 }
