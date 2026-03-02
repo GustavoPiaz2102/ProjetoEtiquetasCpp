@@ -139,6 +139,8 @@ void Detector::StartSensorThread(){
 
 	sensor_running = true;
 	sensor_thread = std::thread(&Detector::SensorCaptureImpressTHR, this);
+	setThreadPriority(sensor_thread, 98);
+	setThreadAffinity(sensor_thread, {1});
 	std::cout << "Thread de captura e impressão iniciada.\n";
 }
 
