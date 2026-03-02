@@ -33,40 +33,29 @@ void Detector::StopProcessThread(){
 
 void Detector::ProcessLoop(){
 	while(processing_running){
-		if(NewFrameAvailable){
+		cv::Mat current_frame;
 
+		{
+			std::unique_lock<std::mutex> lock(frame_mutex);
+
+			frame_cv.wait(lock, [this]{ return NewFrameAvailable || !processing_running; });
+			
+			if(!processing_running) break;
+
+			current_frame = std::move(frame);
 			NewFrameAvailable = false;
-			cv::Mat current_frame;
-			bool hasFrame = false;
-
-			{
-				std::lock_guard<std::mutex> lock(frame_mutex);
-
-				if(!frame.empty()) {
-					current_frame = frame.clone();
-					hasFrame = true;
-				}
-			}
-
-			if(!hasFrame){
-				std::this_thread::sleep_for(std::chrono::milliseconds(10));
-				continue;
-			}
-			std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
-			cv::Mat processed = preprocessor.preprocess(current_frame);
-			std::cout<<"Tempo de pré-processamento: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() << " ms\n";
-			std::string text = ocr.extractText(processed);
-			std::cout<<"Tempo de processamento: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() << " ms\n";
-			std::cout << "texto Detectado: " << text << std::endl;
-
-			if(!validator.Validate(text)){
-				imp.setLastImpress(false);
-				LastWithError = true;
-			} else LastWithError = false;
-
 		}
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
+		cv::Mat processed = preprocessor.preprocess(current_frame);
+		std::string text = ocr.extractText(processed);
+		std::cout << "Tempo de processamento: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() << " ms\n";
+		std::cout << "Texto Detectado: " << text << std::endl;
+
+		if(!validator.Validate(text)){
+			imp.setLastImpress(false);
+			LastWithError = true;
+		} else LastWithError = false;
 	}
 
 	std::cout << "Esperando Pela finalização da thread de processamento na main\n";
@@ -88,6 +77,8 @@ void Detector::SensorCaptureImpressTHR(){
 					frame = std::move(newFrame);
 					NewFrameAvailable = true;
 				}
+
+				frame_cv.notify_one();
 
 				int error = 0;
 				bool printReturn = imp.print(&error);
