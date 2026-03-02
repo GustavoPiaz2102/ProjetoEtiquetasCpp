@@ -1,72 +1,47 @@
 #include "../heaters/OCR.h"
+#include <iostream>
 
-OCR::OCR(const std::string& language) {
-	tess = std::make_unique<tesseract::TessBaseAPI>();
-	
-	if (tess->Init(nullptr, language.c_str())) {
-		throw std::runtime_error("Erro ao inicializar Tesseract.");
-	}
-
-	tess->SetVariable("load_system_dawg", "0");
-	tess->SetVariable("load_freq_dawg", "0");
-	tess->SetVariable("load_punc_dawg", "0");
-	tess->SetVariable("load_number_dawg", "0");
-	tess->SetVariable("load_unambig_dawg", "0");
-	tess->SetVariable("load_bigram_dawg", "0");
-	tess->SetVariable("tessedit_do_invert", "0");
-	
-	tess->SetVariable("tessedit_char_whitelist", "0123456789/:LFVJANFEVMARABRMAIJUNJULAGOSETOTUNOVDEZ ");
-	
-	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
+OCR::OCR(const std::string& language){
+	tess = new tesseract::TessBaseAPI();
+	if(tess->Init(NULL, language.c_str())) std::cerr << "Erro: Não foi possível inicializar o Tesseract OCR." << "\n";
 }
 
-OCR::~OCR() {
-	if (tess) {
+OCR::~OCR(){
+	if(tess){
 		tess->End();
+		delete tess;
 	}
 }
 
-std::string OCR::extractText(const cv::Mat& inputImage) {
-	if (inputImage.empty()) return "";
+std::string OCR::extractText(const cv::Mat& inputImage){
 
-	cv::Mat processed;
-	if (inputImage.channels() > 1) {
-		cv::cvtColor(inputImage, processed, cv::COLOR_BGR2GRAY);
-	} else {
-		processed = inputImage;
+	if (inputImage.empty()){
+		std::cerr << "Erro: imagem vazia passada para OCR.\n";
+		return "";
 	}
+	tess->SetImage(inputImage.data, inputImage.cols, inputImage.rows, 1, inputImage.step);
 
-	cv::threshold(processed, processed, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
+	// PSM adequado para múltiplas linhas de um bloco
+	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
 
-	tess->SetImage(processed.data, processed.cols, processed.rows, 1, static_cast<int>(processed.step));
-	
-	if (tess->Recognize(nullptr) != 0) return "";
+	// Reconhece a imagem
+	tess->Recognize(0);
 
 	std::string finalText;
-	finalText.reserve(40); // Espaço para os 31 caracteres + quebras de linha
+	tesseract::ResultIterator* ri = tess->GetIterator();
+	tesseract::PageIteratorLevel level = tesseract::RIL_WORD;
 
-	std::unique_ptr<tesseract::ResultIterator> ri(tess->GetIterator());
-	const tesseract::PageIteratorLevel level = tesseract::RIL_SYMBOL; 
+	if(ri != nullptr){
+		do{
+			const char* word = ri->GetUTF8Text(level);
+			float conf = ri->Confidence(level);  // Confiança de 0 a 100
 
-	if (ri) {
-		do {
-			float conf = ri->Confidence(level);
-			if (conf >= minConfidence) {
-				char* symbol = ri->GetUTF8Text(level);
-				if (symbol) {
-					finalText.append(symbol);
-					delete[] symbol;
-				}
+			if (word && conf >= minConfidence){
+				finalText += word;
+				finalText += "\n";
 			}
 
-			// Detecta o fim de cada linha para manter a estrutura L / F / V
-			if (ri->IsAtFinalElement(tesseract::RIL_TEXTLINE, level)) {
-				finalText.append("\n");
-			}
-			
-			// Se já pegamos o bloco todo de 3 linhas (aprox 31-35 chars), paramos
-			if (finalText.length() >= 40) break;
-
+			delete[] word;
 		} while (ri->Next(level));
 	}
 

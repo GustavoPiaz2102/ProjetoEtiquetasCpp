@@ -11,7 +11,7 @@
 
 class OCR {
 	private:
-		std::unique_ptr<tesseract::TessBaseAPI> tess;
+		tesseract::TessBaseAPI* tess;
 		float minConfidence = 45.0f;
 		std::string m_textBuffer;
 
