@@ -1,14 +1,12 @@
 #include "../heaters/OCR.h"
 
 OCR::OCR(const std::string& language) {
-	// Nota: Certifique-se que no OCR.h o 'tess' esteja como std::unique_ptr<tesseract::TessBaseAPI>
 	tess = std::make_unique<tesseract::TessBaseAPI>();
 	
 	if (tess->Init(nullptr, language.c_str())) {
 		throw std::runtime_error("Erro ao inicializar Tesseract.");
 	}
 
-	// Otimizações de dicionário para velocidade no Raspberry Pi
 	tess->SetVariable("load_system_dawg", "0");
 	tess->SetVariable("load_freq_dawg", "0");
 	tess->SetVariable("load_punc_dawg", "0");
@@ -17,11 +15,9 @@ OCR::OCR(const std::string& language) {
 	tess->SetVariable("load_bigram_dawg", "0");
 	tess->SetVariable("tessedit_do_invert", "0");
 	
-	// Whitelist atualizada para incluir L, F, V e os caracteres de meses
 	tess->SetVariable("tessedit_char_whitelist", "0123456789/:LFVJANFEVMARABRMAIJUNJULAGOSETOTUNOVDEZ ");
 	
-	// PSM_6: Assume um bloco único de texto uniforme (ideal para as suas 3 linhas)
-	tess->SetPageSegMode(tesseract::PSM_6); 
+	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
 }
 
 std::string OCR::extractText(const cv::Mat& inputImage) {
@@ -34,8 +30,6 @@ std::string OCR::extractText(const cv::Mat& inputImage) {
 		processed = inputImage;
 	}
 
-	// Otimização crucial para o Pi: Binarização de Otsu
-	// Isso reduz o ruído e facilita a separação dos caracteres
 	cv::threshold(processed, processed, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
 
 	tess->SetImage(processed.data, processed.cols, processed.rows, 1, static_cast<int>(processed.step));
@@ -51,7 +45,6 @@ std::string OCR::extractText(const cv::Mat& inputImage) {
 	if (ri) {
 		do {
 			float conf = ri->Confidence(level);
-			// minConfidence deve estar definido no seu .h ou inicializado no construtor
 			if (conf >= minConfidence) {
 				char* symbol = ri->GetUTF8Text(level);
 				if (symbol) {
