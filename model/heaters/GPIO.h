@@ -16,7 +16,7 @@ const std::string FILE_SCALE = DEVICE_DIR + "in_voltage0_scale";
 #define SENSOR_THRESHOLD 16000
 #define SENSOR_HYSTERESIS 100 //(16k desliga e 16400 liga)
 #define DEBOUNCE_MS 100 //periodo entre leituras
-#define FILTER_ALPHA 0.25
+#define FILTER_ALPHA 0.10
 // cada iteração contribui em 25% do valor final (aumentar se ficar muito suave)
 class GPIO{
 	private:
