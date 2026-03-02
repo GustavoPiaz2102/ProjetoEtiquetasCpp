@@ -39,6 +39,7 @@ class GPIO{
 		bool stableState = false;
 		bool lastLogicalState = false;
 		std::chrono::steady_clock::time_point lastStateChange;
+		bool lastSensorState = false;
 
 	public:
 		// Flags

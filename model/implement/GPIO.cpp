@@ -74,7 +74,7 @@ bool GPIO::ReadSensor() {
 		lastLogicalState = stableState;
 		lastStateChange = std::chrono::steady_clock::now();
 		firstRead = false;
-		return stableState;
+		return true;
 	}
 	smoothedValue = (FILTER_ALPHA * rawValue) + (1.0 - FILTER_ALPHA) * smoothedValue; //média móvel exponencial
 
@@ -100,7 +100,9 @@ bool GPIO::ReadSensor() {
 		}
 	}
 	std::cout<< "Estado Detectado: " << stableState << "\n";
-	return stableState;
+	if(stableState!=lastSensorState)
+		return true;
+	else return false;
 }
 
 /*
