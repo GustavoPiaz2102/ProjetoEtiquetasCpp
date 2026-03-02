@@ -14,8 +14,10 @@ const std::string FILE_RAW   = DEVICE_DIR + "in_voltage0_raw";
 const std::string FILE_SCALE = DEVICE_DIR + "in_voltage0_scale"; 
 
 #define SENSOR_THRESHOLD 16200
-#define DebounceValue 10
-
+#define SENSOR_HYSTERESIS 200 //(16k desliga e 16400 liga)
+#define DEBOUNCE_MS 30 //periodo entre leituras
+#define FILTER_ALPHA 0.25
+// cada iteração contribui em 25% do valor final (aumentar se ficar muito suave)
 class GPIO{
 	private:
 		int PinStrobo;
@@ -33,23 +35,30 @@ class GPIO{
 		gpiod_line *stepLine;
 		*/
 
+		double smoothedValue = 0.0;
+		bool stableState = false;
+		bool lastLogicalState = false;
+		std::chrono::steady_clock::time_point lastStateChange;
+
 	public:
 		// Flags
 		bool firstRead = true;
-		bool LastSensorState = false;
-		int ActualCounter = 0;
-
 		
 		GPIO(int pinStrobo, const std::string &chipname = "gpiochip4");
 		~GPIO();
 
-		bool ReadSensor();           
-		int ReadRaw();           
+		bool ReadSensor();
+		int ReadRaw();
 
-		void OutStrobo();            
-		void SetStroboHigh(int sleep = 0);        
-		void SetStroboLow(int sleep = 0);         
-		void ReturnToFirst() { firstRead = true; ActualCounter = 0; LastSensorState = false; }
+		void OutStrobo();
+		void SetStroboHigh(int sleep = 0);
+		void SetStroboLow(int sleep = 0);
+		void ReturnToFirst() { 
+			firstRead = true; 
+			stableState = false; 
+			lastLogicalState = false;
+			smoothedValue = 0.0;
+		}
 
 		// Encoder
 
