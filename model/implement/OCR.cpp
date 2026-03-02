@@ -1,6 +1,6 @@
 #include "../heaters/OCR.h"
 
-OCR::OCR(const std::string& language, float minConf) : minConfidence(minConf) {
+OCR::OCR(const std::string& language) {
 	tess = std::make_unique<tesseract::TessBaseAPI>();
 	
 	if (tess->Init(nullptr, language.c_str())) {
