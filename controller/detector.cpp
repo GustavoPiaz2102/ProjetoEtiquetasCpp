@@ -49,6 +49,7 @@ void Detector::ProcessLoop(){
 			}
 			std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
 			cv::Mat processed = preprocessor.preprocess(current_frame);
+			std::cout<<"Tempo de pré-processamento: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() << " ms\n";
 			std::string text = ocr.extractText(processed);
 			std::cout<<"Tempo de processamento: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() << " ms\n";
 			std::cout << "texto Detectado: " << text << std::endl;
