@@ -36,17 +36,19 @@ std::string OCR::extractText(const cv::Mat& inputImage) {
 	m_textBuffer.clear();
 
 	do {
-		std::unique_ptr<const char[], decltype(&::operator delete[])>
-			word(ri->GetUTF8Text(level), ::operator delete[]);
+	auto word = std::unique_ptr<const char[], void(*)(const char*)>(
+		ri->GetUTF8Text(level),
+		[](const char* p){ delete[] p; }
+	);
 
-		if (word && ri->Confidence(level) >= minConfidence) {
-			m_textBuffer += word.get();
-			m_textBuffer += ' ';
-		}
+	if (word && ri->Confidence(level) >= minConfidence) {
+		m_textBuffer += word.get();
+		m_textBuffer += ' ';
+	}
 	} while (ri->Next(level));
 
-	if (!m_textBuffer.empty())
-		m_textBuffer.pop_back();
+		if (!m_textBuffer.empty())
+			m_textBuffer.pop_back();
 
-	return m_textBuffer;
+		return m_textBuffer;
 }
