@@ -20,6 +20,12 @@ OCR::OCR(const std::string& language) {
 	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
 }
 
+OCR::~OCR() {
+	if (tess) {
+		tess->End();
+	}
+}
+
 std::string OCR::extractText(const cv::Mat& inputImage) {
 	if (inputImage.empty()) return "";
 
