@@ -78,34 +78,31 @@ void Detector::SensorCaptureImpressTHR(){
 	while(sensor_running){
 		if(sensor.ReadSensor() != 0){
 			if(!NewFrameAvailable){
-			camera.captureImage();
-			//sensor.SetStroboLow();
-			cv::Mat newFrame = camera.retrieveImage();
+				camera.captureImage();
+				//sensor.SetStroboLow();
+				cv::Mat newFrame = camera.retrieveImage();
 
-			{
-				std::lock_guard<std::mutex> lock(frame_mutex);
+				{
+					std::lock_guard<std::mutex> lock(frame_mutex);
 
-				frame = std::move(newFrame);
-				NewFrameAvailable = true;
-			}
+					frame = std::move(newFrame);
+					NewFrameAvailable = true;
+				}
 
-			int error = 0;
-			bool printReturn = imp.print(&error);
+				int error = 0;
+				bool printReturn = imp.print(&error);
 
-			if(printReturn){
-				if (error == 1) imp.setLastImpress(true);
-				//std::cout << "Impressão iniciada com sucesso.\n";
-			} else{
-				std::cout << "Falha ao iniciar a impressão! Parando thread." << "\n";
+				if(printReturn){
+					if (error == 1) imp.setLastImpress(true);
+					//std::cout << "Impressão iniciada com sucesso.\n";
+				} else{
+					std::cout << "Falha ao iniciar a impressão! Parando thread." << "\n";
 
-				printer_error = true;
-				sensor_running = false;
-				imp.setLastImpress(true);
-			}
-		}
-		else{
-			std::this_thread::sleep_for(std::chrono::milliseconds(10));
-		}
+					printer_error = true;
+					sensor_running = false;
+					imp.setLastImpress(true);
+				}
+			} else std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		}
 	}
 
