@@ -1,53 +1,52 @@
 #include "../heaters/OCR.h"
 #include <iostream>
 
-OCR::OCR(const std::string& language){
+OCR::OCR(const std::string& language) {
 	tess = new tesseract::TessBaseAPI();
-	if(tess->Init(NULL, language.c_str())) std::cerr << "Erro: Não foi possível inicializar o Tesseract OCR." << "\n";
+	if (tess->Init(NULL, language.c_str()))
+		std::cerr << "Erro: Não foi possível inicializar o Tesseract OCR.\n";
+
+	tess->SetVariable("load_system_dawg", "0");
+	tess->SetVariable("load_freq_dawg", "0");
+	tess->SetVariable("tessedit_do_invert", "0");
+	tess->SetVariable("tessedit_char_whitelist", "0123456789/:abdefgijlmnorstuvz ");
 }
 
-OCR::~OCR(){
-	if(tess){
+OCR::~OCR() {
+	if (tess) {
 		tess->End();
 		delete tess;
 	}
 }
 
-std::string OCR::extractText(const cv::Mat& inputImage){
-	if (inputImage.empty()){
+std::string OCR::extractText(const cv::Mat& inputImage) {
+	if (inputImage.empty()) {
 		std::cerr << "Erro: imagem vazia passada para OCR.\n";
-		return "";
+		return {};
 	}
-
-	//cv::Mat img = inputImage.isContinuous() ? inputImage : inputImage.clone();
-	/*
-	cv::Mat gray;
-	if (img.channels() == 3) cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
-	else gray = img;
-	*/
 
 	tess->SetImage(inputImage.data, inputImage.cols, inputImage.rows, 1, inputImage.step);
-	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
-
+	tess->SetPageSegMode(tesseract::PSM_SPARSE_TEXT);
 	tess->Recognize(0);
 
-	std::string finalText;
-	tesseract::ResultIterator* ri = tess->GetIterator();
-	tesseract::PageIteratorLevel level = tesseract::RIL_WORD;
+	std::unique_ptr<tesseract::ResultIterator> ri(tess->GetIterator());
+	if (!ri) return {};
 
-	if(ri != nullptr){
-		do{
-			const char* word = ri->GetUTF8Text(level);
-			float conf = ri->Confidence(level);  // Confiança de 0 a 100
+	constexpr auto level = tesseract::RIL_WORD;
+	m_textBuffer.clear();
 
-			if (word && conf >= minConfidence){
-				finalText += word;
-				finalText += "\n";
-			}
+	do {
+		std::unique_ptr<const char[], decltype(&::operator delete[])>
+			word(ri->GetUTF8Text(level), ::operator delete[]);
 
-			delete[] word;
-		} while (ri->Next(level));
-	}
+		if (word && ri->Confidence(level) >= minConfidence) {
+			m_textBuffer += word.get();
+			m_textBuffer += ' ';
+		}
+	} while (ri->Next(level));
 
-	return finalText;
+	if (!m_textBuffer.empty())
+		m_textBuffer.pop_back();
+
+	return m_textBuffer;
 }
