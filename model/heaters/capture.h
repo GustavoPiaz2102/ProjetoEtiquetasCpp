@@ -6,8 +6,8 @@
 #include "GPIO.h"
 #include <opencv2/core/utils/logger.hpp>
 
-#define IMG_SZE 640
-#define IMG_SZE2 480
+#define IMG_SZE 320
+#define IMG_SZE2 240
 
 class Capture {
 public:
