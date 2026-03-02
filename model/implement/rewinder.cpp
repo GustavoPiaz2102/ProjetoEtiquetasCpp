@@ -1,3 +1,4 @@
+/*
 #include "../heaters/rewinder.h"
 
 Rewinder::Rewinder(double targetSpeed, Interface& interface, GPIO& gpio) : targetSpeed(targetSpeed), interface(interface), gpio(gpio) {
@@ -66,3 +67,4 @@ double Rewinder::getSensorSpeed(double dt_seconds) {
     double distance_per_pulse = 0.5; 
     return (pulses * distance_per_pulse) / dt_seconds;
 }
+*/
