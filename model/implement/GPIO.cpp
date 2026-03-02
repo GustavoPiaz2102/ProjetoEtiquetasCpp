@@ -76,7 +76,6 @@ bool GPIO::ReadSensor() {
 		firstRead = false;
 		return stableState;
 	}
-
 	smoothedValue = (FILTER_ALPHA * rawValue) + (1.0 - FILTER_ALPHA) * smoothedValue; //média móvel exponencial
 
 	bool currentLogicalState = lastLogicalState;
@@ -100,7 +99,7 @@ bool GPIO::ReadSensor() {
 			}
 		}
 	}
-
+	std::cout<< "Estado Detectado: " << stableState << "\n";
 	return stableState;
 }
 
