@@ -1,14 +1,15 @@
 #ifndef DETECTOR_H
 #define DETECTOR_H
 
+#include "../view/interface.h"
 #include "../model/heaters/capture.h"
 #include "../model/heaters/preprocessor.h"
 #include "../model/heaters/OCR.h"
-#include "../view/interface.h"
-#include <opencv2/opencv.hpp>
 #include "../model/heaters/GPIO.h"
 #include "../model/heaters/impress.h"
 #include "../model/heaters/validator.h"
+#include "../model/heaters/threadUtils.hpp"
+#include <opencv2/opencv.hpp>
 #include <thread>
 #include <mutex>
 #include <atomic>
