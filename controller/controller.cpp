@@ -196,18 +196,8 @@ void Controller::rodar_detector(){
 				SensorActive = false;
 				detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
 			}
-<<<<<<< HEAD
 			if(detector.GetProcessingRunning())	detector.StopProcessThread();
 
-=======
-			SensorActive = false;
-
-			if(ProcessActive){
-				ProcessActive = false;
-				detector.StopProcessThread();
-			}
-			ProcessActive = false;
->>>>>>> afed9b00ecbd4a55897403565a6fe8add3e15beb
 			imp.ResetLastImpress();
 
 			FirstDet = true;
@@ -219,17 +209,8 @@ void Controller::rodar_detector(){
 				SensorActive = false;
 				detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
 			}
-<<<<<<< HEAD
 			if(detector.GetProcessingRunning())	detector.StopProcessThread();
 
-=======
-			SensorActive = false;
-			if(ProcessActive){
-				ProcessActive = false;
-				detector.StopProcessThread();
-			}
-			ProcessActive = false;
->>>>>>> afed9b00ecbd4a55897403565a6fe8add3e15beb
 			imp.ResetLastImpress();
 
 			FirstDet = true;
