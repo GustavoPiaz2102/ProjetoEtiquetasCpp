@@ -7,6 +7,7 @@ OCR::OCR(const std::string& language){
 	tess->SetVariable("tessedit_char_whitelist", "0123456789/:LFVJANFEVMARABRMAIJUNJULAGOSETOUTNOVDEZ");
 	tess->SetVariable("load_system_dawg", "0");
 	tess->SetVariable("tessedit_do_invert", "0");
+	tess->SetVariable("load_freq_dawg", "0");
 }
 
 OCR::~OCR(){
