@@ -142,17 +142,3 @@ void Detector::StopSensorThread(){
 		std::cout << "Thread de captura limpa com sucesso.\n";
 	}
 }
-
-std::string Detector::RunProcess(){
-	cv::Mat current_frame;
-
-	{
-		std::lock_guard<std::mutex> lock(frame_mutex);
-		if (frame.empty()) return "";
-		current_frame = frame.clone();
-	}
-
-	cv::Mat processed = preprocessor.preprocess(current_frame);
-	std::string text = ocr.extractText(processed);
-	return text;
-} 
