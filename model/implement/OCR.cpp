@@ -14,7 +14,8 @@ OCR::~OCR(){
 }
 
 std::string OCR::extractText(const cv::Mat& inputImage){
-
+	std::string finalText = "a";
+/*
 	if (inputImage.empty()){
 		std::cerr << "Erro: imagem vazia passada para OCR.\n";
 		return "";
@@ -44,6 +45,6 @@ std::string OCR::extractText(const cv::Mat& inputImage){
 			delete[] word;
 		} while (ri->Next(level));
 	}
-
+*/
 	return finalText;
 }
