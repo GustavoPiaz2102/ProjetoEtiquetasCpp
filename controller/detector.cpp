@@ -104,7 +104,7 @@ void Detector::SensorCaptureImpressTHR(){
 	//std::cout << "Esperando Pela finalização da thread na main\n";
 }
 
-cv::Mat Detector::GetFPrinterErrorrame(){
+cv::Mat Detector::GetFrame(){
 	std::lock_guard<std::mutex> lock(frame_mutex);
 
 	if (frame.empty()) return cv::Mat();
