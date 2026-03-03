@@ -152,7 +152,7 @@ std::string Detector::RunProcess(){
 		current_frame = frame.clone();
 	}
 
-	cv::Mat processed = preprocessor.preprocess(current_frame);
-	std::string text = ocr.extractText(processed);
-	return text;
+	//cv::Mat processed = preprocessor.preprocess(current_frame);
+	//std::string text = ocr.extractText(processed);
+	return "text";
 } 
