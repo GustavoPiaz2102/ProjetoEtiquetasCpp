@@ -42,7 +42,7 @@ void Detector::ProcessLoop(){
 			
 			if(!processing_running) break;
 
-			current_frame = std::move(frame);
+			current_frame = frame.clone();
 			NewFrameAvailable = false;
 		}
 
