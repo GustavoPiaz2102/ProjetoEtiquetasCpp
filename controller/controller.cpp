@@ -184,10 +184,7 @@ void Controller::rodar_detector(){
 					FirstDet = false; // Só considera detectado se tiver imagem
 				} else ReturnToMenu = interface.atualizar_frame(NonDetectedFrame);
 
-				if (!ProcessActive){
-					ProcessActive = true;
-					detector.StartProcessThread();
-				}
+				if (!detector.GetProcessingRunning()) detector.StartProcessThread();
 
 				// Atualiza status local baseado nas flags internas do detector
 				// Nota: Removido GetRunning direto para evitar race condition,
@@ -199,10 +196,8 @@ void Controller::rodar_detector(){
 				SensorActive = false;
 				detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
 			}
-			if(ProcessActive){
-				ProcessActive = false;
-				detector.StopProcessThread();
-			}
+			if(detector.GetProcessingRunning())	detector.StopProcessThread();
+
 			imp.ResetLastImpress();
 
 			FirstDet = true;
@@ -214,10 +209,8 @@ void Controller::rodar_detector(){
 				SensorActive = false;
 				detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
 			}
-			if(ProcessActive){
-				ProcessActive = false;
-				detector.StopProcessThread();
-			}
+			if(detector.GetProcessingRunning())	detector.StopProcessThread();
+
 			imp.ResetLastImpress();
 
 			FirstDet = true;

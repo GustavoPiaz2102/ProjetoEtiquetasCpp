@@ -44,8 +44,9 @@ class Detector{
 		
 		std::atomic<bool> sensor_running{false};                                   // Controle da thread de captura
 		std::atomic<bool> processing_running{false};                        // Controle da thread de processamento
-
+		
 	public:
+
 		/**
 		 * @brief Construtor da classe Detector que inicializa todos os componentes do sistema.
 		 * @details Inicializa a câmera, OCR, sensor GPIO e mantém referências para impressora, interface e validador.
