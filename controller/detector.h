@@ -61,13 +61,6 @@ class Detector{
 		 */
 		~Detector();
 
-		/** @brief Processa um frame atual e extrai texto usando OCR.
-		 * @details Captura o frame atual de forma thread-safe, aplica pré-processamento e executa OCR para extrair texto.
-		 *          Esta função é síncrona e pode ser chamada diretamente.
-		 * @return std::string Texto extraído do frame. Retorna string vazia se não houver frame ou OCR falhar.
-		 */
-		std::string RunProcess();
-
 		/**
 		 * @brief Loop contínuo de processamento executado pela thread de processamento.
 		 * @details Monitora continuamente por novos frames disponíveis, processa com OCR e valida os textos detectados.
