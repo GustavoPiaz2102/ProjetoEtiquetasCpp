@@ -4,11 +4,6 @@
 OCR::OCR(const std::string& language){
 	tess = new tesseract::TessBaseAPI();
 	if(tess->Init(NULL, language.c_str())) std::cerr << "Erro: Não foi possível inicializar o Tesseract OCR." << "\n";
-	tess->SetVariable("tessedit_char_whitelist", "0123456789/:LFJANEVRMABIUGOSETODZ");
-	//tess->SetVariable("load_system_dawg", "0");
-	//tess->SetVariable("tessedit_do_invert", "0");
-	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
-
 }
 
 
@@ -26,11 +21,17 @@ std::string OCR::extractText(const cv::Mat& inputImage){
 		return "";
 	}
 	tess->SetImage(inputImage.data, inputImage.cols, inputImage.rows, 1, inputImage.step);
+
+	// PSM adequado para múltiplas linhas de um bloco
+	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
+
 	// Reconhece a imagem
 	tess->Recognize(0);
+
 	std::string finalText;
 	tesseract::ResultIterator* ri = tess->GetIterator();
 	tesseract::PageIteratorLevel level = tesseract::RIL_WORD;
+
 	if(ri != nullptr){
 		do{
 			const char* word = ri->GetUTF8Text(level);
