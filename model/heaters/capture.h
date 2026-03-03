@@ -6,8 +6,8 @@
 #include "GPIO.h"
 #include <opencv2/core/utils/logger.hpp>
 
-#define IMG_WIDTH 960
-#define IMG_HEIGHT 720
+#define IMG_WIDTH 1280
+#define IMG_HEIGHT 960
 
 #define ROI_WIDTH int(IMG_WIDTH * .469) // 300
 #define ROI_HEIGHT int(IMG_HEIGHT * .312) // 150
