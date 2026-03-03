@@ -173,7 +173,6 @@ void Controller::rodar_detector(){
 			if(FirstDet || (detector.GetSensorRunning() && detector.GetProcessingRunning())){
 				// Inicia threads se necessário
 				if (!detector.GetSensorRunning()) detector.StartSensorThread();
-				}
 
 				// CORREÇÃO: Evita crash ou tela preta ao tentar desenhar frame vazio
 				cv::Mat frame = detector.GetFrame();
