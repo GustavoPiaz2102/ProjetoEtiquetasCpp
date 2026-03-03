@@ -139,7 +139,7 @@ class Detector{
 		 * @brief Obtém o estado de execução da thread de captura.
 		 * @return bool True se a thread de captura estiver em execução, False caso contrário.
 		 */
-		bool GetRunning() const{ return sensor_running; }
+		bool GetSensorRunning() const{ return sensor_running; }
 
 		/**
 		 * @brief Obtém o estado de execução da thread de processamento.
