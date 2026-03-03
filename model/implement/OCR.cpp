@@ -23,7 +23,7 @@ std::string OCR::extractText(const cv::Mat& inputImage){
 	}
 	tess->SetImage(inputImage.data, inputImage.cols, inputImage.rows, 1, inputImage.step);
 	// PSM adequado para múltiplas linhas de um bloco
-	tess->SetPageSegMode(tesseract::PSM_SINGLE_WORD);
+	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
 	// Reconhece a imagem
 	tess->Recognize(0);
 	std::string finalText;
