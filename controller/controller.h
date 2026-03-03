@@ -38,7 +38,6 @@ class Controller {
 
 		// Flags //
 
-		bool SensorActive = false;
 		bool FirstDet = true;
 		bool ReturnToMenu = false;
 };

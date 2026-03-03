@@ -170,11 +170,9 @@ void Controller::rodar_detector(){
 		}
 
 		if(interface.GetImprimindo() && imp.getQntImpressao() > 0){
-			if(FirstDet || (detector.GetRunning() && detector.GetProcessingRunning())){
+			if(FirstDet || (detector.GetSensorRunning() && detector.GetProcessingRunning())){
 				// Inicia threads se necessário
-				if (!SensorActive){
-					SensorActive = true;
-					detector.StartSensorThread();
+				if (!detector.GetSensorRunning()) detector.StartSensorThread();
 				}
 
 				// CORREÇÃO: Evita crash ou tela preta ao tentar desenhar frame vazio
@@ -192,10 +190,8 @@ void Controller::rodar_detector(){
 			}
 		} else{
 			std::cout << "Desligamento seguro\n";
-			if(SensorActive){
-				SensorActive = false;
-				detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
-			}
+			if(detector.GetSensorRunning())	detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
+
 			if(detector.GetProcessingRunning())	detector.StopProcessThread();
 
 			imp.ResetLastImpress();
@@ -205,10 +201,8 @@ void Controller::rodar_detector(){
 			ReturnToMenu = false;
 		}
 	} else{
-			if(SensorActive){
-				SensorActive = false;
-				detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
-			}
+			if(detector.GetSensorRunning())	detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
+
 			if(detector.GetProcessingRunning())	detector.StopProcessThread();
 
 			imp.ResetLastImpress();
