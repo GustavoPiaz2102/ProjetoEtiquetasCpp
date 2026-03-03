@@ -4,8 +4,8 @@
 OCR::OCR(const std::string& language){
 	tess = new tesseract::TessBaseAPI();
 	if(tess->Init(nullptr, language.c_str(),tesseract::OEM_LSTM_ONLY)) std::cerr << "Erro: Não foi possível inicializar o Tesseract OCR." << "\n";
-	tess->SetPageSegMode(tesseract::PSM_SINGLE_LINE);
-	tess->SetVariable("tessedit_char_whitelist", "0123456789/:LFVJANFEVMARABRMAIJUNJULAGOSETOUTNOVDEZ");
+	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
+	tess->SetVariable("tessedit_char_whitelist", "0123456789/:LFV");
 	tess->SetVariable("load_system_dawg", "0");
 	tess->SetVariable("load_freq_dawg", "0");
 	tess->SetVariable("load_unambig_dawg", "0");
@@ -22,28 +22,33 @@ OCR::~OCR(){
 }
 
 std::string OCR::extractText(const cv::Mat& inputImage){
-    if (inputImage.empty()) return "";
 
-    std::string finalText;
-    int lineHeight = inputImage.rows / 3;
+	if (inputImage.empty()){
+		std::cerr << "Erro: imagem vazia passada para OCR.\n";
+		return "";
+	}
+	tess->SetImage(inputImage.data, inputImage.cols, inputImage.rows, 1, inputImage.step);
 
-    for(int i = 0; i < 3; i++){
-        cv::Mat linha = inputImage(cv::Rect(0, i * lineHeight, inputImage.cols, lineHeight));
+	// Reconhece a imagem
+	tess->Recognize(0);
 
-        tess->SetPageSegMode(tesseract::PSM_SINGLE_LINE);
-        tess->SetImage(linha.data, linha.cols, linha.rows, 1, linha.step);
-        tess->Recognize(0);
+	std::string finalText;
+	tesseract::ResultIterator* ri = tess->GetIterator();
+	tesseract::PageIteratorLevel level = tesseract::RIL_WORD;
 
-        char* text = tess->GetUTF8Text();
-        if(text){
-            std::string s(text);
-            delete[] text;
-            // Remove \n
-            s.erase(std::remove(s.begin(), s.end(), '\n'), s.end());
-            if(!s.empty()) finalText += s + "\n";
-        }
-        tess->Clear();
-    }
+	if(ri != nullptr){
+		do{
+			const char* word = ri->GetUTF8Text(level);
+			float conf = ri->Confidence(level);  // Confiança de 0 a 100
 
-    return finalText;
+			if (word && conf >= minConfidence){
+				finalText += word;
+				finalText += "\n";
+			}
+
+			delete[] word;
+		} while (ri->Next(level));
+	}
+
+	return finalText;
 }
