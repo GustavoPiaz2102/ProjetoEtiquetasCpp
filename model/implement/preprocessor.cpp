@@ -17,5 +17,8 @@ cv::Mat Preprocessor::preprocess(const cv::Mat& inputImage) {
 	// Aplica um blur (suavização)
 	//cv::GaussianBlur(gray, blurred, cv::Size(5, 5), 0);
 
+	//aplicação de threashold
+	cv::threshold(gray, gray, 0, 255, cv::THRESH_BINARY + cv::THRESH_OTSU);
+
 	return gray;
 }
