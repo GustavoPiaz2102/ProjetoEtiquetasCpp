@@ -38,11 +38,11 @@ class Detector{
 		// --------------
 
 		std::atomic<bool> NewFrameAvailable{false}; 
-		std::atomic<bool> LastWithError{false}; // Flag da validator, indica que o OCR achou um erro
-		std::function<void(bool, const std::string &)> validationCallback;  // Callback para notificação de validação
+		std::atomic<bool> LastWithError{false};								 // Flag da validator, indica que o OCR achou um erro
+		std::function<void(bool, const std::string &)> validationCallback;   // Callback para notificação de validação
 		std::atomic<bool> printer_error{false};
 		
-		std::atomic<bool> sensor_running{false};                                   // Controle da thread de captura
+		std::atomic<bool> sensor_running{false};                            // Controle da thread de captura
 		std::atomic<bool> processing_running{false};                        // Controle da thread de processamento
 		
 	public:
