@@ -14,7 +14,8 @@ cv::Mat Preprocessor::preprocess(const cv::Mat& inputImage) {
 	// Converte a imagem para escala de cinza
 	cv::cvtColor(inputImage, gray, cv::COLOR_BGR2GRAY);
 	// Aplica um blur (suavização)
-	cv::GaussianBlur(gray, blurred, cv::Size(5, 5), 0);
+	cv::GaussianBlur(gray, gray, cv::Size(5, 5), 0);
 
-	return blurred;
+	return gray;
 }
+	
