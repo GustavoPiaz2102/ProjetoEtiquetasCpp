@@ -84,17 +84,13 @@ void Detector::SensorCaptureImpressTHR(){
 			frame_cv.notify_one();
 
 			int error = 0;
-			bool printReturn = imp.print(&error);
 
-			if(printReturn){
-				if (error == 1) imp.setLastImpress(true);
-				//std::cout << "Impressão iniciada com sucesso.\n";
-			} else{
+			if(!imp.print(&error)){
 				std::cout << "Falha ao iniciar a impressão! Parando thread." << "\n";
 
 				printer_error = true;
 				sensor_running = false;
-				imp.setLastImpress(true);
+				imp.ResetLastImpress();
 			}
 		}
 	}
@@ -108,7 +104,7 @@ void Detector::SensorCaptureImpressTHR(){
 	//std::cout << "Esperando Pela finalização da thread na main\n";
 }
 
-cv::Mat Detector::GetFrame(){
+cv::Mat Detector::GetFPrinterErrorrame(){
 	std::lock_guard<std::mutex> lock(frame_mutex);
 
 	if (frame.empty()) return cv::Mat();
