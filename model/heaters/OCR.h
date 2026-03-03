@@ -13,7 +13,6 @@ class OCR {
 	private:
 		tesseract::TessBaseAPI* tess;
 		float minConfidence = 45.0f;
-		std::string m_textBuffer;
 
 	public:
 		OCR(const std::string& language = "eng");

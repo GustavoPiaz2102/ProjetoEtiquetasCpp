@@ -3,10 +3,7 @@
 
 OCR::OCR(const std::string& language){
 	tess = new tesseract::TessBaseAPI();
-	tess->Init(NULL, language.c_str(), tesseract::OEM_LSTM_ONLY);
-	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
-	tess->SetVariable("tessedit_char_whitelist", "0123456789/:LFVJANFEVMARABRMAIJUNJULAGOSETOUTNOVDEZ");
-
+	if(tess->Init(NULL, language.c_str())) std::cerr << "Erro: Não foi possível inicializar o Tesseract OCR." << "\n";
 }
 
 OCR::~OCR(){
@@ -18,43 +15,35 @@ OCR::~OCR(){
 
 std::string OCR::extractText(const cv::Mat& inputImage){
 
-	m_textBuffer.clear();
-
 	if (inputImage.empty()){
-		std::cout << "Erro: imagem vazia passada para OCR.\n";
-		return m_textBuffer;
+		std::cerr << "Erro: imagem vazia passada para OCR.\n";
+		return "";
 	}
+	tess->SetImage(inputImage.data, inputImage.cols, inputImage.rows, 1, inputImage.step);
 
-	if (inputImage.channels() != 1){
-		std::cout << "Erro: imagem não está em grayscale.\n";
-		return m_textBuffer;
-	}
+	// PSM adequado para múltiplas linhas de um bloco
+	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
 
-	tess->Clear();
+	// Reconhece a imagem
+	tess->Recognize(0);
 
-	tess->SetImage(inputImage.data,inputImage.cols,inputImage.rows,1,inputImage.step);
-
-	if (tess->Recognize(0) != 0){
-		std::cout << "Erro no reconhecimento.\n";
-		return m_textBuffer;
-	}
-
+	std::string finalText;
 	tesseract::ResultIterator* ri = tess->GetIterator();
+	tesseract::PageIteratorLevel level = tesseract::RIL_WORD;
 
-	if (ri){
+	if(ri != nullptr){
 		do{
-			const char* word = ri->GetUTF8Text(tesseract::RIL_WORD);
-			float conf = ri->Confidence(tesseract::RIL_WORD);
+			const char* word = ri->GetUTF8Text(level);
+			float conf = ri->Confidence(level);  // Confiança de 0 a 100
 
 			if (word && conf >= minConfidence){
-				m_textBuffer += word;
-				m_textBuffer += "\n";
+				finalText += word;
+				finalText += "\n";
 			}
 
 			delete[] word;
-
-		} while (ri->Next(tesseract::RIL_WORD));
+		} while (ri->Next(level));
 	}
 
-	return m_textBuffer;
+	return finalText;
 }
