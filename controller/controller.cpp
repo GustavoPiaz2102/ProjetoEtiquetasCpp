@@ -199,10 +199,13 @@ void Controller::rodar_detector(){
 				SensorActive = false;
 				detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
 			}
+			SensorActive = false;
+
 			if(ProcessActive){
 				ProcessActive = false;
 				detector.StopProcessThread();
 			}
+			ProcessActive = false;
 			imp.ResetLastImpress();
 
 			FirstDet = true;
@@ -214,10 +217,12 @@ void Controller::rodar_detector(){
 				SensorActive = false;
 				detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
 			}
+			SensorActive = false;
 			if(ProcessActive){
 				ProcessActive = false;
 				detector.StopProcessThread();
 			}
+			ProcessActive = false;
 			imp.ResetLastImpress();
 
 			FirstDet = true;
