@@ -17,7 +17,7 @@ void Detector::StartProcessThread(){
 	process_thread = std::thread(&Detector::ProcessLoop, this);
 
 	setThreadPriority(process_thread, 99);
-	setThreadAffinity(process_thread, {1, 2, 3});
+	setThreadAffinity(process_thread, {2, 3});
 
 	std::cout << "Thread de processamento iniciada.\n";
 }
@@ -68,7 +68,6 @@ void Detector::SensorCaptureImpressTHR(){
 		if(sensor.ReadSensor() != 0){
 			if(!NewFrameAvailable){
 				camera.captureImage();
-				//sensor.SetStroboLow();
 				cv::Mat newFrame = camera.retrieveImage();
 
 				{
