@@ -24,7 +24,7 @@ void Detector::StartProcessThread(){
 
 void Detector::StopProcessThread(){
 	processing_running = false;
-
+	frame_cv.notify_all();
 	if(process_thread.joinable()){
 		process_thread.join();
 		std::cout << "Thread de processamento limpa com sucesso.\n";
