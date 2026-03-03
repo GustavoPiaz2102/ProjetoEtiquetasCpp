@@ -16,8 +16,8 @@ void Detector::StartProcessThread(){
 	processing_running = true;
 	process_thread = std::thread(&Detector::ProcessLoop, this);
 
-	//setThreadPriority(process_thread, 99);
-	//setThreadAffinity(process_thread, {2, 3});
+	setThreadPriority(process_thread, 99);
+	setThreadAffinity(process_thread, {0,1,2,3});
 
 	std::cout << "Thread de processamento iniciada.\n";
 }
