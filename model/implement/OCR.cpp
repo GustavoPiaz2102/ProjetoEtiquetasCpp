@@ -26,7 +26,7 @@ std::string OCR::extractText(const cv::Mat& inputImage){
 	std::cout << "Tempo para configurar a imagem: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() << " ms\n";
 	start = std::chrono::steady_clock::now();
 	// PSM adequado para múltiplas linhas de um bloco
-	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
+	tess->SetPageSegMode(tesseract::PSM_SINGLE_WORD);
 	std::cout << "Tempo para configurar o PSM: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() << " ms\n";
 	start = std::chrono::steady_clock::now();
 	// Reconhece a imagem
