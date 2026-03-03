@@ -9,13 +9,26 @@ Preprocessor::~Preprocessor() {
 }
 
 cv::Mat Preprocessor::preprocess(const cv::Mat& inputImage) {
-	cv::Mat gray;
+    cv::Mat output;
 
-	// Converte a imagem para escala de cinza
-	cv::cvtColor(inputImage, gray, cv::COLOR_BGR2GRAY);
+    // 1. Cinza
+    cv::cvtColor(inputImage, output, cv::COLOR_BGR2GRAY);
 
-	// Aplica um blur (suavização)
-	//cv::GaussianBlur(gray, blurred, cv::Size(5, 5), 0);
+    // 2. Aumentar contraste (opcional, mas ajuda se a iluminação for ruim)
+    cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(2.0, cv::Size(8, 8));
+    clahe->apply(output, output);
 
-	return gray;
+    // 3. Blur leve para suavizar bordas serrilhadas (ajuda o OCR a ver formas contínuas)
+    cv::GaussianBlur(output, output, cv::Size(3, 3), 0);
+
+    // 4. Binarização de Otsu
+    cv::threshold(output, output, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
+
+    // 5. Inverter se o fundo for escuro e o texto claro
+    // O Tesseract prefere Texto Preto no Fundo Branco
+    // double blackPixels = cv::countNonZero(output == 0);
+    // double whitePixels = cv::countNonZero(output == 255);
+    // if (blackPixels > whitePixels) cv::bitwise_not(output, output);
+
+    return output;
 }
