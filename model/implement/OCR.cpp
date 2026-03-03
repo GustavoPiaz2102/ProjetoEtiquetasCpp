@@ -3,7 +3,7 @@
 
 OCR::OCR(const std::string& language){
 	tess = new tesseract::TessBaseAPI();
-	if(tess->Init(NULL, language.c_str())) std::cerr << "Erro: Não foi possível inicializar o Tesseract OCR." << "\n";
+	tess->Init(NULL, language.c_str(), tesseract::OEM_LSTM_ONLY);
 	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
 	tess->SetVariable("tessedit_char_whitelist", "0123456789/:LFVJANFEVMARABRMAIJUNJULAGOSETOUTNOVDEZ");
 
@@ -18,29 +18,43 @@ OCR::~OCR(){
 
 std::string OCR::extractText(const cv::Mat& inputImage){
 
+	m_textBuffer.clear();
+
 	if (inputImage.empty()){
-		std::cerr << "Erro: imagem vazia passada para OCR.\n";
-		return "";
+		std::cout << "Erro: imagem vazia passada para OCR.\n";
+		return m_textBuffer;
 	}
-	tess->SetImage(inputImage.data, inputImage.cols, inputImage.rows, 1, inputImage.step);
 
-	std::string finalText;
+	if (inputImage.channels() != 1){
+		std::cout << "Erro: imagem não está em grayscale.\n";
+		return m_textBuffer;
+	}
+
+	tess->Clear();
+
+	tess->SetImage(inputImage.data,inputImage.cols,inputImage.rows,1,inputImage.step);
+
+	if (tess->Recognize(0) != 0){
+		std::cout << "Erro no reconhecimento.\n";
+		return m_textBuffer;
+	}
+
 	tesseract::ResultIterator* ri = tess->GetIterator();
-	tesseract::PageIteratorLevel level = tesseract::RIL_WORD;
 
-	if(ri != nullptr){
+	if (ri){
 		do{
-			const char* word = ri->GetUTF8Text(level);
-			float conf = ri->Confidence(level);  // Confiança de 0 a 100
+			const char* word = ri->GetUTF8Text(tesseract::RIL_WORD);
+			float conf = ri->Confidence(tesseract::RIL_WORD);
 
 			if (word && conf >= minConfidence){
-				finalText += word;
-				finalText += "\n";
+				m_textBuffer += word;
+				m_textBuffer += "\n";
 			}
 
 			delete[] word;
-		} while (ri->Next(level));
+
+		} while (ri->Next(tesseract::RIL_WORD));
 	}
-	tess->Clear();
-	return finalText;
+
+	return m_textBuffer;
 }
