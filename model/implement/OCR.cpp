@@ -3,8 +3,8 @@
 
 OCR::OCR(const std::string& language){
 	tess = new tesseract::TessBaseAPI();
-	if(tess->Init("/home/pi/Desktop/git/ProjetoEtiquetasCpp/ocrModels/tessdata/", language.c_str())) std::cerr << "Erro: Não foi possível inicializar o Tesseract OCR." << "\n";
-	tess->SetVariable("tessedit_char_whitelist", "0123456789/:LFVJANFEVMARABRMAIJUNJULAGOSETOUTNOVDEZ");
+	if(tess->Init(NULL, language.c_str())) std::cerr << "Erro: Não foi possível inicializar o Tesseract OCR." << "\n";
+	tess->SetVariable("tessedit_char_whitelist", "0123456789/:LFJANEVRMABIUGOSETODZ");
 	tess->SetVariable("load_system_dawg", "0");
 	tess->SetVariable("tessedit_do_invert", "0");
 	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
