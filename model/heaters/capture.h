@@ -10,7 +10,7 @@
 #define IMG_HEIGHT 960
 
 #define ROI_WIDTH int(IMG_WIDTH * .469) // 300
-#define ROI_HEIGHT int(IMG_HEIGHT * .312) // 150
+#define ROI_HEIGHT int(IMG_HEIGHT * .35) // 336
 
 class Capture {
 public:
