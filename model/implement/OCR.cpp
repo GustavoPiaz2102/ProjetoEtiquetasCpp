@@ -3,9 +3,11 @@
 
 OCR::OCR(const std::string& language){
 	tess = new tesseract::TessBaseAPI();
-	if(tess->Init(NULL, language.c_str())) std::cerr << "Erro: Não foi possível inicializar o Tesseract OCR." << "\n";
+	if(tess->Init(nullptr, language.c_str(),tesseract::OEM_TESSERACT_ONLY)) std::cerr << "Erro: Não foi possível inicializar o Tesseract OCR." << "\n";
 	tess->SetVariable("tessedit_char_whitelist", "0123456789/:LFVJANFEVMARABRMAIJUNJULAGOSETOUTNOVDEZ");
 	tess->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
+	tess->SetVariable("load_freq_dawg", "0");
+	tess->SetVariable("load_system_dawg", "0");
 }
 
 OCR::~OCR(){
