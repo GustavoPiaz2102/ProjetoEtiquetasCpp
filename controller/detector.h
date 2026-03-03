@@ -31,7 +31,7 @@ class Detector{
 		std::mutex frame_mutex;                                             // Protege acesso ao frame
 		std::condition_variable frame_cv;                                               // Notifica a thread de processamento sobre novos frames
 		std::thread sensor_thread;                                          // Thread de captura e impressão
-		std::thread process_thread;                                         // Thread de processamento (RunProcess)  
+		std::thread process_thread;                                         // Thread de processamento 
 		
 		// --------------
 		// Flags 
@@ -61,13 +61,6 @@ class Detector{
 		 * @details Para ambas as threads (sensor e processamento) antes da destruição do objeto.
 		 */
 		~Detector();
-
-		/** @brief Processa um frame atual e extrai texto usando OCR.
-		 * @details Captura o frame atual de forma thread-safe, aplica pré-processamento e executa OCR para extrair texto.
-		 *          Esta função é síncrona e pode ser chamada diretamente.
-		 * @return std::string Texto extraído do frame. Retorna string vazia se não houver frame ou OCR falhar.
-		 */
-		std::string RunProcess();
 
 		/**
 		 * @brief Loop contínuo de processamento executado pela thread de processamento.
