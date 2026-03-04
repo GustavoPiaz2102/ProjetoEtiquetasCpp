@@ -43,8 +43,9 @@ void Detector::ProcessLoop(){
 			if(!processing_running) break;
 
 			current_frame = frame.clone();
+			NewFrameAvailable = false;
 		}
-		
+
 		std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
 		cv::Mat processed = preprocessor.preprocess(current_frame);
 		std::string text = ocr.extractText(processed);
@@ -56,8 +57,7 @@ void Detector::ProcessLoop(){
 			LastWithError = true;
 		} else LastWithError = false;
 		
-		NewFrameAvailable = false;
-		frame_cv.notify_one();
+		capture_cv.notify_one();
 	}
 
 	std::cout << "Esperando Pela finalização da thread de processamento na main\n";
@@ -73,7 +73,7 @@ void Detector::SensorCaptureImpressTHR(){
 
 			{
 				std::unique_lock<std::mutex> lock(frame_mutex);
-				frame_cv.wait(lock, [this]{ return !NewFrameAvailable || !sensor_running; });
+				capture_cv.wait(lock, [this]{ return !NewFrameAvailable || !sensor_running; });
 
 				if(!sensor_running) break;
 
@@ -135,7 +135,7 @@ void Detector::StartSensorThread(){
 
 void Detector::StopSensorThread(){
 	sensor_running = false;
-
+	capture_cv.notify_all();
 	if (sensor_thread.joinable()) {
 		sensor_thread.join();
 		std::cout << "Thread de captura limpa com sucesso.\n";
