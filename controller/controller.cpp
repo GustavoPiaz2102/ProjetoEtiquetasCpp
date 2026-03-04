@@ -176,10 +176,8 @@ void Controller::rodar_detector(){
 				if (!detector.GetProcessingRunning()) detector.StartProcessThread();
 
 				cv::Mat frame = detector.GetFrame();
-				if (!frame.empty()){
-					ReturnToMenu = interface.atualizar_frame(frame);
-					detector.SetFirstDet(false); // Só considera detectado se tiver imagem
-				} else ReturnToMenu = interface.atualizar_frame(NonDetectedFrame);
+				if (!frame.empty())	ReturnToMenu = interface.atualizar_frame(frame);
+				else ReturnToMenu = interface.atualizar_frame(NonDetectedFrame);
 
 			}
 		} else{

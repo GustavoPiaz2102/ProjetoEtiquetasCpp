@@ -101,6 +101,8 @@ void Detector::SensorCaptureImpressTHR(){
 				sensor_running = false;
 				imp.ResetLastImpress();
 			}
+
+			if(firstDet) firstDet = false;
 		}
 	}
 	
