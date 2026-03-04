@@ -171,6 +171,8 @@ std::string OCR::ctcDecode(const float* logits, int timeSteps, int numClasses) {
 		if (maxIdx != lastIdx && maxIdx != 0) {
 			if (maxIdx < static_cast<int>(charset.size())) {
 				const std::string& ch = charset[maxIdx];
+				std::cout << "[CTC] ch='" << ch << "' conf=" << confidence 
+					<< " whitelist=" << inWhitelist(ch) << "\n";
 				if (confidence >= minConfidence && inWhitelist(ch))
 					result += ch;
 			}
