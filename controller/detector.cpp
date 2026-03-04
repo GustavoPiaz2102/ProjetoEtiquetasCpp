@@ -52,9 +52,8 @@ void Detector::ProcessLoop(){
 			
 			if(!processing_running) break;
 
-			current_frame = frame.clone();
-			
 			NewFrameAvailable = false;
+			current_frame = frame.clone();
 		}
 		
 		//std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
