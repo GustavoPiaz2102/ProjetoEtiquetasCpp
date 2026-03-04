@@ -41,7 +41,6 @@ class Detector{
 		std::atomic<bool> firstDet{true};
 		std::atomic<bool> NewFrameAvailable{false}; 
 		std::atomic<bool> LastWithError{false};								 // Flag da validator, indica que o OCR achou um erro
-		std::function<void(bool, const std::string &)> validationCallback;   // Callback para notificação de validação
 		std::atomic<bool> printer_error{false};
 		
 	public:
@@ -118,14 +117,6 @@ class Detector{
 		 * @return bool True se a última validação falhou, False caso contrário.
 		 */
 		bool WasLastWithError() const{ return LastWithError; }
-
-		/**
-		 * @brief Configura o callback para notificação de resultados de validação.
-		 * @details Permite que o Controller seja notificado quando um código for validado (com sucesso ou erro).
-		 *          O callback recebe dois parâmetros: isValid (bool) e text (string com o código detectado).
-		 * @param[in] callback Função callback com signature void(bool, const std::string&)
-		 */
-		void setValidationCallback(std::function<void(bool, const std::string &)> callback){ validationCallback = callback; }
 
 		/**
 		 * @brief Obtém o estado de execução da thread de captura.
