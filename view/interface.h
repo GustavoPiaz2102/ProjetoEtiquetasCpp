@@ -72,6 +72,7 @@ private:
 	int pboIndex = 0;
 	size_t last_data_size = 0;
 	bool pboInitialized = false;
+	int frame_count = 0;
 
 	// Novos membros adicionados
 	float resolution_scale; // Controle de escala de resolução

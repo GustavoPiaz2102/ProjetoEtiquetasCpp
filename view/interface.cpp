@@ -300,6 +300,14 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
 	ImGui::SetCursorPosY((ImGui::GetWindowHeight() - display_height) * 0.5f);
 	ImGui::Image((ImTextureID)(intptr_t)texture_id, ImVec2(display_width, display_height));
 
+	frame_count++;
+
+	ImVec2 img_pos = ImGui::GetItemRectMin(); // canto superior esquerdo da imagem
+	ImGui::GetWindowDrawList()->AddText(
+		ImVec2(img_pos.x + 10, img_pos.y + 10),
+		IM_COL32(255, 255, 0, 255), // amarelo
+		std::to_string(frame_count).c_str()
+	);
 	// Controle de escala de resolução
 	ImGui::SetNextItemWidth(200);
 	//ImGui::SliderFloat("Escala", &resolution_scale, 0.5f, 2.0f);
