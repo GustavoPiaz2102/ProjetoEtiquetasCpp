@@ -11,21 +11,16 @@ bool Validator::ValidateVAL(std::string str) {
 	return (str.find(VAL) != std::string::npos);
 }
 bool Validator::Validate(std::string str) {
-	if (ValidateLT(str) && ValidateFAB(str) && ValidateVAL(str)) {
-		return true;
-	}
-	else {
-		return false;
-	}
+	return (ValidateLT(str) && ValidateFAB(str) && ValidateVAL(str));
 }
 std::string Validator::GetLT(){ return LT; }
 std::string Validator::GetFAB(){ return FAB; }
 std::string Validator::GetVAL(){ return VAL; }
 void Validator::SetLT(std::string& lt) { LT = lt; }
-void Validator::SetFAB(const std::string& fab) {
+void Validator::SetFAB(std::string& fab) {
 	FAB = fab;
 }
-void Validator::SetVAL(const std::string& val) {
+void Validator::SetVAL(std::string& val) {
 	VAL = val;
 }
 void Validator::printall(){
