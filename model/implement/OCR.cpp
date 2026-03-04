@@ -178,10 +178,13 @@ std::string OCR::ctcDecode(const float* logits, int timeSteps, int numClasses) {
 		if (maxIdx != lastIdx && maxIdx != 0) {
 			if (maxIdx < static_cast<int>(charset.size())) {
 				const std::string& ch = charset[maxIdx];
+				lastDebugError = "[CTC] ch='" + ch + "' conf=" + std::to_string(confidence) +
+					" whitelist=" + std::to_string(inWhitelist(ch)) + "\n";
 				if (confidence >= minConfidence && inWhitelist(ch))
 					result += ch;
 			}
 		}
+
 		lastIdx = maxIdx;
 	}
 
@@ -223,4 +226,8 @@ std::string OCR::extractText(const cv::Mat& detImg, const cv::Mat& origImg) {
 	}
 
 	return finalText;
+}
+
+std::string OCR::getLastDebugError() const {
+	return lastDebugError;
 }
