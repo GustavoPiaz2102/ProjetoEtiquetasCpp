@@ -40,6 +40,7 @@ void OCR::loadCharset(const std::string& keysPath) {
 		if (!line.empty()) charset.push_back(line);
 
 	charset.push_back(" ");
+	std::cout << "[OCR] charset size: " << charset.size() << "\n";
 }
 
 std::vector<float> OCR::buildTensor(const cv::Mat& img, int& outH, int& outW) {
@@ -70,7 +71,6 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& detImg) {
 	cv::Mat debugInput;
 	input.convertTo(debugInput, CV_8UC3, 127.5, 127.5);
 	cv::imwrite("/tmp/debug_det_input.png", debugInput);
-	std::cout << "[DET] input size: " << input.cols << "x" << input.rows << "\n";
 
 	int inH, inW;
 	std::vector<float> tensor = buildTensor(input, inH, inW);
@@ -97,19 +97,11 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& detImg) {
 	cv::threshold(probMap, binary, 0.3f, 255.0f, cv::THRESH_BINARY);
 	binary.convertTo(binary, CV_8U);
 
-	cv::Mat debugProb;
-	probMap.convertTo(debugProb, CV_8U, 255.0);
-	cv::imwrite("/tmp/debug_det_probmap.png", debugProb);
-	cv::imwrite("/tmp/debug_det_binary.png", binary);
-	std::cout << "[DET] probmap max: " << *std::max_element(data, data + outH * outW) << "\n";
-
 	cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
 	cv::dilate(binary, binary, kernel);
 
 	std::vector<std::vector<cv::Point>> contours;
 	cv::findContours(binary, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
-
-	std::cout << "[DET] contornos: " << contours.size() << "\n";
 
 	float scaleX = static_cast<float>(detImg.cols) / outW;
 	float scaleY = static_cast<float>(detImg.rows) / outH;
@@ -133,7 +125,7 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& detImg) {
 	for (const auto& b : boxes)
 		cv::rectangle(debugBoxes, b, cv::Scalar(0, 255, 0), 2);
 	cv::imwrite("/tmp/debug_det_boxes.png", debugBoxes);
-	std::cout << "[DET] boxes validas: " << boxes.size() << "\n";
+	std::cout << "[DET] boxes: " << boxes.size() << "\n";
 
 	std::sort(boxes.begin(), boxes.end(),
 		[](const cv::Rect& a, const cv::Rect& b){ return a.y < b.y; });
@@ -177,22 +169,6 @@ std::string OCR::recognize(const cv::Mat& lineImg) {
 	int timeSteps  = static_cast<int>(outShape[1]);
 	int numClasses = static_cast<int>(outShape[2]);
 
-	std::cout << "[REC] timeSteps=" << timeSteps << " numClasses=" << numClasses << "\n";
-
-	// Debug top-5 classes no primeiro timestep
-	const float* row0 = out.GetTensorData<float>();
-	float maxVal0 = *std::max_element(row0, row0 + numClasses);
-	std::vector<std::pair<float,int>> scores;
-	for (int i = 0; i < numClasses; ++i)
-		scores.push_back({std::exp(row0[i] - maxVal0), i});
-	std::sort(scores.rbegin(), scores.rend());
-	std::cout << "[REC] top5 t=0: ";
-	for (int i = 0; i < 5; ++i)
-		std::cout << scores[i].second << "("
-		          << (scores[i].second < (int)charset.size() ? charset[scores[i].second] : "?")
-		          << ")=" << scores[i].first << " ";
-	std::cout << "\n";
-
 	std::string text = ctcDecode(out.GetTensorData<float>(), timeSteps, numClasses);
 	std::cout << "[REC] linha " << (lineCount-1) << ": '" << text << "'\n";
 	return text;
@@ -205,17 +181,14 @@ std::string OCR::ctcDecode(const float* logits, int timeSteps, int numClasses) {
 	for (int t = 0; t < timeSteps; ++t) {
 		const float* row = logits + t * numClasses;
 
-		float maxVal = *std::max_element(row, row + numClasses);
-		std::vector<float> probs(numClasses);
-		float sum = 0.0f;
-		for (int i = 0; i < numClasses; ++i) {
-			probs[i] = std::exp(row[i] - maxVal);
-			sum += probs[i];
-		}
-
+		// Os logits já são softmax — não precisam de conversão
 		int maxIdx = static_cast<int>(
-			std::max_element(probs.begin(), probs.end()) - probs.begin());
-		float confidence = (probs[maxIdx] / sum) * 100.0f;
+			std::max_element(row, row + numClasses) - row);
+		float confidence = row[maxIdx] * 100.0f;
+
+		std::cout << "[CTC] t=" << t << " idx=" << maxIdx
+		          << " ch=" << (maxIdx < (int)charset.size() ? charset[maxIdx] : "?")
+		          << " conf=" << confidence << "\n";
 
 		if (maxIdx != lastIdx && maxIdx != 0) {
 			if (maxIdx < static_cast<int>(charset.size())) {
@@ -235,10 +208,8 @@ std::string OCR::extractText(const cv::Mat& detImg, const cv::Mat& origImg) {
 		std::cerr << "[OCR] Erro: imagem vazia.\n";
 		return "";
 	}
-        cv::imwrite("/tmp/debug_orig.png", origImg);
 
-	std::cout << "[OCR] detImg: " << detImg.cols << "x" << detImg.rows
-	          << " origImg: " << origImg.cols << "x" << origImg.rows << "\n";
+	cv::imwrite("/tmp/debug_orig.png", origImg);
 
 	std::vector<cv::Rect> boxes = detect(detImg);
 
