@@ -235,6 +235,7 @@ std::string OCR::extractText(const cv::Mat& detImg, const cv::Mat& origImg) {
 		std::cerr << "[OCR] Erro: imagem vazia.\n";
 		return "";
 	}
+        cv::imwrite("/tmp/debug_orig.png", origImg);
 
 	std::cout << "[OCR] detImg: " << detImg.cols << "x" << detImg.rows
 	          << " origImg: " << origImg.cols << "x" << origImg.rows << "\n";
