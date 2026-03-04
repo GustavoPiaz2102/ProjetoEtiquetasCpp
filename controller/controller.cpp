@@ -145,7 +145,7 @@ void Controller::run(){
 	}
 }
 
-bool Controller::requisitar_data_e_setar(int tipo, std::function<void(const std::string &)> setter){
+bool Controller::requisitar_data_e_setar(int tipo, std::function<void(std::string &)> setter){
 	std::string data;
 
 	if (interface.requisitar_data(data, tipo)){
