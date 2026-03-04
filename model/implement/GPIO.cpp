@@ -80,8 +80,8 @@ bool GPIO::ReadSensor() {
     smoothedValue = FILTER_ALPHA * rawValue + (1.0 - FILTER_ALPHA) * smoothedValue;
 
     bool currentLogicalState;
-    if (smoothedValue > (SENSOR_THRESHOLD + SENSOR_HYSTERESIS)) currentLogicalState = true;
-    else if (smoothedValue < (SENSOR_THRESHOLD - SENSOR_HYSTERESIS)) currentLogicalState = false;
+    if (smoothedValue > (SENSOR_THRESHOLD + SENSOR_HYSTERESIS)) currentLogicalState = false;
+    else if (smoothedValue < (SENSOR_THRESHOLD - SENSOR_HYSTERESIS)) currentLogicalState = true;
     else currentLogicalState = lastLogicalState;
 
     auto now = std::chrono::steady_clock::now();
