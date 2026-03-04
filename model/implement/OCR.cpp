@@ -40,7 +40,6 @@ void OCR::loadCharset(const std::string& keysPath) {
 		if (!line.empty()) charset.push_back(line);
 
 	charset.push_back(" ");
-	std::cout << "[OCR] charset size: " << charset.size() << "\n";
 }
 
 std::vector<float> OCR::buildTensor(const cv::Mat& img, int& outH, int& outW) {
@@ -67,10 +66,6 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& detImg) {
 		cv::resize(detImg, input, cv::Size(W, H));
 	else
 		input = detImg;
-
-	cv::Mat debugInput;
-	input.convertTo(debugInput, CV_8UC3, 127.5, 127.5);
-	cv::imwrite("/tmp/debug_det_input.png", debugInput);
 
 	int inH, inW;
 	std::vector<float> tensor = buildTensor(input, inH, inW);
@@ -120,13 +115,6 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& detImg) {
 		boxes.push_back(r);
 	}
 
-	cv::Mat debugBoxes;
-	debugInput.copyTo(debugBoxes);
-	for (const auto& b : boxes)
-		cv::rectangle(debugBoxes, b, cv::Scalar(0, 255, 0), 2);
-	cv::imwrite("/tmp/debug_det_boxes.png", debugBoxes);
-	std::cout << "[DET] boxes: " << boxes.size() << "\n";
-
 	std::sort(boxes.begin(), boxes.end(),
 		[](const cv::Rect& a, const cv::Rect& b){ return a.y < b.y; });
 
@@ -144,11 +132,6 @@ std::string OCR::recognize(const cv::Mat& lineImg) {
 
 	cv::Mat resized;
 	cv::resize(lineImg, resized, cv::Size(targetW, targetH));
-
-	static int lineCount = 0;
-	cv::Mat debugLine;
-	resized.convertTo(debugLine, CV_8UC3, 127.5, 127.5);
-	cv::imwrite("/tmp/debug_line_" + std::to_string(lineCount++) + ".png", debugLine);
 
 	int H, W;
 	std::vector<float> tensor = buildTensor(resized, H, W);
@@ -169,9 +152,7 @@ std::string OCR::recognize(const cv::Mat& lineImg) {
 	int timeSteps  = static_cast<int>(outShape[1]);
 	int numClasses = static_cast<int>(outShape[2]);
 
-	std::string text = ctcDecode(out.GetTensorData<float>(), timeSteps, numClasses);
-	std::cout << "[REC] linha " << (lineCount-1) << ": '" << text << "'\n";
-	return text;
+	return ctcDecode(out.GetTensorData<float>(), timeSteps, numClasses);
 }
 
 std::string OCR::ctcDecode(const float* logits, int timeSteps, int numClasses) {
@@ -181,14 +162,9 @@ std::string OCR::ctcDecode(const float* logits, int timeSteps, int numClasses) {
 	for (int t = 0; t < timeSteps; ++t) {
 		const float* row = logits + t * numClasses;
 
-		// Os logits já são softmax — não precisam de conversão
 		int maxIdx = static_cast<int>(
 			std::max_element(row, row + numClasses) - row);
 		float confidence = row[maxIdx] * 100.0f;
-
-		std::cout << "[CTC] t=" << t << " idx=" << maxIdx
-		          << " ch=" << (maxIdx < (int)charset.size() ? charset[maxIdx] : "?")
-		          << " conf=" << confidence << "\n";
 
 		if (maxIdx != lastIdx && maxIdx != 0) {
 			if (maxIdx < static_cast<int>(charset.size())) {
@@ -208,8 +184,6 @@ std::string OCR::extractText(const cv::Mat& detImg, const cv::Mat& origImg) {
 		std::cerr << "[OCR] Erro: imagem vazia.\n";
 		return "";
 	}
-
-	cv::imwrite("/tmp/debug_orig.png", origImg);
 
 	std::vector<cv::Rect> boxes = detect(detImg);
 
