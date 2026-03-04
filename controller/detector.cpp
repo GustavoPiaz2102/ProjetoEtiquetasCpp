@@ -52,8 +52,8 @@ void Detector::ProcessLoop(){
 			
 			if(!processing_running) break;
 
-			NewFrameAvailable = false;
 			current_frame = frame.clone();
+			NewFrameAvailable = false;
 		}
 		
 		//std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
@@ -67,6 +67,11 @@ void Detector::ProcessLoop(){
 			LastWithError = true;
 			std::cout << ocr.getLastDebugError();
 		} else LastWithError = false;
+
+		{
+			std::lock_guard<std::mutex> lock(frame_mutex);
+			OCRDone = true;
+		}
 		
 		sensor_cv.notify_one();
 	}
@@ -83,15 +88,22 @@ void Detector::SensorCaptureImpressTHR(){
 
 			{
 				std::unique_lock<std::mutex> lock(frame_mutex);
-				sensor_cv.wait(lock, [this]{ return !NewFrameAvailable || !sensor_running; });
+				sensor_cv.wait(lock, [this]{ return OCRDone || !sensor_running; });
 
 				if (!sensor_running) break;
 
 				frame = std::move(newFrame);
 				interface.setFrameCount(interface.getFrameCount() + 1); 
 				NewFrameAvailable = true;
+				OCRDone = false;
 			}
 			frame_cv.notify_one();
+
+			{
+                std::unique_lock<std::mutex> lock(frame_mutex);
+                sensor_cv.wait(lock, [this]{ return OCRDone || !sensor_running; });
+                if (!sensor_running) break;
+            }
 			
 			if(!imp.print(this->firstDet)){
 				std::cout << "Falha ao iniciar a impressão! Parando thread." << "\n";

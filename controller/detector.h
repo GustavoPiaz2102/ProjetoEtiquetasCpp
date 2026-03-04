@@ -37,6 +37,7 @@ class Detector{
 		std::thread process_thread;                                         // Thread de processamento 		
 		std::atomic<bool> sensor_running{false};                            // Controle da thread de captura
 		std::atomic<bool> processing_running{false};                        // Controle da thread de processamento
+		std::atomic<bool> OCRDone{true};
 		
 		// -------------- Flags de controle e estado --------------------------------------
 		std::atomic<bool> firstDet{true};
