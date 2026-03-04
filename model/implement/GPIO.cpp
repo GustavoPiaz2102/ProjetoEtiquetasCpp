@@ -74,7 +74,7 @@ bool GPIO::ReadSensor() {
         stableState = lastLogicalState;
         lastStateChange = std::chrono::steady_clock::now();
         firstRead = false;
-        return false;
+        return true;
     }
 
     smoothedValue = FILTER_ALPHA * rawValue + (1.0 - FILTER_ALPHA) * smoothedValue;
