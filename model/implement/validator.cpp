@@ -2,13 +2,13 @@
 Validator::Validator(std::string lt, std::string fab, std::string val)
 	: LT(lt), FAB(fab), VAL(val) {}
 bool Validator::ValidateLT(std::string str) {
-	return (str.find(LT) != std::string::npos);
+	return (str.find("L:"+LT) != std::string::npos);
 }
 bool Validator::ValidateFAB(std::string str) {
-	return (str.find(FAB) != std::string::npos);
+	return (str.find("F:"+FAB) != std::string::npos);
 }
 bool Validator::ValidateVAL(std::string str) {
-	return (str.find(VAL) != std::string::npos);
+	return (str.find("V:"+VAL) != std::string::npos);
 }
 bool Validator::Validate(std::string str) {
 	return (ValidateLT(str) && ValidateFAB(str) && ValidateVAL(str));

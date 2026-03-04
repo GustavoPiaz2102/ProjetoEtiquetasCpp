@@ -347,7 +347,7 @@ bool Interface::requisitar_lt(std::string& selected_lt) {
 	ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);
 
 	ImGui::Text(" Insira o valor do lote: ");
-	ImGui::Text(" L. ");
+	ImGui::Text(" L: ");
 	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
 	
 	char lote_label[4];
