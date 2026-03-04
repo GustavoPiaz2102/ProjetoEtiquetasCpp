@@ -129,7 +129,6 @@ void Detector::StartSensorThread(){
 
 void Detector::StopSensorThread(){
 	sensor_running = false;
-	capture_cv.notify_all();
 	if (sensor_thread.joinable()) {
 		sensor_thread.join();
 		std::cout << "Thread de captura limpa com sucesso.\n";
