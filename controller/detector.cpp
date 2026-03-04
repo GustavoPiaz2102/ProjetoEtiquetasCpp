@@ -32,6 +32,7 @@ void Detector::StopProcessThread(){
 }
 
 void Detector::ProcessLoop(){
+	validator.printall();
 	while(processing_running){
 		cv::Mat current_frame;
 
