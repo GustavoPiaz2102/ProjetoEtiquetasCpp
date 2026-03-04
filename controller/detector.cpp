@@ -1,6 +1,6 @@
 #include "detector.h"
 
-Detector::Detector(Impress &imp, Interface &interface, Validator &validator) : camera(0), ocr("eng"), sensor(21, "gpiochip4"), imp(imp), interface(interface), validator(validator) {
+Detector::Detector(Impress &imp, Interface &interface, Validator &validator) : camera(0), ocr("/home/pi/models"), sensor(21, "gpiochip4"), imp(imp), interface(interface), validator(validator) {
 	printer_error = false;
 }
 
