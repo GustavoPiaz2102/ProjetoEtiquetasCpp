@@ -56,8 +56,6 @@ void Detector::ProcessLoop(){
 			imp.setLastImpress(false);
 			LastWithError = true;
 		} else LastWithError = false;
-		
-		capture_cv.notify_one();
 	}
 
 	std::cout << "Esperando Pela finalização da thread de processamento na main\n";
@@ -73,10 +71,6 @@ void Detector::SensorCaptureImpressTHR(){
 
 			{
 				std::unique_lock<std::mutex> lock(frame_mutex);
-				capture_cv.wait(lock, [this]{ return !NewFrameAvailable || !sensor_running; });
-
-				if(!sensor_running) break;
-
 				frame = std::move(newFrame);
 				NewFrameAvailable = true;
 			}
