@@ -121,9 +121,9 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& preprocessedImg) {
 	for (const auto& contour : contours) {
 		cv::Rect r = cv::boundingRect(contour);
 		std::cout << "[DET] contorno area: " << r.area() << "\n";
-		if (r.area() < 100) continue;
+		if (r.area() < 50) continue;
 
-		int pad = 4;
+		int pad = 8;
 		r.x      = std::max(0, static_cast<int>(r.x * scaleX) - pad);
 		r.y      = std::max(0, static_cast<int>(r.y * scaleY) - pad);
 		r.width  = std::min(preprocessedImg.cols - r.x, static_cast<int>(r.width  * scaleX) + 2 * pad);
