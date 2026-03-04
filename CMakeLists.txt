@@ -9,9 +9,20 @@ find_package(OpenGL REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(TESSERACT REQUIRED tesseract)
-pkg_check_modules(GPIOD REQUIRED libgpiod)  # <---- Adicionado libgpiod
+pkg_check_modules(GPIOD REQUIRED libgpiod)
 #find_package(raspicam REQUIRED)  # <---- Adicionado raspicam (comentado)
+
+# ONNX Runtime (substitui Tesseract)
+find_library(ONNXRUNTIME_LIB
+    NAMES onnxruntime
+    PATHS /usr/local/lib
+    REQUIRED
+)
+find_path(ONNXRUNTIME_INCLUDE
+    NAMES onnxruntime_cxx_api.h
+    PATHS /usr/local/include
+    REQUIRED
+)
 
 # Arquivos fontes
 file(GLOB SOURCES "*.cpp")
@@ -40,8 +51,8 @@ target_include_directories(compilated_program PRIVATE
     ${OPENGL_INCLUDE_DIRS}
     ${GLEW_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
-    ${TESSERACT_INCLUDE_DIRS}
-    ${GPIOD_INCLUDE_DIRS}          # <---- Inclui libgpiod
+    ${ONNXRUNTIME_INCLUDE}
+    ${GPIOD_INCLUDE_DIRS}
     #${raspicam_INCLUDE_DIRS}      # <---- Inclui raspicam (comentado)
 )
 
@@ -54,7 +65,7 @@ target_link_libraries(compilated_program
     pthread
     dl
     ${OpenCV_LIBS}
-    ${TESSERACT_LIBRARIES}
-    ${GPIOD_LIBRARIES}             # <---- Link libgpiod
+    ${ONNXRUNTIME_LIB}
+    ${GPIOD_LIBRARIES}
     #${raspicam_CV_LIBS}          # <---- Link raspicam (comentado)
 )
