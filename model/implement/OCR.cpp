@@ -141,7 +141,7 @@ std::string OCR::recognize(const cv::Mat& lineImg) {
 		memInfo, tensor.data(), tensor.size(), shape.data(), shape.size());
 
 	const char* inputNames[]  = {"x"};
-	const char* outputNames[] = {"softmax_0.tmp_0"};
+	const char* outputNames[] = {"softmax_2.tmp_0"};
 
 	auto outputs = recSession->Run(
 		Ort::RunOptions{nullptr}, inputNames, &inputOrt, 1, outputNames, 1);
