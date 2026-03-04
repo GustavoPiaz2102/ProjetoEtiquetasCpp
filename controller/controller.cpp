@@ -172,8 +172,8 @@ void Controller::rodar_detector(){
 		if(interface.GetImprimindo() && imp.getQntImpressao() > 0){
 			if(detector.GetFirstDet() || (detector.GetSensorRunning() && detector.GetProcessingRunning())){
 				// Inicia threads se necessário
-				if (!detector.GetProcessingRunning()) detector.StartProcessThread();
 				if (!detector.GetSensorRunning()) detector.StartSensorThread();
+				if (!detector.GetProcessingRunning()) detector.StartProcessThread();
 
 				cv::Mat frame = detector.GetFrame();
 				if (!frame.empty()){

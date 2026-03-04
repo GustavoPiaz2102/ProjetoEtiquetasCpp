@@ -61,7 +61,7 @@ void Detector::ProcessLoop(){
 		cv::Mat processed = preprocessor.preprocess(current_frame);
 		std::string text = ocr.extractText(processed,current_frame);
 		//std::cout << "Tempo de processamento: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() << " ms\n";
-		//std::cout << "Texto Detectado: " << text << std::endl;
+		std::cout << "Texto Detectado: " << text << std::endl;
 		
 		if(!validator.Validate(text)){
 			imp.setLastImpress(false);
