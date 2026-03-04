@@ -27,7 +27,7 @@ class OCR {
 		std::unique_ptr<Ort::Session> recSession;
 
 		std::vector<std::string> charset;
-		float minConfidence = 99.0f;
+		float minConfidence = 95.0f;
 
 		/**
 		 * @brief Detecta regiões de texto na imagem pré-processada.
