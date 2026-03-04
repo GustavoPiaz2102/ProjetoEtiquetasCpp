@@ -76,7 +76,7 @@ void Detector::ProcessLoop(){
 }
 
 void Detector::SensorCaptureImpressTHR(){
-	sensor.SetStroboHigh(1000);
+	sensor.SetStroboHigh(2000);
 	while(sensor_running){
 		if(sensor.ReadSensor() || firstDet){
 			camera.captureImage();
@@ -94,9 +94,7 @@ void Detector::SensorCaptureImpressTHR(){
 			}
 			frame_cv.notify_one();
 			
-			int error = 0;
-			
-			if(!imp.print(&error)){
+			if(!imp.print(this->firstDet)){
 				std::cout << "Falha ao iniciar a impressão! Parando thread." << "\n";
 				
 				printer_error = true;
