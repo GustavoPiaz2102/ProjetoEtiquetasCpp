@@ -57,9 +57,18 @@ std::vector<float> OCR::buildTensor(const cv::Mat& img, int& outH, int& outW) {
 }
 
 std::vector<cv::Rect> OCR::detect(const cv::Mat& preprocessedImg) {
-	int H, W;
-	std::vector<float> tensor = buildTensor(preprocessedImg, H, W);
-	std::vector<int64_t> shape = {1, 3, H, W};
+	int W = (preprocessedImg.cols / 32) * 32;
+	int H = (preprocessedImg.rows / 32) * 32;
+
+	cv::Mat input;
+	if (W != preprocessedImg.cols || H != preprocessedImg.rows)
+		cv::resize(preprocessedImg, input, cv::Size(W, H));
+	else
+		input = preprocessedImg;
+
+	int inH, inW;
+	std::vector<float> tensor = buildTensor(input, inH, inW);
+	std::vector<int64_t> shape = {1, 3, inH, inW};
 
 	Ort::MemoryInfo memInfo = Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault);
 	Ort::Value inputOrt = Ort::Value::CreateTensor<float>(
@@ -88,8 +97,8 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& preprocessedImg) {
 	std::vector<std::vector<cv::Point>> contours;
 	cv::findContours(binary, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
-	float scaleX = static_cast<float>(W) / outW;
-	float scaleY = static_cast<float>(H) / outH;
+	float scaleX = static_cast<float>(preprocessedImg.cols) / outW;
+	float scaleY = static_cast<float>(preprocessedImg.rows) / outH;
 
 	std::vector<cv::Rect> boxes;
 	for (const auto& contour : contours) {
@@ -99,8 +108,8 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& preprocessedImg) {
 		int pad = 4;
 		r.x      = std::max(0, static_cast<int>(r.x * scaleX) - pad);
 		r.y      = std::max(0, static_cast<int>(r.y * scaleY) - pad);
-		r.width  = std::min(W - r.x, static_cast<int>(r.width  * scaleX) + 2 * pad);
-		r.height = std::min(H - r.y, static_cast<int>(r.height * scaleY) + 2 * pad);
+		r.width  = std::min(preprocessedImg.cols - r.x, static_cast<int>(r.width  * scaleX) + 2 * pad);
+		r.height = std::min(preprocessedImg.rows - r.y, static_cast<int>(r.height * scaleY) + 2 * pad);
 
 		boxes.push_back(r);
 	}
