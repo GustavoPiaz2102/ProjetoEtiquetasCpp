@@ -43,20 +43,20 @@ void Detector::ProcessLoop(){
 			if(!processing_running) break;
 
 			current_frame = frame.clone();
-			NewFrameAvailable = false;
 		}
-
+		
 		std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
 		cv::Mat processed = preprocessor.preprocess(current_frame);
 		std::string text = ocr.extractText(processed);
 		std::cout << "Tempo de processamento: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() << " ms\n";
 		std::cout << "Texto Detectado: " << text << std::endl;
-
+		
 		if(!validator.Validate(text)){
 			imp.setLastImpress(false);
 			LastWithError = true;
 		} else LastWithError = false;
-
+		
+		NewFrameAvailable = false;
 		frame_cv.notify_one();
 	}
 
