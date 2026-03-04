@@ -14,7 +14,7 @@ const std::string FILE_RAW   = DEVICE_DIR + "in_voltage0_raw";
 const std::string FILE_SCALE = DEVICE_DIR + "in_voltage0_scale"; 
 
 #define SENSOR_THRESHOLD 15000
-#define SENSOR_HYSTERESIS 500 //(16k desliga e 16400 liga)
+#define SENSOR_HYSTERESIS 300 //(16k desliga e 16400 liga)
 #define DEBOUNCE_MS 20 //periodo entre leituras
 #define FILTER_ALPHA 0.30
 // cada iteração contribui em 25% do valor final (aumentar se ficar muito suave)
