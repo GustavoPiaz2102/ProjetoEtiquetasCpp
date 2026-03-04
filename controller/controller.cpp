@@ -172,20 +172,15 @@ void Controller::rodar_detector(){
 		if(interface.GetImprimindo() && imp.getQntImpressao() > 0){
 			if(detector.GetFirstDet() || (detector.GetSensorRunning() && detector.GetProcessingRunning())){
 				// Inicia threads se necessário
+				if (!detector.GetProcessingRunning()) detector.StartProcessThread();
 				if (!detector.GetSensorRunning()) detector.StartSensorThread();
 
-				// CORREÇÃO: Evita crash ou tela preta ao tentar desenhar frame vazio
 				cv::Mat frame = detector.GetFrame();
 				if (!frame.empty()){
 					ReturnToMenu = interface.atualizar_frame(frame);
 					detector.SetFirstDet(false); // Só considera detectado se tiver imagem
 				} else ReturnToMenu = interface.atualizar_frame(NonDetectedFrame);
 
-				if (!detector.GetProcessingRunning()) detector.StartProcessThread();
-
-				// Atualiza status local baseado nas flags internas do detector
-				// Nota: Removido GetRunning direto para evitar race condition,
-				// confiamos na lógica do Controller e no HasPrinterError
 			}
 		} else{
 			std::cout << "Desligamento seguro\n";
