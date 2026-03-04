@@ -1,4 +1,5 @@
 #include "../heaters/OCR.h"
+#include "../heaters/preprocessor.h"
 #include <fstream>
 #include <algorithm>
 #include <cmath>
@@ -56,22 +57,21 @@ std::vector<float> OCR::buildTensor(const cv::Mat& img, int& outH, int& outW) {
 	return tensor;
 }
 
-std::vector<cv::Rect> OCR::detect(const cv::Mat& preprocessedImg) {
-	int W = (preprocessedImg.cols / 32) * 32;
-	int H = (preprocessedImg.rows / 32) * 32;
+std::vector<cv::Rect> OCR::detect(const cv::Mat& detImg) {
+	int W = (detImg.cols / 32) * 32;
+	int H = (detImg.rows / 32) * 32;
 
 	cv::Mat input;
-	if (W != preprocessedImg.cols || H != preprocessedImg.rows)
-		cv::resize(preprocessedImg, input, cv::Size(W, H));
+	if (W != detImg.cols || H != detImg.rows)
+		cv::resize(detImg, input, cv::Size(W, H));
 	else
-		input = preprocessedImg;
+		input = detImg;
 
-	// DEBUG: salva imagem de entrada do detector desnormalizada
+	// DEBUG
 	cv::Mat debugInput;
 	input.convertTo(debugInput, CV_8UC3, 127.5, 127.5);
 	cv::imwrite("/tmp/debug_det_input.png", debugInput);
-	std::cout << "[DET] input size: " << input.cols << "x" << input.rows
-	          << " channels: " << input.channels() << "\n";
+	std::cout << "[DET] input size: " << input.cols << "x" << input.rows << "\n";
 
 	int inH, inW;
 	std::vector<float> tensor = buildTensor(input, inH, inW);
@@ -98,13 +98,12 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& preprocessedImg) {
 	cv::threshold(probMap, binary, 0.3f, 255.0f, cv::THRESH_BINARY);
 	binary.convertTo(binary, CV_8U);
 
-	// DEBUG: salva mapa de probabilidade e binário
+	// DEBUG
 	cv::Mat debugProb;
 	probMap.convertTo(debugProb, CV_8U, 255.0);
 	cv::imwrite("/tmp/debug_det_probmap.png", debugProb);
 	cv::imwrite("/tmp/debug_det_binary.png", binary);
-	std::cout << "[DET] probmap size: " << outW << "x" << outH
-	          << " max_val: " << *std::max_element(data, data + outH * outW) << "\n";
+	std::cout << "[DET] probmap max: " << *std::max_element(data, data + outH * outW) << "\n";
 
 	cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
 	cv::dilate(binary, binary, kernel);
@@ -112,27 +111,26 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& preprocessedImg) {
 	std::vector<std::vector<cv::Point>> contours;
 	cv::findContours(binary, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
-	std::cout << "[DET] contornos encontrados: " << contours.size() << "\n";
+	std::cout << "[DET] contornos: " << contours.size() << "\n";
 
-	float scaleX = static_cast<float>(preprocessedImg.cols) / outW;
-	float scaleY = static_cast<float>(preprocessedImg.rows) / outH;
+	float scaleX = static_cast<float>(detImg.cols) / outW;
+	float scaleY = static_cast<float>(detImg.rows) / outH;
 
 	std::vector<cv::Rect> boxes;
 	for (const auto& contour : contours) {
 		cv::Rect r = cv::boundingRect(contour);
-		std::cout << "[DET] contorno area: " << r.area() << "\n";
 		if (r.area() < 50) continue;
 
 		int pad = 8;
 		r.x      = std::max(0, static_cast<int>(r.x * scaleX) - pad);
 		r.y      = std::max(0, static_cast<int>(r.y * scaleY) - pad);
-		r.width  = std::min(preprocessedImg.cols - r.x, static_cast<int>(r.width  * scaleX) + 2 * pad);
-		r.height = std::min(preprocessedImg.rows - r.y, static_cast<int>(r.height * scaleY) + 2 * pad);
+		r.width  = std::min(detImg.cols - r.x, static_cast<int>(r.width  * scaleX) + 2 * pad);
+		r.height = std::min(detImg.rows - r.y, static_cast<int>(r.height * scaleY) + 2 * pad);
 
 		boxes.push_back(r);
 	}
 
-	// DEBUG: salva imagem com boxes desenhadas
+	// DEBUG: desenha boxes sobre imagem original desnormalizada
 	cv::Mat debugBoxes;
 	debugInput.copyTo(debugBoxes);
 	for (const auto& b : boxes)
@@ -158,7 +156,7 @@ std::string OCR::recognize(const cv::Mat& lineImg) {
 	cv::Mat resized;
 	cv::resize(lineImg, resized, cv::Size(targetW, targetH));
 
-	// DEBUG: salva cada recorte de linha
+	// DEBUG
 	static int lineCount = 0;
 	cv::Mat debugLine;
 	resized.convertTo(debugLine, CV_8UC3, 127.5, 127.5);
@@ -220,27 +218,30 @@ std::string OCR::ctcDecode(const float* logits, int timeSteps, int numClasses) {
 	return result;
 }
 
-std::string OCR::extractText(const cv::Mat& inputImage) {
-	if (inputImage.empty()) {
+std::string OCR::extractText(const cv::Mat& detImg, const cv::Mat& origImg) {
+	if (detImg.empty() || origImg.empty()) {
 		std::cerr << "[OCR] Erro: imagem vazia.\n";
 		return "";
 	}
 
-	std::cout << "[OCR] input size: " << inputImage.cols << "x" << inputImage.rows
-	          << " channels: " << inputImage.channels()
-	          << " type: " << inputImage.type() << "\n";
+	std::cout << "[OCR] detImg: " << detImg.cols << "x" << detImg.rows
+	          << " origImg: " << origImg.cols << "x" << origImg.rows << "\n";
 
-	std::vector<cv::Rect> boxes = detect(inputImage);
+	std::vector<cv::Rect> boxes = detect(detImg);
 
 	if (boxes.empty()) {
 		std::cerr << "[OCR] Nenhuma linha detectada.\n";
 		return "";
 	}
 
+	// Preprocessor para normalizar recortes da imagem original para o rec
+	Preprocessor prep;
+
 	std::string finalText;
 	for (const auto& box : boxes) {
-		cv::Mat lineImg = inputImage(box);
-		std::string lineText = recognize(lineImg);
+		cv::Mat crop   = origImg(box);
+		cv::Mat recImg = prep.prepareForRec(crop);
+		std::string lineText = recognize(recImg);
 		if (!lineText.empty())
 			finalText += lineText + "\n";
 	}

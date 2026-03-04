@@ -16,13 +16,25 @@ cv::Mat Preprocessor::preprocess(const cv::Mat& inputImage) {
 
 	cv::threshold(gray, gray, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
 
-	// Se a maioria dos pixels é escura, o fundo está escuro — inverte
-	// (fundo deve ser claro = maioria dos pixels brancos)
 	if (cv::mean(gray)[0] < 127)
 		cv::bitwise_not(gray, gray);
 
 	cv::Mat rgb;
 	cv::cvtColor(gray, rgb, cv::COLOR_GRAY2RGB);
+
+	cv::Mat result;
+	rgb.convertTo(result, CV_32F, 1.0 / 127.5, -1.0);
+
+	return result;
+}
+
+cv::Mat Preprocessor::prepareForRec(const cv::Mat& inputImage) {
+	cv::Mat rgb;
+
+	if (inputImage.channels() == 1)
+		cv::cvtColor(inputImage, rgb, cv::COLOR_GRAY2RGB);
+	else
+		cv::cvtColor(inputImage, rgb, cv::COLOR_BGR2RGB);
 
 	cv::Mat result;
 	rgb.convertTo(result, CV_32F, 1.0 / 127.5, -1.0);
