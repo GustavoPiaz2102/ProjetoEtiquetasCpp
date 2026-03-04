@@ -29,22 +29,20 @@ class Detector{
 
 		cv::Mat frame;                                                      // Frame capturado da câmera
 		std::mutex frame_mutex;                                             // Protege acesso ao frame
-		std::condition_variable frame_cv;                                               // Notifica a thread de processamento sobre novos frames
-		std::thread sensor_thread;                                          // Thread de captura e impressão
-		std::thread process_thread;                                         // Thread de processamento 
-		
-		// --------------
-		// Flags 
-		// --------------
+		std::condition_variable frame_cv;                                   	// Notifica a thread de processamento sobre novos frames
 
+		// -------------- Threads e controle de execução -----------------------
+		std::thread sensor_thread;                                          // Thread de captura e impressão
+		std::thread process_thread;                                         // Thread de processamento 		
+		std::atomic<bool> sensor_running{false};                            // Controle da thread de captura
+		std::atomic<bool> processing_running{false};                        // Controle da thread de processamento
+		
+		// -------------- Flags de controle e estado --------------------------------------
 		std::atomic<bool> firstDet{true};
 		std::atomic<bool> NewFrameAvailable{false}; 
 		std::atomic<bool> LastWithError{false};								 // Flag da validator, indica que o OCR achou um erro
 		std::function<void(bool, const std::string &)> validationCallback;   // Callback para notificação de validação
 		std::atomic<bool> printer_error{false};
-		
-		std::atomic<bool> sensor_running{false};                            // Controle da thread de captura
-		std::atomic<bool> processing_running{false};                        // Controle da thread de processamento
 		
 	public:
 
