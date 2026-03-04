@@ -65,6 +65,45 @@ int GPIO::ReadRaw(){
 }
 
 bool GPIO::ReadSensor() {
+    int rawValue = ReadRaw();
+    if (rawValue < 0) return false;
+
+    if (firstRead) {
+        smoothedValue = rawValue;
+        lastLogicalState = (rawValue > SENSOR_THRESHOLD);
+        stableState = lastLogicalState;
+        lastStateChange = std::chrono::steady_clock::now();
+        firstRead = false;
+        return false;
+    }
+
+    smoothedValue = FILTER_ALPHA * rawValue + (1.0 - FILTER_ALPHA) * smoothedValue;
+
+    bool currentLogicalState;
+    if (smoothedValue > (SENSOR_THRESHOLD + SENSOR_HYSTERESIS)) currentLogicalState = true;
+    else if (smoothedValue < (SENSOR_THRESHOLD - SENSOR_HYSTERESIS)) currentLogicalState = false;
+    else currentLogicalState = lastLogicalState;
+
+    auto now = std::chrono::steady_clock::now();
+
+    if (currentLogicalState != lastLogicalState) {
+        lastStateChange = now;
+        lastLogicalState = currentLogicalState;
+    }
+
+    // Só confirma após debounce
+    if (lastLogicalState != stableState) {
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastStateChange).count();
+        if (elapsed >= DEBOUNCE_MS) {
+            stableState = lastLogicalState;
+            return stableState;
+        }
+    }
+
+    return false;
+}
+/*
+bool GPIO::ReadSensor() {
 	int rawValue = ReadRaw();
 	if (rawValue < 0) return stableState;
 
@@ -99,14 +138,8 @@ bool GPIO::ReadSensor() {
 		}
 		return false;
 	}
-	//std::cout<< "Estado Detectado: " << stableState << "\n";
-	if(stableState!=lastSensorState){
-		lastSensorState=stableState;
-		return true;
-	}
-	else return false;
 }
-
+*/
 /*
 // Leitura do encoder
 int GPIO::GetAndResetEncoderPulses() {
