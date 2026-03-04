@@ -69,11 +69,11 @@ void Controller::run(){
 					break;
 
 				case 1:
-					if(requisitar_data_e_setar(0, [&](const std::string &d){ validator.SetFAB(d); })) selected_option = 3;
+					if(requisitar_data_e_setar(0, [&](std::string &d){ validator.SetFAB(d); })) selected_option = 3;
 					break;
 
 				case 3:
-					if(requisitar_data_e_setar(1, [&](const std::string &d) { validator.SetVAL(d); })) selected_option = 4;
+					if(requisitar_data_e_setar(1, [&](std::string &d) { validator.SetVAL(d); })) selected_option = 4;
 
 					break;
 
