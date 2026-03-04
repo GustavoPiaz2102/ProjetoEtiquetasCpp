@@ -108,7 +108,7 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& detImg) {
 		cv::Rect r = cv::boundingRect(contour);
 		if (r.area() < 50) continue;
 
-		int pad = 8;
+		int pad = 12;
 		r.x      = std::max(0, static_cast<int>(r.x * scaleX) - pad);
 		r.y      = std::max(0, static_cast<int>(r.y * scaleY) - pad);
 		r.width  = std::min(detImg.cols - r.x, static_cast<int>(r.width  * scaleX) + 2 * pad);
