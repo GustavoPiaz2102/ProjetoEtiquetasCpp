@@ -67,7 +67,6 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& detImg) {
 	else
 		input = detImg;
 
-	// DEBUG
 	cv::Mat debugInput;
 	input.convertTo(debugInput, CV_8UC3, 127.5, 127.5);
 	cv::imwrite("/tmp/debug_det_input.png", debugInput);
@@ -98,7 +97,6 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& detImg) {
 	cv::threshold(probMap, binary, 0.3f, 255.0f, cv::THRESH_BINARY);
 	binary.convertTo(binary, CV_8U);
 
-	// DEBUG
 	cv::Mat debugProb;
 	probMap.convertTo(debugProb, CV_8U, 255.0);
 	cv::imwrite("/tmp/debug_det_probmap.png", debugProb);
@@ -130,7 +128,6 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& detImg) {
 		boxes.push_back(r);
 	}
 
-	// DEBUG: desenha boxes sobre imagem original desnormalizada
 	cv::Mat debugBoxes;
 	debugInput.copyTo(debugBoxes);
 	for (const auto& b : boxes)
@@ -156,7 +153,6 @@ std::string OCR::recognize(const cv::Mat& lineImg) {
 	cv::Mat resized;
 	cv::resize(lineImg, resized, cv::Size(targetW, targetH));
 
-	// DEBUG
 	static int lineCount = 0;
 	cv::Mat debugLine;
 	resized.convertTo(debugLine, CV_8UC3, 127.5, 127.5);
@@ -180,6 +176,22 @@ std::string OCR::recognize(const cv::Mat& lineImg) {
 	auto  outShape = out.GetTensorTypeAndShapeInfo().GetShape();
 	int timeSteps  = static_cast<int>(outShape[1]);
 	int numClasses = static_cast<int>(outShape[2]);
+
+	std::cout << "[REC] timeSteps=" << timeSteps << " numClasses=" << numClasses << "\n";
+
+	// Debug top-5 classes no primeiro timestep
+	const float* row0 = out.GetTensorData<float>();
+	float maxVal0 = *std::max_element(row0, row0 + numClasses);
+	std::vector<std::pair<float,int>> scores;
+	for (int i = 0; i < numClasses; ++i)
+		scores.push_back({std::exp(row0[i] - maxVal0), i});
+	std::sort(scores.rbegin(), scores.rend());
+	std::cout << "[REC] top5 t=0: ";
+	for (int i = 0; i < 5; ++i)
+		std::cout << scores[i].second << "("
+		          << (scores[i].second < (int)charset.size() ? charset[scores[i].second] : "?")
+		          << ")=" << scores[i].first << " ";
+	std::cout << "\n";
 
 	std::string text = ctcDecode(out.GetTensorData<float>(), timeSteps, numClasses);
 	std::cout << "[REC] linha " << (lineCount-1) << ": '" << text << "'\n";
@@ -234,7 +246,6 @@ std::string OCR::extractText(const cv::Mat& detImg, const cv::Mat& origImg) {
 		return "";
 	}
 
-	// Preprocessor para normalizar recortes da imagem original para o rec
 	Preprocessor prep;
 
 	std::string finalText;
