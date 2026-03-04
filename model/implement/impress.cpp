@@ -55,11 +55,11 @@ std::string formatFloat(float val){
 
 bool Impress::print(int *errorCode){
 
-	if (LastImpress == false){
-		std::cout << "A ultima impressão Teve Falhas" << "\n";
+	if (!LastImpress){
+		std::cout << "❌ A última impressão teve falhas" << "\n";
 		if (errorCode != nullptr) *errorCode = 1;
 		LastImpress = true;
-	}
+	} else std::cout << "✅ A última impressão estava OK" << "\n";
 
 	LoadAtributes();
 
