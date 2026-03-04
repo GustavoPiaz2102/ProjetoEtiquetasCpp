@@ -52,7 +52,7 @@ void Controller::run(){
 
 			switch(selected_option){
 				case -1: // caso padrao na inicialização
-					FirstDet = true; // Reseta flag para nova detecção
+					detector.SetFirstDet(true); // Reseta flag para nova detecção
 					if(imp.getQntImpressao() <= 0) interface.setImprimindo(false);
 
 					interface.menu(selected_option, imp.getQntImpressao());
@@ -69,11 +69,11 @@ void Controller::run(){
 					break;
 
 				case 1:
-					if(requisitar_data_e_setar(0, [&](std::string &d){ validator.SetFAB(d); })) selected_option = 3;
+					if(requisitar_data_e_setar(0, [&](const std::string &d){ validator.SetFAB(d); })) selected_option = 3;
 					break;
 
 				case 3:
-					if(requisitar_data_e_setar(1, [&](std::string &d) { validator.SetVAL(d); })) selected_option = 4;
+					if(requisitar_data_e_setar(1, [&](const std::string &d) { validator.SetVAL(d); })) selected_option = 4;
 
 					break;
 
@@ -145,7 +145,7 @@ void Controller::run(){
 	}
 }
 
-bool Controller::requisitar_data_e_setar(int tipo, std::function<void(std::string &)> setter){
+bool Controller::requisitar_data_e_setar(int tipo, std::function<void(const std::string &)> setter){
 	std::string data;
 
 	if (interface.requisitar_data(data, tipo)){
@@ -170,7 +170,7 @@ void Controller::rodar_detector(){
 		}
 
 		if(interface.GetImprimindo() && imp.getQntImpressao() > 0){
-			if(FirstDet || (detector.GetSensorRunning() && detector.GetProcessingRunning())){
+			if(detector.GetFirstDet() || (detector.GetSensorRunning() && detector.GetProcessingRunning())){
 				// Inicia threads se necessário
 				if (!detector.GetSensorRunning()) detector.StartSensorThread();
 
@@ -178,7 +178,7 @@ void Controller::rodar_detector(){
 				cv::Mat frame = detector.GetFrame();
 				if (!frame.empty()){
 					ReturnToMenu = interface.atualizar_frame(frame);
-					FirstDet = false; // Só considera detectado se tiver imagem
+					detector.SetFirstDet(false); // Só considera detectado se tiver imagem
 				} else ReturnToMenu = interface.atualizar_frame(NonDetectedFrame);
 
 				if (!detector.GetProcessingRunning()) detector.StartProcessThread();
@@ -189,13 +189,14 @@ void Controller::rodar_detector(){
 			}
 		} else{
 			std::cout << "Desligamento seguro\n";
+			interface.setFrameCount(0);
 			if(detector.GetSensorRunning())	detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
 
 			if(detector.GetProcessingRunning())	detector.StopProcessThread();
 
 			imp.ResetLastImpress();
 
-			FirstDet = true;
+			detector.SetFirstDet(true);
 			selected_option = -1; // Volta para o Menu
 			ReturnToMenu = false;
 		}
@@ -206,10 +207,8 @@ void Controller::rodar_detector(){
 
 			imp.ResetLastImpress();
 
-			FirstDet = true;
+			detector.SetFirstDet(true);
 			selected_option = -1; // Volta para o Menu
 			ReturnToMenu = false;
 	}
-
-	//std::cout << "FirstDet: " << FirstDet << "\n";
 }

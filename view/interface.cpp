@@ -229,9 +229,7 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
 	if (frame.cols > max_display_width) {
 		double scale = static_cast<double>(max_display_width) / frame.cols;
 		cv::resize(frame, resized_frame, cv::Size(), scale, scale, cv::INTER_LINEAR);
-	} else {
-		resized_frame = frame;
-	}
+	} else resized_frame = frame;
 
 	const int frame_width = resized_frame.cols;
 	const int frame_height = resized_frame.rows;
@@ -249,8 +247,7 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
 		glBindTexture(GL_TEXTURE_2D, texture_id);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGB, frame_width, frame_height, 
-					 0, GL_BGR, GL_UNSIGNED_BYTE, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGB, frame_width, frame_height, 0, GL_BGR, GL_UNSIGNED_BYTE, nullptr);
 
 		// Criar os PBOs
 		glGenBuffers(2, pboIds);
@@ -300,6 +297,12 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
 	ImGui::SetCursorPosY((ImGui::GetWindowHeight() - display_height) * 0.5f);
 	ImGui::Image((ImTextureID)(intptr_t)texture_id, ImVec2(display_width, display_height));
 
+	ImVec2 img_pos = ImGui::GetItemRectMin(); // canto superior esquerdo da imagem
+	ImGui::GetWindowDrawList()->AddText(
+		ImVec2(img_pos.x + 10, img_pos.y + 10),
+		IM_COL32(255, 255, 0, 255), // amarelo
+		std::to_string(frame_count).c_str()
+	);
 	// Controle de escala de resolução
 	ImGui::SetNextItemWidth(200);
 	//ImGui::SliderFloat("Escala", &resolution_scale, 0.5f, 2.0f);

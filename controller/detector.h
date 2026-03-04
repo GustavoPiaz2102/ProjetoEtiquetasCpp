@@ -29,23 +29,19 @@ class Detector{
 
 		cv::Mat frame;                                                      // Frame capturado da câmera
 		std::mutex frame_mutex;                                             // Protege acesso ao frame
-		std::condition_variable frame_cv;                                               // Notifica a thread de processamento sobre novos frames
-		std::mutex capture_mutex;                                            // Protege a lógica de captura e impressão
-		std::condition_variable capture_cv;
-		std::thread sensor_thread;                                          // Thread de captura e impressão
-		std::thread process_thread;                                         // Thread de processamento 
-		
-		// --------------
-		// Flags 
-		// --------------
+		std::condition_variable frame_cv;                                   // Notifica a thread de processamento sobre novos frames
 
-		std::atomic<bool> NewFrameAvailable{false}; 
-		std::atomic<bool> LastWithError{false};								 // Flag da validator, indica que o OCR achou um erro
-		std::function<void(bool, const std::string &)> validationCallback;   // Callback para notificação de validação
-		std::atomic<bool> printer_error{false};
-		
+		// -------------- Threads e controle de execução -----------------------
+		std::thread sensor_thread;                                          // Thread de captura e impressão
+		std::thread process_thread;                                         // Thread de processamento 		
 		std::atomic<bool> sensor_running{false};                            // Controle da thread de captura
 		std::atomic<bool> processing_running{false};                        // Controle da thread de processamento
+		
+		// -------------- Flags de controle e estado --------------------------------------
+		std::atomic<bool> firstDet{true};
+		std::atomic<bool> NewFrameAvailable{false}; 
+		std::atomic<bool> LastWithError{false};								 // Flag da validator, indica que o OCR achou um erro
+		std::atomic<bool> printer_error{false};
 		
 	public:
 
@@ -123,14 +119,6 @@ class Detector{
 		bool WasLastWithError() const{ return LastWithError; }
 
 		/**
-		 * @brief Configura o callback para notificação de resultados de validação.
-		 * @details Permite que o Controller seja notificado quando um código for validado (com sucesso ou erro).
-		 *          O callback recebe dois parâmetros: isValid (bool) e text (string com o código detectado).
-		 * @param[in] callback Função callback com signature void(bool, const std::string&)
-		 */
-		void setValidationCallback(std::function<void(bool, const std::string &)> callback){ validationCallback = callback; }
-
-		/**
 		 * @brief Obtém o estado de execução da thread de captura.
 		 * @return bool True se a thread de captura estiver em execução, False caso contrário.
 		 */
@@ -141,6 +129,10 @@ class Detector{
 		 * @return bool True se a thread de processamento estiver em execução, False caso contrário.
 		 */
 		bool GetProcessingRunning() const{ return processing_running; }
+
+		bool GetFirstDet() const{ return firstDet; }
+
+		void SetFirstDet(bool val){ firstDet = val; }
 
 		/**
 		 * @brief Verifica se houve erro crítico na impressora.

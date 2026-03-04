@@ -72,6 +72,7 @@ private:
 	int pboIndex = 0;
 	size_t last_data_size = 0;
 	bool pboInitialized = false;
+	int frame_count = 0;
 
 	// Novos membros adicionados
 	float resolution_scale; // Controle de escala de resolução
@@ -101,5 +102,7 @@ public:
 	void setImprimindo(bool value);
 	bool PopUpError(const std::string &message); // faz um pop-up com uma mensagem de erro e um botão "OK"
 	GLuint LoadTextureFromFile(const char *filename);
+	void setFrameCount(int count) { frame_count = count; }
+	int getFrameCount() const { return frame_count; }
 };
 #endif // INTERFACE_H

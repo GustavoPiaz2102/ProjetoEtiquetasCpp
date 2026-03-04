@@ -1,6 +1,6 @@
 #include "detector.h"
 
-Detector::Detector(Impress &imp, Interface &interface, Validator &validator) : camera(0), ocr("/home/pi/models"), sensor(21, "gpiochip4"), imp(imp), interface(interface), validator(validator) {
+Detector::Detector(Impress &imp, Interface &interface, Validator &validator) : camera(0), ocr("eng"), sensor(21, "gpiochip4"), imp(imp), interface(interface), validator(validator) {
 	printer_error = false;
 }
 
@@ -32,7 +32,6 @@ void Detector::StopProcessThread(){
 }
 
 void Detector::ProcessLoop(){
-	validator.printall();
 	while(processing_running){
 		cv::Mat current_frame;
 
@@ -49,36 +48,30 @@ void Detector::ProcessLoop(){
 
 		std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
 		cv::Mat processed = preprocessor.preprocess(current_frame);
-		std::string text = ocr.extractText(processed,current_frame);
+		std::string text = "ocr.extractText(processed)";
 		std::cout << "Tempo de processamento: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() << " ms\n";
 		std::cout << "Texto Detectado: " << text << std::endl;
-
+		
 		if(!validator.Validate(text)){
 			imp.setLastImpress(false);
 			LastWithError = true;
 		} else LastWithError = false;
-
-		frame_cv.notify_one();
 	}
 
 	std::cout << "Esperando Pela finalização da thread de processamento na main\n";
-	// Interface imprimindo off
 }
 
 void Detector::SensorCaptureImpressTHR(){
-	sensor.SetStroboHigh(1500);
+	sensor.SetStroboHigh(1000);
 	while(sensor_running){
-		if(sensor.ReadSensor()){
+		if(sensor.ReadSensor() || firstDet){
 			camera.captureImage();
 			cv::Mat newFrame = camera.retrieveImage();
 
 			{
 				std::unique_lock<std::mutex> lock(frame_mutex);
-				frame_cv.wait(lock, [this]{ return !NewFrameAvailable || !sensor_running; });
-
-				if(!sensor_running) break;
-
 				frame = std::move(newFrame);
+				interface.setFrameCount(interface.getFrameCount() + 1); 
 				NewFrameAvailable = true;
 			}
 
@@ -99,10 +92,6 @@ void Detector::SensorCaptureImpressTHR(){
 	sensor.SetStroboLow();
 	sensor.ReturnToFirst();
 	imp.ResetLastImpress();
-
-	//std::cout << sensor.firstRead << std::endl;
-	//std::cout << "Imprimindo:" << interface.GetImprimindo() << std::endl;
-	//std::cout << "Esperando Pela finalização da thread na main\n";
 }
 
 cv::Mat Detector::GetFrame(){
@@ -129,14 +118,11 @@ void Detector::StartSensorThread(){
 
 	sensor_running = true;
 	sensor_thread = std::thread(&Detector::SensorCaptureImpressTHR, this);
-	//setThreadPriority(sensor_thread, 98);
-	//setThreadAffinity(sensor_thread, {1});
 	std::cout << "Thread de captura e impressão iniciada.\n";
 }
 
 void Detector::StopSensorThread(){
 	sensor_running = false;
-
 	if (sensor_thread.joinable()) {
 		sensor_thread.join();
 		std::cout << "Thread de captura limpa com sucesso.\n";

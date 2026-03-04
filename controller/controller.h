@@ -31,14 +31,12 @@ class Controller {
 		int selected_option = -1;
 		int qnt_impress; //Quantidade de impressões Atual
 
-		bool requisitar_data_e_setar(int tipo, std::function<void(std::string&)> setter);
+		bool requisitar_data_e_setar(int tipo, std::function<void(const std::string&)> setter);
 		void rodar_detector();
 
 		cv::Mat NonDetectedFrame = cv::imread("../data/NonDetectedFrame.png");
 
 		// Flags //
-
-		bool FirstDet = true;
 		bool ReturnToMenu = false;
 };
 
