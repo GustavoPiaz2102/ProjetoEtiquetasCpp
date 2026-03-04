@@ -65,6 +65,7 @@ void Detector::ProcessLoop(){
 void Detector::SensorCaptureImpressTHR(){
 	sensor.SetStroboHigh(1000);
 	while(sensor_running){
+		std::chrono::steady_clock::time_point loop_start = std::chrono::steady_clock::now();
 		if(sensor.ReadSensor()){
 			camera.captureImage();
 			cv::Mat newFrame = camera.retrieveImage();
@@ -87,6 +88,9 @@ void Detector::SensorCaptureImpressTHR(){
 				imp.ResetLastImpress();
 			}
 		}
+		std::chrono::steady_clock::time_point loop_end = std::chrono::steady_clock::now();
+		std::chrono::milliseconds loop_duration = std::chrono::duration_cast<std::chrono::milliseconds>(loop_end - loop_start);
+		std::cout << "Duração do loop de captura: " << loop_duration.count() << " ms\n";
 	}
 
 	sensor.SetStroboLow();
