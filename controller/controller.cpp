@@ -177,6 +177,7 @@ void Controller::rodar_detector(){
 				// CORREÇÃO: Evita crash ou tela preta ao tentar desenhar frame vazio
 				cv::Mat frame = detector.GetFrame();
 				if (!frame.empty()){
+					interface.setFrameCount(interface.GetFrameCount() + 1);
 					ReturnToMenu = interface.atualizar_frame(frame);
 					detector.SetFirstDet(false); // Só considera detectado se tiver imagem
 				} else ReturnToMenu = interface.atualizar_frame(NonDetectedFrame);
@@ -189,6 +190,7 @@ void Controller::rodar_detector(){
 			}
 		} else{
 			std::cout << "Desligamento seguro\n";
+			interface.setFrameCount(0);
 			if(detector.GetSensorRunning())	detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
 
 			if(detector.GetProcessingRunning())	detector.StopProcessThread();
