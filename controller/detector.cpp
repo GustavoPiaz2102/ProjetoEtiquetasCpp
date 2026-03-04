@@ -73,6 +73,7 @@ void Detector::SensorCaptureImpressTHR(){
 			{
 				std::unique_lock<std::mutex> lock(frame_mutex);
 				frame = std::move(newFrame);
+				interface.setFrameCount(interface.getFrameCount() + 1);
 				NewFrameAvailable = true;
 			}
 

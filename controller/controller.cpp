@@ -177,7 +177,6 @@ void Controller::rodar_detector(){
 				// CORREÇÃO: Evita crash ou tela preta ao tentar desenhar frame vazio
 				cv::Mat frame = detector.GetFrame();
 				if (!frame.empty()){
-					interface.setFrameCount(interface.getFrameCount() + 1);
 					ReturnToMenu = interface.atualizar_frame(frame);
 					detector.SetFirstDet(false); // Só considera detectado se tiver imagem
 				} else ReturnToMenu = interface.atualizar_frame(NonDetectedFrame);
