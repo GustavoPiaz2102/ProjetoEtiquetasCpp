@@ -102,61 +102,6 @@ bool GPIO::ReadSensor() {
 
     return false;
 }
-/*
-bool GPIO::ReadSensor() {
-	int rawValue = ReadRaw();
-	if (rawValue < 0) return stableState;
-
-	if (firstRead) {
-		smoothedValue = rawValue;
-		stableState = (rawValue > SENSOR_THRESHOLD);
-		lastLogicalState = stableState;
-		lastStateChange = std::chrono::steady_clock::now();
-		firstRead = false;
-		return true;
-	}
-	smoothedValue = (FILTER_ALPHA * rawValue) + (1.0 - FILTER_ALPHA) * smoothedValue; //média móvel exponencial
-
-	bool currentLogicalState = lastLogicalState;
-	if (smoothedValue > (SENSOR_THRESHOLD + SENSOR_HYSTERESIS)) {
-		currentLogicalState = true;
-	} else currentLogicalState = false;
-
-	auto now = std::chrono::steady_clock::now();
-
-	if (currentLogicalState != lastLogicalState) {
-		lastStateChange = now;
-		lastLogicalState = currentLogicalState;
-		return currentLogicalState;
-	} else {
-		if (currentLogicalState != stableState) {
-			auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastStateChange).count();
-			
-			if (elapsed >= DEBOUNCE_MS) {
-				stableState = currentLogicalState;
-			}
-		}
-		return false;
-	}
-}
-*/
-/*
-// Leitura do encoder
-int GPIO::GetAndResetEncoderPulses() {
-	int current = encoderPulses.load();
-	encoderPulses.store(0);
-	return current;
-}
-
-void GPIO::MonitorEncoder() {
-	while(true){
-		if(gpiod_line_event_wait(encoderLine, NULL) == 1){
-			gpiod_line_event event;
-			if(gpiod_line_event_read(encoderLine, &event) == 0) if(event.event_type == GPIOD_LINE_EVENT_RISING_EDGE) encoderPulses++;
-		}
-	}
-}
-*/
 
 // Comandos de controle do Strobo
 void GPIO::OutStrobo(){
@@ -175,3 +120,21 @@ void GPIO::SetStroboLow(int sleep) {
 	if (stroboLine) gpiod_line_set_value(stroboLine, 0);
 	std::this_thread::sleep_for(std::chrono::milliseconds(sleep));
 }
+
+/*
+// Leitura do encoder
+int GPIO::GetAndResetEncoderPulses() {
+	int current = encoderPulses.load();
+	encoderPulses.store(0);
+	return current;
+}
+
+void GPIO::MonitorEncoder() {
+	while(true){
+		if(gpiod_line_event_wait(encoderLine, NULL) == 1){
+			gpiod_line_event event;
+			if(gpiod_line_event_read(encoderLine, &event) == 0) if(event.event_type == GPIOD_LINE_EVENT_RISING_EDGE) encoderPulses++;
+		}
+	}
+}
+*/

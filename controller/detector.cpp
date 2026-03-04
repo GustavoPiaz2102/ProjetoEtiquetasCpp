@@ -59,13 +59,11 @@ void Detector::ProcessLoop(){
 	}
 
 	std::cout << "Esperando Pela finalização da thread de processamento na main\n";
-	// Interface imprimindo off
 }
 
 void Detector::SensorCaptureImpressTHR(){
 	sensor.SetStroboHigh(1000);
 	while(sensor_running){
-		//std::chrono::steady_clock::time_point loop_start = std::chrono::steady_clock::now();
 		if(sensor.ReadSensor() || firstDet){
 			camera.captureImage();
 			cv::Mat newFrame = camera.retrieveImage();
@@ -73,7 +71,7 @@ void Detector::SensorCaptureImpressTHR(){
 			{
 				std::unique_lock<std::mutex> lock(frame_mutex);
 				frame = std::move(newFrame);
-				interface.setFrameCount(interface.getFrameCount() + 1);
+				interface.setFrameCount(interface.getFrameCount() + 1); 
 				NewFrameAvailable = true;
 			}
 
@@ -89,18 +87,11 @@ void Detector::SensorCaptureImpressTHR(){
 				imp.ResetLastImpress();
 			}
 		}
-		//std::chrono::steady_clock::time_point loop_end = std::chrono::steady_clock::now();
-		//std::chrono::milliseconds loop_duration = std::chrono::duration_cast<std::chrono::milliseconds>(loop_end - loop_start);
-		//std::cout << "Duração do loop de captura: " << loop_duration.count() << " ms\n";
 	}
 
 	sensor.SetStroboLow();
 	sensor.ReturnToFirst();
 	imp.ResetLastImpress();
-
-	//std::cout << sensor.firstRead << std::endl;
-	//std::cout << "Imprimindo:" << interface.GetImprimindo() << std::endl;
-	//std::cout << "Esperando Pela finalização da thread na main\n";
 }
 
 cv::Mat Detector::GetFrame(){
@@ -127,8 +118,6 @@ void Detector::StartSensorThread(){
 
 	sensor_running = true;
 	sensor_thread = std::thread(&Detector::SensorCaptureImpressTHR, this);
-	//setThreadPriority(sensor_thread, 98);
-	//setThreadAffinity(sensor_thread, {1});
 	std::cout << "Thread de captura e impressão iniciada.\n";
 }
 

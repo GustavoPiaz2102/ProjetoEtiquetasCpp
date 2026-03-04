@@ -29,7 +29,7 @@ class Detector{
 
 		cv::Mat frame;                                                      // Frame capturado da câmera
 		std::mutex frame_mutex;                                             // Protege acesso ao frame
-		std::condition_variable frame_cv;                                   	// Notifica a thread de processamento sobre novos frames
+		std::condition_variable frame_cv;                                   // Notifica a thread de processamento sobre novos frames
 
 		// -------------- Threads e controle de execução -----------------------
 		std::thread sensor_thread;                                          // Thread de captura e impressão
