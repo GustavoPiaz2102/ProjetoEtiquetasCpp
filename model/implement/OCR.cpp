@@ -185,7 +185,9 @@ std::string OCR::extractText(const cv::Mat& detImg, const cv::Mat& origImg) {
 		return "";
 	}
 
+	auto t1 = std::chrono::steady_clock::now();
 	std::vector<cv::Rect> boxes = detect(detImg);
+	auto t2 = std::chrono::steady_clock::now();
 
 	if (boxes.empty()) {
 		std::cerr << "[OCR] Nenhuma linha detectada.\n";
@@ -193,7 +195,6 @@ std::string OCR::extractText(const cv::Mat& detImg, const cv::Mat& origImg) {
 	}
 
 	Preprocessor prep;
-
 	std::string finalText;
 	for (const auto& box : boxes) {
 		cv::Mat crop   = origImg(box);
@@ -202,6 +203,10 @@ std::string OCR::extractText(const cv::Mat& detImg, const cv::Mat& origImg) {
 		if (!lineText.empty())
 			finalText += lineText + "\n";
 	}
+
+	auto t3 = std::chrono::steady_clock::now();
+	std::cout << "[OCR] det=" << std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count()
+		  << "ms rec=" << std::chrono::duration_cast<std::chrono::milliseconds>(t3-t2).count() << "ms\n";
 
 	return finalText;
 }
