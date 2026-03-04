@@ -37,6 +37,7 @@ class Detector{
 		// Flags 
 		// --------------
 
+		std::atomic<bool> firstDet{true};
 		std::atomic<bool> NewFrameAvailable{false}; 
 		std::atomic<bool> LastWithError{false};								 // Flag da validator, indica que o OCR achou um erro
 		std::function<void(bool, const std::string &)> validationCallback;   // Callback para notificação de validação
@@ -139,6 +140,10 @@ class Detector{
 		 * @return bool True se a thread de processamento estiver em execução, False caso contrário.
 		 */
 		bool GetProcessingRunning() const{ return processing_running; }
+
+		bool GetFirstDet() const{ return firstDet; }
+
+		void SetFirstDet(bool val){ firstDet = val; }
 
 		/**
 		 * @brief Verifica se houve erro crítico na impressora.

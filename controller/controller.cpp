@@ -52,7 +52,7 @@ void Controller::run(){
 
 			switch(selected_option){
 				case -1: // caso padrao na inicialização
-					FirstDet = true; // Reseta flag para nova detecção
+					detector.SetFirstDet(true); // Reseta flag para nova detecção
 					if(imp.getQntImpressao() <= 0) interface.setImprimindo(false);
 
 					interface.menu(selected_option, imp.getQntImpressao());
@@ -170,7 +170,7 @@ void Controller::rodar_detector(){
 		}
 
 		if(interface.GetImprimindo() && imp.getQntImpressao() > 0){
-			if(FirstDet || (detector.GetSensorRunning() && detector.GetProcessingRunning())){
+			if(detector.GetFirstDet() || (detector.GetSensorRunning() && detector.GetProcessingRunning())){
 				// Inicia threads se necessário
 				if (!detector.GetSensorRunning()) detector.StartSensorThread();
 
@@ -178,7 +178,7 @@ void Controller::rodar_detector(){
 				cv::Mat frame = detector.GetFrame();
 				if (!frame.empty()){
 					ReturnToMenu = interface.atualizar_frame(frame);
-					FirstDet = false; // Só considera detectado se tiver imagem
+					detector.SetFirstDet(false); // Só considera detectado se tiver imagem
 				} else ReturnToMenu = interface.atualizar_frame(NonDetectedFrame);
 
 				if (!detector.GetProcessingRunning()) detector.StartProcessThread();
@@ -195,7 +195,7 @@ void Controller::rodar_detector(){
 
 			imp.ResetLastImpress();
 
-			FirstDet = true;
+			detector.SetFirstDet(true);
 			selected_option = -1; // Volta para o Menu
 			ReturnToMenu = false;
 		}
@@ -206,10 +206,8 @@ void Controller::rodar_detector(){
 
 			imp.ResetLastImpress();
 
-			FirstDet = true;
+			detector.SetFirstDet(true);
 			selected_option = -1; // Volta para o Menu
 			ReturnToMenu = false;
 	}
-
-	//std::cout << "FirstDet: " << FirstDet << "\n";
 }

@@ -37,8 +37,6 @@ class Controller {
 		cv::Mat NonDetectedFrame = cv::imread("../data/NonDetectedFrame.png");
 
 		// Flags //
-
-		bool FirstDet = true;
 		bool ReturnToMenu = false;
 };
 

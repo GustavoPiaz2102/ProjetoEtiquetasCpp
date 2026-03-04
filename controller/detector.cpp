@@ -66,7 +66,7 @@ void Detector::SensorCaptureImpressTHR(){
 	sensor.SetStroboHigh(1000);
 	while(sensor_running){
 		//std::chrono::steady_clock::time_point loop_start = std::chrono::steady_clock::now();
-		if(sensor.ReadSensor()){
+		if(sensor.ReadSensor() || firstDet){
 			camera.captureImage();
 			cv::Mat newFrame = camera.retrieveImage();
 
