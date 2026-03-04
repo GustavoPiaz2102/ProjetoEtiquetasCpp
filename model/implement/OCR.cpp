@@ -117,6 +117,13 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& detImg) {
 		boxes.push_back(r);
 	}
 
+	// Descarta boxes muito largas (detecção espúria juntando linhas)
+	boxes.erase(std::remove_if(boxes.begin(), boxes.end(),
+		[](const cv::Rect& r){ return r.height > r.width * 0.5f; }), boxes.end());
+
+	// Limita a 3 boxes (lote, fabricação, validade)
+	if (boxes.size() > 3) boxes.resize(3);
+
 	std::sort(boxes.begin(), boxes.end(),
 		[](const cv::Rect& a, const cv::Rect& b){ return a.y < b.y; });
 
@@ -171,8 +178,6 @@ std::string OCR::ctcDecode(const float* logits, int timeSteps, int numClasses) {
 		if (maxIdx != lastIdx && maxIdx != 0) {
 			if (maxIdx < static_cast<int>(charset.size())) {
 				const std::string& ch = charset[maxIdx];
-				std::cout << "[CTC] ch='" << ch << "' conf=" << confidence 
-					<< " whitelist=" << inWhitelist(ch) << "\n";
 				if (confidence >= minConfidence && inWhitelist(ch))
 					result += ch;
 			}
