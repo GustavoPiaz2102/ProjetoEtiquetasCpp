@@ -5,6 +5,7 @@
 #include <cmath>
 #include <cstring>
 #include <numeric>
+#include <future>
 
 static const std::string WHITELIST = "0123456789/:LFV";
 
@@ -15,7 +16,8 @@ static bool inWhitelist(const std::string& ch) {
 OCR::OCR(const std::string& modelDir)
 	: env(ORT_LOGGING_LEVEL_WARNING, "OCR")
 {
-	sessionOptions.SetIntraOpNumThreads(4);
+	sessionOptions.SetIntraOpNumThreads(2); // 2 por sessão — 3 threads paralelas × 2 = 6, Pi4 tem 4 núcleos
+	sessionOptions.SetInterOpNumThreads(1);
 	sessionOptions.SetGraphOptimizationLevel(GraphOptimizationLevel::ORT_ENABLE_ALL);
 
 	std::string detPath  = modelDir + "/en_PP-OCRv3_det_infer.onnx";
@@ -185,28 +187,33 @@ std::string OCR::extractText(const cv::Mat& detImg, const cv::Mat& origImg) {
 		return "";
 	}
 
-	auto t1 = std::chrono::steady_clock::now();
 	std::vector<cv::Rect> boxes = detect(detImg);
-	auto t2 = std::chrono::steady_clock::now();
 
 	if (boxes.empty()) {
 		std::cerr << "[OCR] Nenhuma linha detectada.\n";
 		return "";
 	}
 
+	// Prepara todos os recortes antes de lançar as threads
 	Preprocessor prep;
-	std::string finalText;
-	for (const auto& box : boxes) {
-		cv::Mat crop   = origImg(box);
-		cv::Mat recImg = prep.prepareForRec(crop);
-		std::string lineText = recognize(recImg);
-		if (!lineText.empty())
-			finalText += lineText + "\n";
-	}
+	std::vector<cv::Mat> recImgs;
+	recImgs.reserve(boxes.size());
+	for (const auto& box : boxes)
+		recImgs.push_back(prep.prepareForRec(origImg(box)));
 
-	auto t3 = std::chrono::steady_clock::now();
-	std::cout << "[OCR] det=" << std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count()
-		  << "ms rec=" << std::chrono::duration_cast<std::chrono::milliseconds>(t3-t2).count() << "ms\n";
+	// Lança reconhecimento de cada linha em paralelo
+	std::vector<std::future<std::string>> futures;
+	futures.reserve(recImgs.size());
+	for (const auto& recImg : recImgs)
+		futures.push_back(std::async(std::launch::async, &OCR::recognize, this, recImg));
+
+	// Coleta resultados na ordem original (top → bottom)
+	std::string finalText;
+	for (auto& f : futures) {
+		std::string line = f.get();
+		if (!line.empty())
+			finalText += line + "\n";
+	}
 
 	return finalText;
 }
