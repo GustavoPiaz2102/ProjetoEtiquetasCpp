@@ -29,6 +29,8 @@ class OCR {
 		std::vector<std::string> charset;
 		float minConfidence = 75.0f;
 
+		std::string lastDebugError;
+
 		/**
 		 * @brief Detecta regiões de texto na imagem pré-processada.
 		 * @details Utiliza o modelo det para gerar um mapa de probabilidade,
@@ -98,6 +100,14 @@ class OCR {
 		 * @return String com o texto extraído, uma linha por '\\n', na ordem top→bottom.
 		 */
 		std::string extractText(const cv::Mat& detImg, const cv::Mat& origImg);
+
+		/**
+		 * @brief Retorna a última mensagem de debug gerada durante o reconhecimento.
+		 * @details Útil para entender falhas de reconhecimento, especialmente em casos de baixa confiança
+		 *          ou caracteres fora da whitelist.
+		 * @return String com a última mensagem de debug.
+		 */
+		std::string getLastDebugError() const;
 };
 
 #endif // OCR_H

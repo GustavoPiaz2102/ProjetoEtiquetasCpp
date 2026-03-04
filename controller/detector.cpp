@@ -66,6 +66,7 @@ void Detector::ProcessLoop(){
 		if(!validator.Validate(text)){
 			imp.setLastImpress(false);
 			LastWithError = true;
+			std::cout << ocr.getLastDebugError();
 		} else LastWithError = false;
 		
 		sensor_cv.notify_one();
