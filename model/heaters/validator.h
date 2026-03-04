@@ -18,8 +18,8 @@ class Validator {
 		std::string GetFAB();
 		std::string GetVAL();
 		void SetLT(std::string& lt);
-		void SetFAB(const std::string& fab);
-		void SetVAL(const std::string& val);
+		void SetFAB(std::string& fab);
+		void SetVAL(std::string& val);
 
 		// Método para imprimir todos os dados
 		void printall();
