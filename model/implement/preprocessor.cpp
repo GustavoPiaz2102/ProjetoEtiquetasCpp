@@ -14,11 +14,11 @@ cv::Mat Preprocessor::preprocess(const cv::Mat& inputImage) {
 	else
 		cv::cvtColor(inputImage, gray, cv::COLOR_BGR2GRAY);
 
-	// Otsu — garante fundo claro (>128 = fundo branco)
-	double thresh = cv::threshold(gray, gray, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
+	cv::threshold(gray, gray, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
 
-	// Se Otsu inverteu (fundo ficou escuro), inverte de volta
-	if (thresh < 128)
+	// Se a maioria dos pixels é escura, o fundo está escuro — inverte
+	// (fundo deve ser claro = maioria dos pixels brancos)
+	if (cv::mean(gray)[0] < 127)
 		cv::bitwise_not(gray, gray);
 
 	cv::Mat rgb;
