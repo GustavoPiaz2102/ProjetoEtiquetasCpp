@@ -3,7 +3,7 @@ direcao:0
 escala_x:1.000000
 escala_y:1.000000
 espacamento:2 mm,0
-fab:06/SET/2025
+fab:06/01/2025
 fonte:1
 lt:005/25
 posicao_x:15
@@ -14,5 +14,5 @@ rotacao:0
 tamanho_etiqueta:22 mm,10 mm
 tamanho_fonte:1
 texto:Teste
-val:06/SET/2028
+val:06/01/2028
 velocidade:3

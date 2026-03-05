@@ -15,7 +15,7 @@ class Impress{
 	private:
 		Arquiver arq;
 		std::vector<std::string> StrList;
-		char tamanho_etiqueta[64] = "60 mm,40 mm";
+		char tamanho_etiqueta[64] = "20 mm,16 mm";
 		char espacamento[32] = "2 mm,0";
 		int densidade = 8;
 		int velocidade = 4;
@@ -29,7 +29,7 @@ class Impress{
 		int rotacao = 0;
 		float escala_x = 1.0f;
 		float escala_y = 1.0f;
-		char fonte[8] = "3";
+		char fonte[8] = "1";
 		int QuantidadeDeImpressõesPorOrdem = 1;
 
 		int QntImpressao = 0;
