@@ -20,14 +20,14 @@ const std::string FILE_SCALE = DEVICE_DIR + "in_voltage0_scale";
 // cada iteração contribui em 25% do valor final (aumentar se ficar muito suave)
 class GPIO{
 	private:
-		int PinStrobo;
 		gpiod_chip *chip;
-		gpiod_line *stroboLine;
-		std::ifstream fsRaw;
-		
-		double scale;
 
-		// Encolder
+		// --------- Strobo ---------
+
+		gpiod_line *stroboLine;
+		uint8_t PinStrobo;
+
+		// --------- Encoder ---------
 		/*
 		std::atomic<int> encoderPulses{0};
 		std::thread encoderThread;
@@ -35,25 +35,71 @@ class GPIO{
 		gpiod_line *stepLine;
 		*/
 
+		// --------- Sensor LDR ---------
+
+		std::ifstream fsRaw;
+
+		double scale;
 		double smoothedValue = 0.0;
 		bool stableState = false;
 		bool lastLogicalState = false;
 		std::chrono::steady_clock::time_point lastStateChange;
 		bool lastSensorState = false;
 
+		// --------- Buzzer ---------
+
+		gpiod_line *buzzerLine;
+		uint8_t PinBuzzer;
+		bool runningBuzzerThread = false;
+		std::thread buzzerThread;
+
 	public:
 		// Flags
 		bool firstRead = true;
 		
-		GPIO(int pinStrobo, const std::string &chipname = "gpiochip4");
+		GPIO(uint8_t pinStrobo, uint8_t pinBuzzer, const std::string &chipname = "gpiochip4");
 		~GPIO();
 
+		// --------- Sensor LDR ---------
+
+		/**
+		 * @brief Lê o estado do sensor LDR, aplicando filtragem e debounce.
+		 * 
+		 * @return true se o sensor estiver ativado (condição de detecção), false caso contrário.
+		 */
 		bool ReadSensor();
+
+		/**
+		 * @brief Lê o valor bruto do sensor LDR.
+		 */
 		int ReadRaw();
 
+		// --------- Strobo ---------
+
+		/**
+		 * @brief Emite um pulso no pino do strobo.
+		 */
 		void OutStrobo();
+
+		/**
+		 * @brief Define o pino do strobo como HIGH por um período específico.
+		 * 
+		 * @param sleep Tempo em milissegundos para manter o pino em HIGH. O padrão é 0, o que significa que o pino será definido como HIGH e permanecerá assim até que SetStroboLow() seja chamado.
+		 * @important Certifique-se de chamar SetStroboLow() após o período desejado para evitar que o pino fique permanentemente HIGH.
+		 */
 		void SetStroboHigh(int sleep = 0);
+
+		/**
+		 * @brief Define o pino do strobo como LOW por um período específico.
+		 * 
+		 * @param sleep Tempo em milissegundos para manter o pino em LOW. O padrão é 0, o que significa que o pino será definido como LOW e permanecerá assim até que SetStroboHigh() seja chamado.
+		 * @important Certifique-se de chamar SetStroboHigh() antes de chamar este método para evitar que o pino fique permanentemente LOW.
+		 */
 		void SetStroboLow(int sleep = 0);
+
+		/**
+		 * @brief Reseta o estado do sensor para a condição inicial, forçando uma nova leitura completa.
+		 */
 		void ReturnToFirst() { 
 			firstRead = true; 
 			stableState = false; 
@@ -61,10 +107,38 @@ class GPIO{
 			smoothedValue = 0.0;
 		}
 
-		// Encoder
+		// --------- Encoder ---------
 
 		// int GetAndResetEncoderPulses();
 		// void MonitorEncoder();
+
+		// --------- Buzzer ---------
+
+		/**
+		 * @brief Emite um beep do buzzer por uma duração específica.
+		 * 
+		 * @param duration_ms Duração do beep em milissegundos.
+		 */
+		void beep(uint16_t duration_ms);
+
+		/**
+		 * @brief Função que roda em uma thread para controlar o buzzer.
+		 * 
+		 * @param duration_ms Duração do beep em milissegundos.
+		 */
+		void buzzerRun(uint16_t duration_ms);
+
+		/**
+		 * @brief Inicia a thread do buzzer.
+		 * 
+		 * @param duration_ms Duração do beep em milissegundos.
+		 */
+		void startBuzzerThread(uint16_t duration_ms);
+
+		/**
+		 * @brief Para a thread do buzzer.
+		 */
+		void stopBuzzerThread();
 };
 
 #endif  // GPIO_H

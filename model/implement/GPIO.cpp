@@ -2,7 +2,7 @@
 #include <cstring>   // Para strerror
 #include <errno.h>   // Para errno
 
-GPIO::GPIO(int pinStrobo, const std::string &chipname) : PinStrobo(pinStrobo), chip(nullptr), stroboLine(nullptr){
+GPIO::GPIO(uint8_t pinStrobo, uint8_t pinBuzzer, const std::string &chipname) : PinStrobo(pinStrobo), PinBuzzer(pinBuzzer), chip(nullptr), stroboLine(nullptr), buzzerLine(nullptr){
 	// 1. Abre o chip
 	chip = gpiod_chip_open_by_name(chipname.c_str());
 	if (!chip) throw std::runtime_error("Erro ao abrir o chip GPIO: " + chipname + " (" + strerror(errno) + ")");
@@ -13,7 +13,7 @@ GPIO::GPIO(int pinStrobo, const std::string &chipname) : PinStrobo(pinStrobo), c
 	stroboLine = gpiod_chip_get_line(chip, PinStrobo);
 	if (!stroboLine) {
 		gpiod_chip_close(chip);
-		throw std::runtime_error("Erro: Nao foi possivel obter a linha " + std::to_string(PinStrobo));
+		throw std::runtime_error("Erro: Nao foi possivel obter a linha do strobo " + std::to_string(PinStrobo));
 	}
 
 	// 3. Requisita a linha como SAÍDA
@@ -21,6 +21,18 @@ GPIO::GPIO(int pinStrobo, const std::string &chipname) : PinStrobo(pinStrobo), c
 		std::string erro_msg = strerror(errno);
 		gpiod_chip_close(chip);
 		throw std::runtime_error("Erro ao configurar output do strobo (GPIO " + std::to_string(PinStrobo) + "): " + erro_msg);
+	}
+
+	buzzerLine = gpiod_chip_get_line(chip, PinBuzzer);
+	if (!buzzerLine) {
+		gpiod_chip_close(chip);
+		throw std::runtime_error("Erro: Nao foi possivel obter a linha do buzzer " + std::to_string(PinBuzzer));
+	}
+
+	if (gpiod_line_request_output(buzzerLine, "projeto_etiquetas", 0) < 0){
+		std::string erro_msg = strerror(errno);
+		gpiod_chip_close(chip);
+		throw std::runtime_error("Erro ao configurar output do buzzer (GPIO " + std::to_string(PinBuzzer) + "): " + erro_msg);
 	}
 
 	// 4. Carrega escala (Leitura de arquivos do sistema)
@@ -48,6 +60,8 @@ GPIO::~GPIO(){
 	if(chip) gpiod_chip_close(chip);
 	// if(encoderThread.joinable()) encoderThread.detach();
 }
+
+// --------- Sensor LDR ---------
 
 int GPIO::ReadRaw(){
 	if(!fsRaw.is_open()) return -1;
@@ -102,46 +116,10 @@ bool GPIO::ReadSensor() {
 
     return false;
 }
+
 /*
-bool GPIO::ReadSensor() {
-	int rawValue = ReadRaw();
-	if (rawValue < 0) return stableState;
+// --------- Encoder ---------
 
-	if (firstRead) {
-		smoothedValue = rawValue;
-		stableState = (rawValue > SENSOR_THRESHOLD);
-		lastLogicalState = stableState;
-		lastStateChange = std::chrono::steady_clock::now();
-		firstRead = false;
-		return true;
-	}
-	smoothedValue = (FILTER_ALPHA * rawValue) + (1.0 - FILTER_ALPHA) * smoothedValue; //média móvel exponencial
-
-	bool currentLogicalState = lastLogicalState;
-	if (smoothedValue > (SENSOR_THRESHOLD + SENSOR_HYSTERESIS)) {
-		currentLogicalState = true;
-	} else currentLogicalState = false;
-
-	auto now = std::chrono::steady_clock::now();
-
-	if (currentLogicalState != lastLogicalState) {
-		lastStateChange = now;
-		lastLogicalState = currentLogicalState;
-		return currentLogicalState;
-	} else {
-		if (currentLogicalState != stableState) {
-			auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastStateChange).count();
-			
-			if (elapsed >= DEBOUNCE_MS) {
-				stableState = currentLogicalState;
-			}
-		}
-		return false;
-	}
-}
-*/
-/*
-// Leitura do encoder
 int GPIO::GetAndResetEncoderPulses() {
 	int current = encoderPulses.load();
 	encoderPulses.store(0);
@@ -158,15 +136,16 @@ void GPIO::MonitorEncoder() {
 }
 */
 
-// Comandos de controle do Strobo
-void GPIO::OutStrobo(){
+// --------- Strobo ---------
+
+void GPIO::OutStrobo() {
 	if(!stroboLine) return;
 	gpiod_line_set_value(stroboLine, 1);
 	std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	gpiod_line_set_value(stroboLine, 0);
 }
 
-void GPIO::SetStroboHigh(int sleep){
+void GPIO::SetStroboHigh(int sleep) {
 	if(stroboLine) gpiod_line_set_value(stroboLine, 1);
 	std::this_thread::sleep_for(std::chrono::milliseconds(sleep));
 }
@@ -174,4 +153,35 @@ void GPIO::SetStroboHigh(int sleep){
 void GPIO::SetStroboLow(int sleep) {
 	if (stroboLine) gpiod_line_set_value(stroboLine, 0);
 	std::this_thread::sleep_for(std::chrono::milliseconds(sleep));
+}
+
+// ---------- Buzzer ----------
+
+void GPIO::beep(uint16_t duration_ms) {
+	if(buzzerLine) gpiod_line_set_value(buzzerLine, 1);
+	std::this_thread::sleep_for(std::chrono::milliseconds(duration_ms));
+	if(buzzerLine) gpiod_line_set_value(buzzerLine, 0);
+}
+
+void GPIO::buzzerRun(uint16_t duration_ms) {
+	if(!buzzerLine) return;
+
+	while(runningBuzzerThread){
+		this->beep(duration_ms);
+		std::this_thread::sleep_for(std::chrono::milliseconds(duration_ms));
+	}
+}
+
+void GPIO::startBuzzerThread(uint16_t duration_ms) {
+	if(runningBuzzerThread) return;
+
+	runningBuzzerThread = true;
+	buzzerThread = std::thread(&GPIO::buzzerRun, this, duration_ms);
+}
+
+void GPIO::stopBuzzerThread() {
+	if(!runningBuzzerThread) return;
+
+	runningBuzzerThread = false;
+	if(buzzerThread.joinable()) buzzerThread.join();
 }
