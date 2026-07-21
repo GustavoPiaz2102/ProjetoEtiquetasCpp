@@ -1,0 +1,3 @@
+/home/pi/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles/compilated_program.dir
+/home/pi/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles/edit_cache.dir
+/home/pi/Desktop/git/ProjetoEtiquetasCpp/build/CMakeFiles/rebuild_cache.dir

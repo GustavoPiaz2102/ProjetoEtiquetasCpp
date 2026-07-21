@@ -3,16 +3,16 @@ direcao:0
 escala_x:1.000000
 escala_y:1.000000
 espacamento:2 mm,0
-fab:06/01/2025
+fab:01/01/2025
 fonte:1
-lt:005/25
+lt:000/23
 posicao_x:15
 posicao_y_fabricacao:30
 posicao_y_lote:10
 posicao_y_validade:50
 rotacao:0
-tamanho_etiqueta:22 mm,10 mm
+tamanho_etiqueta:22 mm,16 mm
 tamanho_fonte:1
 texto:Teste
-val:06/01/2028
+val:01/01/2025
 velocidade:3

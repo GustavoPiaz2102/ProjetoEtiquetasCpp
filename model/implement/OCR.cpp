@@ -13,6 +13,7 @@ static bool inWhitelist(const std::string& ch) {
 	return WHITELIST.find(ch) != std::string::npos;
 }
 
+<<<<<<< HEAD
 OCR::OCR(const std::string& modelDir)
 	: env(ORT_LOGGING_LEVEL_WARNING, "OCR")
 {
@@ -115,6 +116,13 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& detImg) {
 		r.height = std::min(detImg.rows - r.y, static_cast<int>(r.height * scaleY) + 2 * pad);
 
 		boxes.push_back(r);
+=======
+
+OCR::~OCR(){
+	if(tess){
+		tess->End();
+		delete tess;
+>>>>>>> 09b84a29101e75d92ed9b6b628d48d565567d26c
 	}
 
 	// Descarta boxes muito largas (detecção espúria juntando linhas)
@@ -224,7 +232,6 @@ std::string OCR::extractText(const cv::Mat& detImg, const cv::Mat& origImg) {
 		if (!line.empty())
 			finalText += line + "\n";
 	}
-
 	return finalText;
 }
 
