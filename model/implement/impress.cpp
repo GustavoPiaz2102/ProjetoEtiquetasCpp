@@ -33,9 +33,9 @@ void Impress::LoadAtributes() {
 	if (arq.dict.count("rotacao"))
 		rotacao = std::stoi(arq.dict["rotacao"]);
 	if (arq.dict.count("escala_x"))
-		escala_x = std::stof(arq.dict["escala_x"]);
+		escala_x = std::stoi(arq.dict["escala_x"]);
 	if (arq.dict.count("escala_y"))
-		escala_y = std::stof(arq.dict["escala_y"]);
+		escala_y = std::stoi(arq.dict["escala_y"]);
 	if (arq.dict.count("fonte"))
 		strcpy(fonte, arq.dict["fonte"].c_str());
 }
@@ -71,6 +71,12 @@ std::string formatFloat(float val) {
 	return ss.str();
 }
 
+std::string formatInt(int val) {
+	std::ostringstream ss;
+	ss << val;
+	return ss.str();
+}
+
 bool Impress::print(bool firstDet) {
 	if (!firstDet) {
 		if (!LastImpress) {
@@ -96,17 +102,17 @@ bool Impress::print(bool firstDet) {
 	if (StrList.size() > 0)
 		comando += "TEXT " + std::to_string(posicao_x) + "," + std::to_string(posicao_y_lote) +
 			   ",\"" + fonte + "\"," + std::to_string(rotacao) + "," +
-			   formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"L:" + StrList[0] + "\"\r\n";
+			   formatInt(escala_x) + "," + formatInt(escala_y) + ",\"L:" + StrList[0] + "\"\r\n";
 
 	if (StrList.size() > 1)
 		comando += "TEXT " + std::to_string(posicao_x) + "," + std::to_string(posicao_y_fabricacao) +
 			   ",\"" + fonte + "\"," + std::to_string(rotacao) + "," +
-			   formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"F:" + StrList[1] + "\"\r\n";
+			   formatInt(escala_x) + "," + formatInt(escala_y) + ",\"F:" + StrList[1] + "\"\r\n";
 
 	if (StrList.size() > 2)
 		comando += "TEXT " + std::to_string(posicao_x) + "," + std::to_string(posicao_y_validade) +
 			   ",\"" + fonte + "\"," + std::to_string(rotacao) + "," +
-			   formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"V:" + StrList[2] + "\"\r\n";
+			   formatInt(escala_x) + "," + formatInt(escala_y) + ",\"V:" + StrList[2] + "\"\r\n";
 
 	comando += "PRINT " + std::to_string(QuantidadeDeImpressõesPorOrdem) + "\r\n";
 

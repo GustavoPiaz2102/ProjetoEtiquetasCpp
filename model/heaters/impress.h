@@ -15,20 +15,20 @@ class Impress {
 	private:
 		Arquiver arq;
 		std::vector<std::string> StrList;
-		char tamanho_etiqueta[64] = "20 mm,16 mm";
-		char espacamento[32] = "2 mm,0";
-		int densidade = 8;
-		int velocidade = 4;
+		char tamanho_etiqueta[64] = "22 mm,20 mm";
+		char espacamento[32] = "2 mm,0 mm";
+		int densidade = 15;
+		int velocidade = 2;
 		int direcao = 1;
 		char texto[64] = "Teste";
-		char tamanho_fonte[8] = "3";
-		int posicao_x = 100;
-		int posicao_y_lote = 100;
-		int posicao_y_fabricacao = 150;
-		int posicao_y_validade = 200;
+		char tamanho_fonte[8] = "1";
+		int posicao_x = 35;
+		int posicao_y_lote = 20;
+		int posicao_y_fabricacao = 40;
+		int posicao_y_validade = 60;
 		int rotacao = 0;
-		float escala_x = 1.0f;
-		float escala_y = 1.0f;
+		int escala_x = 1;
+		int escala_y = 1;
 		char fonte[8] = "1";
 		int QuantidadeDeImpressõesPorOrdem = 1;
 
