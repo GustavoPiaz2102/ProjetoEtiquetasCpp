@@ -83,20 +83,13 @@ bool GPIO::ReadSensor() {
 	if (rawValue < 0) return false;
 
 	if (firstRead) {
-		smoothedValue = rawValue;
 		lastLogicalState = (rawValue > SENSOR_THRESHOLD);
-		stableState = lastLogicalState;
 		lastStateChange = std::chrono::steady_clock::now();
 		firstRead = false;
 		return true;
 	}
 
-	smoothedValue = FILTER_ALPHA * rawValue + (1.0 - FILTER_ALPHA) * smoothedValue;
-
-	bool currentLogicalState;
-	if (smoothedValue > (SENSOR_THRESHOLD + SENSOR_HYSTERESIS)) currentLogicalState = false;
-	else if (smoothedValue < (SENSOR_THRESHOLD - SENSOR_HYSTERESIS)) currentLogicalState = true;
-	else currentLogicalState = lastLogicalState;
+	bool currentLogicalState = (rawValue > SENSOR_THRESHOLD);
 
 	auto now = std::chrono::steady_clock::now();
 
@@ -105,13 +98,10 @@ bool GPIO::ReadSensor() {
 		lastLogicalState = currentLogicalState;
 	}
 
-	// Só confirma após debounce
-	if (lastLogicalState != stableState) {
-		auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastStateChange).count();
-		if (elapsed >= DEBOUNCE_MS) {
-			stableState = lastLogicalState;
-			return stableState;
-		}
+	auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastStateChange).count();
+	if (elapsed >= DEBOUNCE_MS) {
+		stableState = lastLogicalState;
+		return stableState;
 	}
 
 	return false;
