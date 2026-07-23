@@ -75,15 +75,15 @@ void Detector::ProcessLoop() {
 			imp.setLastImpress(false);
 			LastWithError = true;
 			//std::cout << ocr.getLastDebugError();
-		} else
+		} else {
 			LastWithError = false;
-		correctImpressCounter++;
+			correctImpressCounter++;
+		}
+		totalImpressCounter++;
+		sensor_cv.notify_one();
 	}
-	totalImpressCounter++;
-	sensor_cv.notify_one();
-}
 
-std::cout << "Esperando Pela finalização da thread de processamento na main\n";
+	std::cout << "Esperando Pela finalização da thread de processamento na main\n";
 }
 
 void Detector::counterPrint() {
