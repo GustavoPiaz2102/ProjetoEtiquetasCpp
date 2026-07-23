@@ -86,6 +86,7 @@ int GPIO::ReadRaw() {
 
 bool GPIO::ReadSensor() {
 	int rawValue = ReadRaw();
+	std::cout << "valor lido:" << rawValue;
 	if (rawValue < 0)
 		return false;
 
