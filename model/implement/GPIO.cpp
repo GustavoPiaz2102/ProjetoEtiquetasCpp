@@ -57,12 +57,10 @@ GPIO::GPIO(uint8_t pinStrobo, uint8_t pinBuzzer, const std::string &chipname) : 
 }
 
 GPIO::~GPIO() {
-	if (fsRaw.is_open())
-		fsRaw.close();
-	if (stroboLine)
-		gpiod_line_release(stroboLine);
-	if (chip)
-		gpiod_chip_close(chip);
+	if (fsRaw.is_open())	fsRaw.close();
+	if (stroboLine)		gpiod_line_release(stroboLine);
+	if(buzzerLine)		gpiod_line_release(buzzerLine);
+	if (chip)		gpiod_chip_close(chip);
 	// if(encoderThread.joinable()) encoderThread.detach();
 }
 
