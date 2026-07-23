@@ -555,7 +555,6 @@ bool Interface::config_menu(Arquiver &arq) {
 
 	ImGui::Separator();
 	ImGui::Text("Parâmetros do Texto:");
-	ImGui::InputText("Tamanho Fonte", tamanho_fonte, IM_ARRAYSIZE(tamanho_fonte));
 	ImGui::InputInt("Posição X", &posicao_x);
 	ImGui::InputInt("Y - Lote", &posicao_y_lote);
 	ImGui::InputInt("Y - Fabricação", &posicao_y_fabricacao);
