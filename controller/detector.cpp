@@ -4,14 +4,15 @@ Detector::Detector(Impress &imp, Interface &interface, Validator &validator) : c
 	printer_error = false;
 }
 
-Detector::~Detector(){
+Detector::~Detector() {
 	StopSensorThread();
 	StopProcessThread();
 	sensor.ReturnToFirst();
 }
 
-void Detector::StartProcessThread(){
-	if(processing_running)	return;
+void Detector::StartProcessThread() {
+	if (processing_running)
+		return;
 
 	processing_running = true;
 	process_thread = std::thread(&Detector::ProcessLoop, this);
@@ -19,59 +20,63 @@ void Detector::StartProcessThread(){
 	std::cout << "Thread de processamento iniciada.\n";
 }
 
-cv::Mat Detector::GetFrame(){
+cv::Mat Detector::GetFrame() {
 	std::lock_guard<std::mutex> lock(frame_mutex);
 
-	if (frame.empty()) return cv::Mat();
+	if (frame.empty())
+		return cv::Mat();
 
 	return frame.clone();
 }
 
-void Detector::StartSensorThread(){
+void Detector::StartSensorThread() {
 	if (sensor_running) {
 		std::cout << "Thread já está rodando!\n";
 		return;
 	}
-	
-	if (sensor_thread.joinable()) sensor_thread.join();
-	
+
+	if (sensor_thread.joinable())
+		sensor_thread.join();
+
 	// Resetando as flags
 	LastWithError = false;
 	NewFrameAvailable = false;
 	printer_error = false;
 	sensor.ReturnToFirst();
-	
+
 	sensor_running = true;
 	sensor_thread = std::thread(&Detector::SensorCaptureImpressTHR, this);
 	std::cout << "Thread de captura e impressão iniciada.\n";
 }
 
-void Detector::ProcessLoop(){
-	while(processing_running){
+void Detector::ProcessLoop() {
+	while (processing_running) {
 		cv::Mat current_frame;
-		
+
 		{
 			std::unique_lock<std::mutex> lock(frame_mutex);
 
-			frame_cv.wait(lock, [this]{ return NewFrameAvailable || !processing_running; });
+			frame_cv.wait(lock, [this] { return NewFrameAvailable || !processing_running; });
 
-			if(!processing_running) break;
+			if (!processing_running)
+				break;
 
 			NewFrameAvailable = false;
 			current_frame = frame.clone();
 		}
-		
+
 		//std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
 		cv::Mat processed = preprocessor.preprocess(current_frame);
-		std::string text = ocr.extractText(processed,current_frame);
+		std::string text = ocr.extractText(processed, current_frame);
 		//std::cout << "Tempo de processamento: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() << " ms\n";
 		std::cout << "Texto Detectado: " << text << std::endl;
 
-		if(!validator.Validate(text)){
+		if (!validator.Validate(text)) {
 			imp.setLastImpress(false);
 			LastWithError = true;
 			std::cout << ocr.getLastDebugError();
-		} else LastWithError = false;
+		} else
+			LastWithError = false;
 
 		sensor_cv.notify_one();
 	}
@@ -79,10 +84,10 @@ void Detector::ProcessLoop(){
 	std::cout << "Esperando Pela finalização da thread de processamento na main\n";
 }
 
-void Detector::SensorCaptureImpressTHR(){
+void Detector::SensorCaptureImpressTHR() {
 	sensor.SetStroboLow();
-	while(sensor_running){
-		if(sensor.ReadSensor() || firstDet){
+	while (sensor_running) {
+		if (sensor.ReadSensor() || firstDet) {
 			sensor.SetStroboHigh(10);
 			camera.captureImage();
 			cv::Mat newFrame = camera.retrieveImage();
@@ -90,53 +95,55 @@ void Detector::SensorCaptureImpressTHR(){
 
 			{
 				std::unique_lock<std::mutex> lock(frame_mutex);
-				sensor_cv.wait(lock, [this]{ return !NewFrameAvailable || !sensor_running; });
+				sensor_cv.wait(lock, [this] { return !NewFrameAvailable || !sensor_running; });
 
-				if (!sensor_running) break;
+				if (!sensor_running)
+					break;
 
 				frame = std::move(newFrame);
-				interface.setFrameCount(interface.getFrameCount() + 1); 
+				interface.setFrameCount(interface.getFrameCount() + 1);
 				NewFrameAvailable = true;
 			}
 			frame_cv.notify_one();
-			
-			if(!firstDet){
-				if(!imp.print(this->firstDet)){
+
+			if (!firstDet) {
+				if (!imp.print(this->firstDet)) {
 					std::cout << "Falha ao iniciar a impressão! Parando thread." << "\n";
-					
+
 					printer_error = true;
 					sensor_running = false;
 					imp.ResetLastImpress();
 				}
 			}
-			if(firstDet) firstDet = false;
+			if (firstDet)
+				firstDet = false;
 		}
 	}
-	
+
 	sensor.SetStroboLow();
 	sensor.ReturnToFirst();
 	imp.ResetLastImpress();
 }
 
-cv::Mat Detector::GetFrame(){
+cv::Mat Detector::GetFrame() {
 	std::lock_guard<std::mutex> lock(frame_mutex);
-	
-	if (frame.empty()) return cv::Mat();
-	
+
+	if (frame.empty())
+		return cv::Mat();
+
 	return frame.clone();
 }
 
-
-void Detector::StopProcessThread(){
+void Detector::StopProcessThread() {
 	processing_running = false;
 	frame_cv.notify_all();
-	if(process_thread.joinable()){
+	if (process_thread.joinable()) {
 		process_thread.join();
 		std::cout << "Thread de processamento limpa com sucesso.\n";
 	}
 }
 
-void Detector::StopSensorThread(){
+void Detector::StopSensorThread() {
 	sensor_running = false;
 	sensor_cv.notify_all();
 	if (sensor_thread.joinable()) {

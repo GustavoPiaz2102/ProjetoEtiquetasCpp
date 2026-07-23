@@ -3,31 +3,32 @@
 Validator::Validator(std::string lt, std::string fab, std::string val) : LT(lt), FAB(fab), VAL(val) {}
 
 bool Validator::ValidateLT(std::string str) {
-	return (str.find("L:"+LT) != std::string::npos);
+	return (str.find("L:" + LT) != std::string::npos);
 }
 bool Validator::ValidateFAB(std::string str) {
-	return (str.find("F:"+FAB) != std::string::npos);
+	return (str.find("F:" + FAB) != std::string::npos);
 }
 bool Validator::ValidateVAL(std::string str) {
-	return (str.find("V:"+VAL) != std::string::npos);
+	return (str.find("V:" + VAL) != std::string::npos);
 }
 bool Validator::Validate(std::string str) {
 	return (ValidateLT(str) && ValidateFAB(str) && ValidateVAL(str));
 }
-std::string Validator::GetLT(){ return LT; }
+std::string Validator::GetLT() { return LT; }
 
-std::string Validator::GetFAB(){ return FAB; }
+std::string Validator::GetFAB() { return FAB; }
 
-std::string Validator::GetVAL(){ return VAL; }
+std::string Validator::GetVAL() { return VAL; }
 
-void Validator::SetLT(std::string& lt) { LT = lt; }
+void Validator::SetLT(std::string &lt) { LT = lt; }
 
-void Validator::SetFAB(std::string& fab) { FAB = fab; }
+void Validator::SetFAB(std::string &fab) { FAB = fab; }
 
-void Validator::SetVAL(std::string& val) { VAL = val; }
+void Validator::SetVAL(std::string &val) { VAL = val; }
 
-void Validator::printall(){
-	std::cout << "\n" << "L: " << LT << "\n"
-				<< "F: " << FAB << "\n"
-				<< "V: " << VAL << "\n";
+void Validator::printall() {
+	std::cout << "\n"
+		  << "L: " << LT << "\n"
+		  << "F: " << FAB << "\n"
+		  << "V: " << VAL << "\n";
 }

@@ -28,7 +28,7 @@ class Preprocessor {
 		 * @param[in] inputImage Imagem de entrada BGR ou grayscale.
 		 * @return cv::Mat CV_32FC3 normalizado em [-1, 1], pronto para o detector.
 		 */
-		cv::Mat preprocess(const cv::Mat& inputImage);
+		cv::Mat preprocess(const cv::Mat &inputImage);
 
 		/**
 		 * @brief Prepara um recorte de linha para o modelo reconhecedor (rec).
@@ -37,7 +37,7 @@ class Preprocessor {
 		 * @param[in] inputImage Recorte de linha BGR ou grayscale.
 		 * @return cv::Mat CV_32FC3 normalizado em [-1, 1], pronto para o reconhecedor.
 		 */
-		cv::Mat prepareForRec(const cv::Mat& inputImage);
+		cv::Mat prepareForRec(const cv::Mat &inputImage);
 };
 
 #endif // PREPROCESSOR_H

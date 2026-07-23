@@ -1,14 +1,14 @@
--/*
+- /*
 #ifndef REWINDER_H
 #define REWINDER_H
 
-#include <thread>
-#include <atomic>
-#include <iostream>
-#include <chrono>
 #include "../../view/interface.h"
-#include "../heaters/hardwarePWM.h"
 #include "../heaters/GPIO.h"
+#include "../heaters/hardwarePWM.h"
+#include <atomic>
+#include <chrono>
+#include <iostream>
+#include <thread>
 
 class Rewinder {
     private:

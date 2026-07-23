@@ -2,16 +2,16 @@
 #define IMPRESS_H
 
 #include "arquiver.h"
-#include <string>
-#include <iostream>
-#include <cstring> // para strcpy
-#include <cstdlib> // para std::stoi, std::stof
-#include <fstream> // ofstream
-#include <vector>
-#include <chrono>
 #include <atomic>
+#include <chrono>
+#include <cstdlib> // para std::stoi, std::stof
+#include <cstring> // para strcpy
+#include <fstream> // ofstream
+#include <iostream>
+#include <string>
+#include <vector>
 
-class Impress{
+class Impress {
 	private:
 		Arquiver arq;
 		std::vector<std::string> StrList;
@@ -44,27 +44,27 @@ class Impress{
 		void SaveAtributes();
 		bool print(bool firstDet = true); // Retorna true se a impressão foi iniciada com sucesso
 
-		void setStrList(const std::vector<std::string> &strList){
+		void setStrList(const std::vector<std::string> &strList) {
 			StrList = strList;
 		}
 
-		void setLastImpress(bool lastImpress){
+		void setLastImpress(bool lastImpress) {
 			LastImpress = lastImpress;
 		}
 
-		bool getLastImpress() const{
+		bool getLastImpress() const {
 			return LastImpress;
 		}
 
-		void setQntImpressao(int qnt){
+		void setQntImpressao(int qnt) {
 			QntImpressao = qnt;
 		}
 
-		int getQntImpressao() const{
+		int getQntImpressao() const {
 			return QntImpressao;
 		}
 
-		void ResetLastImpress(){
+		void ResetLastImpress() {
 			LastImpress = true;
 		}
 };

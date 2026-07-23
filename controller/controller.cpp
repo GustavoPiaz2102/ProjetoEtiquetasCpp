@@ -2,7 +2,7 @@
 #include <functional>
 #include <iostream>
 
-Controller::Controller() : validator("000/00", "00/00/0000", "00/00/0000"), interface(validator), selected_option(-1), arquiver("data/config.txt"), imp(arquiver), detector(imp, interface, validator){
+Controller::Controller() : validator("000/00", "00/00/0000", "00/00/0000"), interface(validator), selected_option(-1), arquiver("data/config.txt"), imp(arquiver), detector(imp, interface, validator) {
 	// Carrega os dados do arquivo para o validador
 	glewInit();
 	arquiver.load();
@@ -10,15 +10,15 @@ Controller::Controller() : validator("000/00", "00/00/0000", "00/00/0000"), inte
 	std::string fab_value = arquiver.dict["fab"];
 	std::string val_value = arquiver.dict["val"];
 
-	if (!lt_value.empty()){
+	if (!lt_value.empty()) {
 		std::string full_lt = lt_value;
 		validator.SetLT(full_lt);
 	}
-	if (!fab_value.empty()){
+	if (!fab_value.empty()) {
 		std::string full_fab = fab_value;
 		validator.SetFAB(full_fab);
 	}
-	if (!val_value.empty()){
+	if (!val_value.empty()) {
 		std::string full_val = val_value;
 		validator.SetVAL(full_val);
 	}
@@ -29,7 +29,7 @@ Controller::Controller() : validator("000/00", "00/00/0000", "00/00/0000"), inte
 	imp.setStrList({validator.GetLT(), validator.GetFAB(), validator.GetVAL()});
 }
 
-Controller::~Controller(){
+Controller::~Controller() {
 	// Para threads antes de destruir
 	detector.StopSensorThread();
 	detector.StopProcessThread();
@@ -42,113 +42,117 @@ Controller::~Controller(){
 	validator.printall();
 }
 
-void Controller::run(){
+void Controller::run() {
 	interface.iniciar_janela();
 
-	try{
-		while(true){
+	try {
+		while (true) {
 			interface.process_events();
 			interface.begin_frame();
 
-			switch(selected_option){
-				case -1: // caso padrao na inicialização
-					detector.SetFirstDet(true); // Reseta flag para nova detecção
-					if(imp.getQntImpressao() <= 0) interface.setImprimindo(false);
+			switch (selected_option) {
+			case -1:			    // caso padrao na inicialização
+				detector.SetFirstDet(true); // Reseta flag para nova detecção
+				if (imp.getQntImpressao() <= 0)
+					interface.setImprimindo(false);
 
-					interface.menu(selected_option, imp.getQntImpressao());
-					if(interface.GetImprimindo()){
-						if(imp.getQntImpressao() > 0) imp.setStrList({validator.GetLT(), validator.GetFAB(), validator.GetVAL()});
-						else interface.setImprimindo(false);
-					} else imp.setQntImpressao(0);
-
-					break;
-
-				case 0:
-					rodar_detector();
-
-					break;
-
-				case 1:
-					if(requisitar_data_e_setar(0, [&](std::string &d){ validator.SetFAB(d); })) selected_option = 3;
-					break;
-
-				case 3:
-					if(requisitar_data_e_setar(1, [&](std::string &d) { validator.SetVAL(d); })) selected_option = 4;
-
-					break;
-
-				case 4:
-				{
-					std::string lt;
-					if(interface.requisitar_lt(lt)){
-						validator.SetLT(lt);
-						std::cout << "Lote selecionado: " << lt << "\n";
-						selected_option = -1;
-						arquiver.dict["lt"] = validator.GetLT();
-						arquiver.dict["fab"] = validator.GetFAB();
-						arquiver.dict["val"] = validator.GetVAL();
-						arquiver.save();
+				interface.menu(selected_option, imp.getQntImpressao());
+				if (interface.GetImprimindo()) {
+					if (imp.getQntImpressao() > 0)
 						imp.setStrList({validator.GetLT(), validator.GetFAB(), validator.GetVAL()});
-					}
-
-					break;
-				}
-
-				case 5:
-				{
-					if(interface.config_menu(arquiver)){
-						selected_option = -1;
-						imp.LoadAtributes();
-						imp.SaveAtributes();
-					}
-
-					break;
-				}
-				
-				// Configura impressão
-				case 2:
-				{
-					bool InstantImpress = false;
-					qnt_impress = imp.getQntImpressao();
-					if(interface.config_impress(qnt_impress, &InstantImpress)) selected_option = -1;
-
-					imp.setQntImpressao(qnt_impress);
-
-					if(InstantImpress && qnt_impress > 0){
-						std::cout << "Impressão instantânea de " << qnt_impress << " etiquetas.\n";
-						interface.setImprimindo(true);
-
-						for (int i = 0; i < qnt_impress; i++) imp.print();
-
+					else
 						interface.setImprimindo(false);
-					}
+				} else
+					imp.setQntImpressao(0);
 
-					break;
-				}
+				break;
 
-				case -10:
-				{
+			case 0:
+				rodar_detector();
+
+				break;
+
+			case 1:
+				if (requisitar_data_e_setar(0, [&](std::string &d) { validator.SetFAB(d); }))
+					selected_option = 3;
+				break;
+
+			case 3:
+				if (requisitar_data_e_setar(1, [&](std::string &d) { validator.SetVAL(d); }))
+					selected_option = 4;
+
+				break;
+
+			case 4: {
+				std::string lt;
+				if (interface.requisitar_lt(lt)) {
+					validator.SetLT(lt);
+					std::cout << "Lote selecionado: " << lt << "\n";
+					selected_option = -1;
+					arquiver.dict["lt"] = validator.GetLT();
+					arquiver.dict["fab"] = validator.GetFAB();
+					arquiver.dict["val"] = validator.GetVAL();
 					arquiver.save();
-					// std::system("shutdown now");
-					return; // Sai do loop e encerra
+					imp.setStrList({validator.GetLT(), validator.GetFAB(), validator.GetVAL()});
 				}
+
+				break;
+			}
+
+			case 5: {
+				if (interface.config_menu(arquiver)) {
+					selected_option = -1;
+					imp.LoadAtributes();
+					imp.SaveAtributes();
+				}
+
+				break;
+			}
+
+			// Configura impressão
+			case 2: {
+				bool InstantImpress = false;
+				qnt_impress = imp.getQntImpressao();
+				if (interface.config_impress(qnt_impress, &InstantImpress))
+					selected_option = -1;
+
+				imp.setQntImpressao(qnt_impress);
+
+				if (InstantImpress && qnt_impress > 0) {
+					std::cout << "Impressão instantânea de " << qnt_impress << " etiquetas.\n";
+					interface.setImprimindo(true);
+
+					for (int i = 0; i < qnt_impress; i++)
+						imp.print();
+
+					interface.setImprimindo(false);
+				}
+
+				break;
+			}
+
+			case -10: {
+				arquiver.save();
+				// std::system("shutdown now");
+				return; // Sai do loop e encerra
+			}
 			}
 
 			interface.end_frame();
 		}
-	} catch(const std::exception &e){
+	} catch (const std::exception &e) {
 		std::cerr << "Erro capturado: " << e.what() << "\n";
 		arquiver.save();
-	} catch(...){
+	} catch (...) {
 		std::cerr << "Erro desconhecido capturado.\n";
 		arquiver.save();
 	}
 }
 
-bool Controller::requisitar_data_e_setar(int tipo, std::function<void(std::string &)> setter){
+bool Controller::requisitar_data_e_setar(int tipo, std::function<void(std::string &)> setter) {
 	std::string data;
 
-	if (interface.requisitar_data(data, tipo)){
+	if (interface.requisitar_data(data, tipo)) {
 		std::cout << "Data selecionada: " << data << "\n";
 		setter(data);
 
@@ -158,10 +162,10 @@ bool Controller::requisitar_data_e_setar(int tipo, std::function<void(std::strin
 	return false;
 }
 
-void Controller::rodar_detector(){
-	if(!ReturnToMenu){
-		if(detector.HasPrinterError()){
-			if(interface.PopUpError("Erro ao iniciar a impressão.")){
+void Controller::rodar_detector() {
+	if (!ReturnToMenu) {
+		if (detector.HasPrinterError()) {
+			if (interface.PopUpError("Erro ao iniciar a impressão.")) {
 				imp.setLastImpress(true);
 				interface.setImprimindo(false);
 			}
@@ -169,23 +173,28 @@ void Controller::rodar_detector(){
 			return;
 		}
 
-		if(interface.GetImprimindo() && imp.getQntImpressao() > 0){
-			if(detector.GetFirstDet() || (detector.GetSensorRunning() && detector.GetProcessingRunning())){
+		if (interface.GetImprimindo() && imp.getQntImpressao() > 0) {
+			if (detector.GetFirstDet() || (detector.GetSensorRunning() && detector.GetProcessingRunning())) {
 				// Inicia threads se necessário
-				if (!detector.GetSensorRunning()) detector.StartSensorThread();
-				if (!detector.GetProcessingRunning()) detector.StartProcessThread();
+				if (!detector.GetSensorRunning())
+					detector.StartSensorThread();
+				if (!detector.GetProcessingRunning())
+					detector.StartProcessThread();
 
 				cv::Mat frame = detector.GetFrame();
-				if (!frame.empty())	ReturnToMenu = interface.atualizar_frame(frame);
-				else ReturnToMenu = interface.atualizar_frame(NonDetectedFrame);
-
+				if (!frame.empty())
+					ReturnToMenu = interface.atualizar_frame(frame);
+				else
+					ReturnToMenu = interface.atualizar_frame(NonDetectedFrame);
 			}
-		} else{
+		} else {
 			std::cout << "Desligamento seguro\n";
 			interface.setFrameCount(0);
-			if(detector.GetSensorRunning())	detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
+			if (detector.GetSensorRunning())
+				detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
 
-			if(detector.GetProcessingRunning())	detector.StopProcessThread();
+			if (detector.GetProcessingRunning())
+				detector.StopProcessThread();
 
 			imp.ResetLastImpress();
 
@@ -193,15 +202,17 @@ void Controller::rodar_detector(){
 			selected_option = -1; // Volta para o Menu
 			ReturnToMenu = false;
 		}
-	} else{
-			if(detector.GetSensorRunning())	detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
+	} else {
+		if (detector.GetSensorRunning())
+			detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
 
-			if(detector.GetProcessingRunning())	detector.StopProcessThread();
+		if (detector.GetProcessingRunning())
+			detector.StopProcessThread();
 
-			imp.ResetLastImpress();
+		imp.ResetLastImpress();
 
-			detector.SetFirstDet(true);
-			selected_option = -1; // Volta para o Menu
-			ReturnToMenu = false;
+		detector.SetFirstDet(true);
+		selected_option = -1; // Volta para o Menu
+		ReturnToMenu = false;
 	}
 }

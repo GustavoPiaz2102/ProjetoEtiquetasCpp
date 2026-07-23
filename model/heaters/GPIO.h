@@ -1,22 +1,22 @@
 #ifndef GPIO_H
 #define GPIO_H
 
-#include <gpiod.h>
-#include <string>
-#include <iostream>
-#include <stdexcept>
-#include <thread>
 #include <chrono>
 #include <fstream>
+#include <gpiod.h>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <thread>
 
 const std::string DEVICE_DIR = "/sys/bus/iio/devices/iio:device0/";
-const std::string FILE_RAW   = DEVICE_DIR + "in_voltage0_raw";   
-const std::string FILE_SCALE = DEVICE_DIR + "in_voltage0_scale"; 
+const std::string FILE_RAW = DEVICE_DIR + "in_voltage0_raw";
+const std::string FILE_SCALE = DEVICE_DIR + "in_voltage0_scale";
 
 #define SENSOR_THRESHOLD 13
 #define DEBOUNCE_MS 50 //periodo entre leituras
 
-class GPIO{
+class GPIO {
 	private:
 		gpiod_chip *chip;
 
@@ -52,7 +52,7 @@ class GPIO{
 	public:
 		// Flags
 		bool firstRead = true;
-		
+
 		GPIO(uint8_t pinStrobo, uint8_t pinBuzzer, const std::string &chipname = "gpiochip4");
 		~GPIO();
 
@@ -96,9 +96,9 @@ class GPIO{
 		/**
 		 * @brief Reseta o estado do sensor para a condição inicial, forçando uma nova leitura completa.
 		 */
-		void ReturnToFirst() { 
-			firstRead = true; 
-			stableState = false; 
+		void ReturnToFirst() {
+			firstRead = true;
+			stableState = false;
 			lastLogicalState = false;
 		}
 
@@ -136,4 +136,4 @@ class GPIO{
 		void stopBuzzerThread();
 };
 
-#endif  // GPIO_H
+#endif // GPIO_H

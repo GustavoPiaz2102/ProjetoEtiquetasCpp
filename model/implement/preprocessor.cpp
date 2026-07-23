@@ -4,15 +4,18 @@ Preprocessor::Preprocessor() {}
 
 Preprocessor::~Preprocessor() {}
 
-cv::Mat Preprocessor::preprocess(const cv::Mat& inputImage) {
+cv::Mat Preprocessor::preprocess(const cv::Mat &inputImage) {
 	cv::Mat gray;
 
-	if (inputImage.channels() == 1) gray = inputImage.clone();
-	else cv::cvtColor(inputImage, gray, cv::COLOR_BGR2GRAY);
+	if (inputImage.channels() == 1)
+		gray = inputImage.clone();
+	else
+		cv::cvtColor(inputImage, gray, cv::COLOR_BGR2GRAY);
 
 	cv::threshold(gray, gray, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
 
-	if (cv::mean(gray)[0] < 127) cv::bitwise_not(gray, gray);
+	if (cv::mean(gray)[0] < 127)
+		cv::bitwise_not(gray, gray);
 
 	cv::Mat rgb;
 	cv::cvtColor(gray, rgb, cv::COLOR_GRAY2RGB);
@@ -23,11 +26,13 @@ cv::Mat Preprocessor::preprocess(const cv::Mat& inputImage) {
 	return result;
 }
 
-cv::Mat Preprocessor::prepareForRec(const cv::Mat& inputImage) {
+cv::Mat Preprocessor::prepareForRec(const cv::Mat &inputImage) {
 	cv::Mat rgb;
 
-	if (inputImage.channels() == 1) cv::cvtColor(inputImage, rgb, cv::COLOR_GRAY2RGB);
-	else cv::cvtColor(inputImage, rgb, cv::COLOR_BGR2RGB);
+	if (inputImage.channels() == 1)
+		cv::cvtColor(inputImage, rgb, cv::COLOR_GRAY2RGB);
+	else
+		cv::cvtColor(inputImage, rgb, cv::COLOR_BGR2RGB);
 
 	cv::Mat floatImg;
 	rgb.convertTo(floatImg, CV_32F, 1.0 / 255.0);

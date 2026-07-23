@@ -1,22 +1,22 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include "detector.h"
-#include "../model/heaters/validator.h"
-#include "../view/interface.h"
-#include <memory>
-#include <opencv2/opencv.hpp>
-#include <iostream>
-#include <thread>
-#include <chrono>
 #include "../model/heaters/arquiver.h" // Para carregar e salvar os dados do validador
 #include "../model/heaters/impress.h"
+#include "../model/heaters/validator.h"
+#include "../view/interface.h"
+#include "detector.h"
+#include <chrono>
+#include <iostream>
+#include <memory>
+#include <opencv2/opencv.hpp>
+#include <thread>
 //#include "../model/heaters/rewinder.h" // Para controle do motor rebobinador
 #include <mutex>
 
 class Controller {
 	public:
-		Controller();  // Somente a declaração aqui
+		Controller(); // Somente a declaração aqui
 		~Controller();
 		void run();
 
@@ -31,7 +31,7 @@ class Controller {
 		int selected_option = -1;
 		int qnt_impress; //Quantidade de impressões Atual
 
-		bool requisitar_data_e_setar(int tipo, std::function<void(std::string&)> setter);
+		bool requisitar_data_e_setar(int tipo, std::function<void(std::string &)> setter);
 		void rodar_detector();
 
 		cv::Mat NonDetectedFrame = cv::imread("../data/NonDetectedFrame.png");

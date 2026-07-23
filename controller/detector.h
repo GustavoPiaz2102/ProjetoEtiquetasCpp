@@ -1,23 +1,23 @@
 #ifndef DETECTOR_H
 #define DETECTOR_H
 
-#include "../view/interface.h"
-#include "../model/heaters/capture.h"
-#include "../model/heaters/preprocessor.h"
-#include "../model/heaters/OCR.h"
 #include "../model/heaters/GPIO.h"
+#include "../model/heaters/OCR.h"
+#include "../model/heaters/capture.h"
 #include "../model/heaters/impress.h"
-#include "../model/heaters/validator.h"
+#include "../model/heaters/preprocessor.h"
 #include "../model/heaters/threadUtils.h"
-#include <opencv2/opencv.hpp>
-#include <thread>
-#include <mutex>
+#include "../model/heaters/validator.h"
+#include "../view/interface.h"
 #include <atomic>
-#include <string>
-#include <functional>
 #include <condition_variable>
+#include <functional>
+#include <mutex>
+#include <opencv2/opencv.hpp>
+#include <string>
+#include <thread>
 
-class Detector{
+class Detector {
 	private:
 		Capture camera;
 		Preprocessor preprocessor;
@@ -27,26 +27,25 @@ class Detector{
 		Interface &interface;
 		Validator &validator;
 
-		cv::Mat frame;                                                      // Frame capturado da câmera
-		std::mutex frame_mutex;                                             // Protege acesso ao frame
-		std::condition_variable frame_cv;                                   // Notifica a thread de processamento sobre novos frames
-		std::condition_variable sensor_cv;                                  // Notifica a thread de captura sobre mudanças no estado do sensor
+		cv::Mat frame;			   // Frame capturado da câmera
+		std::mutex frame_mutex;		   // Protege acesso ao frame
+		std::condition_variable frame_cv;  // Notifica a thread de processamento sobre novos frames
+		std::condition_variable sensor_cv; // Notifica a thread de captura sobre mudanças no estado do sensor
 
 		// -------------- Threads e controle de execução -----------------------
-		std::thread sensor_thread;                                          // Thread de captura e impressão
-		std::thread process_thread;                                         // Thread de processamento 		
-		std::atomic<bool> sensor_running{false};                            // Controle da thread de captura
-		std::atomic<bool> processing_running{false};                        // Controle da thread de processamento
+		std::thread sensor_thread;		     // Thread de captura e impressão
+		std::thread process_thread;		     // Thread de processamento
+		std::atomic<bool> sensor_running{false};     // Controle da thread de captura
+		std::atomic<bool> processing_running{false}; // Controle da thread de processamento
 		std::atomic<bool> OCRDone{true};
-		
+
 		// -------------- Flags de controle e estado --------------------------------------
 		std::atomic<bool> firstDet{true};
-		std::atomic<bool> NewFrameAvailable{false}; 
-		std::atomic<bool> LastWithError{false};								 // Flag da validator, indica que o OCR achou um erro
+		std::atomic<bool> NewFrameAvailable{false};
+		std::atomic<bool> LastWithError{false}; // Flag da validator, indica que o OCR achou um erro
 		std::atomic<bool> printer_error{false};
-		
-	public:
 
+	public:
 		/**
 		 * @brief Construtor da classe Detector que inicializa todos os componentes do sistema.
 		 * @details Inicializa a câmera, OCR, sensor GPIO e mantém referências para impressora, interface e validador.
@@ -118,23 +117,23 @@ class Detector{
 		 * @details Utilizado pela interface para determinar se deve exibir indicadores de erro.
 		 * @return bool True se a última validação falhou, False caso contrário.
 		 */
-		bool WasLastWithError() const{ return LastWithError; }
+		bool WasLastWithError() const { return LastWithError; }
 
 		/**
 		 * @brief Obtém o estado de execução da thread de captura.
 		 * @return bool True se a thread de captura estiver em execução, False caso contrário.
 		 */
-		bool GetSensorRunning() const{ return sensor_running; }
+		bool GetSensorRunning() const { return sensor_running; }
 
 		/**
 		 * @brief Obtém o estado de execução da thread de processamento.
 		 * @return bool True se a thread de processamento estiver em execução, False caso contrário.
 		 */
-		bool GetProcessingRunning() const{ return processing_running; }
+		bool GetProcessingRunning() const { return processing_running; }
 
-		bool GetFirstDet() const{ return firstDet; }
+		bool GetFirstDet() const { return firstDet; }
 
-		void SetFirstDet(bool val){ firstDet = val; }
+		void SetFirstDet(bool val) { firstDet = val; }
 
 		/**
 		 * @brief Verifica se houve erro crítico na impressora.
@@ -142,8 +141,8 @@ class Detector{
 		 *          Reseta a flag de erro após a verificação.
 		 * @return bool True se houve erro crítico, False caso contrário.
 		 */
-		bool HasPrinterError(){
-			if(printer_error){
+		bool HasPrinterError() {
+			if (printer_error) {
 				printer_error = false;
 				return true;
 			}

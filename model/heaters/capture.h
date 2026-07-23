@@ -1,28 +1,28 @@
 #ifndef CAPTURE_H
 #define CAPTURE_H
 
-#include <opencv2/opencv.hpp>
-#include <iostream>
 #include "GPIO.h"
+#include <iostream>
 #include <opencv2/core/utils/logger.hpp>
+#include <opencv2/opencv.hpp>
 
 #define IMG_WIDTH 1280
 #define IMG_HEIGHT 960
 
-#define ROI_WIDTH  int(IMG_WIDTH  * .4250)      // 640  (múltiplo de 32)
-#define ROI_HEIGHT int(IMG_HEIGHT * .3333)  // 320  (múltiplo de 32)
+#define ROI_WIDTH int(IMG_WIDTH * .4250)   // 640  (múltiplo de 32)
+#define ROI_HEIGHT int(IMG_HEIGHT * .3333) // 320  (múltiplo de 32)
 
 class Capture {
-public:
-	Capture(int cameraIndex = 0);
-	~Capture();
-	void captureImage();
-	cv::Mat retrieveImage();
-	cv::Rect roi;
+	public:
+		Capture(int cameraIndex = 0);
+		~Capture();
+		void captureImage();
+		cv::Mat retrieveImage();
+		cv::Rect roi;
 
-private:
-	cv::VideoCapture cap;
-	cv::Mat frame;
+	private:
+		cv::VideoCapture cap;
+		cv::Mat frame;
 };
 
 #endif

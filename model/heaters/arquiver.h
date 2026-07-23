@@ -1,16 +1,16 @@
 #ifndef ARQUIVER_H
 #define ARQUIVER_H
 
-#include <string>
 #include <map>
+#include <string>
 
-class Arquiver{
+class Arquiver {
 	private:
 		std::string path;
 
 	public:
 		std::map<std::string, std::string> dict;
-		Arquiver(const std::string& caminho);
+		Arquiver(const std::string &caminho);
 		bool load();
 		bool save() const;
 		void show() const;

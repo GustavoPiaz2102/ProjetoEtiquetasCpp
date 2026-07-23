@@ -1,12 +1,13 @@
 #ifndef VALIDATOR_H
 #define VALIDATOR_H
-#include <string>
 #include <iostream>
+#include <string>
 class Validator {
 	private:
 		std::string LT;
 		std::string FAB;
 		std::string VAL;
+
 	public:
 		Validator(std::string lt, std::string fab, std::string val);
 		bool Validate(std::string str);
@@ -17,13 +18,11 @@ class Validator {
 		std::string GetLT();
 		std::string GetFAB();
 		std::string GetVAL();
-		void SetLT(std::string& lt);
-		void SetFAB(std::string& fab);
-		void SetVAL(std::string& val);
+		void SetLT(std::string &lt);
+		void SetFAB(std::string &fab);
+		void SetVAL(std::string &val);
 
 		// Método para imprimir todos os dados
 		void printall();
-
-
 };
 #endif

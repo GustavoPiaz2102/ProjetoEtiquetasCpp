@@ -1,14 +1,14 @@
 #ifndef OCR_H
 #define OCR_H
 
-#include <opencv2/opencv.hpp>
-#include <onnxruntime_cxx_api.h>
-#include <string>
+#include <future>
 #include <iostream>
 #include <memory>
-#include <vector>
+#include <onnxruntime_cxx_api.h>
+#include <opencv2/opencv.hpp>
+#include <string>
 #include <thread>
-#include <future>
+#include <vector>
 
 #define MODEL_DIR "/home/pi/models"
 
@@ -38,7 +38,7 @@ class OCR {
 		 * @param[in] detImg Imagem normalizada CV_32FC3 [-1,1] vinda do Preprocessor::preprocess().
 		 * @return Vector de cv::Rect com as bounding boxes detectadas.
 		 */
-		std::vector<cv::Rect> detect(const cv::Mat& detImg);
+		std::vector<cv::Rect> detect(const cv::Mat &detImg);
 
 		/**
 		 * @brief Reconhece o texto em um recorte de linha.
@@ -48,7 +48,7 @@ class OCR {
 		 * @param[in] lineImg Recorte de uma linha normalizado CV_32FC3 [-1,1].
 		 * @return String com o texto reconhecido na linha.
 		 */
-		std::string recognize(const cv::Mat& lineImg);
+		std::string recognize(const cv::Mat &lineImg);
 
 		/**
 		 * @brief Constrói tensor CHW [1,3,H,W] a partir de um cv::Mat CV_32FC3.
@@ -57,7 +57,7 @@ class OCR {
 		 * @param[out] outW Largura da imagem.
 		 * @return Vector<float> com os dados no formato channel-first.
 		 */
-		std::vector<float> buildTensor(const cv::Mat& img, int& outH, int& outW);
+		std::vector<float> buildTensor(const cv::Mat &img, int &outH, int &outW);
 
 		/**
 		 * @brief Decodifica a saída CTC do modelo rec em string.
@@ -68,7 +68,7 @@ class OCR {
 		 * @param[in] numClasses Número de classes (tamanho do charset + 1 blank).
 		 * @return String com o texto decodificado.
 		 */
-		std::string ctcDecode(const float* logits, int timeSteps, int numClasses);
+		std::string ctcDecode(const float *logits, int timeSteps, int numClasses);
 
 		/**
 		 * @brief Carrega o charset a partir do arquivo de chaves do PaddleOCR.
@@ -76,7 +76,7 @@ class OCR {
 		 *          conforme a convenção do PP-OCRv3.
 		 * @param[in] keysPath Caminho para o arquivo ppocr_keys_v1.txt.
 		 */
-		void loadCharset(const std::string& keysPath);
+		void loadCharset(const std::string &keysPath);
 
 	public:
 		/**
@@ -85,7 +85,7 @@ class OCR {
 		 *          Carrega o charset do arquivo de chaves.
 		 * @param[in] modelDir Caminho para o diretório contendo os modelos .onnx e o arquivo de chaves.
 		 */
-		OCR(const std::string& modelDir = MODEL_DIR);
+		OCR(const std::string &modelDir = MODEL_DIR);
 
 		/** @brief Destrutor padrão. */
 		~OCR() = default;
@@ -99,7 +99,7 @@ class OCR {
 		 * @param[in] origImg Imagem original BGR para recorte das linhas detectadas.
 		 * @return String com o texto extraído, uma linha por '\\n', na ordem top→bottom.
 		 */
-		std::string extractText(const cv::Mat& detImg, const cv::Mat& origImg);
+		std::string extractText(const cv::Mat &detImg, const cv::Mat &origImg);
 
 		/**
 		 * @brief Retorna a última mensagem de debug gerada durante o reconhecimento.
