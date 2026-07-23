@@ -7,17 +7,10 @@ Preprocessor::~Preprocessor() {}
 cv::Mat Preprocessor::preprocess(const cv::Mat& inputImage) {
 	cv::Mat gray;
 
-<<<<<<< HEAD
 	if (inputImage.channels() == 1) gray = inputImage.clone();
 	else cv::cvtColor(inputImage, gray, cv::COLOR_BGR2GRAY);
 
 	cv::threshold(gray, gray, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
-=======
-	// Converte a imagem para escala de cinza
-	cv::cvtColor(inputImage, gray, cv::COLOR_BGR2GRAY);
-	// Aplica um blur (suavização)
-	//cv::GaussianBlur(gray, gray, cv::Size(5, 5), 0);
->>>>>>> cf949fbc0c80fffd961f9a5cf699fd2b899a6c4b
 
 	if (cv::mean(gray)[0] < 127) cv::bitwise_not(gray, gray);
 
