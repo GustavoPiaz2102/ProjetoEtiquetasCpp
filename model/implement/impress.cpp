@@ -49,12 +49,11 @@ std::string formatFloat(float val){
 
 	if (val == (int)val) ss << std::fixed << std::setprecision(0) << val;
 	else ss << std::fixed << std::setprecision(2) << val;
-	
+
 	return ss.str();
 }
 
 bool Impress::print(bool firstDet){
-
 	if (!firstDet){
 		if (!LastImpress){
 			std::cout << "❌ A última impressão teve falhas" << "\n";
@@ -76,18 +75,18 @@ bool Impress::print(bool firstDet){
 
 	if (StrList.size() > 0)
 	comando += "TEXT " + std::to_string(posicao_x) + "," + std::to_string(posicao_y_lote) +
-		   ",\"" + fonte + "\"," + std::to_string(rotacao) + "," +
-		   formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"L:" + StrList[0] + "\"\r\n";
+			",\"" + fonte + "\"," + std::to_string(rotacao) + "," +
+			formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"L:" + StrList[0] + "\"\r\n";
 
 	if (StrList.size() > 1)
 	comando += "TEXT " + std::to_string(posicao_x) + "," + std::to_string(posicao_y_fabricacao) +
-		   ",\"" + fonte + "\"," + std::to_string(rotacao) + "," +
-		   formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"F:" + StrList[1] + "\"\r\n";
+			",\"" + fonte + "\"," + std::to_string(rotacao) + "," +
+			formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"F:" + StrList[1] + "\"\r\n";
 
 	if (StrList.size() > 2)
 	comando += "TEXT " + std::to_string(posicao_x) + "," + std::to_string(posicao_y_validade) +
-		   ",\"" + fonte + "\"," + std::to_string(rotacao) + "," +
-		   formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"V:" + StrList[2] + "\"\r\n";
+			",\"" + fonte + "\"," + std::to_string(rotacao) + "," +
+			formatFloat(escala_x) + "," + formatFloat(escala_y) + ",\"V:" + StrList[2] + "\"\r\n";
 
 	comando += "PRINT " + std::to_string(QuantidadeDeImpressõesPorOrdem) + "\r\n";
 
@@ -96,19 +95,17 @@ bool Impress::print(bool firstDet){
 		if (!impressora.is_open()){
 			std::cerr << "❌ Erro: não foi possível abrir a impressora." << "\n";
 			return false;
-	}
+		}
 
-	//std::cout << "Enviando comando para impressora:\n" << comando << "\n";
+		//std::cout << "Enviando comando para impressora:\n" << comando << "\n";
+		impressora.write(comando.c_str(), comando.size());
+		impressora.close();
 
-	impressora.write(comando.c_str(), comando.size());
-	impressora.close();
-
-	std::cout << "✅ Etiqueta enviada com sucesso!" << "\n";
-	QntImpressao--;
-	return true;
-	
+		std::cout << "✅ Etiqueta enviada com sucesso!" << "\n";
+		QntImpressao--;
+		return true;
 	} catch(const std::exception &e){
-	std::cerr << "❌ Erro ao imprimir: " << e.what() << "\n";
-	return false;
+		std::cerr << "❌ Erro ao imprimir: " << e.what() << "\n";
+		return false;
 	}
 }

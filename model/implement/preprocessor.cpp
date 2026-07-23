@@ -1,25 +1,16 @@
 #include "../heaters/preprocessor.h"
 
-Preprocessor::Preprocessor() {
-}
+Preprocessor::Preprocessor() {}
 
-Preprocessor::~Preprocessor() {
-}
+Preprocessor::~Preprocessor() {}
 
 cv::Mat Preprocessor::preprocess(const cv::Mat& inputImage) {
 	cv::Mat gray;
 
-<<<<<<< HEAD
 	if (inputImage.channels() == 1) gray = inputImage.clone();
 	else cv::cvtColor(inputImage, gray, cv::COLOR_BGR2GRAY);
 
 	cv::threshold(gray, gray, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
-=======
-	// Converte a imagem para escala de cinza
-	cv::cvtColor(inputImage, gray, cv::COLOR_BGR2GRAY);
-	// Aplica um blur (suavização)
-	//cv::GaussianBlur(gray, gray, cv::Size(5, 5), 0);
->>>>>>> 09b84a29101e75d92ed9b6b628d48d565567d26c
 
 	if (cv::mean(gray)[0] < 127) cv::bitwise_not(gray, gray);
 
@@ -31,15 +22,12 @@ cv::Mat Preprocessor::preprocess(const cv::Mat& inputImage) {
 
 	return result;
 }
-<<<<<<< HEAD
 
 cv::Mat Preprocessor::prepareForRec(const cv::Mat& inputImage) {
 	cv::Mat rgb;
 
-	if (inputImage.channels() == 1)
-		cv::cvtColor(inputImage, rgb, cv::COLOR_GRAY2RGB);
-	else
-		cv::cvtColor(inputImage, rgb, cv::COLOR_BGR2RGB);
+	if (inputImage.channels() == 1) cv::cvtColor(inputImage, rgb, cv::COLOR_GRAY2RGB);
+	else cv::cvtColor(inputImage, rgb, cv::COLOR_BGR2RGB);
 
 	cv::Mat floatImg;
 	rgb.convertTo(floatImg, CV_32F, 1.0 / 255.0);
@@ -57,6 +45,3 @@ cv::Mat Preprocessor::prepareForRec(const cv::Mat& inputImage) {
 
 	return result;
 }
-=======
-	
->>>>>>> 09b84a29101e75d92ed9b6b628d48d565567d26c

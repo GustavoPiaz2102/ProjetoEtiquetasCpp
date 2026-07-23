@@ -40,7 +40,7 @@ bool Arquiver::save() const {
 	std::ifstream inFile(path);
 	std::vector<std::pair<std::string, std::string>> existingLines;
 	std::string line;
-	
+
 	if(inFile.is_open()){
 		while(std::getline(inFile, line)){
 			std::string key, value;

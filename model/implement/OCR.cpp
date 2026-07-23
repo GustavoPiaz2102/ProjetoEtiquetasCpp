@@ -13,10 +13,7 @@ static bool inWhitelist(const std::string& ch) {
 	return WHITELIST.find(ch) != std::string::npos;
 }
 
-<<<<<<< HEAD
-OCR::OCR(const std::string& modelDir)
-	: env(ORT_LOGGING_LEVEL_WARNING, "OCR")
-{
+OCR::OCR(const std::string& modelDir) : env(ORT_LOGGING_LEVEL_WARNING, "OCR"){
 	sessionOptions.SetIntraOpNumThreads(2); // 2 por sessão — 3 threads paralelas × 2 = 6, Pi4 tem 4 núcleos
 	sessionOptions.SetInterOpNumThreads(1);
 	sessionOptions.SetGraphOptimizationLevel(GraphOptimizationLevel::ORT_ENABLE_ALL);
@@ -32,15 +29,13 @@ OCR::OCR(const std::string& modelDir)
 
 void OCR::loadCharset(const std::string& keysPath) {
 	std::ifstream f(keysPath);
-	if (!f.is_open())
-		throw std::runtime_error("[OCR] Nao foi possivel abrir: " + keysPath);
+	if (!f.is_open()) throw std::runtime_error("[OCR] Nao foi possivel abrir: " + keysPath);
 
 	charset.clear();
 	charset.push_back("blank");
 
 	std::string line;
-	while (std::getline(f, line))
-		if (!line.empty()) charset.push_back(line);
+	while (std::getline(f, line)) if (!line.empty()) charset.push_back(line);
 
 	charset.push_back(" ");
 }
@@ -53,10 +48,7 @@ std::vector<float> OCR::buildTensor(const cv::Mat& img, int& outH, int& outW) {
 	cv::split(img, channels);
 
 	std::vector<float> tensor(3 * outH * outW);
-	for (int c = 0; c < 3; ++c)
-		std::memcpy(tensor.data() + c * outH * outW,
-			    channels[c].ptr<float>(),
-			    outH * outW * sizeof(float));
+	for (int c = 0; c < 3; ++c) std::memcpy(tensor.data() + c * outH * outW, channels[c].ptr<float>(), outH * outW * sizeof(float));
 	return tensor;
 }
 
@@ -65,24 +57,20 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& detImg) {
 	int H = (detImg.rows / 32) * 32;
 
 	cv::Mat input;
-	if (W != detImg.cols || H != detImg.rows)
-		cv::resize(detImg, input, cv::Size(W, H));
-	else
-		input = detImg;
+	if (W != detImg.cols || H != detImg.rows) cv::resize(detImg, input, cv::Size(W, H));
+	else input = detImg;
 
 	int inH, inW;
 	std::vector<float> tensor = buildTensor(input, inH, inW);
 	std::vector<int64_t> shape = {1, 3, inH, inW};
 
 	Ort::MemoryInfo memInfo = Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault);
-	Ort::Value inputOrt = Ort::Value::CreateTensor<float>(
-		memInfo, tensor.data(), tensor.size(), shape.data(), shape.size());
+	Ort::Value inputOrt = Ort::Value::CreateTensor<float>(memInfo, tensor.data(), tensor.size(), shape.data(), shape.size());
 
 	const char* inputNames[]  = {"x"};
 	const char* outputNames[] = {"sigmoid_0.tmp_0"};
 
-	auto outputs = detSession->Run(
-		Ort::RunOptions{nullptr}, inputNames, &inputOrt, 1, outputNames, 1);
+	auto outputs = detSession->Run(Ort::RunOptions{nullptr}, inputNames, &inputOrt, 1, outputNames, 1);
 
 	auto& outTensor = outputs[0];
 	auto  outShape  = outTensor.GetTensorTypeAndShapeInfo().GetShape();
@@ -116,24 +104,15 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat& detImg) {
 		r.height = std::min(detImg.rows - r.y, static_cast<int>(r.height * scaleY) + 2 * pad);
 
 		boxes.push_back(r);
-=======
-
-OCR::~OCR(){
-	if(tess){
-		tess->End();
-		delete tess;
->>>>>>> 09b84a29101e75d92ed9b6b628d48d565567d26c
 	}
 
 	// Descarta boxes muito largas (detecção espúria juntando linhas)
-	boxes.erase(std::remove_if(boxes.begin(), boxes.end(),
-		[](const cv::Rect& r){ return r.height > r.width * 0.5f; }), boxes.end());
+	boxes.erase(std::remove_if(boxes.begin(), boxes.end(), [](const cv::Rect& r){ return r.height > r.width * 0.5f; }), boxes.end());
 
 	// Limita a 3 boxes (lote, fabricação, validade)
 	if (boxes.size() > 3) boxes.resize(3);
 
-	std::sort(boxes.begin(), boxes.end(),
-		[](const cv::Rect& a, const cv::Rect& b){ return a.y < b.y; });
+	std::sort(boxes.begin(), boxes.end(), [](const cv::Rect& a, const cv::Rect& b){ return a.y < b.y; });
 
 	return boxes;
 }
@@ -155,14 +134,12 @@ std::string OCR::recognize(const cv::Mat& lineImg) {
 	std::vector<int64_t> shape = {1, 3, H, W};
 
 	Ort::MemoryInfo memInfo = Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault);
-	Ort::Value inputOrt = Ort::Value::CreateTensor<float>(
-		memInfo, tensor.data(), tensor.size(), shape.data(), shape.size());
+	Ort::Value inputOrt = Ort::Value::CreateTensor<float>(memInfo, tensor.data(), tensor.size(), shape.data(), shape.size());
 
 	const char* inputNames[]  = {"x"};
 	const char* outputNames[] = {"softmax_2.tmp_0"};
 
-	auto outputs = recSession->Run(
-		Ort::RunOptions{nullptr}, inputNames, &inputOrt, 1, outputNames, 1);
+	auto outputs = recSession->Run(Ort::RunOptions{nullptr}, inputNames, &inputOrt, 1, outputNames, 1);
 
 	auto& out      = outputs[0];
 	auto  outShape = out.GetTensorTypeAndShapeInfo().GetShape();
@@ -179,23 +156,19 @@ std::string OCR::ctcDecode(const float* logits, int timeSteps, int numClasses) {
 	for (int t = 0; t < timeSteps; ++t) {
 		const float* row = logits + t * numClasses;
 
-		int maxIdx = static_cast<int>(
-			std::max_element(row, row + numClasses) - row);
+		int maxIdx = static_cast<int>(std::max_element(row, row + numClasses) - row);
 		float confidence = row[maxIdx] * 100.0f;
 
 		if (maxIdx != lastIdx && maxIdx != 0) {
 			if (maxIdx < static_cast<int>(charset.size())) {
 				const std::string& ch = charset[maxIdx];
-				lastDebugError = "[CTC] ch='" + ch + "' conf=" + std::to_string(confidence) +
-					" whitelist=" + std::to_string(inWhitelist(ch)) + "\n";
-				if (confidence >= minConfidence && inWhitelist(ch))
-					result += ch;
+				lastDebugError = "[CTC] ch='" + ch + "' conf=" + std::to_string(confidence) + " whitelist=" + std::to_string(inWhitelist(ch)) + "\n";
+
+				if (confidence >= minConfidence && inWhitelist(ch)) result += ch;
 			}
 		}
-
 		lastIdx = maxIdx;
 	}
-
 	return result;
 }
 
@@ -216,21 +189,18 @@ std::string OCR::extractText(const cv::Mat& detImg, const cv::Mat& origImg) {
 	Preprocessor prep;
 	std::vector<cv::Mat> recImgs;
 	recImgs.reserve(boxes.size());
-	for (const auto& box : boxes)
-		recImgs.push_back(prep.prepareForRec(origImg(box)));
+	for (const auto& box : boxes) recImgs.push_back(prep.prepareForRec(origImg(box)));
 
 	// Lança reconhecimento de cada linha em paralelo
 	std::vector<std::future<std::string>> futures;
 	futures.reserve(recImgs.size());
-	for (const auto& recImg : recImgs)
-		futures.push_back(std::async(std::launch::async, &OCR::recognize, this, recImg));
+	for (const auto& recImg : recImgs) futures.push_back(std::async(std::launch::async, &OCR::recognize, this, recImg));
 
 	// Coleta resultados na ordem original (top → bottom)
 	std::string finalText;
 	for (auto& f : futures) {
 		std::string line = f.get();
-		if (!line.empty())
-			finalText += line + "\n";
+		if (!line.empty()) finalText += line + "\n";
 	}
 	return finalText;
 }

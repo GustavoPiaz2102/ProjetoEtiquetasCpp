@@ -35,7 +35,7 @@ class GPIO{
 		gpiod_line *stepLine;
 		*/
 
-		// --------- Sensor LDR ---------
+		// --------- Sensor ---------
 
 		std::ifstream fsRaw;
 

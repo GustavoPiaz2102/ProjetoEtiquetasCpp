@@ -11,8 +11,7 @@ void setThreadAffinity(std::thread& t, std::vector<int> cores) {
 	cpu_set_t cpuset;
 	CPU_ZERO(&cpuset);
 
-	for (int core : cores)
-		CPU_SET(core, &cpuset);
+	for (int core : cores) CPU_SET(core, &cpuset);
 
 	pthread_setaffinity_np(t.native_handle(), sizeof(cpu_set_t), &cpuset);
 }
