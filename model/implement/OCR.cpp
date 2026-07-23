@@ -12,6 +12,8 @@ static const std::string WHITELIST = "0123456789/:LFV";
 // Liga/desliga o dump de imagens de debug em /tmp. Desligar em produção.
 static constexpr bool DEBUG_DUMP_ENABLED = true;
 
+thread_local std::string OCR::lastDebugError;
+
 static bool inWhitelist(const std::string &ch) {
 	return WHITELIST.find(ch) != std::string::npos;
 }

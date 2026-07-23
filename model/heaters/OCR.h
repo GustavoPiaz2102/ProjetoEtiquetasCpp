@@ -29,7 +29,7 @@ class OCR {
 		std::vector<std::string> charset;
 		float minConfidence = 75.0f;
 
-		std::string lastDebugError;
+		static thread_local std::string lastDebugError;
 
 		/**
 		 * @brief Detecta regiões de texto na imagem pré-processada.
