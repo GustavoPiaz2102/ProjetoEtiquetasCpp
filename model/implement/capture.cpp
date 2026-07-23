@@ -1,7 +1,12 @@
 #include "../heaters/capture.h"
 
 std::string pipeline =
-	"libcamerasrc ! "
+	"libcamerasrc "
+	"ae-enable=false "
+	"exposure-time-mode=1 " // 1 = manual (conforme enum ExposureTimeMode)
+	"analogue-gain-mode=1 " // 1 = manual (conforme enum AnalogueGainMode)
+	"exposure-time=<VALOR_US> "
+	"analogue-gain=<VALOR_GANHO> ! "
 	"video/x-raw, width=" +
 	std::to_string(IMG_WIDTH) + ", height=" + std::to_string(IMG_HEIGHT) + ", format=RGBx ! "
 									       "videoconvert ! "
