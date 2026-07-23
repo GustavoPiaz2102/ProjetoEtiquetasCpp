@@ -16,7 +16,7 @@
 // Necessário pois o AE/AGC automático do libcamera diverge entre capturas
 // com e sem strobe, causando estouro de luz a partir da 2ª foto em diante.
 #define EXPOSURE_TIME_US 250 // microssegundos
-#define ANALOGUE_GAIN 4.0f    // multiplicador (1.0 = sem ganho)
+#define ANALOGUE_GAIN 1.0f   // multiplicador (1.0 = sem ganho)
 
 class Capture {
 	public:
