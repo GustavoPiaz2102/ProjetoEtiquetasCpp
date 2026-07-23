@@ -39,6 +39,7 @@ class GPIO {
 
 		double scale;
 		bool stableState = false;
+		bool reported = false;
 		bool lastLogicalState = false;
 		std::chrono::steady_clock::time_point lastStateChange;
 

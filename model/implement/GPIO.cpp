@@ -93,12 +93,13 @@ bool GPIO::ReadSensor() {
 	if (firstRead) {
 		lastLogicalState = (rawValue > SENSOR_THRESHOLD);
 		lastStateChange = std::chrono::steady_clock::now();
+		stableState = lastLogicalState;
+		reported = stableState; // já "reportado" pra não disparar no boot
 		firstRead = false;
-		return true;
+		return false;
 	}
 
 	bool currentLogicalState = (rawValue > SENSOR_THRESHOLD);
-
 	auto now = std::chrono::steady_clock::now();
 
 	if (currentLogicalState != lastLogicalState) {
@@ -109,7 +110,15 @@ bool GPIO::ReadSensor() {
 	auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastStateChange).count();
 	if (elapsed >= DEBOUNCE_MS) {
 		stableState = lastLogicalState;
-		return stableState;
+
+		// só reporta true na TRANSIÇÃO pra true, uma vez
+		if (stableState && !reported) {
+			reported = true;
+			return true;
+		}
+		if (!stableState) {
+			reported = false; // rearma pra próxima detecção
+		}
 	}
 
 	return false;
