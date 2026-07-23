@@ -81,10 +81,11 @@ std::string formatInt(int val) {
 bool Impress::print(bool firstDet) {
 	if (!firstDet) {
 		if (!LastImpress) {
-			std::cout << "❌ A última impressão teve falhas" << "\n";
+			//std::cout << "❌ A última impressão teve falhas" << "\n";
 			LastImpress = true;
-		} else
-			std::cout << "✅ A última impressão estava OK" << "\n";
+		} //else
+			//std::cout << "✅ A última impressão estava OK" << "\n";
+			
 	}
 
 	LoadAtributes();
@@ -128,7 +129,7 @@ bool Impress::print(bool firstDet) {
 		impressora.write(comando.c_str(), comando.size());
 		impressora.close();
 
-		std::cout << "✅ Etiqueta enviada com sucesso!" << "\n";
+		//std::cout << "✅ Etiqueta enviada com sucesso!" << "\n";
 		QntImpressao--;
 		return true;
 	} catch (const std::exception &e) {
