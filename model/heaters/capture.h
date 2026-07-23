@@ -9,8 +9,8 @@
 #define IMG_WIDTH 1280
 #define IMG_HEIGHT 960
 
-#define ROI_WIDTH int(IMG_WIDTH * .4)	 // 300
-#define ROI_HEIGHT int(IMG_HEIGHT * .35) // 336
+#define ROI_WIDTH int(IMG_WIDTH * .41)	 // 300
+#define ROI_HEIGHT int(IMG_HEIGHT * .33) // 336
 
 // Controle manual de exposição/ganho do sensor (calibrado com o flash aceso).
 // Necessário pois o AE/AGC automático do libcamera diverge entre capturas
