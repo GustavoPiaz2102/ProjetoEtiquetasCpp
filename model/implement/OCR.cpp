@@ -117,6 +117,12 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat &detImg) {
 		if (r.area() < 50)
 			continue;
 
+		// Descarta contornos que tocam a borda superior/inferior do frame —
+		// são fragmentos cortados de uma linha de outra etiqueta (a de cima
+		// ou de baixo na bobina), não uma linha completa da etiqueta atual.
+		if (r.y <= 1 || (r.y + r.height) >= outH - 1)
+			continue;
+
 		int pad = 12;
 		r.x = std::max(0, static_cast<int>(r.x * scaleX) - pad);
 		r.y = std::max(0, static_cast<int>(r.y * scaleY) - pad);
@@ -136,11 +142,15 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat &detImg) {
 	// Descarta boxes muito largas (detecção espúria juntando linhas)
 	boxes.erase(std::remove_if(boxes.begin(), boxes.end(), [](const cv::Rect &r) { return r.height > r.width * 0.5f; }), boxes.end());
 
-	// Limita a 3 boxes (lote, fabricação, validade)
+	// Ordena por posição Y ANTES de truncar — a etiqueta tem até 5 linhas de
+	// texto, mas só as 3 primeiras (de cima: lote, fabricação, validade)
+	// importam. Fragmentos de etiquetas vizinhas já foram removidos pelo
+	// filtro de borda acima, então as 3 primeiras aqui são sempre linhas
+	// completas e legítimas da etiqueta atual.
+	std::sort(boxes.begin(), boxes.end(), [](const cv::Rect &a, const cv::Rect &b) { return a.y < b.y; });
+
 	if (boxes.size() > 3)
 		boxes.resize(3);
-
-	std::sort(boxes.begin(), boxes.end(), [](const cv::Rect &a, const cv::Rect &b) { return a.y < b.y; });
 
 	if constexpr (DEBUG_DUMP_ENABLED) {
 		cv::Mat debugBoxesFinal = detImg.clone();
