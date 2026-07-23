@@ -189,6 +189,8 @@ void Controller::rodar_detector() {
 			}
 		} else {
 			//std::cout << "Desligamento seguro\n";
+			detector.counterPrint();
+
 			interface.setFrameCount(0);
 			if (detector.GetSensorRunning())
 				detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
