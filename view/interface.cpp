@@ -583,7 +583,7 @@ bool Interface::config_menu(Arquiver &arq) {
 		arq.dict["posicao_x"] = std::to_string(posicao_x);
 		arq.dict["posicao_y_lote"] = std::to_string(posicao_y_lote);
 		arq.dict["posicao_y_fabricacao"] = std::to_string(posicao_y_lote + 20);
-		arq.dict["posicao_y_validade"] = std::to_string(posicao_y_lote + 20);
+		arq.dict["posicao_y_validade"] = std::to_string(posicao_y_lote + 40);
 		arq.dict["rotacao"] = std::to_string(rotacoesValidas[rotacaoIndex]);
 		arq.dict["escala_x"] = std::to_string(escala_x);
 		arq.dict["escala_y"] = std::to_string(escala_y);
