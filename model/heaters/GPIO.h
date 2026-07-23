@@ -14,7 +14,7 @@ const std::string FILE_RAW = DEVICE_DIR + "in_voltage0_raw";
 const std::string FILE_SCALE = DEVICE_DIR + "in_voltage0_scale";
 
 #define SENSOR_THRESHOLD 9
-#define DEBOUNCE_MS 50 //periodo entre leituras
+#define DEBOUNCE_MS 10 //periodo entre leituras
 
 class GPIO {
 	private:
