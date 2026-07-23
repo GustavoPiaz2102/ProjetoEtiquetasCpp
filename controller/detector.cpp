@@ -106,17 +106,16 @@ void Detector::SensorCaptureImpressTHR() {
 			}
 			frame_cv.notify_one();
 
-			if (!firstDet) {
-				if (!imp.print(this->firstDet)) {
-					std::cout << "Falha ao iniciar a impressão! Parando thread." << "\n";
 
-					printer_error = true;
-					sensor_running = false;
-					imp.ResetLastImpress();
-				}
+			if (!imp.print(this->firstDet)) {
+				std::cout << "Falha ao iniciar a impressão! Parando thread." << "\n";
+
+				printer_error = true;
+				sensor_running = false;
+				imp.ResetLastImpress();
 			}
-			if (firstDet)
-				firstDet = false;
+
+			if (firstDet) firstDet = false;
 		}
 	}
 
