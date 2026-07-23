@@ -1,6 +1,6 @@
 #include "interface.h"
 
-Interface::Interface(Validator& val) : validator(val) {
+Interface::Interface(Validator &val) : validator(val) {
 	texture_id = 0;
 	last_width = last_height = 0;
 	should_close = false;
@@ -29,96 +29,98 @@ Interface::~Interface() {
 	}
 }
 
-void Interface::beginFullscreenWindow(const char* name) {
+void Interface::beginFullscreenWindow(const char *name) {
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
 	ImGui::Begin(name, nullptr,
-		ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse |
-		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus);
+		     ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+			     ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse |
+			     ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus);
 }
 
-	bool Interface::iniciar_janela() {
-		if (janela_iniciada) return false;
+bool Interface::iniciar_janela() {
+	if (janela_iniciada)
+		return false;
 
-		if (!glfwInit()) {
-			std::cerr << "Falha ao inicializar GLFW\n";
-			return false;
-		}
-
-		glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-		glfwWindowHint(GLFW_FLOATING, GLFW_TRUE);
-		glfwWindowHint(GLFW_FOCUS_ON_SHOW, GLFW_TRUE);
-		glfwWindowHint(GLFW_AUTO_ICONIFY, GLFW_FALSE);
-
-		int monitor_count;
-		GLFWmonitor** monitors = glfwGetMonitors(&monitor_count);
-
-		// Adicionar debug para verificar monitores
-		std::cout << "Monitores detectados: " << monitor_count << "\n";
-		for (int i = 0; i < monitor_count; i++) {
-			const char* name = glfwGetMonitorName(monitors[i]);
-			int x, y;
-			glfwGetMonitorPos(monitors[i], &x, &y);
-			const GLFWvidmode* mode_debug = glfwGetVideoMode(monitors[i]);
-			std::cout << "Monitor " << i << ": " << name << " - Posição: (" << x << ", " << y << ") - Resolução: " << mode_debug->width << "x" << mode_debug->height << "\n";
-		}
-
-		GLFWmonitor* selected_monitor = NULL;
-		if (monitor_count > 1) {
-			selected_monitor = monitors[1]; // Monitor secundário
-			std::cout << "Selecionado monitor secundário (índice 1)" << "\n";
-		} else {
-			selected_monitor = monitors[0]; // Monitor primário (fallback)
-			std::cout << "Apenas um monitor detectado, usando monitor primário" << "\n";
-		}
-
-		const GLFWvidmode* mode = glfwGetVideoMode(selected_monitor);
-
-		glfwWindowHint(GLFW_RED_BITS, mode->redBits);
-		glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
-		glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
-		glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-
-		// Criar janela em modo windowed (não fullscreen exclusivo)
-		window = glfwCreateWindow(mode->width, mode->height, JANELA_TITULO, NULL, NULL);
-		if (!window) {
-			glfwTerminate();
-			std::cerr << "Falha ao criar janela GLFW\n";
-			return false;
-		}
-
-		glfwMakeContextCurrent(window);
-		
-		// Posicionar a janela no monitor selecionado
-		int monitor_x, monitor_y;
-		glfwGetMonitorPos(selected_monitor, &monitor_x, &monitor_y);
-		glfwSetWindowPos(window, monitor_x, monitor_y);
-		
-		std::cout << "Janela posicionada em: (" << monitor_x << ", " << monitor_y << ")" << "\n";
-		std::cout << "Resolução da janela: " << mode->width << "x" << mode->height << "\n";
-		
-		glfwSwapInterval(0);
-
-		// Substitui a verificação do GLAD por GLEW
-		glewExperimental = GL_TRUE;
-		if (glewInit() != GLEW_OK) {
-			std::cerr << "Falha ao inicializar GLEW" << "\n";
-			return false;
-		}
-
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-		ImGui_ImplGlfw_InitForOpenGL(window, true);
-		ImGui_ImplOpenGL3_Init("#version 130");
-
-		janela_iniciada = true;
-		return true;
+	if (!glfwInit()) {
+		std::cerr << "Falha ao inicializar GLFW\n";
+		return false;
 	}
 
+	glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+	glfwWindowHint(GLFW_FLOATING, GLFW_TRUE);
+	glfwWindowHint(GLFW_FOCUS_ON_SHOW, GLFW_TRUE);
+	glfwWindowHint(GLFW_AUTO_ICONIFY, GLFW_FALSE);
+
+	int monitor_count;
+	GLFWmonitor **monitors = glfwGetMonitors(&monitor_count);
+
+	// Adicionar debug para verificar monitores
+	std::cout << "Monitores detectados: " << monitor_count << "\n";
+	for (int i = 0; i < monitor_count; i++) {
+		const char *name = glfwGetMonitorName(monitors[i]);
+		int x, y;
+		glfwGetMonitorPos(monitors[i], &x, &y);
+		const GLFWvidmode *mode_debug = glfwGetVideoMode(monitors[i]);
+		std::cout << "Monitor " << i << ": " << name << " - Posição: (" << x << ", " << y << ") - Resolução: " << mode_debug->width << "x" << mode_debug->height << "\n";
+	}
+
+	GLFWmonitor *selected_monitor = NULL;
+	if (monitor_count > 1) {
+		selected_monitor = monitors[1]; // Monitor secundário
+		std::cout << "Selecionado monitor secundário (índice 1)" << "\n";
+	} else {
+		selected_monitor = monitors[0]; // Monitor primário (fallback)
+		std::cout << "Apenas um monitor detectado, usando monitor primário" << "\n";
+	}
+
+	const GLFWvidmode *mode = glfwGetVideoMode(selected_monitor);
+
+	glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+	glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+	glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+	// Criar janela em modo windowed (não fullscreen exclusivo)
+	window = glfwCreateWindow(mode->width, mode->height, JANELA_TITULO, NULL, NULL);
+	if (!window) {
+		glfwTerminate();
+		std::cerr << "Falha ao criar janela GLFW\n";
+		return false;
+	}
+
+	glfwMakeContextCurrent(window);
+
+	// Posicionar a janela no monitor selecionado
+	int monitor_x, monitor_y;
+	glfwGetMonitorPos(selected_monitor, &monitor_x, &monitor_y);
+	glfwSetWindowPos(window, monitor_x, monitor_y);
+
+	std::cout << "Janela posicionada em: (" << monitor_x << ", " << monitor_y << ")" << "\n";
+	std::cout << "Resolução da janela: " << mode->width << "x" << mode->height << "\n";
+
+	glfwSwapInterval(0);
+
+	// Substitui a verificação do GLAD por GLEW
+	glewExperimental = GL_TRUE;
+	if (glewInit() != GLEW_OK) {
+		std::cerr << "Falha ao inicializar GLEW" << "\n";
+		return false;
+	}
+
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init("#version 130");
+
+	janela_iniciada = true;
+	return true;
+}
+
 bool Interface::finalizar_janela() {
-	if (!janela_iniciada) return false;
+	if (!janela_iniciada)
+		return false;
 
 	if (window) {
 		glfwDestroyWindow(window);
@@ -155,7 +157,7 @@ void Interface::end_frame() {
 	glfwSwapBuffers(window);
 }
 
-void Interface::menu(int& selected_option, int qntImp) {
+void Interface::menu(int &selected_option, int qntImp) {
 	// Define um pequeno padding para evitar que a borda sobreponha os widgets
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8, 8));
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, TAMANHO_BORDA_JANELA);
@@ -170,11 +172,11 @@ void Interface::menu(int& selected_option, int qntImp) {
 	}
 
 	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
-	ImGui::Text("L: %s\nF: %s\nV: %s\nQuantidade de Impressões: %d", 
-				validator.GetLT().c_str(), 
-				validator.GetFAB().c_str(), 
-				validator.GetVAL().c_str(),
-				qntImp); 
+	ImGui::Text("L: %s\nF: %s\nV: %s\nQuantidade de Impressões: %d",
+		    validator.GetLT().c_str(),
+		    validator.GetFAB().c_str(),
+		    validator.GetVAL().c_str(),
+		    qntImp);
 
 	// Espaçamento entre a primeira linha de elementos e a segunda
 	ImGui::Dummy(ImVec2(0, ESPACO_ENTRE_BOTOES));
@@ -209,7 +211,7 @@ void Interface::menu(int& selected_option, int qntImp) {
 		selected_option = 5;
 	}
 	// ShutDown button
-	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES*25.7);
+	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES * 25.7);
 	if (ImGui::Button("Desligar", ImVec2(TAMANHO_BOTAO_LARG / 2, TAMANHO_BOTAO_ALT / 5))) {
 		selected_option = -10;
 	}
@@ -218,25 +220,27 @@ void Interface::menu(int& selected_option, int qntImp) {
 	ImGui::PopStyleVar(2);
 }
 
-
-bool Interface::atualizar_frame(const cv::Mat& frame) {
-	if (frame.empty()) return false;
+bool Interface::atualizar_frame(const cv::Mat &frame) {
+	if (frame.empty())
+		return false;
 
 	cv::Mat resized_frame;
 	const int max_display_width = 1920; // Largura máxima para exibição
-	
+
 	// Redimensionar se necessário usando GPU
 	if (frame.cols > max_display_width) {
 		double scale = static_cast<double>(max_display_width) / frame.cols;
 		cv::resize(frame, resized_frame, cv::Size(), scale, scale, cv::INTER_LINEAR);
-	} else resized_frame = frame;
+	} else
+		resized_frame = frame;
 
 	const int frame_width = resized_frame.cols;
 	const int frame_height = resized_frame.rows;
 	const int data_size = frame_width * frame_height * resized_frame.elemSize();
 
 	if (!texture_id || frame_width != last_width || frame_height != last_height) {
-		if (texture_id) glDeleteTextures(1, &texture_id);
+		if (texture_id)
+			glDeleteTextures(1, &texture_id);
 		if (pboInitialized) {
 			glDeleteBuffers(2, pboIds);
 			pboInitialized = false;
@@ -262,7 +266,8 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
 		pboInitialized = true;
 	}
 
-	if (!pboInitialized) return false;
+	if (!pboInitialized)
+		return false;
 
 	pboIndex = (pboIndex + 1) % 2;
 	int nextIndex = (pboIndex + 1) % 2;
@@ -278,7 +283,7 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
 		glBufferData(GL_PIXEL_UNPACK_BUFFER, data_size, nullptr, GL_STREAM_DRAW);
 		last_data_size = data_size;
 	}
-	void* ptr = glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY);
+	void *ptr = glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY);
 	if (ptr) {
 		memcpy(ptr, resized_frame.data, data_size);
 		glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
@@ -301,8 +306,7 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
 	ImGui::GetWindowDrawList()->AddText(
 		ImVec2(img_pos.x + 10, img_pos.y + 10),
 		IM_COL32(255, 255, 0, 255), // amarelo
-		std::to_string(frame_count).c_str()
-	);
+		std::to_string(frame_count).c_str());
 	// Controle de escala de resolução
 	ImGui::SetNextItemWidth(200);
 	//ImGui::SliderFloat("Escala", &resolution_scale, 0.5f, 2.0f);
@@ -314,33 +318,33 @@ bool Interface::atualizar_frame(const cv::Mat& frame) {
 	return return_to_menu;
 }
 
-
 std::string Interface::FormatDate(int day, int month, int year) {
-	static const char* month_names[] = {
+	static const char *month_names[] = {
 		"01", "02", "03", "04", "05", "06",
-		"07", "08", "09", "10", "11", "12"
-	};
-	
+		"07", "08", "09", "10", "11", "12"};
+
 	char buffer[20];
 	snprintf(buffer, sizeof(buffer), "%02d/%s/%d", day, month_names[month], year);
 	return buffer;
 }
 
-bool Interface::requisitar_lt(std::string& selected_lt) {
+bool Interface::requisitar_lt(std::string &selected_lt) {
 	static int lotes[101];
 	static int anos[50];
 	static bool initialized = false;
-	
+
 	if (!initialized) {
-		for (int i = 0; i <= 100; ++i) lotes[i] = i;
-		for (int i = 0; i < 50; ++i) anos[i] = 23 + i;
+		for (int i = 0; i <= 100; ++i)
+			lotes[i] = i;
+		for (int i = 0; i < 50; ++i)
+			anos[i] = 23 + i;
 		initialized = true;
 	}
 
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);   
+	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
 	beginFullscreenWindow("LotePage");
-	
+
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, PADDING_FRAME);
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, SPACING_ITEM);
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, SPACING_INTERNO);
@@ -349,29 +353,31 @@ bool Interface::requisitar_lt(std::string& selected_lt) {
 	ImGui::Text(" Insira o valor do lote: ");
 	ImGui::Text(" L: ");
 	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
-	
+
 	char lote_label[4];
 	snprintf(lote_label, sizeof(lote_label), "%03d", lotes[selected_lote]);
 	ImGui::SetNextItemWidth(COMBO_LARGURA);
-	if(ImGui::BeginCombo("##lote", lote_label)){
-		for(int i = 0; i <= 100; ++i) {
+	if (ImGui::BeginCombo("##lote", lote_label)) {
+		for (int i = 0; i <= 100; ++i) {
 			char lote_item[4];
 			snprintf(lote_item, sizeof(lote_item), "%03d", i);
-			if(ImGui::Selectable(lote_item, selected_lote == i)) selected_lote = i;
+			if (ImGui::Selectable(lote_item, selected_lote == i))
+				selected_lote = i;
 		}
 
 		ImGui::EndCombo();
 	}
-	
+
 	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
 	char ano_label[3];
 	snprintf(ano_label, sizeof(ano_label), "%02d", anos[selected_ano]);
 	ImGui::SetNextItemWidth(COMBO_LARGURA);
-	if(ImGui::BeginCombo("##ano", ano_label)) {
-		for(int i = 0; i < 50; ++i) {
+	if (ImGui::BeginCombo("##ano", ano_label)) {
+		for (int i = 0; i < 50; ++i) {
 			char ano_item[3];
 			snprintf(ano_item, sizeof(ano_item), "%02d", anos[i]);
-			if(ImGui::Selectable(ano_item, selected_ano == i)) selected_ano = i;
+			if (ImGui::Selectable(ano_item, selected_ano == i))
+				selected_ano = i;
 		}
 
 		ImGui::EndCombo();
@@ -381,14 +387,14 @@ bool Interface::requisitar_lt(std::string& selected_lt) {
 	ImGui::Spacing();
 
 	bool clicked = false;
-	if(ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2))) {
+	if (ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2))) {
 		char result[7];
 		snprintf(result, sizeof(result), "%03d/%02d", selected_lote, anos[selected_ano]);
 		selected_lt = result;
 		clicked = true;
 	}
 
-	if(!selected_lt.empty()) {
+	if (!selected_lt.empty()) {
 		ImGui::Spacing();
 		ImGui::Text("Lote selecionado: %s", selected_lt.c_str());
 	}
@@ -398,11 +404,11 @@ bool Interface::requisitar_lt(std::string& selected_lt) {
 	return clicked;
 }
 
-bool Interface::config_impress(int &value, bool *InstantImpress){
-	if(imprimindo){
+bool Interface::config_impress(int &value, bool *InstantImpress) {
+	if (imprimindo) {
 		imprimindo = !imprimindo;
 		return true;
-	} else{
+	} else {
 		ImGui::SetNextWindowPos(ImVec2(0, 0));
 		ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
 		beginFullscreenWindow("Configurações da Impressão");
@@ -411,27 +417,33 @@ bool Interface::config_impress(int &value, bool *InstantImpress){
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(16, 12));   // Aumenta área clicável dos botões
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 12));	   // Espaçamento entre itens
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(8, 8)); // Espaço interno entre elementos
-		ImGui::SetWindowFontScale(2.0f);								   // Escala da fonte dentro da janela (2x maior)
+		ImGui::SetWindowFontScale(2.0f);				   // Escala da fonte dentro da janela (2x maior)
 
 		ImGui::PushID("custom_input_int");
 		ImGui::Dummy(ImVec2(0, 150));
 		ImGui::Text("Quantidade de impressões:");
 		// Botões "-100", "-10", "-1"
-		if (ImGui::Button("-100", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2))){
-			if ((value - 100) >= 0) value -= 100;
-			else value = 0;
+		if (ImGui::Button("-100", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2))) {
+			if ((value - 100) >= 0)
+				value -= 100;
+			else
+				value = 0;
 		}
 
 		ImGui::SameLine();
-		if (ImGui::Button("-10", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2))){
-			if ((value - 10) >= 0) value -= 10;
-			else value = 0;
+		if (ImGui::Button("-10", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2))) {
+			if ((value - 10) >= 0)
+				value -= 10;
+			else
+				value = 0;
 		}
 
 		ImGui::SameLine();
-		if (ImGui::Button("-1", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2))){
-			if ((value - 1) >= 0) value -= 1;
-			else value = 0;
+		if (ImGui::Button("-1", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2))) {
+			if ((value - 1) >= 0)
+				value -= 1;
+			else
+				value = 0;
 		}
 
 		ImGui::SameLine();
@@ -443,11 +455,14 @@ bool Interface::config_impress(int &value, bool *InstantImpress){
 		ImGui::SameLine();
 
 		// Botões "+1", "+10", "+100"
-		if (ImGui::Button("+1", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2))) value += 1;
+		if (ImGui::Button("+1", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2)))
+			value += 1;
 		ImGui::SameLine();
-		if (ImGui::Button("+10", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2))) value += 10;
+		if (ImGui::Button("+10", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2)))
+			value += 10;
 		ImGui::SameLine();
-		if (ImGui::Button("+100", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2))) value += 100;
+		if (ImGui::Button("+100", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2)))
+			value += 100;
 
 		ImGui::PopID();
 		bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
@@ -455,47 +470,67 @@ bool Interface::config_impress(int &value, bool *InstantImpress){
 		*InstantImpress = ImGui::Button("Instantaneo", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
 		ImGui::PopStyleVar(3);
 		ImGui::End();
-		if (clicked || *InstantImpress){
+		if (clicked || *InstantImpress) {
 			imprimindo = !imprimindo;
 			return true;
-		} else return false;
+		} else
+			return false;
 	}
 }
 
-bool Interface::config_menu(Arquiver& arq) {
+bool Interface::config_menu(Arquiver &arq) {
 	arq.load(); // Carrega as configurações atuais do arquivo
 
 	// Campos de texto como char arrays para ImGui
-	static char tamanho_etiqueta[64];
-	static char espacamento[32];
 	static char tamanho_fonte[8];
 	static char fonte[8];
+
+	// Dimensões numéricas (mm) — SIZE e GAP exigem unidade, então
+	// montamos a string final só na hora de salvar
+	static float largura_mm = 0.0f;
+	static float altura_mm = 0.0f;
+	static float gap_mm = 0.0f;
+	static float offset_mm = 0.0f;
+
+	// Índice do combo de rotação: só 0°, 90°, 180°, 270° são válidos no TSPL
+	static int rotacaoIndex = 0;
+	static const int rotacoesValidas[4] = {0, 90, 180, 270};
+	static const char *rotacaoLabels[4] = {"0 graus", "90 graus", "180 graus", "270 graus"};
 
 	// Inicializa a primeira vez
 	static bool firstInit = true;
 	if (firstInit) {
-		strncpy(tamanho_etiqueta, arq.dict["tamanho_etiqueta"].c_str(), sizeof(tamanho_etiqueta));
-		tamanho_etiqueta[sizeof(tamanho_etiqueta)-1] = '\0';
-		strncpy(espacamento, arq.dict["espacamento"].c_str(), sizeof(espacamento));
-		espacamento[sizeof(espacamento)-1] = '\0';
 		strncpy(tamanho_fonte, arq.dict["tamanho_fonte"].c_str(), sizeof(tamanho_fonte));
-		tamanho_fonte[sizeof(tamanho_fonte)-1] = '\0';
+		tamanho_fonte[sizeof(tamanho_fonte) - 1] = '\0';
 		strncpy(fonte, arq.dict["fonte"].c_str(), sizeof(fonte));
-		fonte[sizeof(fonte)-1] = '\0';
+		fonte[sizeof(fonte) - 1] = '\0';
+
+		// Tenta parsear "82 mm, 30 mm" -> largura_mm/altura_mm
+		sscanf(arq.dict["tamanho_etiqueta"].c_str(), "%f mm , %f mm", &largura_mm, &altura_mm);
+		// Tenta parsear "3 mm, 0 mm" -> gap_mm/offset_mm
+		sscanf(arq.dict["espacamento"].c_str(), "%f mm , %f mm", &gap_mm, &offset_mm);
+
+		int rotacaoSalva = std::stoi(arq.dict["rotacao"]);
+		for (int i = 0; i < 4; i++)
+			if (rotacoesValidas[i] == rotacaoSalva) {
+				rotacaoIndex = i;
+				break;
+			}
+
 		firstInit = false;
 	}
 
 	// Campos numéricos continuam como int/float
-	static int densidade           = std::stoi(arq.dict["densidade"]);
-	static int velocidade          = std::stoi(arq.dict["velocidade"]);
-	static int direcao             = std::stoi(arq.dict["direcao"]);
-	static int posicao_x           = std::stoi(arq.dict["posicao_x"]);
-	static int posicao_y_lote      = std::stoi(arq.dict["posicao_y_lote"]);
-	static int posicao_y_fabricacao= std::stoi(arq.dict["posicao_y_fabricacao"]);
-	static int posicao_y_validade  = std::stoi(arq.dict["posicao_y_validade"]);
-	static int rotacao             = std::stoi(arq.dict["rotacao"]);
-	static float escala_x          = std::stof(arq.dict["escala_x"]);
-	static float escala_y          = std::stof(arq.dict["escala_y"]);
+	static int densidade = std::stoi(arq.dict["densidade"]);
+	static int velocidade = std::stoi(arq.dict["velocidade"]);
+	static int direcao = std::stoi(arq.dict["direcao"]);
+	static int posicao_x = std::stoi(arq.dict["posicao_x"]);
+	static int posicao_y_lote = std::stoi(arq.dict["posicao_y_lote"]);
+	static int posicao_y_fabricacao = std::stoi(arq.dict["posicao_y_fabricacao"]);
+	static int posicao_y_validade = std::stoi(arq.dict["posicao_y_validade"]);
+	// Multiplicação de fonte bitmap: só inteiro de 1 a 10
+	static int escala_x = (int)std::stof(arq.dict["escala_x"]);
+	static int escala_y = (int)std::stof(arq.dict["escala_y"]);
 
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
@@ -507,11 +542,16 @@ bool Interface::config_menu(Arquiver& arq) {
 	ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);
 
 	ImGui::Text("Parâmetros da Impressora:");
-	ImGui::InputText("Tamanho Etiqueta", tamanho_etiqueta, IM_ARRAYSIZE(tamanho_etiqueta));
-	ImGui::InputText("Espaçamento", espacamento, IM_ARRAYSIZE(espacamento));
-	ImGui::InputInt("Densidade", &densidade);
-	ImGui::InputInt("Velocidade", &velocidade);
+	ImGui::InputFloat("Largura Etiqueta (mm)", &largura_mm, 1.0f, 5.0f, "%.1f");
+	ImGui::InputFloat("Altura Etiqueta (mm)", &altura_mm, 1.0f, 5.0f, "%.1f");
+	ImGui::InputFloat("Gap (mm)", &gap_mm, 0.5f, 1.0f, "%.1f");
+	ImGui::InputFloat("Offset Gap (mm)", &offset_mm, 0.5f, 1.0f, "%.1f");
+
+	ImGui::SliderInt("Densidade", &densidade, 0, 15);
+	ImGui::SliderInt("Velocidade (pol/s)", &velocidade, 1, 5); // CT400 suporta até 5 pol/s
 	ImGui::InputInt("Direção", &direcao);
+	if (direcao != 0 && direcao != 1)
+		direcao = direcao > 0 ? 1 : 0; // TSPL só aceita 0 ou 1
 
 	ImGui::Separator();
 	ImGui::Text("Parâmetros do Texto:");
@@ -520,9 +560,9 @@ bool Interface::config_menu(Arquiver& arq) {
 	ImGui::InputInt("Y - Lote", &posicao_y_lote);
 	ImGui::InputInt("Y - Fabricação", &posicao_y_fabricacao);
 	ImGui::InputInt("Y - Validade", &posicao_y_validade);
-	ImGui::InputInt("Rotação", &rotacao);
-	ImGui::InputFloat("Escala X", &escala_x);
-	ImGui::InputFloat("Escala Y", &escala_y);
+	ImGui::Combo("Rotação", &rotacaoIndex, rotacaoLabels, 4);
+	ImGui::SliderInt("Escala X", &escala_x, 1, 10);
+	ImGui::SliderInt("Escala Y", &escala_y, 1, 10);
 	ImGui::InputText("Fonte", fonte, IM_ARRAYSIZE(fonte));
 
 	bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
@@ -530,21 +570,27 @@ bool Interface::config_menu(Arquiver& arq) {
 	ImGui::End();
 
 	if (clicked) {
+		// Monta as strings já com unidade, do jeito que o TSPL espera
+		char bufTamanho[64];
+		snprintf(bufTamanho, sizeof(bufTamanho), "%.1f mm,%.1f mm", largura_mm, altura_mm);
+		char bufEspacamento[32];
+		snprintf(bufEspacamento, sizeof(bufEspacamento), "%.1f mm,%.1f mm", gap_mm, offset_mm);
+
 		// Salvar no dicionário do Arquiver
-		arq.dict["tamanho_etiqueta"] = tamanho_etiqueta;
-		arq.dict["espacamento"]       = espacamento;
-		arq.dict["densidade"]         = std::to_string(densidade);
-		arq.dict["velocidade"]        = std::to_string(velocidade);
-		arq.dict["direcao"]           = std::to_string(direcao);
-		arq.dict["tamanho_fonte"]     = tamanho_fonte;
-		arq.dict["posicao_x"]         = std::to_string(posicao_x);
-		arq.dict["posicao_y_lote"]    = std::to_string(posicao_y_lote);
+		arq.dict["tamanho_etiqueta"] = bufTamanho;
+		arq.dict["espacamento"] = bufEspacamento;
+		arq.dict["densidade"] = std::to_string(densidade);
+		arq.dict["velocidade"] = std::to_string(velocidade);
+		arq.dict["direcao"] = std::to_string(direcao);
+		arq.dict["tamanho_fonte"] = tamanho_fonte;
+		arq.dict["posicao_x"] = std::to_string(posicao_x);
+		arq.dict["posicao_y_lote"] = std::to_string(posicao_y_lote);
 		arq.dict["posicao_y_fabricacao"] = std::to_string(posicao_y_fabricacao);
-		arq.dict["posicao_y_validade"]   = std::to_string(posicao_y_validade);
-		arq.dict["rotacao"]           = std::to_string(rotacao);
-		arq.dict["escala_x"]          = std::to_string(escala_x);
-		arq.dict["escala_y"]          = std::to_string(escala_y);
-		arq.dict["fonte"]             = fonte;
+		arq.dict["posicao_y_validade"] = std::to_string(posicao_y_validade);
+		arq.dict["rotacao"] = std::to_string(rotacoesValidas[rotacaoIndex]);
+		arq.dict["escala_x"] = std::to_string(escala_x);
+		arq.dict["escala_y"] = std::to_string(escala_y);
+		arq.dict["fonte"] = fonte;
 
 		// Salva no arquivo
 		arq.save();
@@ -554,39 +600,40 @@ bool Interface::config_menu(Arquiver& arq) {
 	}
 }
 
-
-
-bool Interface::requisitar_data(std::string& selected_date, int tipo) {
+bool Interface::requisitar_data(std::string &selected_date, int tipo) {
 	static int selected_day = 0;
 	static int selected_month = 0;
 	static int selected_year = 0;
-	
-	static const char* month_names[] = {
+
+	static const char *month_names[] = {
 		"01", "02", "03", "04", "05", "06",
-		"07", "08", "09", "10", "11", "12"
-	};
+		"07", "08", "09", "10", "11", "12"};
 
 	static int days[31];
 	static int years[100];
 	static bool initialized = false;
-	
+
 	if (!initialized) {
-		for (int i = 0; i < 31; ++i) days[i] = i + 1;
-		for (int i = 0; i < 100; ++i) years[i] = 2025 + i;
+		for (int i = 0; i < 31; ++i)
+			days[i] = i + 1;
+		for (int i = 0; i < 100; ++i)
+			years[i] = 2025 + i;
 		initialized = true;
 	}
 
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
 	beginFullscreenWindow("MainPage");
-	
+
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, PADDING_FRAME);
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, SPACING_ITEM);
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, SPACING_INTERNO);
 	ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);
 
-	if (tipo == 0) ImGui::Text(" Escolha uma data de Fabricação:");
-	else ImGui::Text(" Escolha uma data de Validade:");
+	if (tipo == 0)
+		ImGui::Text(" Escolha uma data de Fabricação:");
+	else
+		ImGui::Text(" Escolha uma data de Validade:");
 
 	ImGui::SetNextItemWidth(COMBO_LARGURA);
 	if (ImGui::BeginCombo("##dia", std::to_string(days[selected_day]).c_str())) {
@@ -597,7 +644,7 @@ bool Interface::requisitar_data(std::string& selected_date, int tipo) {
 		}
 		ImGui::EndCombo();
 	}
-	
+
 	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
 	ImGui::SetNextItemWidth(COMBO_LARGURA);
 	if (ImGui::BeginCombo("##mes", month_names[selected_month])) {
@@ -608,7 +655,7 @@ bool Interface::requisitar_data(std::string& selected_date, int tipo) {
 		}
 		ImGui::EndCombo();
 	}
-	
+
 	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
 	ImGui::SetNextItemWidth(COMBO_LARGURA);
 	if (ImGui::BeginCombo("##ano", std::to_string(years[selected_year]).c_str())) {
@@ -647,7 +694,7 @@ void Interface::setImprimindo(bool value) {
 	imprimindo = value;
 }
 
-bool Interface::PopUpError(const std::string& message) {
+bool Interface::PopUpError(const std::string &message) {
 	ImGui::OpenPopup("ErrorPopup");
 	if (ImGui::BeginPopupModal("ErrorPopup", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
 		ImGui::Text("%s", message.c_str());
