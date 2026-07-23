@@ -57,10 +57,12 @@ GPIO::GPIO(uint8_t pinStrobo, uint8_t pinBuzzer, const std::string &chipname) : 
 }
 
 GPIO::~GPIO() {
-	if (fsRaw.is_open())	fsRaw.close();
-	if (stroboLine)		gpiod_line_release(stroboLine);
-	if(buzzerLine)		gpiod_line_release(buzzerLine);
-	if (chip)		gpiod_chip_close(chip);
+	if (fsRaw.is_open())
+		fsRaw.close();
+	if (stroboLine)
+		gpiod_line_release(stroboLine);
+	if (chip)
+		gpiod_chip_close(chip);
 	// if(encoderThread.joinable()) encoderThread.detach();
 }
 
@@ -84,19 +86,20 @@ int GPIO::ReadRaw() {
 
 bool GPIO::ReadSensor() {
 	int rawValue = ReadRaw();
-	std::cout << "valor lido:" << rawValue << "\r";
-	if (rawValue < 0) return stableState;
-
-	bool currentLogicalState = (rawValue > SENSOR_THRESHOLD);
-	auto now = std::chrono::steady_clock::now();
+	std::cout << "valor lido:" << rawValue << std::endl;
+	if (rawValue < 0)
+		return false;
 
 	if (firstRead) {
-		lastLogicalState = currentLogicalState;
-		stableState = currentLogicalState;
-		lastStateChange = now;
+		lastLogicalState = (rawValue > SENSOR_THRESHOLD);
+		lastStateChange = std::chrono::steady_clock::now();
 		firstRead = false;
-		return stableState; 
+		return true;
 	}
+
+	bool currentLogicalState = (rawValue > SENSOR_THRESHOLD);
+
+	auto now = std::chrono::steady_clock::now();
 
 	if (currentLogicalState != lastLogicalState) {
 		lastStateChange = now;
@@ -104,9 +107,12 @@ bool GPIO::ReadSensor() {
 	}
 
 	auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastStateChange).count();
-	if (elapsed >= DEBOUNCE_MS) stableState = lastLogicalState;
+	if (elapsed >= DEBOUNCE_MS) {
+		stableState = lastLogicalState;
+		return stableState;
+	}
 
-	return stableState;
+	return false;
 }
 
 /*
