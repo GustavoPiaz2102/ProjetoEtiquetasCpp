@@ -9,6 +9,9 @@
 
 static const std::string WHITELIST = "0123456789/:LFV";
 
+// Liga/desliga o dump de imagens de debug em /tmp. Desligar em produção.
+static constexpr bool DEBUG_DUMP_ENABLED = true;
+
 static bool inWhitelist(const std::string &ch) {
 	return WHITELIST.find(ch) != std::string::npos;
 }
@@ -92,6 +95,9 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat &detImg) {
 	cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
 	cv::dilate(binary, binary, kernel);
 
+	if constexpr (DEBUG_DUMP_ENABLED)
+		cv::imwrite("/tmp/debug_binary.png", binary);
+
 	std::vector<std::vector<cv::Point>> contours;
 	cv::findContours(binary, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
@@ -113,6 +119,13 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat &detImg) {
 		boxes.push_back(r);
 	}
 
+	if constexpr (DEBUG_DUMP_ENABLED) {
+		cv::Mat debugBoxesBeforeFilter = detImg.clone();
+		for (const auto &r : boxes)
+			cv::rectangle(debugBoxesBeforeFilter, r, cv::Scalar(0, 0, 255), 2);
+		cv::imwrite("/tmp/debug_boxes_before_filter.png", debugBoxesBeforeFilter);
+	}
+
 	// Descarta boxes muito largas (detecção espúria juntando linhas)
 	boxes.erase(std::remove_if(boxes.begin(), boxes.end(), [](const cv::Rect &r) { return r.height > r.width * 0.5f; }), boxes.end());
 
@@ -121,6 +134,13 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat &detImg) {
 		boxes.resize(3);
 
 	std::sort(boxes.begin(), boxes.end(), [](const cv::Rect &a, const cv::Rect &b) { return a.y < b.y; });
+
+	if constexpr (DEBUG_DUMP_ENABLED) {
+		cv::Mat debugBoxesFinal = detImg.clone();
+		for (const auto &r : boxes)
+			cv::rectangle(debugBoxesFinal, r, cv::Scalar(0, 255, 0), 2);
+		cv::imwrite("/tmp/debug_boxes_final.png", debugBoxesFinal);
+	}
 
 	return boxes;
 }
