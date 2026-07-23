@@ -3,11 +3,13 @@
 std::string pipeline =
 	"libcamerasrc "
 	"ae-enable=false "
-	"exposure-time-mode=1 " // 1 = manual (conforme enum ExposureTimeMode)
-	"analogue-gain-mode=1 " // 1 = manual (conforme enum AnalogueGainMode)
-	"exposure-time=<VALOR_US> "
-	"analogue-gain=<VALOR_GANHO> ! "
-	"video/x-raw, width=" +
+	"exposure-time-mode=1 "
+	"analogue-gain-mode=1 "
+	"exposure-time=" +
+	std::to_string(EXPOSURE_TIME_US) + " "
+					   "analogue-gain=" +
+	std::to_string(ANALOGUE_GAIN) + " ! "
+					"video/x-raw, width=" +
 	std::to_string(IMG_WIDTH) + ", height=" + std::to_string(IMG_HEIGHT) + ", format=RGBx ! "
 									       "videoconvert ! "
 									       "video/x-raw, format=BGR ! "
@@ -34,6 +36,7 @@ void Capture::captureImage() {
 
 	cap.grab(); // grab para capturar o frame no momento e não oque tem no buffer
 }
+
 cv::Mat Capture::retrieveImage() {
 	if (!cap.retrieve(frame)) {
 		std::cerr << "Erro ao decodificar o frame!" << "\n";
