@@ -9,13 +9,13 @@
 #define IMG_WIDTH 1280
 #define IMG_HEIGHT 960
 
-#define ROI_WIDTH int(IMG_WIDTH * .41)	 // 300
-#define ROI_HEIGHT int(IMG_HEIGHT * .33) // 336
+#define ROI_WIDTH int(IMG_WIDTH * .41)
+#define ROI_HEIGHT int(IMG_HEIGHT * .34)
 
 // Controle manual de exposição/ganho do sensor (calibrado com o flash aceso).
 // Necessário pois o AE/AGC automático do libcamera diverge entre capturas
 // com e sem strobe, causando estouro de luz a partir da 2ª foto em diante.
-#define EXPOSURE_TIME_US 250 // microssegundos
+#define EXPOSURE_TIME_US 300 // microssegundos
 #define ANALOGUE_GAIN 1.0f   // multiplicador (1.0 = sem ganho)
 
 class Capture {
