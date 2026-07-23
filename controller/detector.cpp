@@ -80,11 +80,13 @@ void Detector::ProcessLoop(){
 }
 
 void Detector::SensorCaptureImpressTHR(){
-	sensor.SetStroboHigh(2000);
+	sensor.SetStroboLow();
 	while(sensor_running){
 		if(sensor.ReadSensor() || firstDet){
+			sensor.SetStroboHigh(10);
 			camera.captureImage();
 			cv::Mat newFrame = camera.retrieveImage();
+			sensor.SetStroboLow();
 
 			{
 				std::unique_lock<std::mutex> lock(frame_mutex);
