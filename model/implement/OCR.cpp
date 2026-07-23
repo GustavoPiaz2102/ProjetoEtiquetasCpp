@@ -88,6 +88,13 @@ std::vector<cv::Rect> OCR::detect(const cv::Mat &detImg) {
 	const float *data = outTensor.GetTensorData<float>();
 
 	cv::Mat probMap(outH, outW, CV_32F, const_cast<float *>(data));
+
+	if constexpr (DEBUG_DUMP_ENABLED) {
+		cv::Mat probVis;
+		probMap.convertTo(probVis, CV_8U, 255.0);
+		cv::imwrite("/tmp/debug_probmap.png", probVis);
+	}
+
 	cv::Mat binary;
 	cv::threshold(probMap, binary, 0.3f, 255.0f, cv::THRESH_BINARY);
 	binary.convertTo(binary, CV_8U);
