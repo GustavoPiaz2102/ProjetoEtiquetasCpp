@@ -188,7 +188,7 @@ void Controller::rodar_detector() {
 					ReturnToMenu = interface.atualizar_frame(NonDetectedFrame);
 			}
 		} else {
-			std::cout << "Desligamento seguro\n";
+			//std::cout << "Desligamento seguro\n";
 			interface.setFrameCount(0);
 			if (detector.GetSensorRunning())
 				detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
