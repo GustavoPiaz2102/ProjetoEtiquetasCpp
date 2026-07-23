@@ -13,116 +13,11 @@ static bool inWhitelist(const std::string& ch) {
 	return WHITELIST.find(ch) != std::string::npos;
 }
 
-<<<<<<< HEAD
-OCR::OCR(const std::string& modelDir)
-	: env(ORT_LOGGING_LEVEL_WARNING, "OCR")
-{
-	sessionOptions.SetIntraOpNumThreads(2); // 2 por sessão — 3 threads paralelas × 2 = 6, Pi4 tem 4 núcleos
-	sessionOptions.SetInterOpNumThreads(1);
-	sessionOptions.SetGraphOptimizationLevel(GraphOptimizationLevel::ORT_ENABLE_ALL);
-
-	std::string detPath  = modelDir + "/en_PP-OCRv3_det_infer.onnx";
-	std::string recPath  = modelDir + "/en_PP-OCRv3_rec_infer.onnx";
-	std::string keysPath = modelDir + "/ppocr_keys_v1.txt";
-
-	detSession = std::make_unique<Ort::Session>(env, detPath.c_str(), sessionOptions);
-	recSession = std::make_unique<Ort::Session>(env, recPath.c_str(), sessionOptions);
-	loadCharset(keysPath);
-}
-
-void OCR::loadCharset(const std::string& keysPath) {
-	std::ifstream f(keysPath);
-	if (!f.is_open())
-		throw std::runtime_error("[OCR] Nao foi possivel abrir: " + keysPath);
-
-	charset.clear();
-	charset.push_back("blank");
-
-	std::string line;
-	while (std::getline(f, line))
-		if (!line.empty()) charset.push_back(line);
-
-	charset.push_back(" ");
-}
-
-std::vector<float> OCR::buildTensor(const cv::Mat& img, int& outH, int& outW) {
-	outH = img.rows;
-	outW = img.cols;
-
-	std::vector<cv::Mat> channels(3);
-	cv::split(img, channels);
-
-	std::vector<float> tensor(3 * outH * outW);
-	for (int c = 0; c < 3; ++c)
-		std::memcpy(tensor.data() + c * outH * outW,
-			    channels[c].ptr<float>(),
-			    outH * outW * sizeof(float));
-	return tensor;
-}
-
-std::vector<cv::Rect> OCR::detect(const cv::Mat& detImg) {
-	int W = (detImg.cols / 32) * 32;
-	int H = (detImg.rows / 32) * 32;
-
-	cv::Mat input;
-	if (W != detImg.cols || H != detImg.rows)
-		cv::resize(detImg, input, cv::Size(W, H));
-	else
-		input = detImg;
-
-	int inH, inW;
-	std::vector<float> tensor = buildTensor(input, inH, inW);
-	std::vector<int64_t> shape = {1, 3, inH, inW};
-
-	Ort::MemoryInfo memInfo = Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault);
-	Ort::Value inputOrt = Ort::Value::CreateTensor<float>(
-		memInfo, tensor.data(), tensor.size(), shape.data(), shape.size());
-
-	const char* inputNames[]  = {"x"};
-	const char* outputNames[] = {"sigmoid_0.tmp_0"};
-
-	auto outputs = detSession->Run(
-		Ort::RunOptions{nullptr}, inputNames, &inputOrt, 1, outputNames, 1);
-
-	auto& outTensor = outputs[0];
-	auto  outShape  = outTensor.GetTensorTypeAndShapeInfo().GetShape();
-	int   outH      = static_cast<int>(outShape[2]);
-	int   outW      = static_cast<int>(outShape[3]);
-	const float* data = outTensor.GetTensorData<float>();
-
-	cv::Mat probMap(outH, outW, CV_32F, const_cast<float*>(data));
-	cv::Mat binary;
-	cv::threshold(probMap, binary, 0.3f, 255.0f, cv::THRESH_BINARY);
-	binary.convertTo(binary, CV_8U);
-
-	cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
-	cv::dilate(binary, binary, kernel);
-
-	std::vector<std::vector<cv::Point>> contours;
-	cv::findContours(binary, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
-
-	float scaleX = static_cast<float>(detImg.cols) / outW;
-	float scaleY = static_cast<float>(detImg.rows) / outH;
-
-	std::vector<cv::Rect> boxes;
-	for (const auto& contour : contours) {
-		cv::Rect r = cv::boundingRect(contour);
-		if (r.area() < 50) continue;
-
-		int pad = 12;
-		r.x      = std::max(0, static_cast<int>(r.x * scaleX) - pad);
-		r.y      = std::max(0, static_cast<int>(r.y * scaleY) - pad);
-		r.width  = std::min(detImg.cols - r.x, static_cast<int>(r.width  * scaleX) + 2 * pad);
-		r.height = std::min(detImg.rows - r.y, static_cast<int>(r.height * scaleY) + 2 * pad);
-
-		boxes.push_back(r);
-=======
 
 OCR::~OCR(){
 	if(tess){
 		tess->End();
 		delete tess;
->>>>>>> 09b84a29101e75d92ed9b6b628d48d565567d26c
 	}
 
 	// Descarta boxes muito largas (detecção espúria juntando linhas)

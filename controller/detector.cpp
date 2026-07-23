@@ -15,15 +15,6 @@ void Detector::StartProcessThread(){
 
 	processing_running = true;
 	process_thread = std::thread(&Detector::ProcessLoop, this);
-<<<<<<< HEAD
-	
-	setThreadPriority(process_thread, 99);
-	setThreadAffinity(process_thread, {0,1,2,3});
-	
-	std::cout << "Thread de processamento iniciada.\n";
-}
-
-=======
 
 	//setThreadPriority(process_thread, 99);
 	//setThreadAffinity(process_thread, {2, 3});
@@ -122,7 +113,6 @@ cv::Mat Detector::GetFrame(){
 	return frame.clone();
 }
 
->>>>>>> 09b84a29101e75d92ed9b6b628d48d565567d26c
 void Detector::StartSensorThread(){
 	if (sensor_running) {
 		std::cout << "Thread já está rodando!\n";
@@ -139,11 +129,8 @@ void Detector::StartSensorThread(){
 	
 	sensor_running = true;
 	sensor_thread = std::thread(&Detector::SensorCaptureImpressTHR, this);
-<<<<<<< HEAD
-=======
 	//setThreadPriority(sensor_thread, 98);
 	//setThreadAffinity(sensor_thread, {1});
->>>>>>> 09b84a29101e75d92ed9b6b628d48d565567d26c
 	std::cout << "Thread de captura e impressão iniciada.\n";
 }
 
@@ -242,8 +229,4 @@ void Detector::StopSensorThread(){
 		sensor_thread.join();
 		std::cout << "Thread de captura limpa com sucesso.\n";
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 09b84a29101e75d92ed9b6b628d48d565567d26c
