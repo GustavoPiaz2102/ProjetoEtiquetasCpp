@@ -125,15 +125,6 @@ void Detector::SensorCaptureImpressTHR() {
 	imp.ResetLastImpress();
 }
 
-cv::Mat Detector::GetFrame() {
-	std::lock_guard<std::mutex> lock(frame_mutex);
-
-	if (frame.empty())
-		return cv::Mat();
-
-	return frame.clone();
-}
-
 void Detector::StopProcessThread() {
 	processing_running = false;
 	frame_cv.notify_all();
