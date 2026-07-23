@@ -87,7 +87,8 @@ int GPIO::ReadRaw() {
 bool GPIO::ReadSensor() {
 	int rawValue = ReadRaw();
 	std::cout << "valor lido:" << rawValue << std::endl;
-	if (rawValue < 0) return false;
+	if (rawValue < 0)
+		return false;
 
 	if (firstRead) {
 		lastLogicalState = (rawValue > SENSOR_THRESHOLD);
@@ -95,7 +96,7 @@ bool GPIO::ReadSensor() {
 		stableState = lastLogicalState;
 		reported = stableState; // já "reportado" pra não disparar no boot
 		firstRead = false;
-		return false;
+		return stableState;
 	}
 
 	bool currentLogicalState = (rawValue > SENSOR_THRESHOLD);
