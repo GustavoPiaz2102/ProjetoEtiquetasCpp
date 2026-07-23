@@ -203,6 +203,7 @@ void Controller::rodar_detector() {
 			ReturnToMenu = false;
 		}
 	} else {
+		detector.counterPrint();
 		if (detector.GetSensorRunning())
 			detector.StopSensorThread(); // Agora isso limpa a thread zumbi corretamente!
 
