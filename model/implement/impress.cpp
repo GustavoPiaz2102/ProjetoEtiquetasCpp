@@ -5,9 +5,10 @@
 Impress::Impress(Arquiver &arquiver) : arq(arquiver) {}
 
 void Impress::LoadAtributes() {
-	if (!arq.load())
+	if (!arq.load()) {
+		arq.fallback();
 		return;
-
+	}
 	if (arq.dict.count("tamanho_etiqueta"))
 		strcpy(tamanho_etiqueta, arq.dict["tamanho_etiqueta"].c_str());
 	if (arq.dict.count("espacamento"))

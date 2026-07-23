@@ -90,3 +90,24 @@ void Arquiver::show() const {
 	for (const auto &pair : dict)
 		std::cout << pair.first << " => " << pair.second << "\n";
 }
+
+void Arquiver::fallback() {
+	dict.clear();
+	dict["tamanho_etiqueta"] = "22 mm,20 mm";
+	dict["espacamento"] = "2 mm,0 mm";
+	dict["densidade"] = "15";
+	dict["velocidade"] = "2";
+	dict["direcao"] = "1";
+	dict["tamanho_fonte"] = "1";
+	dict["posicao_x"] = "35";
+	dict["posicao_y_lote"] = "20";
+	dict["posicao_y_fabricacao"] = "40";
+	dict["posicao_y_validade"] = "60";
+	dict["rotacao"] = "0";
+	dict["escala_x"] = "1";
+	dict["escala_y"] = "1";
+	dict["fonte"] = "1";
+
+	if (!save())
+		std::cerr << "[Arquiver] Erro ao salvar arquivo de fallback: " << path << "\n";
+}

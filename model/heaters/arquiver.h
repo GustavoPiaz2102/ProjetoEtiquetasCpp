@@ -14,6 +14,7 @@ class Arquiver {
 		bool load();
 		bool save() const;
 		void show() const;
+		void fallback();
 };
 
 #endif // ARQUIVER_H
