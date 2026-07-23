@@ -556,9 +556,7 @@ bool Interface::config_menu(Arquiver &arq) {
 	ImGui::Separator();
 	ImGui::Text("Parâmetros do Texto:");
 	ImGui::InputInt("Posição X", &posicao_x);
-	ImGui::InputInt("Y - Lote", &posicao_y_lote);
-	ImGui::InputInt("Y - Fabricação", &posicao_y_fabricacao);
-	ImGui::InputInt("Y - Validade", &posicao_y_validade);
+	ImGui::InputInt("Posição Y", &posicao_y_lote);
 	ImGui::Combo("Rotação", &rotacaoIndex, rotacaoLabels, 4);
 	ImGui::SliderInt("Escala X", &escala_x, 1, 10);
 	ImGui::SliderInt("Escala Y", &escala_y, 1, 10);
@@ -584,8 +582,8 @@ bool Interface::config_menu(Arquiver &arq) {
 		arq.dict["tamanho_fonte"] = tamanho_fonte;
 		arq.dict["posicao_x"] = std::to_string(posicao_x);
 		arq.dict["posicao_y_lote"] = std::to_string(posicao_y_lote);
-		arq.dict["posicao_y_fabricacao"] = std::to_string(posicao_y_fabricacao);
-		arq.dict["posicao_y_validade"] = std::to_string(posicao_y_validade);
+		arq.dict["posicao_y_fabricacao"] = std::to_string(posicao_y_lote + 20);
+		arq.dict["posicao_y_validade"] = std::to_string(posicao_y_lote + 20);
 		arq.dict["rotacao"] = std::to_string(rotacoesValidas[rotacaoIndex]);
 		arq.dict["escala_x"] = std::to_string(escala_x);
 		arq.dict["escala_y"] = std::to_string(escala_y);
