@@ -45,6 +45,9 @@ class Detector {
 		std::atomic<bool> LastWithError{false}; // Flag da validator, indica que o OCR achou um erro
 		std::atomic<bool> printer_error{false};
 
+		std::atomic<int> correctImpressCounter{0};
+		std::atomic<int> totalImpressCounter{0};
+
 	public:
 		/**
 		 * @brief Construtor da classe Detector que inicializa todos os componentes do sistema.
@@ -149,6 +152,12 @@ class Detector {
 
 			return false;
 		}
+		/**
+		 * @brief Exibe a porcentagem de impressões corretas em relação ao total de impressões.
+		 * @details Calcula a porcentagem com base nos contadores de impressões corretas e totais.
+		 *          Exibe o resultado no console.
+		 */
+		void counterPrint();
 };
 
 #endif // DETECTOR_H

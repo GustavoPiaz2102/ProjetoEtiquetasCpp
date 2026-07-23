@@ -75,13 +75,21 @@ void Detector::ProcessLoop() {
 			imp.setLastImpress(false);
 			LastWithError = true;
 			//std::cout << ocr.getLastDebugError();
-		} else
+		} else {
 			LastWithError = false;
-
+			correctImpressCounter++;
+		}
+		totalImpressCounter++;
 		sensor_cv.notify_one();
 	}
 
 	std::cout << "Esperando Pela finalização da thread de processamento na main\n";
+}
+
+void Detector::counterPrint() {
+	std::cout << "Porcentagem de impressões corretas: " << (totalImpressCounter > 0 ? (static_cast<float>(correctImpressCounter) / totalImpressCounter) * 100.0f : 0.0f) << "%\n";
+	totalImpressCounter = 0;
+	correctImpressCounter = 0;
 }
 
 void Detector::SensorCaptureImpressTHR() {
