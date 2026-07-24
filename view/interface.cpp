@@ -594,9 +594,8 @@ bool Interface::config_menu(Arquiver &arq) {
 		// Salva no arquivo
 		arq.save();
 		return true;
-	} else {
+	} else
 		return false;
-	}
 }
 
 bool Interface::requisitar_data(std::string &selected_date, int tipo) {
