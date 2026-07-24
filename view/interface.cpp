@@ -544,24 +544,26 @@ bool Interface::config_menu(Arquiver &arq) {
 	ImGui::Text("Parâmetros da Impressora:");
 	ImGui::InputFloat("Largura Etiqueta (mm)", &largura_mm, 1.0f, 5.0f, "%.1f");
 	ImGui::InputFloat("Altura Etiqueta (mm)", &altura_mm, 1.0f, 5.0f, "%.1f");
-	ImGui::InputFloat("Gap (mm)", &gap_mm, 0.5f, 1.0f, "%.1f");
-	ImGui::InputFloat("Offset Gap (mm)", &offset_mm, 0.5f, 1.0f, "%.1f");
+	//ImGui::InputFloat("Gap (mm)", &gap_mm, 0.5f, 1.0f, "%.1f");
+	//ImGui::InputFloat("Offset Gap (mm)", &offset_mm, 0.5f, 1.0f, "%.1f");
 
-	ImGui::SliderInt("Densidade", &densidade, 0, 15);
+	//ImGui::SliderInt("Densidade", &densidade, 0, 15);
 	ImGui::SliderInt("Velocidade (pol/s)", &velocidade, 1, 5); // CT400 suporta até 5 pol/s
+	/*
 	ImGui::InputInt("Direção", &direcao);
 	if (direcao != 0 && direcao != 1)
 		direcao = direcao > 0 ? 1 : 0; // TSPL só aceita 0 ou 1
-
+	*/
 	ImGui::Separator();
 	ImGui::Text("Parâmetros do Texto:");
 	ImGui::InputInt("Posição X", &posicao_x);
 	ImGui::InputInt("Posição Y", &posicao_y_lote);
-	ImGui::Combo("Rotação", &rotacaoIndex, rotacaoLabels, 4);
+	//ImGui::Combo("Rotação", &rotacaoIndex, rotacaoLabels, 4);
+	/*
 	ImGui::SliderInt("Escala X", &escala_x, 1, 10);
 	ImGui::SliderInt("Escala Y", &escala_y, 1, 10);
 	ImGui::InputText("Fonte", fonte, IM_ARRAYSIZE(fonte));
-
+*/
 	bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
 	ImGui::PopStyleVar(3);
 	ImGui::End();
