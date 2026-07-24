@@ -61,6 +61,8 @@ GPIO::~GPIO() {
 		fsRaw.close();
 	if (stroboLine)
 		gpiod_line_release(stroboLine);
+	if (buzzerLine)
+		gpiod_line_release(buzzerLine);
 	if (chip)
 		gpiod_chip_close(chip);
 	// if(encoderThread.joinable()) encoderThread.detach();
@@ -88,7 +90,6 @@ bool GPIO::ReadSensor() {
 	int rawValue = ReadRaw();
 	//std::cout << "valor lido:" << rawValue << "\r";
 	if (rawValue < 0)
-
 		return stableState;
 
 	bool currentLogicalState = (rawValue > SENSOR_THRESHOLD);
