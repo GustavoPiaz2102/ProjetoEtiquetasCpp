@@ -2,41 +2,24 @@
 #include <cstring> // Para strerror
 #include <errno.h> // Para errno
 
-GPIO::GPIO(uint8_t pinStrobo, uint8_t pinBuzzer, const std::string &chipname) : PinStrobo(pinStrobo), PinBuzzer(pinBuzzer), chip(nullptr), stroboLine(nullptr), buzzerLine(nullptr) {
-	// 1. Abre o chip
+// --------- GPIO ---------
+
+GPIO::GPIO(const std::string &chipname) : chipName(chipname), chip(nullptr){
 	chip = gpiod_chip_open_by_name(chipname.c_str());
 	if (!chip)
 		throw std::runtime_error("Erro ao abrir o chip GPIO: " + chipname + " (" + strerror(errno) + ")");
 
-	std::cout << "[INIT] GPIO chip aberto: " << chipname << ", pino strobo: " << PinStrobo << std::endl;
+	std::cout << "[INIT] GPIO chip aberto: " << chipname << std::endl;	
+}
 
-	// 2. Obtém a linha
-	stroboLine = gpiod_chip_get_line(chip, PinStrobo);
-	if (!stroboLine) {
+GPIO::~GPIO() {
+	if (chip)
 		gpiod_chip_close(chip);
-		throw std::runtime_error("Erro: Nao foi possivel obter a linha do strobo " + std::to_string(PinStrobo));
-	}
+}
 
-	// 3. Requisita a linha como SAÍDA
-	if (gpiod_line_request_output(stroboLine, "projeto_etiquetas", 0) < 0) {
-		std::string erro_msg = strerror(errno);
-		gpiod_chip_close(chip);
-		throw std::runtime_error("Erro ao configurar output do strobo (GPIO " + std::to_string(PinStrobo) + "): " + erro_msg);
-	}
+// --------- Sensor ---------
 
-	buzzerLine = gpiod_chip_get_line(chip, PinBuzzer);
-	if (!buzzerLine) {
-		gpiod_chip_close(chip);
-		throw std::runtime_error("Erro: Nao foi possivel obter a linha do buzzer " + std::to_string(PinBuzzer));
-	}
-
-	if (gpiod_line_request_output(buzzerLine, "projeto_etiquetas", 0) < 0) {
-		std::string erro_msg = strerror(errno);
-		gpiod_chip_close(chip);
-		throw std::runtime_error("Erro ao configurar output do buzzer (GPIO " + std::to_string(PinBuzzer) + "): " + erro_msg);
-	}
-
-	// 4. Carrega escala (Leitura de arquivos do sistema)
+Sensor::Sensor(const std::string &chipname) : GPIO(chipname) {
 	std::ifstream fs(FILE_SCALE);
 	if (fs.is_open()) {
 		fs >> scale;
@@ -50,27 +33,14 @@ GPIO::GPIO(uint8_t pinStrobo, uint8_t pinBuzzer, const std::string &chipname) : 
 	fsRaw.open(FILE_RAW);
 	if (!fsRaw.is_open())
 		std::cerr << "[ERRO] Nao foi possivel abrir o arquivo do sensor: " << FILE_RAW << "\n";
-
-	// Encoder
-
-	// EncoderThread = std::thread(&GPIO::MonitorEncoder, this);
 }
 
-GPIO::~GPIO() {
+Sensor::~Sensor() {
 	if (fsRaw.is_open())
 		fsRaw.close();
-	if (stroboLine)
-		gpiod_line_release(stroboLine);
-	if (buzzerLine)
-		gpiod_line_release(buzzerLine);
-	if (chip)
-		gpiod_chip_close(chip);
-	// if(encoderThread.joinable()) encoderThread.detach();
 }
 
-// --------- Sensor ---------
-
-int GPIO::ReadRaw() {
+int Sensor::ReadRaw() {
 	if (!fsRaw.is_open())
 		return -1;
 
@@ -86,9 +56,8 @@ int GPIO::ReadRaw() {
 	return value;
 }
 
-bool GPIO::ReadSensor() {
+bool Sensor::ReadSensor() {
 	int rawValue = ReadRaw();
-	//std::cout << "valor lido:" << rawValue << "\r";
 	if (rawValue < 0)
 		return stableState;
 
@@ -124,42 +93,41 @@ bool GPIO::ReadSensor() {
 	return false;
 }
 
-/*
-// --------- Encoder ---------
-
-int GPIO::GetAndResetEncoderPulses() {
-	int current = encoderPulses.load();
-	encoderPulses.store(0);
-	return current;
-}
-
-void GPIO::MonitorEncoder() {
-	while(true){
-		if(gpiod_line_event_wait(encoderLine, NULL) == 1){
-			gpiod_line_event event;
-			if(gpiod_line_event_read(encoderLine, &event) == 0) if(event.event_type == GPIOD_LINE_EVENT_RISING_EDGE) encoderPulses++;
-		}
-	}
-}
-*/
-
 // --------- Strobo ---------
 
-void GPIO::OutStrobo() {
+Strobo::Strobo(uint8_t pinStrobo, const std::string &chipname) : GPIO(chipname), pinStrobo(pinStrobo) {
+	stroboLine = gpiod_chip_get_line(chip, pinStrobo);
+	if (!stroboLine) {
+		throw std::runtime_error("Erro: Nao foi possivel obter a linha do strobo " + std::to_string(pinStrobo));
+	}
+
+	if (gpiod_line_request_output(stroboLine, "projeto_etiquetas", 0) < 0) {
+		std::string erro_msg = strerror(errno);
+		throw std::runtime_error("Erro ao configurar output do strobo (GPIO " + std::to_string(pinStrobo) + "): " + erro_msg);
+	}
+}
+
+Strobo::~Strobo() {
+	if (stroboLine)
+		gpiod_line_release(stroboLine);
+}
+
+void Strobo::OutStrobo() {
 	if (!stroboLine)
 		return;
+
 	gpiod_line_set_value(stroboLine, 1);
 	std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	gpiod_line_set_value(stroboLine, 0);
 }
 
-void GPIO::SetStroboHigh(int sleep) {
+void Strobo::SetStroboHigh(int sleep) {
 	if (stroboLine)
 		gpiod_line_set_value(stroboLine, 1);
 	std::this_thread::sleep_for(std::chrono::milliseconds(sleep));
 }
 
-void GPIO::SetStroboLow(int sleep) {
+void Strobo::SetStroboLow(int sleep) {
 	if (stroboLine)
 		gpiod_line_set_value(stroboLine, 0);
 	std::this_thread::sleep_for(std::chrono::milliseconds(sleep));
@@ -167,7 +135,24 @@ void GPIO::SetStroboLow(int sleep) {
 
 // ---------- Buzzer ----------
 
-void GPIO::beep(uint16_t duration_ms) {
+Buzzer::Buzzer(uint8_t pinBuzzer, const std::string &chipname) : GPIO(chipname), pinBuzzer(pinBuzzer) {
+	buzzerLine = gpiod_chip_get_line(chip, pinBuzzer);
+	if (!buzzerLine)
+		throw std::runtime_error("Erro: Nao foi possivel obter a linha do buzzer " + std::to_string(pinBuzzer));
+
+	if (gpiod_line_request_output(buzzerLine, "projeto_etiquetas", 0) < 0) {
+		std::string erro_msg = strerror(errno);
+		throw std::runtime_error("Erro ao configurar output do buzzer (GPIO " + std::to_string(pinBuzzer) + "): " + erro_msg);
+	}
+}
+
+Buzzer::~Buzzer() {
+	stopBuzzerThread();
+	if (buzzerLine)
+		gpiod_line_release(buzzerLine);
+}
+
+void Buzzer::beep(uint16_t duration_ms) {
 	if (buzzerLine)
 		gpiod_line_set_value(buzzerLine, 1);
 	std::this_thread::sleep_for(std::chrono::milliseconds(duration_ms));
@@ -175,7 +160,7 @@ void GPIO::beep(uint16_t duration_ms) {
 		gpiod_line_set_value(buzzerLine, 0);
 }
 
-void GPIO::buzzerRun(uint16_t duration_ms) {
+void Buzzer::buzzerRun(uint16_t duration_ms) {
 	if (!buzzerLine)
 		return;
 
@@ -185,15 +170,15 @@ void GPIO::buzzerRun(uint16_t duration_ms) {
 	}
 }
 
-void GPIO::startBuzzerThread(uint16_t duration_ms) {
+void Buzzer::startBuzzerThread(uint16_t duration_ms) {
 	if (runningBuzzerThread)
 		return;
 
 	runningBuzzerThread = true;
-	buzzerThread = std::thread(&GPIO::buzzerRun, this, duration_ms);
+	buzzerThread = std::thread(&Buzzer::buzzerRun, this, duration_ms);
 }
 
-void GPIO::stopBuzzerThread() {
+void Buzzer::stopBuzzerThread() {
 	if (!runningBuzzerThread)
 		return;
 
@@ -201,3 +186,47 @@ void GPIO::stopBuzzerThread() {
 	if (buzzerThread.joinable())
 		buzzerThread.join();
 }
+
+// --------- Encoder ---------
+/*
+Encoder::Encoder(const std::string &chipname) : GPIO(chipname) {
+	encoderLine = gpiod_chip_get_line(chip, 17); // GPIO 17
+	stepLine = gpiod_chip_get_line(chip, 27);    // GPIO 27
+
+	if (!encoderLine || !stepLine)
+		throw std::runtime_error("Erro: Nao foi possivel obter as linhas do encoder (GPIO 17 e 27)");
+
+	if (gpiod_line_request_both_edges_events(encoderLine, "projeto_etiquetas") < 0)
+		throw std::runtime_error("Erro ao configurar eventos do encoder (GPIO 17)");
+
+	if (gpiod_line_request_output(stepLine, "projeto_etiquetas", 0) < 0)
+		throw std::runtime_error("Erro ao configurar output do step (GPIO 27)");
+
+	encoderThread = std::thread(&Encoder::MonitorEncoder, this);
+}
+
+~Encoder::~Encoder() {
+	if (encoderThread.joinable())
+		encoderThread.detach();
+
+	if (encoderLine)
+		gpiod_line_release(encoderLine);
+	if (stepLine)
+		gpiod_line_release(stepLine);
+}
+
+int Encoder::GetAndResetEncoderPulses() {
+	int current = encoderPulses.load();
+	encoderPulses.store(0);
+	return current;
+}
+
+void Encoder::MonitorEncoder() {
+	while(true){
+		if(gpiod_line_event_wait(encoderLine, NULL) == 1){
+			gpiod_line_event event;
+			if(gpiod_line_event_read(encoderLine, &event) == 0) if(event.event_type == GPIOD_LINE_EVENT_RISING_EDGE) encoderPulses++;
+		}
+	}
+}
+*/

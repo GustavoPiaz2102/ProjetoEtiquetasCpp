@@ -17,47 +17,29 @@ const std::string FILE_SCALE = DEVICE_DIR + "in_voltage0_scale";
 #define DEBOUNCE_MS 10 //periodo entre leituras
 
 class GPIO {
-	private:
+	protected:
+		std::string chipName;
 		gpiod_chip *chip;
 
-		// --------- Strobo ---------
+	public:
+		GPIO(const std::string &chipname = "gpiochip4");
+		virtual ~GPIO();
+};
 
-		gpiod_line *stroboLine;
-		uint8_t PinStrobo;
-
-		// --------- Encoder ---------
-		/*
-		std::atomic<int> encoderPulses{0};
-		std::thread encoderThread;
-		gpiod_line *encoderLine;
-		gpiod_line *stepLine;
-		*/
-
-		// --------- Sensor ---------
-
-		std::ifstream fsRaw;
-
+class Sensor : public GPIO {
+	private:
 		double scale;
 		bool stableState = false;
 		bool reported = false;
 		bool lastLogicalState = false;
 		std::chrono::steady_clock::time_point lastStateChange;
-
-		// --------- Buzzer ---------
-
-		gpiod_line *buzzerLine;
-		uint8_t PinBuzzer;
-		bool runningBuzzerThread = false;
-		std::thread buzzerThread;
+		std::ifstream fsRaw;
 
 	public:
-		// Flags
 		bool firstRead = true;
 
-		GPIO(uint8_t pinStrobo, uint8_t pinBuzzer, const std::string &chipname = "gpiochip4");
-		~GPIO();
-
-		// --------- Sensor LDR ---------
+		Sensor(const std::string &chipname = "gpiochip4");
+		~Sensor();
 
 		/**
 		 * @brief Lê o estado do sensor LDR, aplicando filtragem e debounce.
@@ -71,7 +53,24 @@ class GPIO {
 		 */
 		int ReadRaw();
 
-		// --------- Strobo ---------
+		/**
+		 * @brief Reseta o estado do sensor para a condição inicial, forçando uma nova leitura completa.
+		 */
+		void ReturnToFirst() {
+			firstRead = true;
+			stableState = false;
+			lastLogicalState = false;
+		}
+};
+
+class Strobo : public GPIO {
+	private:
+		gpiod_line *stroboLine;
+		uint8_t pinStrobo;
+
+	public:
+		Strobo(uint8_t pinStrobo, const std::string &chipname = "gpiochip4");
+		~Strobo();
 
 		/**
 		 * @brief Emite um pulso no pino do strobo.
@@ -93,22 +92,18 @@ class GPIO {
 		 * @important Certifique-se de chamar SetStroboHigh() antes de chamar este método para evitar que o pino fique permanentemente LOW.
 		 */
 		void SetStroboLow(int sleep = 0);
+};
 
-		/**
-		 * @brief Reseta o estado do sensor para a condição inicial, forçando uma nova leitura completa.
-		 */
-		void ReturnToFirst() {
-			firstRead = true;
-			stableState = false;
-			lastLogicalState = false;
-		}
+class Buzzer : public GPIO {
+	private:
+		gpiod_line *buzzerLine;
+		uint8_t pinBuzzer;
+		bool runningBuzzerThread = false;
+		std::thread buzzerThread;
 
-		// --------- Encoder ---------
-
-		// int GetAndResetEncoderPulses();
-		// void MonitorEncoder();
-
-		// --------- Buzzer ---------
+	public:
+		Buzzer(uint8_t pinBuzzer, const std::string &chipname = "gpiochip4");
+		~Buzzer();
 
 		/**
 		 * @brief Emite um beep do buzzer por uma duração específica.
@@ -136,5 +131,21 @@ class GPIO {
 		 */
 		void stopBuzzerThread();
 };
+/*
+class Encoder : public GPIO {
+	private:
+		std::atomic<int> encoderPulses{0};
+		std::thread encoderThread;
+		gpiod_line *encoderLine;
+		gpiod_line *stepLine;
+
+	public:
+		Encoder(const std::string &chipname = "gpiochip4");
+		~Encoder();
+
+		int GetAndResetEncoderPulses();
+		void MonitorEncoder();
+};
+*/
 
 #endif // GPIO_H

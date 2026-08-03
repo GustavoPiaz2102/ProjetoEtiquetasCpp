@@ -22,7 +22,11 @@ class Detector {
 		Capture camera;
 		Preprocessor preprocessor;
 		OCR ocr;
-		GPIO sensor;
+
+		Sensor sensor;
+		Strobo strobo;
+		Buzzer buzzer;
+
 		Impress &imp;
 		Interface &interface;
 		Validator &validator;

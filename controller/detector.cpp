@@ -1,6 +1,6 @@
 #include "detector.h"
 
-Detector::Detector(Impress &imp, Interface &interface, Validator &validator) : camera(0), ocr("/home/pi/models"), sensor(21, 12, "gpiochip4"), imp(imp), interface(interface), validator(validator) {
+Detector::Detector(Impress &imp, Interface &interface, Validator &validator) : camera(0), ocr("/home/pi/models"), sensor(), strobo(21), buzzer(12), imp(imp), interface(interface), validator(validator) {
 	printer_error = false;
 }
 
@@ -65,15 +65,14 @@ void Detector::ProcessLoop() {
 			current_frame = frame.clone();
 		}
 
-		//std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
 		cv::Mat processed = preprocessor.preprocess(current_frame);
 		std::string text = ocr.extractText(processed, current_frame);
-		//std::cout << "Tempo de processamento: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() << " ms\n";
 		//std::cout << "Texto Detectado: " << text << std::endl;
 
 		if (!validator.Validate(text)) {
 			imp.setLastImpress(false);
 			LastWithError = true;
+			// buzzer.beep(500); // Beep de erro
 			//std::cout << ocr.getLastDebugError();
 		} else {
 			LastWithError = false;
@@ -93,13 +92,14 @@ void Detector::counterPrint() {
 }
 
 void Detector::SensorCaptureImpressTHR() {
-	sensor.SetStroboLow();
+	strobo.SetStroboLow();
+
 	while (sensor_running) {
 		if (sensor.ReadSensor() || firstDet) {
-			sensor.SetStroboHigh(100);
+			strobo.SetStroboHigh(100);
 			camera.captureImage();
 			cv::Mat newFrame = camera.retrieveImage();
-			sensor.SetStroboLow();
+			strobo.SetStroboLow();
 
 			{
 				std::unique_lock<std::mutex> lock(frame_mutex);
@@ -129,7 +129,7 @@ void Detector::SensorCaptureImpressTHR() {
 		}
 	}
 
-	sensor.SetStroboLow();
+	strobo.SetStroboLow();
 	sensor.ReturnToFirst();
 	imp.ResetLastImpress();
 }
