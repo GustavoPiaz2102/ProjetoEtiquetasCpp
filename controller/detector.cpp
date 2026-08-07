@@ -67,7 +67,7 @@ void Detector::ProcessLoop() {
 
 		cv::Mat processed = preprocessor.preprocess(current_frame);
 		std::string text = ocr.extractText(processed, current_frame);
-		//std::cout << "Texto Detectado: " << text << std::endl;
+		std::cout << "Texto Detectado: " << text << std::endl;
 
 		buzzer.setBuzzerActive(false);
 		if (!validator.Validate(text)) {
