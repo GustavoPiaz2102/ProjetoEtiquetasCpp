@@ -99,7 +99,7 @@ class Buzzer : public GPIO {
 	private:
 		gpiod_line *buzzerLine;
 		uint8_t pinBuzzer;
-		bool runningBuzzerThread = false, buzzerActive = false;
+		std::atomic<bool> runningBuzzerThread = false, buzzerActive = false;
 		std::thread buzzerThread;
 		std::mutex buzzerMutex;
 

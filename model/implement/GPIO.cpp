@@ -174,12 +174,12 @@ void Buzzer::buzzerRun(uint16_t duration_ms) {
 
 void Buzzer::setBuzzerActive(bool active) {
 	std::lock_guard<std::mutex> lock(buzzerMutex);
-	buzzerActive = active;
+	buzzerActive.store(active);
 }
 
 bool Buzzer::isBuzzerActive() {
 	std::lock_guard<std::mutex> lock(buzzerMutex);
-	return buzzerActive;
+	return buzzerActive.load();
 }
 
 void Buzzer::startBuzzerThread(uint16_t duration_ms) {
