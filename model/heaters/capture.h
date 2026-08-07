@@ -12,7 +12,7 @@
 #define ROI_WIDTH int(IMG_WIDTH * .41)
 #define ROI_HEIGHT int(IMG_HEIGHT * .50)
 #define XMOV 0
-#define YMOV -70
+#define YMOV -100
 //Deslocamento em x e y
 
 // Controle manual de exposição/ganho do sensor (calibrado com o flash aceso).
