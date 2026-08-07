@@ -38,6 +38,67 @@ void Interface::beginFullscreenWindow(const char *name) {
 			     ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus);
 }
 
+void Interface::AplicarEstiloVisual() {
+	ImGuiStyle &style = ImGui::GetStyle();
+
+	// Arredondamento e espaçamento — visual mais moderno e "macio"
+	style.WindowRounding = 10.0f;
+	style.ChildRounding = 8.0f;
+	style.FrameRounding = 8.0f;
+	style.GrabRounding = 8.0f;
+	style.PopupRounding = 8.0f;
+	style.ScrollbarRounding = 8.0f;
+	style.TabRounding = 8.0f;
+
+	style.WindowBorderSize = TAMANHO_BORDA_JANELA;
+	style.FrameBorderSize = 1.0f;
+	style.PopupBorderSize = 1.0f;
+
+	style.WindowPadding = ImVec2(16, 16);
+	style.FramePadding = ImVec2(12, 10);
+	style.ItemSpacing = ImVec2(14, 12);
+	style.ItemInnerSpacing = ImVec2(10, 8);
+	style.IndentSpacing = 20.0f;
+
+	// Paleta escura com destaque em azul-petróleo
+	ImVec4 *colors = style.Colors;
+	colors[ImGuiCol_Text] = ImVec4(0.93f, 0.94f, 0.96f, 1.00f);
+	colors[ImGuiCol_TextDisabled] = ImVec4(0.55f, 0.58f, 0.62f, 1.00f);
+	colors[ImGuiCol_WindowBg] = ImVec4(0.09f, 0.10f, 0.12f, 1.00f);
+	colors[ImGuiCol_ChildBg] = ImVec4(0.12f, 0.13f, 0.16f, 1.00f);
+	colors[ImGuiCol_PopupBg] = ImVec4(0.09f, 0.10f, 0.12f, 0.98f);
+	colors[ImGuiCol_Border] = ImVec4(0.24f, 0.27f, 0.31f, 0.60f);
+	colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+
+	colors[ImGuiCol_FrameBg] = ImVec4(0.16f, 0.17f, 0.20f, 1.00f);
+	colors[ImGuiCol_FrameBgHovered] = ImVec4(0.20f, 0.22f, 0.26f, 1.00f);
+	colors[ImGuiCol_FrameBgActive] = ImVec4(0.23f, 0.25f, 0.29f, 1.00f);
+
+	colors[ImGuiCol_TitleBg] = ImVec4(0.09f, 0.10f, 0.12f, 1.00f);
+	colors[ImGuiCol_TitleBgActive] = ImVec4(0.09f, 0.10f, 0.12f, 1.00f);
+
+	colors[ImGuiCol_Button] = ImVec4(0.16f, 0.45f, 0.60f, 1.00f);
+	colors[ImGuiCol_ButtonHovered] = ImVec4(0.21f, 0.56f, 0.73f, 1.00f);
+	colors[ImGuiCol_ButtonActive] = ImVec4(0.12f, 0.38f, 0.52f, 1.00f);
+
+	colors[ImGuiCol_Header] = ImVec4(0.16f, 0.45f, 0.60f, 0.70f);
+	colors[ImGuiCol_HeaderHovered] = ImVec4(0.21f, 0.56f, 0.73f, 0.85f);
+	colors[ImGuiCol_HeaderActive] = ImVec4(0.21f, 0.56f, 0.73f, 1.00f);
+
+	colors[ImGuiCol_Separator] = ImVec4(0.26f, 0.29f, 0.33f, 1.00f);
+	colors[ImGuiCol_SeparatorHovered] = ImVec4(0.32f, 0.36f, 0.41f, 1.00f);
+	colors[ImGuiCol_SeparatorActive] = ImVec4(0.32f, 0.36f, 0.41f, 1.00f);
+
+	colors[ImGuiCol_CheckMark] = ImVec4(0.30f, 0.72f, 0.86f, 1.00f);
+	colors[ImGuiCol_SliderGrab] = ImVec4(0.21f, 0.56f, 0.73f, 1.00f);
+	colors[ImGuiCol_SliderGrabActive] = ImVec4(0.30f, 0.72f, 0.86f, 1.00f);
+
+	colors[ImGuiCol_ScrollbarBg] = ImVec4(0.09f, 0.10f, 0.12f, 1.00f);
+	colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.24f, 0.27f, 0.31f, 1.00f);
+	colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.30f, 0.34f, 0.39f, 1.00f);
+	colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.30f, 0.34f, 0.39f, 1.00f);
+}
+
 bool Interface::iniciar_janela() {
 	if (janela_iniciada)
 		return false;
@@ -111,6 +172,8 @@ bool Interface::iniciar_janela() {
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
+	ImGui::StyleColorsDark();
+	AplicarEstiloVisual();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 130");
 
@@ -159,24 +222,41 @@ void Interface::end_frame() {
 
 void Interface::menu(int &selected_option, int qntImp) {
 	// Define um pequeno padding para evitar que a borda sobreponha os widgets
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8, 8));
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(24, 24));
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, TAMANHO_BORDA_JANELA);
 
 	beginFullscreenWindow("Main");
 	ImGui::SetWindowFontScale(ESCALA_FONTE_MENU);
 
-	// Layout para o primeiro botão e informações do validador
+	// Cabeçalho
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.30f, 0.72f, 0.86f, 1.00f));
 	ImGui::Text(" Escolha um botão:");
+	ImGui::PopStyleColor();
+	ImGui::Dummy(ImVec2(0, 6));
+	ImGui::Separator();
+	ImGui::Dummy(ImVec2(0, 10));
+
+	// Layout para o primeiro botão e informações do validador
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.16f, 0.55f, 0.30f, 1.00f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.20f, 0.68f, 0.38f, 1.00f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.12f, 0.45f, 0.24f, 1.00f));
 	if (ImGui::Button("Rodar Sistema", ImVec2(TAMANHO_BOTAO_LARG, TAMANHO_BOTAO_ALT))) {
 		selected_option = 0;
 	}
+	ImGui::PopStyleColor(3);
 
 	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
+	ImGui::BeginChild("InfoValidador", ImVec2(0, TAMANHO_BOTAO_ALT), true);
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.60f, 0.78f, 0.90f, 1.00f));
+	ImGui::Text("Status do Sistema");
+	ImGui::PopStyleColor();
+	ImGui::Separator();
 	ImGui::Text("L: %s\nF: %s\nV: %s\nQuantidade de Impressões: %d",
 		    validator.GetLT().c_str(),
 		    validator.GetFAB().c_str(),
 		    validator.GetVAL().c_str(),
 		    qntImp);
+	ImGui::EndChild();
 
 	// Espaçamento entre a primeira linha de elementos e a segunda
 	ImGui::Dummy(ImVec2(0, ESPACO_ENTRE_BOTOES));
@@ -206,15 +286,26 @@ void Interface::menu(int &selected_option, int qntImp) {
 	}
 
 	ImGui::Dummy(ImVec2(0, ESPACO_ENTRE_BOTOES));
+	ImGui::Separator();
+	ImGui::Dummy(ImVec2(0, 6));
 
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.24f, 0.27f, 0.31f, 1.00f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.30f, 0.34f, 0.39f, 1.00f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.18f, 0.21f, 0.24f, 1.00f));
 	if (ImGui::Button("Configurar", ImVec2(TAMANHO_BOTAO_LARG / 2, TAMANHO_BOTAO_ALT / 5))) {
 		selected_option = 5;
 	}
+	ImGui::PopStyleColor(3);
+
 	// ShutDown button
 	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES * 25.7);
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.60f, 0.18f, 0.18f, 1.00f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.74f, 0.22f, 0.22f, 1.00f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.48f, 0.14f, 0.14f, 1.00f));
 	if (ImGui::Button("Desligar", ImVec2(TAMANHO_BOTAO_LARG / 2, TAMANHO_BOTAO_ALT / 5))) {
 		selected_option = -10;
 	}
+	ImGui::PopStyleColor(3);
 
 	ImGui::End();
 	ImGui::PopStyleVar(2);
@@ -300,19 +391,32 @@ bool Interface::atualizar_frame(const cv::Mat &frame) {
 
 	ImGui::SetCursorPosX((ImGui::GetWindowWidth() - display_width) * 0.5f);
 	ImGui::SetCursorPosY((ImGui::GetWindowHeight() - display_height) * 0.5f);
+
+	// Moldura sutil ao redor da imagem
+	ImVec2 frame_top_left = ImGui::GetCursorScreenPos();
+	ImGui::GetWindowDrawList()->AddRect(
+		ImVec2(frame_top_left.x - 4, frame_top_left.y - 4),
+		ImVec2(frame_top_left.x + display_width + 4, frame_top_left.y + display_height + 4),
+		IM_COL32(60, 140, 180, 200), 8.0f, 0, 2.0f);
+
 	ImGui::Image((ImTextureID)(intptr_t)texture_id, ImVec2(display_width, display_height));
 
 	ImVec2 img_pos = ImGui::GetItemRectMin(); // canto superior esquerdo da imagem
 	ImGui::GetWindowDrawList()->AddText(
 		ImVec2(img_pos.x + 10, img_pos.y + 10),
-		IM_COL32(255, 255, 0, 255), // amarelo
+		IM_COL32(255, 220, 60, 255), // amarelo levemente mais suave
 		std::to_string(frame_count).c_str());
 	// Controle de escala de resolução
 	ImGui::SetNextItemWidth(200);
 	//ImGui::SliderFloat("Escala", &resolution_scale, 0.5f, 2.0f);
 
 	ImGui::SetWindowFontScale(ESCALA_FONTE_MENU);
+	ImGui::Dummy(ImVec2(0, 10));
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.24f, 0.27f, 0.31f, 1.00f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.30f, 0.34f, 0.39f, 1.00f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.18f, 0.21f, 0.24f, 1.00f));
 	bool return_to_menu = ImGui::Button("Voltar ao Menu", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT));
+	ImGui::PopStyleColor(3);
 
 	ImGui::End();
 	return return_to_menu;
@@ -350,7 +454,11 @@ bool Interface::requisitar_lt(std::string &selected_lt) {
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, SPACING_INTERNO);
 	ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);
 
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.30f, 0.72f, 0.86f, 1.00f));
 	ImGui::Text(" Insira o valor do lote: ");
+	ImGui::PopStyleColor();
+	ImGui::Separator();
+
 	ImGui::Text(" L: ");
 	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
 
@@ -386,6 +494,9 @@ bool Interface::requisitar_lt(std::string &selected_lt) {
 	ImGui::Spacing();
 	ImGui::Spacing();
 
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.16f, 0.55f, 0.30f, 1.00f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.20f, 0.68f, 0.38f, 1.00f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.12f, 0.45f, 0.24f, 1.00f));
 	bool clicked = false;
 	if (ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2))) {
 		char result[7];
@@ -393,10 +504,13 @@ bool Interface::requisitar_lt(std::string &selected_lt) {
 		selected_lt = result;
 		clicked = true;
 	}
+	ImGui::PopStyleColor(3);
 
 	if (!selected_lt.empty()) {
 		ImGui::Spacing();
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.60f, 0.78f, 0.90f, 1.00f));
 		ImGui::Text("Lote selecionado: %s", selected_lt.c_str());
+		ImGui::PopStyleColor();
 	}
 
 	ImGui::PopStyleVar(3);
@@ -421,8 +535,14 @@ bool Interface::config_impress(int &value, bool *InstantImpress) {
 
 		ImGui::PushID("custom_input_int");
 		ImGui::Dummy(ImVec2(0, 150));
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.30f, 0.72f, 0.86f, 1.00f));
 		ImGui::Text("Quantidade de impressões:");
+		ImGui::PopStyleColor();
+		ImGui::Dummy(ImVec2(0, 8));
 		// Botões "-100", "-10", "-1"
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.60f, 0.18f, 0.18f, 1.00f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.74f, 0.22f, 0.22f, 1.00f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.48f, 0.14f, 0.14f, 1.00f));
 		if (ImGui::Button("-100", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2))) {
 			if ((value - 100) >= 0)
 				value -= 100;
@@ -445,6 +565,7 @@ bool Interface::config_impress(int &value, bool *InstantImpress) {
 			else
 				value = 0;
 		}
+		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
 
@@ -455,6 +576,9 @@ bool Interface::config_impress(int &value, bool *InstantImpress) {
 		ImGui::SameLine();
 
 		// Botões "+1", "+10", "+100"
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.16f, 0.55f, 0.30f, 1.00f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.20f, 0.68f, 0.38f, 1.00f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.12f, 0.45f, 0.24f, 1.00f));
 		if (ImGui::Button("+1", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2)))
 			value += 1;
 		ImGui::SameLine();
@@ -463,11 +587,17 @@ bool Interface::config_impress(int &value, bool *InstantImpress) {
 		ImGui::SameLine();
 		if (ImGui::Button("+100", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG / 2, TAMANHO_BOTAO_PEQUENO_ALT * 2)))
 			value += 100;
+		ImGui::PopStyleColor(3);
 
 		ImGui::PopID();
+		ImGui::Dummy(ImVec2(0, 12));
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.16f, 0.45f, 0.60f, 1.00f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.21f, 0.56f, 0.73f, 1.00f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.12f, 0.38f, 0.52f, 1.00f));
 		bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
 		ImGui::SameLine();
 		*InstantImpress = ImGui::Button("Instantaneo", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
+		ImGui::PopStyleColor(3);
 		ImGui::PopStyleVar(3);
 		ImGui::End();
 		if (clicked || *InstantImpress) {
@@ -541,7 +671,9 @@ bool Interface::config_menu(Arquiver &arq) {
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, SPACING_INTERNO);
 	ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);
 
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.30f, 0.72f, 0.86f, 1.00f));
 	ImGui::Text("Parâmetros da Impressora:");
+	ImGui::PopStyleColor();
 	ImGui::InputFloat("Largura Etiqueta (mm)", &largura_mm, 1.0f, 5.0f, "%.1f");
 	ImGui::InputFloat("Altura Etiqueta (mm)", &altura_mm, 1.0f, 5.0f, "%.1f");
 	//ImGui::InputFloat("Gap (mm)", &gap_mm, 0.5f, 1.0f, "%.1f");
@@ -555,7 +687,9 @@ bool Interface::config_menu(Arquiver &arq) {
 		direcao = direcao > 0 ? 1 : 0; // TSPL só aceita 0 ou 1
 	*/
 	ImGui::Separator();
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.30f, 0.72f, 0.86f, 1.00f));
 	ImGui::Text("Parâmetros do Texto:");
+	ImGui::PopStyleColor();
 	ImGui::InputInt("Posição X", &posicao_x);
 	ImGui::InputInt("Posição Y", &posicao_y_lote);
 	//ImGui::Combo("Rotação", &rotacaoIndex, rotacaoLabels, 4);
@@ -564,7 +698,12 @@ bool Interface::config_menu(Arquiver &arq) {
 	ImGui::SliderInt("Escala Y", &escala_y, 1, 10);
 	ImGui::InputText("Fonte", fonte, IM_ARRAYSIZE(fonte));
 */
+	ImGui::Dummy(ImVec2(0, 10));
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.16f, 0.45f, 0.60f, 1.00f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.21f, 0.56f, 0.73f, 1.00f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.12f, 0.38f, 0.52f, 1.00f));
 	bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
+	ImGui::PopStyleColor(3);
 	ImGui::PopStyleVar(3);
 	ImGui::End();
 
@@ -628,10 +767,13 @@ bool Interface::requisitar_data(std::string &selected_date, int tipo) {
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, SPACING_INTERNO);
 	ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);
 
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.30f, 0.72f, 0.86f, 1.00f));
 	if (tipo == 0)
 		ImGui::Text(" Escolha uma data de Fabricação:");
 	else
 		ImGui::Text(" Escolha uma data de Validade:");
+	ImGui::PopStyleColor();
+	ImGui::Separator();
 
 	ImGui::SetNextItemWidth(COMBO_LARGURA);
 	if (ImGui::BeginCombo("##dia", std::to_string(days[selected_day]).c_str())) {
@@ -668,14 +810,20 @@ bool Interface::requisitar_data(std::string &selected_date, int tipo) {
 	ImGui::Spacing();
 	ImGui::Spacing();
 
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.16f, 0.45f, 0.60f, 1.00f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.21f, 0.56f, 0.73f, 1.00f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.12f, 0.38f, 0.52f, 1.00f));
 	bool clicked = ImGui::Button("OK", ImVec2(TAMANHO_BOTAO_PEQUENO_LARG, TAMANHO_BOTAO_PEQUENO_ALT * 2));
+	ImGui::PopStyleColor(3);
 	if (clicked) {
 		selected_date = FormatDate(days[selected_day], selected_month, years[selected_year]);
 	}
 
 	if (!selected_date.empty()) {
 		ImGui::Spacing();
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.60f, 0.78f, 0.90f, 1.00f));
 		ImGui::Text("Data selecionada: %s", selected_date.c_str());
+		ImGui::PopStyleColor();
 	}
 
 	ImGui::PopStyleVar(3);
@@ -693,16 +841,28 @@ void Interface::setImprimindo(bool value) {
 }
 
 bool Interface::PopUpError(const std::string &message) {
+	ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.55f, 0.16f, 0.16f, 1.00f));
+	ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.70f, 0.22f, 0.22f, 1.00f));
 	ImGui::OpenPopup("ErrorPopup");
 	if (ImGui::BeginPopupModal("ErrorPopup", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.95f, 0.55f, 0.55f, 1.00f));
 		ImGui::Text("%s", message.c_str());
+		ImGui::PopStyleColor();
+		ImGui::Dummy(ImVec2(0, 8));
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.60f, 0.18f, 0.18f, 1.00f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.74f, 0.22f, 0.22f, 1.00f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.48f, 0.14f, 0.14f, 1.00f));
 		if (ImGui::Button("OK")) {
+			ImGui::PopStyleColor(3);
 			ImGui::CloseCurrentPopup();
 			ImGui::EndPopup();
+			ImGui::PopStyleColor(2);
 
 			return true;
 		}
+		ImGui::PopStyleColor(3);
 		ImGui::EndPopup();
 	}
+	ImGui::PopStyleColor(2);
 	return false;
 }

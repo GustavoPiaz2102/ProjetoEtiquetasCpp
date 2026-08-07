@@ -3,21 +3,21 @@
 /*
 Includes:
 */
-#include <GL/glew.h> // Mudar para GLEW (compatível com o projeto)
-#include <GLFW/glfw3.h>
 #include "../libs/imgui/imgui.h"
-#include "backends/imgui_impl_glfw.h"
-#include "backends/imgui_impl_opengl3.h"
-#include <iostream>
-#include <string>
-#include <opencv2/opencv.hpp>
-#include <ctime>
-#include <atomic>
-#include <sstream>
+#include "../libs/stb/stb_image.h"
+#include "../model/heaters/arquiver.h"
 #include "../model/heaters/capture.h"
 #include "../model/heaters/validator.h"
-#include "../model/heaters/arquiver.h"
-#include "../libs/stb/stb_image.h"
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
+#include <GL/glew.h> // Mudar para GLEW (compatível com o projeto)
+#include <GLFW/glfw3.h>
+#include <atomic>
+#include <ctime>
+#include <iostream>
+#include <opencv2/opencv.hpp>
+#include <sstream>
+#include <string>
 // ===================== CONFIGURAÇÕES DE INTERFACE =====================
 
 // Janela
@@ -52,57 +52,60 @@ Includes:
 #define FUNDO_A 1.0f
 #define STB_IMAGE_IMPLEMENTATION
 
-class Interface
-{
-private:
-	GLFWwindow *window = NULL;
-	GLuint texture_id = 0;
-	int image_width = 0;
-	int image_height = 0;
-	bool should_close = false;
-	bool janela_iniciada = false;
-	Validator &validator;
-	int last_width = 0;
-	int last_height = 0;
-	int selected_lote = 0;
-	int selected_ano = 0;
-	int lotes[101];
-	int anos[50];
-	GLuint pboIds[2] = {0, 0};
-	int pboIndex = 0;
-	size_t last_data_size = 0;
-	bool pboInitialized = false;
-	int frame_count = 0;
+class Interface {
+	private:
+		GLFWwindow *window = NULL;
+		GLuint texture_id = 0;
+		int image_width = 0;
+		int image_height = 0;
+		bool should_close = false;
+		bool janela_iniciada = false;
+		Validator &validator;
+		int last_width = 0;
+		int last_height = 0;
+		int selected_lote = 0;
+		int selected_ano = 0;
+		int lotes[101];
+		int anos[50];
+		GLuint pboIds[2] = {0, 0};
+		int pboIndex = 0;
+		size_t last_data_size = 0;
+		bool pboInitialized = false;
+		int frame_count = 0;
 
-	// Novos membros adicionados
-	float resolution_scale; // Controle de escala de resolução
-	int max_display_width;  // Largura máxima padrão
-	std::atomic<bool> imprimindo{false};
-	GLuint shutdownTexture = 0;
+		// Novos membros adicionados
+		float resolution_scale; // Controle de escala de resolução
+		int max_display_width;	// Largura máxima padrão
+		std::atomic<bool> imprimindo{false};
+		GLuint shutdownTexture = 0;
 
-public:
-	Interface(Validator &val);
-	~Interface();
+		// Aplica a paleta de cores e o arredondamento globais do ImGui.
+		// Alteração puramente estética — não interfere em nenhuma lógica.
+		void AplicarEstiloVisual();
 
-	bool iniciar_janela();
-	bool finalizar_janela();
-	void process_events();
-	bool shouldClose() const;
-	void begin_frame();
-	void end_frame();
-	void menu(int &selected_option, int qntImp);
-	bool atualizar_frame(const cv::Mat &frame);
-	bool requisitar_data(std::string &selected_date, int tipo);
-	bool requisitar_lt(std::string &selected_lt);
-	std::string FormatDate(int day, int month, int year);
-	void beginFullscreenWindow(const char *name);
-	bool config_menu(Arquiver &arq);
-	bool config_impress(int &value, bool *InstantImpress);
-	bool GetImprimindo();
-	void setImprimindo(bool value);
-	bool PopUpError(const std::string &message); // faz um pop-up com uma mensagem de erro e um botão "OK"
-	GLuint LoadTextureFromFile(const char *filename);
-	void setFrameCount(int count) { frame_count = count; }
-	int getFrameCount() const { return frame_count; }
+	public:
+		Interface(Validator &val);
+		~Interface();
+
+		bool iniciar_janela();
+		bool finalizar_janela();
+		void process_events();
+		bool shouldClose() const;
+		void begin_frame();
+		void end_frame();
+		void menu(int &selected_option, int qntImp);
+		bool atualizar_frame(const cv::Mat &frame);
+		bool requisitar_data(std::string &selected_date, int tipo);
+		bool requisitar_lt(std::string &selected_lt);
+		std::string FormatDate(int day, int month, int year);
+		void beginFullscreenWindow(const char *name);
+		bool config_menu(Arquiver &arq);
+		bool config_impress(int &value, bool *InstantImpress);
+		bool GetImprimindo();
+		void setImprimindo(bool value);
+		bool PopUpError(const std::string &message); // faz um pop-up com uma mensagem de erro e um botão "OK"
+		GLuint LoadTextureFromFile(const char *filename);
+		void setFrameCount(int count) { frame_count = count; }
+		int getFrameCount() const { return frame_count; }
 };
 #endif // INTERFACE_H
