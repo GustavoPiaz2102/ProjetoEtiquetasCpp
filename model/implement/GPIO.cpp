@@ -135,38 +135,26 @@ void Strobo::SetStroboLow(int sleep) {
 
 // ---------- Buzzer ----------
 
-Buzzer::Buzzer(uint8_t pinBuzzer, const std::string &chipname) : GPIO(chipname), pinBuzzer(pinBuzzer) {
-	buzzerLine = gpiod_chip_get_line(chip, pinBuzzer);
-	if (!buzzerLine)
-		throw std::runtime_error("Erro: Nao foi possivel obter a linha do buzzer " + std::to_string(pinBuzzer));
-
-	if (gpiod_line_request_output(buzzerLine, "projeto_etiquetas", 0) < 0) {
-		std::string erro_msg = strerror(errno);
-		throw std::runtime_error("Erro ao configurar output do buzzer (GPIO " + std::to_string(pinBuzzer) + "): " + erro_msg);
-	}
+Buzzer::Buzzer(int pwmChip, int pwmChannel, uint32_t toneFreqHz): hwPwm(pwmChip, pwmChannel), toneFreqHz(toneFreqHz) {
+	hwPwm.setFrequency(toneFreqHz);
+	hwPwm.enable(false);
 
 	this->startBuzzerThread(500);
 }
 
 Buzzer::~Buzzer() {
 	stopBuzzerThread();
-	if (buzzerLine)
-		gpiod_line_release(buzzerLine);
+	hwPwm.enable(false);
 }
 
 void Buzzer::beep(uint16_t duration_ms) {
-	if (buzzerLine)
-		gpiod_line_set_value(buzzerLine, 1);
+	hwPwm.enable(true);
 	std::this_thread::sleep_for(std::chrono::milliseconds(duration_ms));
-	if (buzzerLine)
-		gpiod_line_set_value(buzzerLine, 0);
+	hwPwm.enable(false);
 	std::this_thread::sleep_for(std::chrono::milliseconds(duration_ms));
 }
 
 void Buzzer::buzzerRun(uint16_t duration_ms) {
-	if (!buzzerLine)
-		return;
-
 	while (runningBuzzerThread && this->isBuzzerActive()) {
 		this->beep(duration_ms);
 	}

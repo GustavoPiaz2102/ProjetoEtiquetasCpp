@@ -10,6 +10,10 @@
 #include <thread>
 #include <mutex>
 #include <atomic>
+#include "../heaters/GPIO.h"
+#include "../heaters/hardwarePWM.h"
+#include <cstring>
+#include <errno.h>
 
 const std::string DEVICE_DIR = "/sys/bus/iio/devices/iio:device0/";
 const std::string FILE_RAW = DEVICE_DIR + "in_voltage0_raw";
@@ -103,6 +107,8 @@ class Buzzer : public GPIO {
 		std::atomic<bool> runningBuzzerThread = false, buzzerActive = false;
 		std::thread buzzerThread;
 		std::mutex buzzerMutex;
+		HardwarePWM hwPwm;
+		uint32_t toneFreqHz;
 
 	public:
 		Buzzer(uint8_t pinBuzzer, const std::string &chipname = "gpiochip4");
