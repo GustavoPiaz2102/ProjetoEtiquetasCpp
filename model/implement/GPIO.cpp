@@ -158,8 +158,9 @@ void Buzzer::beep(uint16_t duration_ms) {
 }
 
 void Buzzer::buzzerRun(uint16_t duration_ms) {
-	while (runningBuzzerThread && this->isBuzzerActive()) {
-		this->beep(duration_ms);
+	while (runningBuzzerThread) {
+		if (this->isBuzzerActive())
+			this->beep(duration_ms);
 	}
 }
 
