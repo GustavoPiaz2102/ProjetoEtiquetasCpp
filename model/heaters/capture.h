@@ -10,7 +10,7 @@
 #define IMG_HEIGHT 960
 
 #define ROI_WIDTH int(IMG_WIDTH * .41)
-#define ROI_HEIGHT int(IMG_HEIGHT * .50
+#define ROI_HEIGHT int(IMG_HEIGHT * .50)
 #define XMOV 0
 #define YMOV 50
 //Deslocamento em x e y
