@@ -15,7 +15,7 @@ std::string pipeline =
 									       "video/x-raw, format=BGR ! "
 									       "appsink drop=true max-buffers=1 sync=false";
 
-Capture::Capture(int cameraIndex) : cap(), roi((((IMG_WIDTH - ROI_WIDTH) / 2) - XMOV), (((IMG_HEIGHT - ROI_HEIGHT) / 2) - YMOV), ROI_WIDTH, ROI_HEIGHT) {
+Capture::Capture(int cameraIndex) : cap(), roi((((IMG_WIDTH - ROI_WIDTH) / 2) + XMOV), (((IMG_HEIGHT - ROI_HEIGHT) / 2) - YMOV), ROI_WIDTH + XMOV, ROI_HEIGHT - YMOV) {
 	cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);
 
 	if (!cap.open(pipeline, cv::CAP_GSTREAMER))
