@@ -41,7 +41,12 @@ void Interface::beginFullscreenWindow(const char *name) {
 void Interface::AplicarEstiloVisual() {
 	ImGuiStyle &style = ImGui::GetStyle();
 
-	// Arredondamento e espaçamento — visual mais moderno e "macio"
+	// Fonte base maior globalmente. Isso também aumenta o texto dentro
+	// dos popups de combo (BeginCombo), que são janelas próprias e por
+	// isso não herdam o SetWindowFontScale da janela principal.
+	ImGui::GetIO().FontGlobalScale = 1.5f;
+
+	// Arredondamento — visual mais moderno e "macio"
 	style.WindowRounding = 10.0f;
 	style.ChildRounding = 8.0f;
 	style.FrameRounding = 8.0f;
@@ -54,11 +59,14 @@ void Interface::AplicarEstiloVisual() {
 	style.FrameBorderSize = 1.0f;
 	style.PopupBorderSize = 1.0f;
 
-	style.WindowPadding = ImVec2(16, 16);
-	style.FramePadding = ImVec2(12, 10);
-	style.ItemSpacing = ImVec2(14, 12);
-	style.ItemInnerSpacing = ImVec2(10, 8);
-	style.IndentSpacing = 20.0f;
+	// Espaçamentos contidos — a janela principal é 1024x600, então
+	// evitamos paddings grandes para não estourar a altura e gerar
+	// barra de rolagem (aparência de "sidebar") no menu.
+	style.WindowPadding = ImVec2(12, 10);
+	style.FramePadding = ImVec2(8, 6);
+	style.ItemSpacing = ImVec2(8, 4);
+	style.ItemInnerSpacing = ImVec2(6, 6);
+	style.IndentSpacing = 18.0f;
 
 	// Paleta escura com destaque em azul-petróleo
 	ImVec4 *colors = style.Colors;
@@ -222,7 +230,7 @@ void Interface::end_frame() {
 
 void Interface::menu(int &selected_option, int qntImp) {
 	// Define um pequeno padding para evitar que a borda sobreponha os widgets
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(24, 24));
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(12, 6));
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, TAMANHO_BORDA_JANELA);
 
 	beginFullscreenWindow("Main");
@@ -232,9 +240,6 @@ void Interface::menu(int &selected_option, int qntImp) {
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.30f, 0.72f, 0.86f, 1.00f));
 	ImGui::Text(" Escolha um botão:");
 	ImGui::PopStyleColor();
-	ImGui::Dummy(ImVec2(0, 6));
-	ImGui::Separator();
-	ImGui::Dummy(ImVec2(0, 10));
 
 	// Layout para o primeiro botão e informações do validador
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.16f, 0.55f, 0.30f, 1.00f));
@@ -246,17 +251,15 @@ void Interface::menu(int &selected_option, int qntImp) {
 	ImGui::PopStyleColor(3);
 
 	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(14, 12));
 	ImGui::BeginChild("InfoValidador", ImVec2(0, TAMANHO_BOTAO_ALT), true);
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.60f, 0.78f, 0.90f, 1.00f));
-	ImGui::Text("Status do Sistema");
-	ImGui::PopStyleColor();
-	ImGui::Separator();
 	ImGui::Text("L: %s\nF: %s\nV: %s\nQuantidade de Impressões: %d",
 		    validator.GetLT().c_str(),
 		    validator.GetFAB().c_str(),
 		    validator.GetVAL().c_str(),
 		    qntImp);
 	ImGui::EndChild();
+	ImGui::PopStyleVar();
 
 	// Espaçamento entre a primeira linha de elementos e a segunda
 	ImGui::Dummy(ImVec2(0, ESPACO_ENTRE_BOTOES));
@@ -285,9 +288,7 @@ void Interface::menu(int &selected_option, int qntImp) {
 		ImGui::PopStyleColor(3);
 	}
 
-	ImGui::Dummy(ImVec2(0, ESPACO_ENTRE_BOTOES));
-	ImGui::Separator();
-	ImGui::Dummy(ImVec2(0, 6));
+	ImGui::Dummy(ImVec2(0, ESPACO_ENTRE_BOTOES / 2));
 
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.24f, 0.27f, 0.31f, 1.00f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.30f, 0.34f, 0.39f, 1.00f));

@@ -36,8 +36,8 @@ Includes:
 
 // Estilo
 #define TAMANHO_BORDA_JANELA 1.0f
-#define ESCALA_FONTE_MENU 2.0f
-#define ESCALA_FONTE_DATA 2.0f
+#define ESCALA_FONTE_MENU 1.6f
+#define ESCALA_FONTE_DATA 1.6f
 
 // Estilo dos combos
 #define COMBO_LARGURA 300.0f
