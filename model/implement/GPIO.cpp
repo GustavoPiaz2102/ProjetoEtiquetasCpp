@@ -52,7 +52,7 @@ int Sensor::ReadRaw() {
 		fsRaw.clear();
 		return -1;
 	}
-	std::cout << "raw: " << value << "\r";
+	std::cout << "raw: " << value << "\n";
 	return value;
 }
 
