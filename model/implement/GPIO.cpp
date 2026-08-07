@@ -4,12 +4,12 @@
 
 // --------- GPIO ---------
 
-GPIO::GPIO(const std::string &chipname) : chipName(chipname), chip(nullptr){
+GPIO::GPIO(const std::string &chipname) : chipName(chipname), chip(nullptr) {
 	chip = gpiod_chip_open_by_name(chipname.c_str());
 	if (!chip)
 		throw std::runtime_error("Erro ao abrir o chip GPIO: " + chipname + " (" + strerror(errno) + ")");
 
-	std::cout << "[INIT] GPIO chip aberto: " << chipname << std::endl;	
+	std::cout << "[INIT] GPIO chip aberto: " << chipname << std::endl;
 }
 
 GPIO::~GPIO() {
@@ -52,7 +52,7 @@ int Sensor::ReadRaw() {
 		fsRaw.clear();
 		return -1;
 	}
-
+	std::cout << "raw: " << value << "\r";
 	return value;
 }
 
