@@ -82,6 +82,7 @@ void Detector::ProcessLoop() {
 		totalImpressCounter++;
 		sensor_cv.notify_one();
 	}
+	buzzer.setBuzzerActive(false);
 
 	std::cout << "Esperando Pela finalização da thread de processamento na main\n";
 }
