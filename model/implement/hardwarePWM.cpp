@@ -12,10 +12,10 @@ HardwarePWM::HardwarePWM(int chip, int channel) {
 	std::string chipPath = "/sys/class/pwm/pwmchip" + std::to_string(chip);
 	pwmPath = chipPath + "/pwm" + std::to_string(channel);
 
-	// Exporta o canal se ainda não estiver exportado
 	std::ifstream f(pwmPath);
 	if (!f.good()) {
 		writeToFile(chipPath + "/export", std::to_string(channel));
+		std::this_thread::sleep_for(std::chrono::milliseconds(100)); // espera o sysfs criar os arquivos
 	}
 }
 
