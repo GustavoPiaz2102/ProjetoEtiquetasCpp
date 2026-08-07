@@ -144,6 +144,8 @@ Buzzer::Buzzer(uint8_t pinBuzzer, const std::string &chipname) : GPIO(chipname),
 		std::string erro_msg = strerror(errno);
 		throw std::runtime_error("Erro ao configurar output do buzzer (GPIO " + std::to_string(pinBuzzer) + "): " + erro_msg);
 	}
+
+	this->startBuzzerThread(500);
 }
 
 Buzzer::~Buzzer() {
@@ -158,16 +160,26 @@ void Buzzer::beep(uint16_t duration_ms) {
 	std::this_thread::sleep_for(std::chrono::milliseconds(duration_ms));
 	if (buzzerLine)
 		gpiod_line_set_value(buzzerLine, 0);
+	std::this_thread::sleep_for(std::chrono::milliseconds(duration_ms));
 }
 
 void Buzzer::buzzerRun(uint16_t duration_ms) {
 	if (!buzzerLine)
 		return;
 
-	while (runningBuzzerThread) {
+	while (runningBuzzerThread && this->isBuzzerActive()) {
 		this->beep(duration_ms);
-		std::this_thread::sleep_for(std::chrono::milliseconds(duration_ms));
 	}
+}
+
+void Buzzer::setBuzzerActive(bool active) {
+	std::lock_guard<std::mutex> lock(buzzerMutex);
+	buzzerActive = active;
+}
+
+bool Buzzer::isBuzzerActive() {
+	std::lock_guard<std::mutex> lock(buzzerMutex);
+	return buzzerActive;
 }
 
 void Buzzer::startBuzzerThread(uint16_t duration_ms) {

@@ -98,8 +98,9 @@ class Buzzer : public GPIO {
 	private:
 		gpiod_line *buzzerLine;
 		uint8_t pinBuzzer;
-		bool runningBuzzerThread = false;
+		bool runningBuzzerThread = false, buzzerActive = false;
 		std::thread buzzerThread;
+		std::mutex buzzerMutex;
 
 	public:
 		Buzzer(uint8_t pinBuzzer, const std::string &chipname = "gpiochip4");
@@ -118,6 +119,10 @@ class Buzzer : public GPIO {
 		 * @param duration_ms Duração do beep em milissegundos.
 		 */
 		void buzzerRun(uint16_t duration_ms);
+
+		void setBuzzerActive(bool active);
+
+		bool isBuzzerActive();
 
 		/**
 		 * @brief Inicia a thread do buzzer.
