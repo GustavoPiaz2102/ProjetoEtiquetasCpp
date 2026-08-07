@@ -148,6 +148,7 @@ Buzzer::~Buzzer() {
 }
 
 void Buzzer::beep(uint16_t duration_ms) {
+	std::cout << "[BUZZER] Beep "<< std::endl;
 	for (int i = 0; i < 3; i++) {
 		hwPwm.enable(true);
 		std::this_thread::sleep_for(std::chrono::milliseconds(150));
