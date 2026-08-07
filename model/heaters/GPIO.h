@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <string>
 #include <thread>
+#include <mutex>
 
 const std::string DEVICE_DIR = "/sys/bus/iio/devices/iio:device0/";
 const std::string FILE_RAW = DEVICE_DIR + "in_voltage0_raw";
