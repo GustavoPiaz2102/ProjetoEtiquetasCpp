@@ -69,10 +69,11 @@ void Detector::ProcessLoop() {
 		std::string text = ocr.extractText(processed, current_frame);
 		//std::cout << "Texto Detectado: " << text << std::endl;
 
+		buzzer.setBuzzerActive(false);
 		if (!validator.Validate(text)) {
 			imp.setLastImpress(false);
 			LastWithError = true;
-			//buzzer.beep(500); // Beep de erro
+			buzzer.setBuzzerActive(true);
 			//std::cout << ocr.getLastDebugError();
 		} else {
 			LastWithError = false;
