@@ -111,7 +111,7 @@ class Buzzer : public GPIO {
 		uint32_t toneFreqHz;
 
 	public:
-		Buzzer(uint8_t pinBuzzer, const std::string &chipname = "gpiochip4");
+		Buzzer(int pwmChip, int pwmChannel, uint32_t toneFreqHz = 2000);
 		~Buzzer();
 
 		/**
