@@ -72,8 +72,8 @@ void Detector::ProcessLoop() {
 		if (!validator.Validate(text)) {
 			imp.setLastImpress(false);
 			LastWithError = true;
-			// buzzer.beep(500); // Beep de erro
-			//std::cout << ocr.getLastDebugError();
+			buzzer.beep(500); // Beep de erro
+					  //std::cout << ocr.getLastDebugError();
 		} else {
 			LastWithError = false;
 			correctImpressCounter++;
