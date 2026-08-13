@@ -150,7 +150,6 @@ class Detector {
 		 */
 		bool HasPrinterError() {
 			if (printer_error) {
-				printer_error = false;
 				return true;
 			}
 
@@ -162,6 +161,8 @@ class Detector {
 		 *          Exibe o resultado no console.
 		 */
 		void counterPrint();
+
+		void setPrinterError(bool val) { printer_error = val; }
 };
 
 #endif // DETECTOR_H
