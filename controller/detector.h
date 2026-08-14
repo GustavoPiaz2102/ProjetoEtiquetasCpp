@@ -1,6 +1,8 @@
 #ifndef DETECTOR_H
 #define DETECTOR_H
 
+class Interface; // confia
+
 #include "../model/heaters/GPIO.h"
 #include "../model/heaters/OCR.h"
 #include "../model/heaters/capture.h"
@@ -9,7 +11,7 @@
 #include "../model/heaters/threadUtils.h"
 #include "../model/heaters/validator.h"
 #include "../model/heaters/arquiver.h"
-#include "../view/interface.h"
+//#include "../view/interface.h"
 #include <atomic>
 #include <condition_variable>
 #include <functional>
