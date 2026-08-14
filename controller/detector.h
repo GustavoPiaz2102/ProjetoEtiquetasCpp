@@ -166,7 +166,7 @@ class Detector {
 
 		void setPrinterError(bool val) { printer_error = val; }
 
-		int readRaw() { return sensor.PeadRaw(); }
+		int readRaw() { return sensor.ReadRaw(); }
 };
 
 #endif // DETECTOR_H
