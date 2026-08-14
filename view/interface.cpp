@@ -663,8 +663,8 @@ bool Interface::config_menu(Arquiver &arq) {
 	static int escala_x = (int)std::stof(arq.dict["escala_x"]);
 	static int escala_y = (int)std::stof(arq.dict["escala_y"]);
 
-	sensorThreshold = std::stoi(arq.dict["sensor_threshold"]);
-	debounceMs = std::stoi(arq.dict["debounce_ms"]);
+	sensorThreshold = std::stoi(arq.dict["sensorThreshold"]);
+	debounceMs = std::stoi(arq.dict["debounceMs"]);
 
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
