@@ -1,8 +1,9 @@
 #include "detector.h"
 
 Detector::Detector(Impress &imp, Interface &interface, Validator &validator, Arquiver &arquiver) : camera(0), ocr("/home/pi/models"), sensor(), strobo(21), buzzer(0, 0), imp(imp), interface(interface), validator(validator), arquiver(arquiver) {
-	sensor.configureScale(arquiver.dict["sensorThreshold"] != "" ? std::stoi(arquiver.dict["sensorThreshold"]) : SENSOR_THRESHOLD,
+	/*sensor.configureScale(arquiver.dict["sensorThreshold"] != "" ? std::stoi(arquiver.dict["sensorThreshold"]) : SENSOR_THRESHOLD,
 						  arquiver.dict["debounceMs"] != "" ? std::stoi(arquiver.dict["debounceMs"]) : DEBOUNCE_MS);
+	*/
 	printer_error = false;
 }
 
@@ -154,4 +155,8 @@ void Detector::StopSensorThread() {
 		sensor_thread.join();
 		std::cout << "Thread de captura limpa com sucesso.\n";
 	}
+}
+void Detector::configureSensor() {
+	sensor.configureScale(arquiver.dict["sensorThreshold"] != "" ? std::stoi(arquiver.dict["sensorThreshold"]) : SENSOR_THRESHOLD,
+						  arquiver.dict["debounceMs"] != "" ? std::stoi(arquiver.dict["debounceMs"]) : DEBOUNCE_MS);
 }
