@@ -325,7 +325,6 @@ void Interface::menu(int &selected_option, int qntImp,Detector &detector) {
 	}
 	ImGui::PopStyleColor(3);
 	}
-	}
 	
 ///////////////////
 
