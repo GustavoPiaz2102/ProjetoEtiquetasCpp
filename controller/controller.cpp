@@ -165,11 +165,14 @@ bool Controller::requisitar_data_e_setar(int tipo, std::function<void(std::strin
 void Controller::rodar_detector() {
 	if (!ReturnToMenu) {
 		if (detector.HasPrinterError()) {
-			if (interface.PopUpError("Erro ao iniciar a impressão.")) {
+			if (interface.PopUpError("Erro ao iniciar a impressão, Impressora não conectada.")) {
+				detector.SetPrinterError(false);
 				imp.setLastImpress(true);
 				interface.setImprimindo(false);
+				detector.StopSensorThread();
+				detector.StopProcessThread();
+				ReturnToMenu = true;
 			}
-
 			return;
 		}
 

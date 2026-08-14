@@ -33,9 +33,9 @@ void Interface::beginFullscreenWindow(const char *name) {
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
 	ImGui::Begin(name, nullptr,
-		     ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-			     ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse |
-			     ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus);
+			 ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+				 ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse |
+				 ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus);
 }
 
 void Interface::AplicarEstiloVisual() {
@@ -254,10 +254,10 @@ void Interface::menu(int &selected_option, int qntImp) {
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(14, 12));
 	ImGui::BeginChild("InfoValidador", ImVec2(0, TAMANHO_BOTAO_ALT), true);
 	ImGui::Text("L: %s\nF: %s\nV: %s\nQuantidade de Impressões: %d",
-		    validator.GetLT().c_str(),
-		    validator.GetFAB().c_str(),
-		    validator.GetVAL().c_str(),
-		    qntImp);
+			validator.GetLT().c_str(),
+			validator.GetFAB().c_str(),
+			validator.GetVAL().c_str(),
+			qntImp);
 	ImGui::EndChild();
 	ImGui::PopStyleVar();
 
@@ -841,29 +841,44 @@ void Interface::setImprimindo(bool value) {
 	imprimindo = value;
 }
 
-bool Interface::PopUpError(const std::string &message) {
-	ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.55f, 0.16f, 0.16f, 1.00f));
-	ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.70f, 0.22f, 0.22f, 1.00f));
-	ImGui::OpenPopup("ErrorPopup");
-	if (ImGui::BeginPopupModal("ErrorPopup", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.95f, 0.55f, 0.55f, 1.00f));
-		ImGui::Text("%s", message.c_str());
-		ImGui::PopStyleColor();
-		ImGui::Dummy(ImVec2(0, 8));
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.60f, 0.18f, 0.18f, 1.00f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.74f, 0.22f, 0.22f, 1.00f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.48f, 0.14f, 0.14f, 1.00f));
-		if (ImGui::Button("OK")) {
-			ImGui::PopStyleColor(3);
-			ImGui::CloseCurrentPopup();
-			ImGui::EndPopup();
-			ImGui::PopStyleColor(2);
+bool Interface::PopUpError(const std::string &message) { 
+	// Exibe uma janela de erro em tela cheia com a mensagem fornecida e um botão "OK" para fechar
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+	
+	beginFullscreenWindow("ErrorPage");
+	
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, PADDING_FRAME);
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, SPACING_ITEM);
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, SPACING_INTERNO);
+	ImGui::SetWindowFontScale(ESCALA_FONTE_DATA);
 
-			return true;
-		}
-		ImGui::PopStyleColor(3);
-		ImGui::EndPopup();
+	// Título do erro
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.30f, 0.72f, 0.86f, 1.00f));
+	ImGui::Text(" Erro:");
+	ImGui::PopStyleColor(); // Tira a cor azul apenas do título
+
+	ImGui::Spacing(); // Dá um respiro visual
+
+	// Exibe a mensagem de erro (TextWrapped é mais seguro para textos que vêm do sistema/OCR)
+	ImGui::TextWrapped("%s", message.c_str());
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	bool isOkClicked = false;
+
+	// Renderiza o botão e captura o clique (tamanho do botão ajustável no ImVec2)
+	if (ImGui::Button("OK", ImVec2(120, 50))) {
+		isOkClicked = true;
 	}
-	ImGui::PopStyleColor(2);
-	return false;
+
+	// Limpa as 3 variáveis de estilo empurradas no início da função
+	ImGui::PopStyleVar(3);
+
+	// Fecha a janela. Se você tiver um endFullscreenWindow() no seu projeto, troque aqui.
+	ImGui::End(); 
+
+	// Retorna true se o usuário clicou, indicando para a lógica principal fechar o popup
+	return isOkClicked;
 }
