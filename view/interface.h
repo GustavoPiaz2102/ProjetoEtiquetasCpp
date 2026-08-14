@@ -79,6 +79,11 @@ class Interface {
 		std::atomic<bool> imprimindo{false};
 		GLuint shutdownTexture = 0;
 
+		//configurações do sensor
+
+		int sensorThreshold = 17300; // Valor padrão do limiar do sensor
+		int debounceMs = 10;		 // Valor padrão do debounce em milissegundos
+
 		// Aplica a paleta de cores e o arredondamento globais do ImGui.
 		// Alteração puramente estética — não interfere em nenhuma lógica.
 		void AplicarEstiloVisual();

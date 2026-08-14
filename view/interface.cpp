@@ -699,6 +699,14 @@ bool Interface::config_menu(Arquiver &arq) {
 	ImGui::SliderInt("Escala Y", &escala_y, 1, 10);
 	ImGui::InputText("Fonte", fonte, IM_ARRAYSIZE(fonte));
 */
+	ImGui::Separator();
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.30f, 0.72f, 0.86f, 1.00f));
+	ImGui::Text("Parâmetros do Sensor:");
+	ImGui::PopStyleColor();
+	ImGui::InputInt("Limiar do Sensor", &sensorThreshold);
+	ImGui::InputInt("Tempo de Debounce (ms)", &debounceMs);
+
+
 	ImGui::Dummy(ImVec2(0, 10));
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.16f, 0.45f, 0.60f, 1.00f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.21f, 0.56f, 0.73f, 1.00f));
@@ -730,7 +738,8 @@ bool Interface::config_menu(Arquiver &arq) {
 		arq.dict["escala_x"] = std::to_string(escala_x);
 		arq.dict["escala_y"] = std::to_string(escala_y);
 		arq.dict["fonte"] = fonte;
-
+		arq.dict["sensorThreshold"] = std::to_string(sensorThreshold);
+		arq.dict["debounceMs"] = std::to_string(debounceMs);
 		// Salva no arquivo
 		arq.save();
 		return true;
