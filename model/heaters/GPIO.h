@@ -72,7 +72,7 @@ class Sensor : public GPIO {
 		void configureScale(int sensorThreshold = SENSOR_THRESHOLD,int debounceMs = DEBOUNCE_MS) {
 			this->sensorThreshold = sensorThreshold;
 			this->debounceMs = debounceMs;
-			std::cout<<"Sensor configured with threshold: " << sensorThreshold << " and debounce: " << debounceMs << " ms" << std::endl;
+			//std::cout<<"Sensor configured with threshold: " << sensorThreshold << " and debounce: " << debounceMs << " ms" << std::endl;
 		}
 };
 
