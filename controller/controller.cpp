@@ -133,7 +133,7 @@ void Controller::run() {
 
 			case -10: {
 				arquiver.save();
-				// std::system("shutdown now");
+				std::system("shutdown now");
 				return; // Sai do loop e encerra
 			}
 			}
