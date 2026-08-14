@@ -99,7 +99,7 @@ class Interface {
 		bool shouldClose() const;
 		void begin_frame();
 		void end_frame();
-		void menu(int &selected_option, int qntImp,Detector &detector);
+		void menu(int &selected_option, int qntImp,Detector &detector,Arquiver &arquiver);
 		bool atualizar_frame(const cv::Mat &frame);
 		bool requisitar_data(std::string &selected_date, int tipo);
 		bool requisitar_lt(std::string &selected_lt);

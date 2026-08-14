@@ -59,7 +59,7 @@ void Controller::run() {
 				if (imp.getQntImpressao() <= 0)
 					interface.setImprimindo(false);
 
-				interface.menu(selected_option, imp.getQntImpressao(),detector);
+				interface.menu(selected_option, imp.getQntImpressao(),detector,arquiver);
 				if (interface.GetImprimindo()) {
 					if (imp.getQntImpressao() > 0)
 						imp.setStrList({validator.GetLT(), validator.GetFAB(), validator.GetVAL()});

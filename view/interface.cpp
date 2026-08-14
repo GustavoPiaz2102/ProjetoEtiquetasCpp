@@ -228,7 +228,7 @@ void Interface::end_frame() {
 	glfwSwapBuffers(window);
 }
 
-void Interface::menu(int &selected_option, int qntImp,Detector &detector) {
+void Interface::menu(int &selected_option, int qntImp,Detector &detector,Arquiver &arquiver) {
 	// Define um pequeno padding para evitar que a borda sobreponha os widgets
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(12, 6));
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, TAMANHO_BORDA_JANELA);
