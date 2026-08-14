@@ -641,7 +641,7 @@ bool Interface::config_impress(int &value, bool *InstantImpress) {
 	}
 }
 
-bool Interface::config_menu(Arquiver &arq) {
+bool Interface::config_menu(Arquiver &arq,Detector &detector) {
 	arq.load(); // Carrega as configurações atuais do arquivo
 
 	// Campos de texto como char arrays para ImGui
@@ -741,6 +741,14 @@ bool Interface::config_menu(Arquiver &arq) {
 	ImGui::InputInt("Limiar do Sensor", &sensorthr);
 	ImGui::InputInt("Tempo de Debounce (ms)", &dbcMs);
 
+	ImGui::Separator();
+
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.30f, 0.72f, 0.86f, 1.00f));
+	ImGui::Text("Valores Lidos Do Sensor:");
+	ImGui::PopStyleColor();
+	ImGui::Text("Sensor: %d", detector.readRaw());
+
+	ImGui::Separator();
 
 	ImGui::Dummy(ImVec2(0, 10));
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.16f, 0.45f, 0.60f, 1.00f));

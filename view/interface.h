@@ -105,7 +105,7 @@ class Interface {
 		bool requisitar_lt(std::string &selected_lt);
 		std::string FormatDate(int day, int month, int year);
 		void beginFullscreenWindow(const char *name);
-		bool config_menu(Arquiver &arq);
+		bool config_menu(Arquiver &arq,Detector &detector);
 		bool config_impress(int &value, bool *InstantImpress);
 		bool GetImprimindo();
 		void setImprimindo(bool value);
