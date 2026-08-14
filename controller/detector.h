@@ -8,6 +8,7 @@
 #include "../model/heaters/preprocessor.h"
 #include "../model/heaters/threadUtils.h"
 #include "../model/heaters/validator.h"
+#include "../model/heaters/arquiver.h"
 #include "../view/interface.h"
 #include <atomic>
 #include <condition_variable>
@@ -30,7 +31,7 @@ class Detector {
 		Impress &imp;
 		Interface &interface;
 		Validator &validator;
-
+		Arquiver &arquiver;
 		cv::Mat frame;			   // Frame capturado da câmera
 		std::mutex frame_mutex;		   // Protege acesso ao frame
 		std::condition_variable frame_cv;  // Notifica a thread de processamento sobre novos frames
@@ -59,8 +60,9 @@ class Detector {
 		 * @param[in] imp Referência para o objeto Impress responsável pela impressão de etiquetas.
 		 * @param[in] interface Referência para o objeto Interface responsável pela UI.
 		 * @param[in] validator Referência para o objeto Validator responsável pela validação de códigos.
+		 * @param[in] arquiver Referência para o objeto Arquiver responsável pelo gerenciamento de arquivos.
 		 */
-		Detector(Impress &imp, Interface &interface, Validator &validator);
+		Detector(Impress &imp, Interface &interface, Validator &validator, Arquiver &arquiver);
 
 		/** 
 		 * @brief Destrutor da classe Detector que garante o encerramento seguro das threads.
@@ -163,6 +165,8 @@ class Detector {
 		void counterPrint();
 
 		void setPrinterError(bool val) { printer_error = val; }
+
+		int readRaw() { return sensor.readRaw(); }
 };
 
 #endif // DETECTOR_H

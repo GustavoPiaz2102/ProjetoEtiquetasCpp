@@ -2,7 +2,7 @@
 #include <functional>
 #include <iostream>
 
-Controller::Controller() : validator("000/00", "00/00/0000", "00/00/0000"), interface(validator), selected_option(-1), arquiver("data/config.txt"), imp(arquiver), detector(imp, interface, validator) {
+Controller::Controller() : validator("000/00", "00/00/0000", "00/00/0000"), interface(validator), selected_option(-1), arquiver("data/config.txt"), imp(arquiver), detector(imp, interface, validator, arquiver) {
 	// Carrega os dados do arquivo para o validador
 	glewInit();
 	arquiver.load();

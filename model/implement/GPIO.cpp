@@ -61,7 +61,7 @@ bool Sensor::ReadSensor() {
 	if (rawValue < 0)
 		return stableState;
 
-	bool currentLogicalState = (rawValue > SENSOR_THRESHOLD);
+	bool currentLogicalState = (rawValue > sensorThreshold);
 	auto now = std::chrono::steady_clock::now();
 
 	if (firstRead) {
@@ -79,7 +79,7 @@ bool Sensor::ReadSensor() {
 	}
 
 	auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastStateChange).count();
-	if (elapsed >= DEBOUNCE_MS) {
+	if (elapsed >= debounceMs) {
 		stableState = lastLogicalState;
 
 		if (stableState && !reported) {

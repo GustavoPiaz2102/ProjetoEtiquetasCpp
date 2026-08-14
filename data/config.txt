@@ -13,6 +13,8 @@ tamanho_etiqueta:22.0 mm,20.0 mm
 tamanho_fonte:1
 velocidade:3
 texto:Teste
-fab:01/01/2025
-lt:000/23
-val:01/01/2025
+fab:01/01/2030
+lt:000/28
+val:01/01/2030
+sensorThreshold:17300
+debouceMs:10
