@@ -59,7 +59,7 @@ void Controller::run() {
 				if (imp.getQntImpressao() <= 0)
 					interface.setImprimindo(false);
 
-				interface.menu(selected_option, imp.getQntImpressao());
+				interface.menu(selected_option, imp.getQntImpressao(),detector);
 				if (interface.GetImprimindo()) {
 					if (imp.getQntImpressao() > 0)
 						imp.setStrList({validator.GetLT(), validator.GetFAB(), validator.GetVAL()});
@@ -107,6 +107,7 @@ void Controller::run() {
 					selected_option = -1;
 					imp.LoadAtributes();
 					imp.SaveAtributes();
+					detector.configureSensor(); // Reconfigura o sensor com os novos valores
 				}
 
 				break;

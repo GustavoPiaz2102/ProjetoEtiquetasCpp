@@ -8,6 +8,7 @@ Includes:
 #include "../model/heaters/arquiver.h"
 #include "../model/heaters/capture.h"
 #include "../model/heaters/validator.h"
+#include "../controller/detector.h"
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 #include <GL/glew.h> // Mudar para GLEW (compatível com o projeto)
@@ -98,7 +99,7 @@ class Interface {
 		bool shouldClose() const;
 		void begin_frame();
 		void end_frame();
-		void menu(int &selected_option, int qntImp);
+		void menu(int &selected_option, int qntImp,Detector &detector);
 		bool atualizar_frame(const cv::Mat &frame);
 		bool requisitar_data(std::string &selected_date, int tipo);
 		bool requisitar_lt(std::string &selected_lt);
