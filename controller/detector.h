@@ -170,6 +170,8 @@ class Detector {
 
 		int readRaw() { return sensor.ReadRaw(); }
 
+		bool readSensor() { return sensor.ReadSensor(); }
+
 		void configureSensor();
 };
 
