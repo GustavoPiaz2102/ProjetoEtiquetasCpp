@@ -663,8 +663,8 @@ bool Interface::config_menu(Arquiver &arq) {
 	static int escala_x = (int)std::stof(arq.dict["escala_x"]);
 	static int escala_y = (int)std::stof(arq.dict["escala_y"]);
 
-	sensorThreshold = std::stoi(arq.dict["sensorThreshold"]);
-	debounceMs = std::stoi(arq.dict["debounceMs"]);
+	static int sensorthr = std::stoi(arq.dict["sensorThreshold"]);
+	static int dbcMs = std::stoi(arq.dict["debounceMs"]);
 
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
@@ -706,8 +706,8 @@ bool Interface::config_menu(Arquiver &arq) {
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.30f, 0.72f, 0.86f, 1.00f));
 	ImGui::Text("Parâmetros do Sensor:");
 	ImGui::PopStyleColor();
-	ImGui::InputInt("Limiar do Sensor", &sensorThreshold);
-	ImGui::InputInt("Tempo de Debounce (ms)", &debounceMs);
+	ImGui::InputInt("Limiar do Sensor", &sensorthr);
+	ImGui::InputInt("Tempo de Debounce (ms)", &dbcMs);
 
 
 	ImGui::Dummy(ImVec2(0, 10));
@@ -741,8 +741,8 @@ bool Interface::config_menu(Arquiver &arq) {
 		arq.dict["escala_x"] = std::to_string(escala_x);
 		arq.dict["escala_y"] = std::to_string(escala_y);
 		arq.dict["fonte"] = fonte;
-		arq.dict["sensorThreshold"] = std::to_string(sensorThreshold);
-		arq.dict["debounceMs"] = std::to_string(debounceMs);
+		arq.dict["sensorThreshold"] = std::to_string(sensorthr);
+		arq.dict["debounceMs"] = std::to_string(dbcMs);
 		// Salva no arquivo
 		arq.save();
 		return true;
