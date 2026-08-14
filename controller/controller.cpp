@@ -103,7 +103,7 @@ void Controller::run() {
 			}
 
 			case 5: {
-				if (interface.config_menu(arquiver)) {
+				if (interface.config_menu(arquiver,detector)) {
 					selected_option = -1;
 					imp.LoadAtributes();
 					imp.SaveAtributes();
