@@ -302,7 +302,7 @@ void Interface::menu(int &selected_option, int qntImp,Detector &detector) {
 /////////////////
 	ImGui::SameLine(0, (ESPACO_ENTRE_BOTOES * 12.85)-TAMANHO_BOTAO_LARG / 4);
 
-	if(detector.readSensor()){
+	if(detector.readRaw()>arquiver.dict["sensorThreshold"]){
 		//cor verde para sensor sincronizado
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.16f, 0.55f, 0.30f, 1.00f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.20f, 0.68f, 0.38f, 1.00f));
