@@ -869,7 +869,7 @@ bool Interface::PopUpError(const std::string &message) {
 	bool isOkClicked = false;
 
 	// Renderiza o botão e captura o clique (tamanho do botão ajustável no ImVec2)
-	if (ImGui::Button("OK", ImVec2(120, 50))) {
+	if (ImGui::Button("OK", ImVec2(120, 100))) {
 		isOkClicked = true;
 	}
 
