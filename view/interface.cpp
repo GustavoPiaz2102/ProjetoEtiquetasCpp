@@ -300,7 +300,7 @@ void Interface::menu(int &selected_option, int qntImp,Detector &detector) {
 
 
 /////////////////
-	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES * 12.85);
+	ImGui::SameLine(0, (ESPACO_ENTRE_BOTOES * 12.85)-TAMANHO_BOTAO_LARG / 4);
 
 	if(detector.readSensor()){
 		//cor verde para sensor sincronizado
@@ -331,7 +331,7 @@ void Interface::menu(int &selected_option, int qntImp,Detector &detector) {
 
 
 	// ShutDown button
-	ImGui::SameLine(0, ESPACO_ENTRE_BOTOES * 12.85);
+	ImGui::SameLine(0, (ESPACO_ENTRE_BOTOES * 12.85)-TAMANHO_BOTAO_LARG / 4);
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.60f, 0.18f, 0.18f, 1.00f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.74f, 0.22f, 0.22f, 1.00f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.48f, 0.14f, 0.14f, 1.00f));
