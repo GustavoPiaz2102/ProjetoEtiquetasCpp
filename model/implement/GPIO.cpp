@@ -66,28 +66,35 @@ bool Sensor::ReadSensor() {
 
 	if (firstRead) {
 		lastLogicalState = currentLogicalState;
-		lastStateChange = now;
-		stableState = lastLogicalState;
+		stableState = currentLogicalState;
+		histeresisCounter = 0;
 		reported = false;
 		firstRead = false;
 		return stableState;
 	}
 
-	if (currentLogicalState != lastLogicalState) {
-		lastStateChange = now;
-		lastLogicalState = currentLogicalState;
-	}
+	lastLogicalState = currentLogicalState;
 
-	auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastStateChange).count();
-	if (elapsed >= debounceMs) {
-		stableState = lastLogicalState;
+	if (currentLogicalState != stableState) {
+		// tende pro novo estado -> soma, sem passar do teto
+		if (histeresisCounter < sensorHisteresis)
+			histeresisCounter++;
 
-		if (stableState && !reported) {
-			reported = true;
-			return true;
+		if (histeresisCounter >= sensorHisteresis) {
+			stableState = currentLogicalState;
+			histeresisCounter = 0;
+
+			if (stableState && !reported) {
+				reported = true;
+				return true;
+			}
+			if (!stableState)
+				reported = false;
 		}
-		if (!stableState)
-			reported = false;
+	} else {
+		// confirma o estado atual -> desconta, sem passar do piso
+		if (histeresisCounter > 0)
+			histeresisCounter--;
 	}
 
 	return false;

@@ -21,6 +21,7 @@ const std::string FILE_SCALE = DEVICE_DIR + "in_voltage0_scale";
 
 #define SENSOR_THRESHOLD 17300
 #define DEBOUNCE_MS 10
+#define SENSOR_HISTERESIS 3
 
 class GPIO {
 	protected:
@@ -42,6 +43,8 @@ class Sensor : public GPIO {
 		std::ifstream fsRaw;
 		int sensorThreshold;
 		int debounceMs;
+		int sensorHisteresis;
+		int histeresisCounter = 0;
 
 	public:
 		bool firstRead = true;
@@ -50,7 +53,7 @@ class Sensor : public GPIO {
 		~Sensor();
 
 		/**
-		 * @brief Lê o estado do sensor LDR, aplicando filtragem e debounce.
+		 * @brief Lê o estado do sensor LDR, aplicando filtragem por histerese saturada.
 		 * 
 		 * @return true se o sensor estiver ativado (condição de detecção), false caso contrário.
 		 */
@@ -68,9 +71,13 @@ class Sensor : public GPIO {
 			firstRead = true;
 			stableState = false;
 			lastLogicalState = false;
+			histeresisCounter = 0;
+			reported = false;
 		}
-		void configureScale(int sensorThreshold = SENSOR_THRESHOLD,int debounceMs = DEBOUNCE_MS) {
+
+		void configureScale(int sensorThreshold = SENSOR_THRESHOLD,int debounceMs = DEBOUNCE_MS,int sensorHisteresis = SENSOR_HISTERESIS) {
 			this->sensorThreshold = sensorThreshold;
+			this->sensorHisteresis = sensorHisteresis;
 			this->debounceMs = debounceMs;
 			//std::cout<<"Sensor configured with threshold: " << sensorThreshold << " and debounce: " << debounceMs << " ms" << std::endl;
 		}
