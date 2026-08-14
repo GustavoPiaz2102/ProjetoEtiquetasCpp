@@ -166,7 +166,7 @@ void Controller::rodar_detector() {
 	if (!ReturnToMenu) {
 		if (detector.HasPrinterError()) {
 			if (interface.PopUpError("Erro ao iniciar a impressão, Impressora não conectada.")) {
-				detector.SetPrinterError(false);
+				detector.setPrinterError(false);
 				imp.setLastImpress(true);
 				interface.setImprimindo(false);
 				detector.StopSensorThread();
