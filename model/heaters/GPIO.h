@@ -20,7 +20,7 @@ const std::string FILE_RAW = DEVICE_DIR + "in_voltage0_raw";
 const std::string FILE_SCALE = DEVICE_DIR + "in_voltage0_scale";
 
 #define SENSOR_THRESHOLD 17300
-#define DEBOUNCE_MS 10 //periodo entre leituras
+#define DEBOUNCE_MS 10
 
 class GPIO {
 	protected:
@@ -40,6 +40,8 @@ class Sensor : public GPIO {
 		bool lastLogicalState = false;
 		std::chrono::steady_clock::time_point lastStateChange;
 		std::ifstream fsRaw;
+		int sensorThreshold;
+		int debounceMs;
 
 	public:
 		bool firstRead = true;
@@ -66,6 +68,10 @@ class Sensor : public GPIO {
 			firstRead = true;
 			stableState = false;
 			lastLogicalState = false;
+		}
+		void configureScale(int sensorThreshold = SENSOR_THRESHOLD,int debounceMs = DEBOUNCE_MS) {
+			this->sensorThreshold = sensorThreshold;
+			this->debounceMs = debounceMs;
 		}
 };
 

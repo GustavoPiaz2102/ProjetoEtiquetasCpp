@@ -16,3 +16,5 @@ texto:Teste
 fab:01/01/2030
 lt:000/28
 val:01/01/2030
+sensorThreshold:17300
+debouceMs:10
